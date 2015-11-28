@@ -33,14 +33,17 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Storage;
+namespace Apparat\Object\Framework;
+
+
+use Apparat\Object\Model\Repository\AbstractRepository;
 
 /**
- * Abstract object storage implementation
+ * File repository
  *
- * @package Apparat\Object\Model\Storage
+ * @package Apparat\Object\Framework
  */
-abstract class AbstractStorage implements Storage
+class FileRepository extends AbstractRepository
 {
 
 }

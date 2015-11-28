@@ -35,14 +35,12 @@
 
 namespace Apparat\Object\Model\Object;
 
-use Apparat\Object\Model\Storage\Storage;
-
 /**
  * Lazy loading object collection
  *
  * @package Apparat\Object\Model\Object
  */
-class ObjectCollection implements \Countable, \Iterator, \ArrayAccess
+class ObjectCollection implements \Countable, \Iterator
 {
 	/**
 	 * Objects
@@ -51,11 +49,11 @@ class ObjectCollection implements \Countable, \Iterator, \ArrayAccess
 	 */
 	protected $_objects = array();
 	/**
-	 * Storage
+	 * Object IDs
 	 *
-	 * @var Storage
+	 * @var array
 	 */
-	protected $_storage = null;
+	protected $_objectIds = array();
 	/**
 	 * Internal object pointer
 	 *
@@ -63,151 +61,194 @@ class ObjectCollection implements \Countable, \Iterator, \ArrayAccess
 	 */
 	protected $_pointer = 0;
 
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
 	/**
 	 * Collection constructor
 	 *
-	 * @param array $objects Objects in this collection
+	 * @param array $objects Collection objects
 	 */
-	public function __construct(array $objects, Storage $storage)
+	public function __construct(array $objects)
 	{
 		foreach ($objects as $object) {
 			if ($object instanceof Object) {
-				$this->_objects[$object->getStoragePath($storage)] = $object;
+				$this->_objects[$object->getId()] = $object;
 			} else {
-				$this->_objects[strval($object)] = strval($object);
+				if (!($object instanceof ObjectUrl)) {
+					$object = new ObjectUrl(strval($object));
+				}
+				$this->_objects[$object->getId()] = $object->getUrl();
 			}
 		}
+
+		$this->_objectIds = array_keys($this->_objects);
 	}
 
 	/**
-	 * Return the current element
-	 * @link http://php.net/manual/en/iterator.current.php
-	 * @return mixed Can return any type.
-	 * @since 5.0.0
+	 * Return the current object
+	 *
+	 * @return Object Current object
 	 */
 	public function current()
 	{
-		// TODO: Implement current() method.
+		return $this->_loadObject($this->_objectIds[$this->_pointer]);
 	}
 
 	/**
-	 * Move forward to next element
-	 * @link http://php.net/manual/en/iterator.next.php
-	 * @return void Any returned value is ignored.
-	 * @since 5.0.0
+	 * Move forward to next object
+	 *
+	 * @return void
 	 */
 	public function next()
 	{
-		// TODO: Implement next() method.
+		++$this->_pointer;
 	}
 
 	/**
-	 * Return the key of the current element
-	 * @link http://php.net/manual/en/iterator.key.php
-	 * @return mixed scalar on success, or null on failure.
-	 * @since 5.0.0
+	 * Return the ID of the current object
+	 *
+	 * @return int Object ID
 	 */
 	public function key()
 	{
-		// TODO: Implement key() method.
+		return $this->_objectIds[$this->_pointer];
 	}
 
 	/**
 	 * Checks if current position is valid
-	 * @link http://php.net/manual/en/iterator.valid.php
-	 * @return boolean The return value will be casted to boolean and then evaluated.
-	 * Returns true on success or false on failure.
-	 * @since 5.0.0
+	 *
+	 * @return boolean The current position is valid
 	 */
 	public function valid()
 	{
-		// TODO: Implement valid() method.
+		return isset($this->_objectIds[$this->_pointer]);
 	}
 
 	/**
-	 * Rewind the Iterator to the first element
-	 * @link http://php.net/manual/en/iterator.rewind.php
-	 * @return void Any returned value is ignored.
-	 * @since 5.0.0
+	 * Rewind the Iterator to the first object
+	 *
+	 * @return void
 	 */
 	public function rewind()
 	{
-		// TODO: Implement rewind() method.
+		$this->_pointer = 0;
 	}
 
 	/**
-	 * Whether a offset exists
-	 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
-	 * @param mixed $offset <p>
-	 * An offset to check for.
-	 * </p>
-	 * @return boolean true on success or false on failure.
-	 * </p>
-	 * <p>
-	 * The return value will be casted to boolean if non-boolean was returned.
-	 * @since 5.0.0
+	 * Whether an object ID exists
+	 *
+	 * @param int $offset Object ID
+	 * @return boolean Whether the object ID exists
 	 */
 	public function offsetExists($offset)
 	{
-		// TODO: Implement offsetExists() method.
+		return isset($this->_objects[$offset]);
 	}
 
 	/**
-	 * Offset to retrieve
-	 * @link http://php.net/manual/en/arrayaccess.offsetget.php
-	 * @param mixed $offset <p>
-	 * The offset to retrieve.
-	 * </p>
-	 * @return mixed Can return all value types.
-	 * @since 5.0.0
+	 * Get an object with a particular ID
+	 *
+	 * @param int $offset Object ID
+	 * @return Object Object
 	 */
 	public function offsetGet($offset)
 	{
-		// TODO: Implement offsetGet() method.
+		return $this->_objects[$offset];
 	}
 
 	/**
-	 * Offset to set
-	 * @link http://php.net/manual/en/arrayaccess.offsetset.php
-	 * @param mixed $offset <p>
-	 * The offset to assign the value to.
-	 * </p>
-	 * @param mixed $value <p>
-	 * The value to set.
-	 * </p>
+	 * Set an object by ID
+	 *
+	 * @param int $offset Object ID
+	 * @param Object $value Object
 	 * @return void
-	 * @since 5.0.0
+	 * @throws RuntimeException When an object should be set by ID
 	 */
 	public function offsetSet($offset, $value)
 	{
-		// TODO: Implement offsetSet() method.
+
 	}
 
 	/**
-	 * Offset to unset
-	 * @link http://php.net/manual/en/arrayaccess.offsetunset.php
-	 * @param mixed $offset <p>
-	 * The offset to unset.
-	 * </p>
-	 * @return void
-	 * @since 5.0.0
+	 * Unset an object by ID
+	 *
+	 * @param int $offset Object ID
+	 * @return ObjectCollection Object collection with the object removed
 	 */
 	public function offsetUnset($offset)
 	{
-		// TODO: Implement offsetUnset() method.
+		$objects = $this->_objects;
+		unset($objects[$offset]);
+		return new self($objects);
 	}
 
 	/**
-	 * Count elements of an object
-	 * @link http://php.net/manual/en/countable.count.php
-	 * @return int The custom count as an integer.
-	 * </p>
-	 * <p>
-	 * The return value is cast to an integer.
-	 * @since 5.1.0
+	 * Add an object to the collection
+	 *
+	 * @param string|Object $object Object or object URL
+	 * @return ObjectCollection Modified object collection
+	 */
+	public function addObject($object)
+	{
+
+		// If the object is not yet an object instance
+		if (!($object instanceof Object)) {
+			$object = new ObjectUrl(strval($object));
+			$object = $object->getUrl();
+		}
+
+		$objects = $this->_objects;
+		$objects[] = $object;
+		return new self(array_values($objects));
+	}
+
+	/**
+	 * Remove an object out of this collection
+	 *
+	 * @param string|Object $object Object or object ID
+	 * @return ObjectCollection Modified object collection
+	 */
+	public function removeObject($object)
+	{
+		if ($object instanceof Object) {
+			$object = $object->getId();
+		} else {
+			$object = intval($object);
+		}
+		if (empty($this->_objects[$object])) {
+			throw new InvalidArgumentException(sprintf('Unknown object ID "%s"', $object),
+				InvalidArgumentException::UNKNOWN_OBJECT_ID);
+		}
+
+		$objects = $this->_objects;
+		unset($objects[$object]);
+		return new self(array_values($objects));
+	}
+
+	/**
+	 * Count objects in this collection
+	 *
+	 * @return int The number of objects in this collection
 	 */
 	public function count()
 	{
-		// TODO: Implement count() method.
+		return count($this->_objects);
+	}
+
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
+
+	/**
+	 * Load and return an object by ID
+	 *
+	 * @param int $objectId Object ID
+	 * @return Object Object
+	 */
+	protected function _loadObject($objectId)
+	{
+		return $this->_objects[$objectId];
 	}
 }

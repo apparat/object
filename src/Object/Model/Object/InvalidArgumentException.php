@@ -33,47 +33,19 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Storage;
-
-use Apparat\Object\Model\Object\Object;
-use Apparat\Object\Model\Object\ObjectCollection;
+namespace Apparat\Object\Model\Object;
 
 /**
- * Object storage interface
+ * Object invalid argument exception
  *
- * @package Apparat\Object\Model\Storage
+ * @package Apparat\Object\Model\Url
  */
-interface Storage
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Find objects by selector
+	 * Unkown object ID
 	 *
-	 * @param $objectSelector Object selector
-	 * @return ObjectCollection Object collection
+	 * @var int
 	 */
-	public function findObjects($objectSelector);
-
-	/**
-	 * Add an object to the storage
-	 *
-	 * @param Object $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(Object $object);
-
-	/**
-	 * Delete and object from the storage
-	 *
-	 * @param Object $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(Object $object);
-
-	/**
-	 * Update an object in the storage
-	 *
-	 * @param Object $object Object
-	 * @return boolean Success
-	 */
-	public function updateUbject(Object $object);
+	const UNKNOWN_OBJECT_ID = 1448737190;
 }

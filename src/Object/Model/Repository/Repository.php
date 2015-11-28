@@ -33,29 +33,47 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Model\Repository;
 
-use Apparat\Object\Model\Repository\Repository;
+use Apparat\Object\Model\Object\Object;
+use Apparat\Object\Model\Object\ObjectCollection;
 
 /**
- * Object interface
+ * Object repository interface
  *
- * @package Apparat\Object\Model\Object
+ * @package Apparat\Object\Model\Repository
  */
-interface Object
+interface Repository
 {
 	/**
-	 * Return the object ID
+	 * Find objects by selector
 	 *
-	 * @return int Object ID
+	 * @param $selector Object selector
+	 * @return ObjectCollection Object collection
 	 */
-	public function getId();
+	public function findObjects($selector);
 
 	/**
-	 * Return the object's path within a repository
+	 * Add an object to the repository
 	 *
-	 * @param Repository $repository Repository
-	 * @return string Object path
+	 * @param Object $object Object
+	 * @return boolean Success
 	 */
-	public function getRepositoryPath(Repository $repository);
+	public function addObject(Object $object);
+
+	/**
+	 * Delete and object from the repository
+	 *
+	 * @param Object $object Object
+	 * @return boolean Success
+	 */
+	public function deleteObject(Object $object);
+
+	/**
+	 * Update an object in the repository
+	 *
+	 * @param Object $object Object
+	 * @return bool Success
+	 */
+	public function updateObject(Object $object);
 }

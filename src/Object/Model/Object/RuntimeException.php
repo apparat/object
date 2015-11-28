@@ -35,27 +35,12 @@
 
 namespace Apparat\Object\Model\Object;
 
-use Apparat\Object\Model\Repository\Repository;
-
 /**
- * Object interface
+ * Object runtime exception
  *
  * @package Apparat\Object\Model\Object
  */
-interface Object
+class RuntimeException extends \RuntimeException
 {
-	/**
-	 * Return the object ID
-	 *
-	 * @return int Object ID
-	 */
-	public function getId();
 
-	/**
-	 * Return the object's path within a repository
-	 *
-	 * @param Repository $repository Repository
-	 * @return string Object path
-	 */
-	public function getRepositoryPath(Repository $repository);
 }

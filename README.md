@@ -25,4 +25,4 @@ Apparat object abstraction layer
 * Utility function
 	* [Object URL](https://github.com/apparat/apparat/blob/master/doc/VERSIONING.md#drafts) handling (composition, decomposition)
 	* `apparat://` URL handling
-	* Object ID assignment
+	* Object ID assignment & incrementation

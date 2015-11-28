@@ -15,7 +15,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8",
-        "satooshi/php-coveralls": "^0.6"
+        "satooshi/php-coveralls": "^0.6",
+        "vlucas/phpdotenv": "^2.0"
     },
     "repositories": [
         {

@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Apparat
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_Object
+ * @package     Apparat_<Package>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright � 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
  */
 
@@ -33,11 +33,22 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-error_reporting(E_ALL);
-$autoloader = __DIR__.'/vendor/autoload.php';
-if (!file_exists($autoloader)) {
-    echo "Composer autoloader not found: $autoloader".PHP_EOL;
-    echo "Please issue 'composer install' and try again.".PHP_EOL;
-    exit(1);
+namespace Apparat\Object\Model\Object;
+
+use Apparat\Object\Model\Storage\Storage;
+
+/**
+ * Object interface
+ *
+ * @package Apparat\Object\Model\Object
+ */
+interface Object
+{
+	/**
+	 * Return the object's path within a storage
+	 *
+	 * @param Storage $storage Storage
+	 * @return string Object path
+	 */
+	public function getStoragePath(Storage $storage);
 }
-require $autoloader;

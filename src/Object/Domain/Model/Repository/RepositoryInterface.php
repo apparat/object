@@ -33,14 +33,47 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Domain\Model\Repository;
+
+use Apparat\Object\Domain\Model\Object\Object;
+use Apparat\Object\Domain\Model\Object\ObjectCollection;
 
 /**
- * Object runtime exception
+ * Object repository interface
  *
- * @package Apparat\Object\Model\Object
+ * @package Apparat\Object\Domain\Model\Repository
  */
-class RuntimeException extends \RuntimeException
+interface RepositoryInterface
 {
+	/**
+	 * Find objects by selector
+	 *
+	 * @param $selector Object selector
+	 * @return ObjectCollection Object collection
+	 */
+	public function findObjects($selector);
 
+	/**
+	 * Add an object to the repository
+	 *
+	 * @param Object $object Object
+	 * @return boolean Success
+	 */
+	public function addObject(Object $object);
+
+	/**
+	 * Delete and object from the repository
+	 *
+	 * @param Object $object Object
+	 * @return boolean Success
+	 */
+	public function deleteObject(Object $object);
+
+	/**
+	 * Update an object in the repository
+	 *
+	 * @param Object $object Object
+	 * @return bool Success
+	 */
+	public function updateObject(Object $object);
 }

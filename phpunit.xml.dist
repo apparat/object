@@ -1,13 +1,27 @@
 <phpunit bootstrap="./phpunit.php">
     <testsuites>
         <testsuite>
-            <directory>./test</directory>
+            <directory>./src/Resource/Framework/Test</directory>
         </testsuite>
     </testsuites>
+
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DB_DRIVER" value="sqlite" />
     </php>
+
+    <logging>
+        <log type="coverage-xml" target="build/logs/coverage/xml"/>
+    </logging>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory suffix=".php">src/Resource/Framework/Test</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

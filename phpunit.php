@@ -4,16 +4,16 @@
  * Apparat
  *
  * @category    Apparat
- * @package     Apparat_Object
+ * @package     Apparat_Resource
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright ï¿½ 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
  */
 
 /***********************************************************************************
  *  The MIT License (MIT)
  *
- *  Copyright Â© 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ *  Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy of
  *  this software and associated documentation files (the "Software"), to deal in
@@ -34,10 +34,10 @@
  ***********************************************************************************/
 
 error_reporting(E_ALL);
-$autoloader = __DIR__.'/vendor/autoload.php';
-if (!file_exists($autoloader)) {
-    echo "Composer autoloader not found: $autoloader".PHP_EOL;
-    echo "Please issue 'composer install' and try again.".PHP_EOL;
+$autoloader = __DIR__ . '/vendor/autoload.php';
+if (! file_exists($autoloader)) {
+    echo "Composer autoloader not found: $autoloader" . PHP_EOL;
+    echo "Please issue 'composer install' and try again." . PHP_EOL;
     exit(1);
 }
 require $autoloader;

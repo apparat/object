@@ -33,19 +33,14 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object invalid argument exception
+ * Object runtime exception
  *
- * @package Apparat\Object\Model\Url
+ * @package Apparat\Object\Domain\Model\Object
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class RuntimeException extends \RuntimeException
 {
-	/**
-	 * Unkown object ID
-	 *
-	 * @var int
-	 */
-	const UNKNOWN_OBJECT_ID = 1448737190;
+
 }

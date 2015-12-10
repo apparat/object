@@ -33,29 +33,16 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Framework;
 
-use Apparat\Object\Model\Repository\Repository;
+use Apparat\Object\Domain\Model\Repository\AbstractRepository;
 
 /**
- * Object interface
+ * File repository
  *
- * @package Apparat\Object\Model\Object
+ * @package Apparat\Object\Framework
  */
-interface Object
+class FileRepository extends AbstractRepository
 {
-	/**
-	 * Return the object ID
-	 *
-	 * @return int Object ID
-	 */
-	public function getId();
 
-	/**
-	 * Return the object's path within a repository
-	 *
-	 * @param Repository $repository Repository
-	 * @return string Object path
-	 */
-	public function getRepositoryPath(Repository $repository);
 }

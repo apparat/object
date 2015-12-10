@@ -33,12 +33,12 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
  * Lazy loading object collection
  *
- * @package Apparat\Object\Model\Object
+ * @package Apparat\Object\Domain\Model\Object
  */
 class ObjectCollection implements \Countable, \Iterator
 {

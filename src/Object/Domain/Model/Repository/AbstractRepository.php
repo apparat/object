@@ -33,17 +33,14 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework;
-
-
-use Apparat\Object\Model\Repository\AbstractRepository;
+namespace Apparat\Object\Domain\Model\Repository;
 
 /**
- * File repository
+ * Abstract object repository
  *
- * @package Apparat\Object\Framework
+ * @package Apparat\Object\Domain\Model\Repository
  */
-class FileRepository extends AbstractRepository
+abstract class AbstractRepository implements RepositoryInterface
 {
 
 }

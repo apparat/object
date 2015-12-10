@@ -33,47 +33,69 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Repository;
-
-use Apparat\Object\Model\Object\Object;
-use Apparat\Object\Model\Object\ObjectCollection;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object repository interface
+ * Object URL
  *
- * @package Apparat\Object\Model\Repository
+ * @package Apparat\Object\Domain\Model
  */
-interface Repository
+class ObjectUrl
 {
 	/**
-	 * Find objects by selector
+	 * Object ID
 	 *
-	 * @param $selector Object selector
-	 * @return ObjectCollection Object collection
+	 * @var int
 	 */
-	public function findObjects($selector);
+	protected $_id = null;
+	/**
+	 * Object URL constructor
+	 *
+	 * @param string $url Object URL
+	 */
+	public function __construct($url)
+	{
+	}
 
 	/**
-	 * Add an object to the repository
+	 * Return the serialized object URL
 	 *
-	 * @param Object $object Object
-	 * @return boolean Success
+	 * @return string Serialized object URL
 	 */
-	public function addObject(Object $object);
+	public function __toString() {
+		return $this->getUrl();
+	}
 
 	/**
-	 * Delete and object from the repository
+	 * Set the object ID
 	 *
-	 * @param Object $object Object
-	 * @return boolean Success
+	 * @return int
 	 */
-	public function deleteObject(Object $object);
+	public function getId()
+	{
+		return $this->_id;
+	}
 
 	/**
-	 * Update an object in the repository
+	 * Return the object ID
 	 *
-	 * @param Object $object Object
-	 * @return bool Success
+	 * @param int $id New object ID
+	 * @return ObjectUrl New object URL
 	 */
-	public function updateObject(Object $object);
+	public function setId($id)
+	{
+		$url = clone $this;
+		$url->_id = $id;
+		return $url;
+	}
+
+	/**
+	 * Return the full serialized object URL
+	 *
+	 * @return string Full object URL
+	 */
+	public function getUrl() {
+		$url = '';
+		return $url;
+	}
 }

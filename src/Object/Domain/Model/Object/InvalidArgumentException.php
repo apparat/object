@@ -33,69 +33,19 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object URL
+ * Object invalid argument exception
  *
- * @package Apparat\Object\Model
+ * @package Apparat\Object\Domain\Model\Url
  */
-class ObjectUrl
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Object ID
+	 * Unkown object ID
 	 *
 	 * @var int
 	 */
-	protected $_id = null;
-	/**
-	 * Object URL constructor
-	 *
-	 * @param string $url Object URL
-	 */
-	public function __construct($url)
-	{
-	}
-
-	/**
-	 * Return the serialized object URL
-	 *
-	 * @return string Serialized object URL
-	 */
-	public function __toString() {
-		return $this->getUrl();
-	}
-
-	/**
-	 * Set the object ID
-	 *
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->_id;
-	}
-
-	/**
-	 * Return the object ID
-	 *
-	 * @param int $id New object ID
-	 * @return ObjectUrl New object URL
-	 */
-	public function setId($id)
-	{
-		$url = clone $this;
-		$url->_id = $id;
-		return $url;
-	}
-
-	/**
-	 * Return the full serialized object URL
-	 *
-	 * @return string Full object URL
-	 */
-	public function getUrl() {
-		$url = '';
-		return $url;
-	}
+	const UNKNOWN_OBJECT_ID = 1448737190;
 }

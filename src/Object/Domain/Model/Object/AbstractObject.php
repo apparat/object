@@ -33,14 +33,14 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Model\Object;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
  * Abstract object implementation
  *
- * @package Apparat\Object\Model\Object
+ * @package Apparat\Object\Domain\Model\Object
  */
-abstract class AbstractObject implements Object
+abstract class AbstractObject implements ObjectInterface
 {
 
 }

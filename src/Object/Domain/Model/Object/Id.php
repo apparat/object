@@ -4,7 +4,8 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,46 +37,43 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object invalid argument exception
+ * Object ID
  *
- * @package Apparat\Object\Domain\Model\Url
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain\Model\Object
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class Id
 {
 	/**
-	 * Unkown object ID
+	 * Object ID
 	 *
 	 * @var int
 	 */
-	const UNKNOWN_OBJECT_ID = 1448737190;
+	protected $_id = null;
+
 	/**
-	 * Invalid object type
+	 * ID constructor
 	 *
-	 * @var int
+	 * @param int $id Object ID
 	 */
-	const INVALID_OBJECT_TYPE = 1449871242;
+	public function __construct($id)
+	{
+		// If the ID is invalid
+		if (!is_int($id) || ($id <= 0)) {
+			throw new InvalidArgumentException(sprinf('Invalid object ID "%s"', $id),
+				InvalidArgumentException::INVALID_OBJECT_ID);
+		}
+
+		$this->_id = $id;
+	}
+
 	/**
-	 * Invalid object ID
+	 * Return the object ID
 	 *
-	 * @var int
+	 * @return int Object ID
 	 */
-	const INVALID_OBJECT_ID = 1449876361;
-	/**
-	 * Invalid object revision number
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_REVISION = 1449871715;
-	/**
-	 * Invalid object URL
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_URL = 1449873819;
-	/**
-	 * Invalid object URL path
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_URL_PATH = 1449874494;
+	public function getId()
+	{
+		return $this->_id;
+	}
 }

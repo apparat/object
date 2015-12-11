@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-object
+ * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,69 +34,25 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace ApparatTest;
+
+use Apparat\Object\Domain\Model\Object\Url;
 
 /**
- * Object URL
+ * Object URL tests
  *
- * @package Apparat\Object\Domain\Model
+ * @package Apparat\Object
+ * @subpackage ApparatTest
  */
-class ObjectUrl
+class UrlTest extends AbstractTest
 {
 	/**
-	 * Object ID
-	 *
-	 * @var int
+	 * Test an URL
 	 */
-	protected $_id = null;
-	/**
-	 * Object URL constructor
-	 *
-	 * @param string $url Object URL
-	 */
-	public function __construct($url)
+	public function testUrl()
 	{
-	}
-
-	/**
-	 * Return the serialized object URL
-	 *
-	 * @return string Serialized object URL
-	 */
-	public function __toString() {
-		return $this->getUrl();
-	}
-
-	/**
-	 * Set the object ID
-	 *
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->_id;
-	}
-
-	/**
-	 * Return the object ID
-	 *
-	 * @param int $id New object ID
-	 * @return ObjectUrl New object URL
-	 */
-	public function setId($id)
-	{
-		$url = clone $this;
-		$url->_id = $id;
-		return $url;
-	}
-
-	/**
-	 * Return the full serialized object URL
-	 *
-	 * @return string Full object URL
-	 */
-	public function getUrl() {
-		$url = '';
-		return $url;
+		$url = new Url('http://apparat.tools/2015/10/01/36704.event/36704-1');
+		$this->assertInstanceOf(Url::class, $url);
+		print_r($url);
 	}
 }

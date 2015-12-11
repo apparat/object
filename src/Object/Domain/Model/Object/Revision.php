@@ -4,7 +4,8 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,46 +37,65 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object invalid argument exception
+ * Object revision
  *
- * @package Apparat\Object\Domain\Model\Url
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain\Model\Object
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class Revision
 {
 	/**
-	 * Unkown object ID
+	 * Object revision number
 	 *
 	 * @var int
 	 */
-	const UNKNOWN_OBJECT_ID = 1448737190;
+	protected $_revision = null;
 	/**
-	 * Invalid object type
+	 * Current revision
 	 *
-	 * @var int
+	 * @var string
 	 */
-	const INVALID_OBJECT_TYPE = 1449871242;
+	const CURRENT = 0;
 	/**
-	 * Invalid object ID
+	 * Draft revision
 	 *
-	 * @var int
+	 * @var string
 	 */
-	const INVALID_OBJECT_ID = 1449876361;
+	const DRAFT = -1;
+
 	/**
-	 * Invalid object revision number
+	 * Revision constructor
 	 *
-	 * @var int
+	 * @param int $revision Object revision number
 	 */
-	const INVALID_OBJECT_REVISION = 1449871715;
+	public function __construct($revision)
+	{
+		// If the revision number is invalid
+		if (!is_int($revision) || ($revision < self::DRAFT)) {
+			throw new InvalidArgumentException(sprinf('Invalid object revision number "%s"', $revision),
+				InvalidArgumentException::INVALID_OBJECT_REVISION);
+		}
+
+		$this->_revision = $revision;
+	}
+
 	/**
-	 * Invalid object URL
+	 * Return the object revision number
 	 *
-	 * @var int
+	 * @return int Object revision number
 	 */
-	const INVALID_OBJECT_URL = 1449873819;
+	public function getRevision()
+	{
+		return $this->_revision;
+	}
+
 	/**
-	 * Invalid object URL path
+	 * Increment the object revision number
 	 *
-	 * @var int
+	 * @return Revision Incrementend object revision
 	 */
-	const INVALID_OBJECT_URL_PATH = 1449874494;
+	public function increment()
+	{
+		return new self($this->_revision + 1);
+	}
 }

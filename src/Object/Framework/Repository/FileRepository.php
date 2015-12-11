@@ -1,7 +1,7 @@
 <?php
 
 /**
- * apparat-object
+ * apparat-resource
  *
  * @category    Apparat
  * @package     Apparat_<Package>

@@ -34,32 +34,209 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace ApparatTest;
+namespace Apparat\Object\Domain\Model\Object\Url {
 
-use Apparat\Object\Domain\Model\Object\Url;
+	use Apparat\Object\Domain\Model\Object\Url;
 
-/**
- * Object URL tests
- *
- * @package Apparat\Object
- * @subpackage ApparatTest
- */
-class UrlTest extends AbstractTest
-{
 	/**
-	 * Example URL
+	 * URL version with test extension
 	 *
-	 * @var string
+	 * @package Apparat\Resource
 	 */
-	const URL = 'http://apparat.tools/2015/10/01/36704.event/36704';
+	class TestUrl extends Url
+	{
+		/**
+		 * Test the URL getter with override parameters
+		 */
+		public function getUrlOverride()
+		{
+			return $this->_getUrl([
+				'scheme' => Url::SCHEME_HTTPS,
+				'user' => 'user',
+				'pass' => 'password',
+				'host' => 'another.host',
+				'port' => 443,
+				'query' => ['param2' => 'value2'],
+				'fragment' => 'fragment2',
+			]);
+		}
+	}
+}
+
+namespace ApparatTest {
+
+	use Apparat\Object\Domain\Model\Object\Id;
+	use Apparat\Object\Domain\Model\Object\InvalidArgumentException;
+	use Apparat\Object\Domain\Model\Object\Revision;
+	use Apparat\Object\Domain\Model\Object\Type;
+	use Apparat\Object\Domain\Model\Object\Url;
 
 	/**
-	 * Test an URL
+	 * Object URL tests
+	 *
+	 * @package Apparat\Object
+	 * @subpackage ApparatTest
 	 */
-	public function testUrl()
+	class UrlTest extends AbstractTest
 	{
-		$url = new Url(self::URL);
-		$this->assertInstanceOf(Url::class, $url);
-		$this->assertEquals(self::URL, strval($url));
+		/**
+		 * Example URL
+		 *
+		 * @var string
+		 */
+		const URL = 'http://apparat:tools@apparat.tools:80/2015/10/01/36704.event/36704-1?param=value#fragment';
+
+		/**
+		 * Test an URL
+		 */
+		public function testUrl()
+		{
+			$url = new Url(self::URL);
+			$this->assertInstanceOf(Url::class, $url);
+			$this->assertEquals(self::URL, strval($url));
+			$this->assertEquals('http', $url->getScheme());
+			$this->assertEquals('apparat', $url->getUser());
+			$this->assertEquals('tools', $url->getPassword());
+			$this->assertEquals('apparat.tools', $url->getHost());
+			$this->assertEquals(80, $url->getPort());
+			$this->assertEquals('/2015/10/01/36704.event/36704-1', $url->getPath());
+			$this->assertEquals(['param' => 'value'], $url->getQuery());
+			$this->assertEquals('fragment', $url->getFragment());
+			$this->assertInstanceOf(\DateTimeImmutable::class, $url->getCreationDate());
+			$this->assertEquals('2015-10-01', $url->getCreationDate()->format('Y-m-d'));
+			$this->assertInstanceOf(Id::class, $url->getId());
+			$this->assertEquals(new Id(36704), $url->getId());
+			$this->assertInstanceOf(Type::class, $url->getType());
+			$this->assertEquals(new Type('event'), $url->getType());
+			$this->assertInstanceOf(Revision::class, $url->getRevision());
+			$this->assertEquals(new Revision(1), $url->getRevision());
+		}
+
+		/**
+		 * Test an invalid URL
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449873819
+		 */
+		public function testInvalidUrl()
+		{
+			new Url('invalid://');
+		}
+
+		/**
+		 * Test an invalid URL path
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449874494
+		 */
+		public function testInvalidUrlPath()
+		{
+			new Url('http://invalid~url*path');
+		}
+
+		/**
+		 * Test the scheme setter
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449924914
+		 */
+		public function testUrlSchemeSetter()
+		{
+			$url = new Url(self::URL);
+			$this->assertEquals(Url::SCHEME_HTTPS, $url->setScheme(Url::SCHEME_HTTPS)->getScheme());
+			$url->setScheme('invalid');
+		}
+
+		/**
+		 * Test the host setter
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449925567
+		 */
+		public function testUrlHostSetter()
+		{
+			$url = new Url(self::URL);
+			$this->assertEquals('apparat.com', $url->setHost('apparat.com')->getHost());
+			$url->setHost('_');
+		}
+
+		/**
+		 * Test the port setter
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449925885
+		 */
+		public function testUrlPortSetter()
+		{
+			$url = new Url(self::URL);
+			$this->assertEquals(443, $url->setPort(443)->getPort());
+			$url->setPort(123456789);
+		}
+
+		/**
+		 * Test the remaining setter methods
+		 */
+		public function testUrlSetters()
+		{
+			$url = new Url(self::URL);
+			$this->assertEquals('test', $url->setUser('test')->getUser());
+			$this->assertEquals(null, $url->setUser(null)->getUser());
+			$this->assertEquals('password', $url->setPassword('password')->getPassword());
+			$this->assertEquals(null, $url->setPassword(null)->getPassword());
+			$this->assertEquals('/2015/10/01/36704.event/36704',
+				$url->setPath('/2015/10/01/36704.event/36704')->getPath());
+			$this->assertEquals(['param2' => 'value2'], $url->setQuery(['param2' => 'value2'])->getQuery());
+			$this->assertEquals('fragment2', $url->setFragment('fragment2')->getFragment());
+
+			$this->assertEquals('2016-01-01',
+				$url->setCreationDate(new \DateTimeImmutable('@1451606400'))->getCreationDate()->format('Y-m-d'));
+			$this->assertEquals(123, $url->setId(new Id(123))->getId()->getId());
+			$this->assertEquals('article', $url->setType(new Type('article'))->getType()->getType());
+			$this->assertEquals(Revision::CURRENT,
+				$url->setRevision(new Revision(Revision::CURRENT))->getRevision()->getRevision());
+		}
+
+		/**
+		 * Test the override functionality when getting the URL path
+		 */
+		public function testUrlPathOverride()
+		{
+			$url = new Url\TestUrl(self::URL);
+			$this->assertEquals('https://user:password@another.host:443/2015/10/01/36704.event/36704-1?param2=value2#fragment2',
+				$url->getUrlOverride());
+		}
+
+		/**
+		 * Test an invalid ID
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449876361
+		 */
+		public function testInvalidId()
+		{
+			new Id(0);
+		}
+
+		/**
+		 * Test an invalid type
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449871242
+		 */
+		public function testInvalidType()
+		{
+			new Type('invalid');
+		}
+
+		/**
+		 * Test an invalid Revision
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1449871715
+		 */
+		public function testInvalidRevision()
+		{
+			new Revision('abc');
+		}
 	}
 }

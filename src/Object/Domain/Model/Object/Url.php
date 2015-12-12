@@ -125,8 +125,9 @@ class Url
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 		$pathPattern = '%^/'.implode('', array_slice(self::DATE_PATTERN, 0,
 				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)/\\'.($datePrecision + 1).'(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?$%';
-		if (!strlen($this->_urlParts['path']) || !preg_match_all($pathPattern, $this->_urlParts['path'], $pathParts)) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"', $this->_urlParts['path']),
+		if (empty($this->_urlParts['path']) || !preg_match_all($pathPattern, $this->_urlParts['path'], $pathParts)) {
+			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
+				empty($this->_urlParts['path']) ? '(empty)' : $this->_urlParts['path']),
 				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
 		}
 		if ($datePrecision) {
@@ -216,9 +217,9 @@ class Url
 	}
 
 	/**
-	 * Set the object ID
+	 * Return the object ID
 	 *
-	 * @return int
+	 * @return Id Object ID
 	 */
 	public function getId()
 	{
@@ -226,12 +227,12 @@ class Url
 	}
 
 	/**
-	 * Return the object ID
+	 * Set the object ID
 	 *
-	 * @param int $id New object ID
+	 * @param Id $id Object ID
 	 * @return Url New object URL
 	 */
-	public function setId($id)
+	public function setId(Id $id)
 	{
 		$url = clone $this;
 		$url->_id = $id;
@@ -282,7 +283,7 @@ class Url
 	public function setScheme($scheme)
 	{
 		// If the URL scheme is not valid
-		if (!empty(self::SCHEMES[$scheme])) {
+		if (!array_key_exists($scheme, self::SCHEMES)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL scheme "%s"', $scheme),
 				InvalidArgumentException::INVALID_OBJECT_URL_SCHEME);
 		}
@@ -373,7 +374,7 @@ class Url
 	public function setUser($user)
 	{
 		$url = clone $this;
-		$url->_urlParts['port'] = $user ?: null;
+		$url->_urlParts['user'] = $user ?: null;
 		return $url;
 	}
 
@@ -382,7 +383,7 @@ class Url
 	 *
 	 * @return string|NULL URL password
 	 */
-	public function getPass()
+	public function getPassword()
 	{
 		return isset($this->_urlParts['pass']) ? $this->_urlParts['pass'] : null;
 	}
@@ -393,7 +394,7 @@ class Url
 	 * @param string $pass URL password
 	 * @return Url New object URL
 	 */
-	public function setPass($pass)
+	public function setPassword($pass)
 	{
 		$url = clone $this;
 		$url->_urlParts['pass'] = $pass ?: null;
@@ -485,23 +486,26 @@ class Url
 	{
 		// Prepare the URL scheme
 		if (isset($override['scheme'])) {
-			$scheme = $override['scheme'];
+			$scheme = trim($override['scheme']);
+			if (strlen($scheme)) {
+				$scheme .= '://';
+			}
 		} else {
-			$scheme = !empty($this->_urlParts['scheme']) ? $this->_urlParts['scheme'].'://' : '';
+			$scheme = !empty($this->_urlParts['scheme']) ? $this->getScheme().'://' : '';
 		}
 
 		// Prepare the URL user
 		if (isset($override['user'])) {
 			$user = $override['user'];
 		} else {
-			$user = !empty($this->_urlParts['user']) ? rawurlencode($this->_urlParts['user']) : '';
+			$user = !empty($this->_urlParts['user']) ? rawurlencode($this->getUser()) : '';
 		}
 
 		// Prepare the URL password
 		if (isset($override['pass'])) {
 			$pass = ':'.$override['pass'];
 		} else {
-			$pass = !empty($this->_urlParts['pass']) ? ':'.rawurlencode($this->_urlParts['pass']) : '';
+			$pass = !empty($this->_urlParts['pass']) ? ':'.rawurlencode($this->getPassword()) : '';
 		}
 		if ($user || $pass) {
 			$pass .= '@';
@@ -511,14 +515,14 @@ class Url
 		if (isset($override['host'])) {
 			$host = $override['host'];
 		} else {
-			$host = !empty($this->_urlParts['host']) ? $this->_urlParts['host'] : '';
+			$host = !empty($this->_urlParts['host']) ? $this->getHost() : '';
 		}
 
 		// Prepare the URL port
 		if (isset($override['port'])) {
 			$port = ':'.$override['port'];
 		} else {
-			$port = !empty($this->_urlParts['port']) ? ':'.$this->_urlParts['port'] : '';
+			$port = !empty($this->_urlParts['port']) ? ':'.$this->getPort() : '';
 		}
 
 		// Prepare the URL path
@@ -530,7 +534,7 @@ class Url
 
 		// Prepare the URL query
 		if (isset($override['query'])) {
-			$query = '?'.$override['query'];
+			$query = '?'.(is_array($override['query']) ? http_build_query($override['query']) : strval($override['query']));
 		} else {
 			$query = !empty($this->_urlParts['query']) ? '?'.$this->_urlParts['query'] : '';
 		}
@@ -539,7 +543,7 @@ class Url
 		if (isset($override['fragment'])) {
 			$fragment = '#'.$override['fragment'];
 		} else {
-			$fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->_urlParts['fragment'] : '';
+			$fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->getFragment() : '';
 		}
 
 		return "$scheme$user$pass$host$port$path$query$fragment";

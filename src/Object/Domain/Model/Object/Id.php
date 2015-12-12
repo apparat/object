@@ -60,7 +60,7 @@ class Id
 	{
 		// If the ID is invalid
 		if (!is_int($id) || ($id <= 0)) {
-			throw new InvalidArgumentException(sprinf('Invalid object ID "%s"', $id),
+			throw new InvalidArgumentException(sprintf('Invalid object ID "%s"', $id),
 				InvalidArgumentException::INVALID_OBJECT_ID);
 		}
 

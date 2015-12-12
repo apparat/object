@@ -1,7 +1,7 @@
 <phpunit bootstrap="./phpunit.php">
     <testsuites>
         <testsuite>
-            <directory>./src/Resource/Framework/Test</directory>
+            <directory>./src/Object/Framework/Test</directory>
         </testsuite>
     </testsuites>
 
@@ -9,9 +9,9 @@
         <env name="OBJECT_DATE_PRECISION" value="3"/>
     </php>
 
-    <!--<logging>-->
+    <logging>
         <!--<log type="coverage-xml" target="build/logs/coverage/xml"/>-->
-    <!--</logging>-->
+    </logging>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">

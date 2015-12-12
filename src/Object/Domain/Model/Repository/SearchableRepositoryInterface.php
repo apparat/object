@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,36 +36,21 @@
 
 namespace Apparat\Object\Domain\Model\Repository;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Collection;
 
 /**
- * Object repository interface
+ * Searchable repository interface
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-interface RepositoryInterface extends SearchableRepositoryInterface
+interface SearchableRepositoryInterface
 {
 	/**
-	 * Add an object to the repository
+	 * Find objects by selector
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @param Selector $selector Object selector
+	 * @return Collection Object collection
 	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	public function findObjects(Selector $selector);
 }

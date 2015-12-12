@@ -77,6 +77,7 @@ class Url
 	 * Date PCRE pattern
 	 *
 	 * @var array
+	 * @see Selector::$_datePattern
 	 */
 	protected static $_datePattern = [
 		'Y' => '(?P<year>\d{4})/',

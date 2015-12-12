@@ -65,10 +65,10 @@ class Repository implements RepositoryInterface
 	/**
 	 * Find objects by selector
 	 *
-	 * @param $selector Object selector
+	 * @param Selector $selector Object selector
 	 * @return Collection Object collection
 	 */
-	public function findObjects($selector)
+	public function findObjects(Selector $selector)
 	{
 		// TODO: Implement findObjects() method.
 	}

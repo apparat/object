@@ -71,7 +71,7 @@ class Collection implements CollectionInterface
 	 *
 	 * @param array $objects Collection objects
 	 */
-	public function __construct(array $objects)
+	public function __construct(array $objects = [])
 	{
 		foreach ($objects as $object) {
 			if ($object instanceof AbstractObject) {
@@ -236,6 +236,18 @@ class Collection implements CollectionInterface
 	public function count()
 	{
 		return count($this->_objects);
+	}
+
+	/**
+	 * Append another collection
+	 *
+	 * @param Collection $collection Collection
+	 * @return Collection Combined collections
+	 */
+	public function append(Collection $collection)
+	{
+		$objects = array_merge($this->_objects, $collection->_objects);
+		return new self(array_values($objects));
 	}
 
 	/*******************************************************************************

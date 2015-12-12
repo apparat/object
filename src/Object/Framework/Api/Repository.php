@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,38 +34,38 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
+namespace Apparat\Object\Framework\Api;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
- * Object repository interface
+ * Repository factory
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Framework
  */
-interface RepositoryInterface extends SearchableRepositoryInterface
+class Repository
 {
 	/**
-	 * Add an object to the repository
+	 * Instanciate and return an object repository
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @param array $config Repository configuration
+	 * @return \Apparat\Object\Domain\Model\Repository\Repository Object repository
+	 * @throws InvalidArgumentException If the repository configuration is empty
+	 * @api
 	 */
-	public function addObject(ObjectInterface $object);
+	public static function create(array $config)
+	{
+		// If no repositories are configured
+		if (!count($config)) {
+			throw new InvalidArgumentException('Empty repository configuration',
+				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
+		}
 
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
+		// Instantiate the repository adapter strategy
+		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
 
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+		// Instantiate and return the object repository
+		return new \Apparat\Object\Domain\Model\Repository\Repository($repositoryAdapterStrategy);
+	}
 }

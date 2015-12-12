@@ -40,7 +40,7 @@ use Apparat\Object\Domain\Model\Repository\Repository;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
- * Cluster factory
+ * Repository cluster factory
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain\Model\Api
@@ -50,9 +50,10 @@ class Cluster
 	/**
 	 * Instanciate and return an object repository cluster
 	 *
-	 * @param array $config Repository configuration
+	 * @param array $config Repository cluster configuration
 	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository configuration is empty
+	 * @throws InvalidArgumentException If the repository cluster configuration is empty
+	 * @api
 	 */
 	public static function create(array $config)
 	{

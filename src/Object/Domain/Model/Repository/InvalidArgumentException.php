@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,36 +36,18 @@
 
 namespace Apparat\Object\Domain\Model\Repository;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-
 /**
- * Object repository interface
+ * Repository invalid argument exception
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-interface RepositoryInterface extends SearchableRepositoryInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Add an object to the repository
+	 * Invalid repository selector
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @var int
 	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	const INVALID_REPOSITORY_SELECTOR = 1449961609;
 }

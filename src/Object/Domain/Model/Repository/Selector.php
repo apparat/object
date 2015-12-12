@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,36 +36,44 @@
 
 namespace Apparat\Object\Domain\Model\Repository;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-
 /**
- * Object repository interface
+ * Repository selector
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-interface RepositoryInterface extends SearchableRepositoryInterface
+class Selector
 {
 	/**
-	 * Add an object to the repository
+	 * Object creation date & time
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @var \DateTimeImmutable
 	 */
-	public function addObject(ObjectInterface $object);
+	private $_creationDate;
+	/**
+	 * Object ID
+	 *
+	 * @var int
+	 */
+	private $_id;
+	/**
+	 * Object type
+	 *
+	 * @var string
+	 */
+	private $_type;
 
 	/**
-	 * Delete and object from the repository
+	 * Repository selector constructor
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @param \DateTimeImmutable $creationDate Object creation date & time
+	 * @param int $id Object ID
+	 * @param string $type Object type
 	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	public function __construct(\DateTimeImmutable $creationDate = null, $id, $type)
+	{
+		$this->_creationDate = $creationDate;
+		$this->_id = $id;
+		$this->_type = $type;
+	}
 }

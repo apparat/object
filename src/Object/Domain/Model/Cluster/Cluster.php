@@ -36,13 +36,50 @@
 
 namespace Apparat\Object\Domain\Model\Cluster;
 
+use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Model\Repository\Selector;
+
 /**
  * Object repository cluster
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Cluster
+class Cluster implements ClusterInterface
 {
+	/**
+	 * Cluster repositories
+	 *
+	 * @var array
+	 */
+	private $_repositories;
 
+	/**
+	 * Repository cluster constructor
+	 *
+	 * @param array $repositories Cluster repositories
+	 */
+	public function __construct(array $repositories)
+	{
+		$this->_repositories = $repositories;
+	}
+
+	/**
+	 * Find objects by selector
+	 *
+	 * @param Selector $selector Object selector
+	 * @return Collection Object collection
+	 */
+	public function findObjects(Selector $selector)
+	{
+		$collection = new Collection();
+
+		/** @var RepositoryInterface $repository */
+		foreach ($this->_repositories as $repository) {
+			$collection = $collection->append($repository->findObjects($selector));
+		}
+
+		return $collection;
+	}
 }

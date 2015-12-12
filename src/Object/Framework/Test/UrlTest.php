@@ -47,12 +47,19 @@ use Apparat\Object\Domain\Model\Object\Url;
 class UrlTest extends AbstractTest
 {
 	/**
+	 * Example URL
+	 *
+	 * @var string
+	 */
+	const URL = 'http://apparat.tools/2015/10/01/36704.event/36704';
+
+	/**
 	 * Test an URL
 	 */
 	public function testUrl()
 	{
-		$url = new Url('http://apparat.tools/2015/10/01/36704.event/36704-1');
+		$url = new Url(self::URL);
 		$this->assertInstanceOf(Url::class, $url);
-		print_r($url);
+		$this->assertEquals(self::URL, strval($url));
 	}
 }

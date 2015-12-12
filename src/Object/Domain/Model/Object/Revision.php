@@ -53,15 +53,15 @@ class Revision
 	/**
 	 * Current revision
 	 *
-	 * @var string
+	 * @var null
 	 */
-	const CURRENT = 0;
+	const CURRENT = null;
 	/**
 	 * Draft revision
 	 *
 	 * @var string
 	 */
-	const DRAFT = -1;
+	const DRAFT = 0;
 
 	/**
 	 * Revision constructor
@@ -71,8 +71,8 @@ class Revision
 	public function __construct($revision)
 	{
 		// If the revision number is invalid
-		if (!is_int($revision) || ($revision < self::DRAFT)) {
-			throw new InvalidArgumentException(sprinf('Invalid object revision number "%s"', $revision),
+		if (($revision !== self::CURRENT) && (!is_int($revision) || ($revision < self::DRAFT))) {
+			throw new InvalidArgumentException(sprintf('Invalid object revision number "%s"', $revision),
 				InvalidArgumentException::INVALID_OBJECT_REVISION);
 		}
 
@@ -87,15 +87,5 @@ class Revision
 	public function getRevision()
 	{
 		return $this->_revision;
-	}
-
-	/**
-	 * Increment the object revision number
-	 *
-	 * @return Revision Incrementend object revision
-	 */
-	public function increment()
-	{
-		return new self($this->_revision + 1);
 	}
 }

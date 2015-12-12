@@ -78,7 +78,7 @@ class Url
 	 *
 	 * @var array
 	 */
-	const DATE_PATTERN = [
+	protected static $_datePattern = [
 		'Y' => '(?P<year>\d{4})/',
 		'm' => '(?P<month>\d{2})/',
 		'd' => '(?P<day>\d{2})/',
@@ -86,6 +86,13 @@ class Url
 		'i' => '(?P<minute>\d{2})/',
 		's' => '(?P<second>\d{2})/',
 	];
+	/**
+	 * Valid schemes
+	 *
+	 * @var array
+	 */
+	protected static $_schemes = [self::SCHEME_HTTP => true, self::SCHEME_HTTPS => true];
+
 	/**
 	 * HTTP-Schema
 	 *
@@ -98,12 +105,10 @@ class Url
 	 * @var string
 	 */
 	const SCHEME_HTTPS = 'https';
-	/**
-	 * Valid schemes
-	 *
-	 * @var array
-	 */
-	const SCHEMES = [self::SCHEME_HTTP => true, self::SCHEME_HTTPS => true];
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
 
 	/**
 	 * Object URL constructor
@@ -123,7 +128,7 @@ class Url
 		// /2015/10/01/36704.event/36704-1.md
 
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-		$pathPattern = '%^/'.implode('', array_slice(self::DATE_PATTERN, 0,
+		$pathPattern = '%^/'.implode('', array_slice(self::$_datePattern, 0,
 				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)/\\'.($datePrecision + 1).'(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?$%';
 		if (empty($this->_urlParts['path']) || !preg_match_all($pathPattern, $this->_urlParts['path'], $pathParts)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
@@ -283,7 +288,7 @@ class Url
 	public function setScheme($scheme)
 	{
 		// If the URL scheme is not valid
-		if (!array_key_exists($scheme, self::SCHEMES)) {
+		if (!array_key_exists($scheme, self::$_schemes)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL scheme "%s"', $scheme),
 				InvalidArgumentException::INVALID_OBJECT_URL_SCHEME);
 		}
@@ -560,7 +565,7 @@ class Url
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
 		// Add the creation date
-		foreach (array_slice(array_keys(self::DATE_PATTERN), 0, $datePrecision) as $dateFormat) {
+		foreach (array_slice(array_keys(self::$_datePattern), 0, $datePrecision) as $dateFormat) {
 			$path[] = $this->_creationDate->format($dateFormat);
 		}
 

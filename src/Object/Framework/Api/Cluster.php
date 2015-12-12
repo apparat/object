@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,54 +34,42 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
+namespace Apparat\Object\Framework\Api;
 
-use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Repository\Repository;
+use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
- * Object repository interface
+ * Cluster factory
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain\Model\Api
  */
-interface RepositoryInterface
+class Cluster
 {
 	/**
-	 * Repository constructor
+	 * Instanciate and return an object repository cluster
 	 *
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @param array $config Repository configuration
+	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
+	 * @throws InvalidArgumentException If the repository configuration is empty
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
+	public static function create(array $config)
+	{
+		// If no repositories are configured
+		if (!count($config)) {
+			throw new InvalidArgumentException('Empty repository cluster configuration',
+				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
+		}
 
-	/**
-	 * Find objects by selector
-	 *
-	 * @param $selector Object selector
-	 * @return Collection Object collection
-	 */
-	public function findObjects($selector);
+		// Instantiate all repositories
+		$repositories = [];
+		foreach ($config as $adapterStrategyConfig) {
+			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
+			$repositories[] = new Repository($repositoryAdapterStrategy);
+		}
 
-	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+		// Instantiate and return the object repository cluster
+		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
+	}
 }

@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,52 +36,25 @@
 
 namespace Apparat\Object\Domain\Model\Repository;
 
-use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-
 /**
- * Object repository interface
+ * Repository adapter strategy interface
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-interface RepositoryInterface
+interface AdapterStrategyInterface
 {
 	/**
-	 * Repository constructor
+	 * Adapter strategy constructor
 	 *
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @param array $config Adapter strategy configuration
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
+	public function __construct(array $config);
 
 	/**
-	 * Find objects by selector
+	 * Return the adapter strategy type
 	 *
-	 * @param $selector Object selector
-	 * @return Collection Object collection
+	 * @return string Adapter strategy type
 	 */
-	public function findObjects($selector);
-
-	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	public function getType();
 }

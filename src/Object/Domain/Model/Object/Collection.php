@@ -38,14 +38,15 @@ namespace Apparat\Object\Domain\Model\Object;
 /**
  * Lazy loading object collection
  *
- * @package Apparat\Object\Domain\Model\Object
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-class ObjectCollection implements \Countable, \Iterator
+class Collection implements CollectionInterface
 {
 	/**
 	 * Objects
 	 *
-	 * @var Object[]
+	 * @var AbstractObject[]
 	 */
 	protected $_objects = array();
 	/**
@@ -73,13 +74,13 @@ class ObjectCollection implements \Countable, \Iterator
 	public function __construct(array $objects)
 	{
 		foreach ($objects as $object) {
-			if ($object instanceof Object) {
+			if ($object instanceof AbstractObject) {
 				$this->_objects[$object->getId()] = $object;
 			} else {
-				if (!($object instanceof ObjectUrl)) {
-					$object = new ObjectUrl(strval($object));
+				if (!($object instanceof Url)) {
+					$object = new Url(strval($object));
 				}
-				$this->_objects[$object->getId()] = $object->getUrl();
+				$this->_objects[$object->getId()->getId()] = $object->getUrl();
 			}
 		}
 
@@ -89,7 +90,7 @@ class ObjectCollection implements \Countable, \Iterator
 	/**
 	 * Return the current object
 	 *
-	 * @return Object Current object
+	 * @return AbstractObject Current object
 	 */
 	public function current()
 	{
@@ -151,7 +152,7 @@ class ObjectCollection implements \Countable, \Iterator
 	 * Get an object with a particular ID
 	 *
 	 * @param int $offset Object ID
-	 * @return Object Object
+	 * @return AbstractObject Object
 	 */
 	public function offsetGet($offset)
 	{
@@ -162,7 +163,7 @@ class ObjectCollection implements \Countable, \Iterator
 	 * Set an object by ID
 	 *
 	 * @param int $offset Object ID
-	 * @param Object $value Object
+	 * @param AbstractObject $value Object
 	 * @return void
 	 * @throws RuntimeException When an object should be set by ID
 	 */
@@ -175,7 +176,7 @@ class ObjectCollection implements \Countable, \Iterator
 	 * Unset an object by ID
 	 *
 	 * @param int $offset Object ID
-	 * @return ObjectCollection Object collection with the object removed
+	 * @return Collection Object collection with the object removed
 	 */
 	public function offsetUnset($offset)
 	{
@@ -187,15 +188,15 @@ class ObjectCollection implements \Countable, \Iterator
 	/**
 	 * Add an object to the collection
 	 *
-	 * @param string|Object $object Object or object URL
-	 * @return ObjectCollection Modified object collection
+	 * @param string|AbstractObject $object Object or object URL
+	 * @return Collection Modified object collection
 	 */
 	public function addObject($object)
 	{
 
 		// If the object is not yet an object instance
-		if (!($object instanceof Object)) {
-			$object = new ObjectUrl(strval($object));
+		if (!($object instanceof AbstractObject)) {
+			$object = new Url(strval($object));
 			$object = $object->getUrl();
 		}
 
@@ -207,12 +208,12 @@ class ObjectCollection implements \Countable, \Iterator
 	/**
 	 * Remove an object out of this collection
 	 *
-	 * @param string|Object $object Object or object ID
-	 * @return ObjectCollection Modified object collection
+	 * @param string|AbstractObject $object Object or object ID
+	 * @return Collection Modified object collection
 	 */
 	public function removeObject($object)
 	{
-		if ($object instanceof Object) {
+		if ($object instanceof AbstractObject) {
 			$object = $object->getId();
 		} else {
 			$object = intval($object);
@@ -245,7 +246,7 @@ class ObjectCollection implements \Countable, \Iterator
 	 * Load and return an object by ID
 	 *
 	 * @param int $objectId Object ID
-	 * @return Object Object
+	 * @return AbstractObject Object
 	 */
 	protected function _loadObject($objectId)
 	{

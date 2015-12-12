@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,16 +34,51 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework;
+namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Domain\Model\Repository\AbstractRepository;
+use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
 
 /**
- * File repository
+ * Repository adapter strategy factory
  *
- * @package Apparat\Object\Framework
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Framework
  */
-class FileRepository extends AbstractRepository
+class AdapterStrategyFactory
 {
+	/**
+	 * Known adapter strategy types
+	 *
+	 * @var array
+	 */
+	protected static $_types = [
+		'file' => FileAdapterStrategy::class,
+	];
 
+	/**
+	 * Instantiate and return an adapter strategy
+	 *
+	 * @param array $config Adapter strategy config
+	 * @return AdapterStrategyInterface Repository adapter
+	 * @throws InvalidArgumentException If the adapter strategy config is empty
+	 * @throws InvalidArgumentException If the adapter strategy type is missing or invalid
+	 */
+	public static function create(array $config)
+	{
+		// If the adapter strategy config is empty
+		if (!count($config)) {
+			throw new InvalidArgumentException('Empty adapter strategy configuration',
+				InvalidArgumentException::EMPTY_ADAPTER_STRATEGY_CONFIG);
+		}
+
+		// If the adapter strategy type is missing or invalid
+		if (empty($config['type']) || !array_key_exists($config['type'], self::$_types)) {
+			throw new InvalidArgumentException(sprintf('Empty adapter strategy configuration',
+				empty($config['type']) ? '(empty)' : $config['type']),
+				InvalidArgumentException::INVALID_ADAPTER_STRATEGY_TYPE);
+		}
+
+		// Instantiate the adapter strategy
+		return new self::$_types[$config['type']]($config);
+	}
 }

@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,54 +34,72 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
+namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
 
 /**
- * Object repository interface
+ * File adapter strategy
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Framework
  */
-interface RepositoryInterface
+class FileAdapterStrategy implements AdapterStrategyInterface
 {
 	/**
-	 * Repository constructor
+	 * Configuration
 	 *
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * Example
+	 *
+	 * @var array
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
+	protected $_config = null;
+	/**
+	 * Root directory
+	 *
+	 * @var string
+	 */
+	protected $_root = null;
+	/**
+	 * Adapter strategy type
+	 *
+	 * @var string
+	 */
+	const TYPE = 'file';
 
 	/**
-	 * Find objects by selector
+	 * Adapter strategy constructor
 	 *
-	 * @param $selector Object selector
-	 * @return Collection Object collection
+	 * @param array $config Adapter strategy configuration
+	 * @throws InvalidArgumentException If the root directory configuration is empty
+	 * @throws InvalidArgumentException If the root directory configuration is invalid
 	 */
-	public function findObjects($selector);
+	public function __construct(array $config)
+	{
+		$this->_config = $config;
+
+		// If the root directory configuration is empty
+		if (empty($this->_config['root'])) {
+			throw new InvalidArgumentException('Empty file adapter strategy root',
+				InvalidArgumentException::EMTPY_FILE_STRATEGY_ROOT);
+		}
+
+		// If the root directory configuration is invalid
+		$this->_root = realpath($this->_config['root']);
+		if (empty($this->_root) || !@is_dir($this->_root)) {
+			throw new InvalidArgumentException(sprintf('Invalid file adapter strategy root "%s"',
+				$this->_config['root']),
+				InvalidArgumentException::INVALID_FILE_STRATEGY_ROOT);
+		}
+	}
 
 	/**
-	 * Add an object to the repository
+	 * Return the adapter strategy type
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @return string Adapter strategy type
 	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	public function getType()
+	{
+		return self::TYPE;
+	}
 }

@@ -39,18 +39,28 @@ use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
- * Object repository interface
+ * Abstract object repository
  *
  * @package Apparat\Object\Domain\Model\Repository
  */
-interface RepositoryInterface
+class Repository implements RepositoryInterface
 {
+	/**
+	 * Adapter strategy
+	 *
+	 * @var AdapterStrategyInterface
+	 */
+	protected $_adapterStrategy = null;
+
 	/**
 	 * Repository constructor
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
+	public function __construct(AdapterStrategyInterface $adapterStrategy)
+	{
+		$this->_adapterStrategy = $adapterStrategy;
+	}
 
 	/**
 	 * Find objects by selector
@@ -58,7 +68,10 @@ interface RepositoryInterface
 	 * @param $selector Object selector
 	 * @return Collection Object collection
 	 */
-	public function findObjects($selector);
+	public function findObjects($selector)
+	{
+		// TODO: Implement findObjects() method.
+	}
 
 	/**
 	 * Add an object to the repository
@@ -66,7 +79,10 @@ interface RepositoryInterface
 	 * @param ObjectInterface $object Object
 	 * @return boolean Success
 	 */
-	public function addObject(ObjectInterface $object);
+	public function addObject(ObjectInterface $object)
+	{
+		// TODO: Implement addObject() method.
+	}
 
 	/**
 	 * Delete and object from the repository
@@ -74,7 +90,10 @@ interface RepositoryInterface
 	 * @param ObjectInterface $object Object
 	 * @return boolean Success
 	 */
-	public function deleteObject(ObjectInterface $object);
+	public function deleteObject(ObjectInterface $object)
+	{
+		// TODO: Implement deleteObject() method.
+	}
 
 	/**
 	 * Update an object in the repository
@@ -82,5 +101,8 @@ interface RepositoryInterface
 	 * @param ObjectInterface $object Object
 	 * @return bool Success
 	 */
-	public function updateObject(ObjectInterface $object);
+	public function updateObject(ObjectInterface $object)
+	{
+		// TODO: Implement updateObject() method.
+	}
 }

@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,54 +34,39 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
-
-use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+namespace Apparat\Object\Framework\Repository;
 
 /**
- * Object repository interface
+ * Repository invalid argument exception
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Framework
  */
-interface RepositoryInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Repository constructor
+	 * Empty adapter strategy configuration
 	 *
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @var int
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
-
+	const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
 	/**
-	 * Find objects by selector
+	 * Invalid adapter strategy type
 	 *
-	 * @param $selector Object selector
-	 * @return Collection Object collection
+	 * @var int
 	 */
-	public function findObjects($selector);
-
+	const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
 	/**
-	 * Add an object to the repository
+	 * Empty file adapter strategy root
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @var int
 	 */
-	public function addObject(ObjectInterface $object);
-
+	const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
 	/**
-	 * Delete and object from the repository
+	 * Invalid file adapter strategy root
 	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @var int
 	 */
-	public function deleteObject(ObjectInterface $object);
+	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
 
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
 }

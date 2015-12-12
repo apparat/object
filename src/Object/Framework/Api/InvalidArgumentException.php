@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,54 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
-
-use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+namespace Apparat\Object\Framework\Api;
 
 /**
- * Object repository interface
+ * Api invalid argument exception
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain\Model\Api
  */
-interface RepositoryInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Repository constructor
+	 * Empty repository cluster configuration
 	 *
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @var int
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy);
-
-	/**
-	 * Find objects by selector
-	 *
-	 * @param $selector Object selector
-	 * @return Collection Object collection
-	 */
-	public function findObjects($selector);
-
-	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(ObjectInterface $object);
-
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
-
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+	const EMPTY_REPOSITORY_CONFIG = 1449947621;
 }

@@ -70,8 +70,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function findObjects(SelectorInterface $selector)
 	{
-		$objectPaths = $this->_adapterStrategy->findObjectPaths($selector);
-		return $objectPaths;
+		return new Collection($this->_adapterStrategy->findObjectPaths($selector));
 	}
 
 	/**

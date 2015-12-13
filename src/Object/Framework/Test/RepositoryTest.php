@@ -37,6 +37,7 @@
 namespace ApparatTest;
 
 use Apparat\Object\Domain\Model\Factory\Selector as SelectorFactory;
+use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Model\Repository\Repository;
 use Apparat\Object\Domain\Model\Repository\SelectorInterface;
@@ -246,7 +247,9 @@ class RepositoryTest extends AbstractTest
 
 		$selector = SelectorFactory::parse('/*');
 		$this->assertInstanceOf(SelectorInterface::class, $selector);
-		$fileRepository->findObjects($selector);
+		$collection = $fileRepository->findObjects($selector);
+		$this->assertInstanceOf(Collection::class, $collection);
+		$this->assertEquals(array_sum(self::$_globTypes), count($collection));
 	}
 
 	/**
@@ -260,6 +263,8 @@ class RepositoryTest extends AbstractTest
 		]);
 
 		$selector = SelectorFactory::parse('/*/*/*/*/*/*/*.*/*-1');
-		print_r($fileRepository->findObjects($selector));
+		$collection = $fileRepository->findObjects($selector);
+		$this->assertInstanceOf(Collection::class, $collection);
+		$this->assertEquals(self::$_globRevisions['-1'], count($collection));
 	}
 }

@@ -77,10 +77,10 @@ class Collection implements CollectionInterface
 			if ($object instanceof AbstractObject) {
 				$this->_objects[$object->getId()] = $object;
 			} else {
-				if (!($object instanceof Url)) {
-					$object = new Url(strval($object));
+				if (!($object instanceof Path)) {
+					$object = new Path(strval($object));
 				}
-				$this->_objects[$object->getId()->getId()] = $object->getUrl();
+				$this->_objects[$object->getId()->getId()] = $object;
 			}
 		}
 
@@ -196,8 +196,9 @@ class Collection implements CollectionInterface
 
 		// If the object is not yet an object instance
 		if (!($object instanceof AbstractObject)) {
-			$object = new Url(strval($object));
-			$object = $object->getUrl();
+			if (!($object instanceof Path)) {
+				$object = new Path(strval($object));
+			}
 		}
 
 		$objects = $this->_objects;

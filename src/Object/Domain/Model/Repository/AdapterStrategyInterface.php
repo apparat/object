@@ -55,7 +55,7 @@ interface AdapterStrategyInterface
 	 * Find objects by selector
 	 *
 	 * @param SelectorInterface $selector Object selector
-	 * @return array Object paths
+	 * @return array[Path] Object paths
 	 */
 	public function findObjectPaths(SelectorInterface $selector);
 

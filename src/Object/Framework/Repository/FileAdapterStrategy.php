@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Framework\Repository;
 
+use Apparat\Object\Domain\Model\Object\Path;
 use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
 use Apparat\Object\Domain\Model\Repository\Selector;
 use Apparat\Object\Domain\Model\Repository\SelectorInterface;
@@ -109,7 +110,7 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 	 * Find objects by selector
 	 *
 	 * @param Selector $selector Object selector
-	 * @return array Object paths
+	 * @return array[Path] Object paths
 	 */
 	public function findObjectPaths(SelectorInterface $selector)
 	{
@@ -117,7 +118,7 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 
 		// Build a glob string from the selector
 		$glob = '';
-		$stripRevisionTrailer = false;
+		$globFlags = GLOB_ONLYDIR | GLOB_NOSORT;
 
 		$year = $selector->getYear();
 		if ($year !== null) {
@@ -156,17 +157,13 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 
 			$revision = $selector->getRevision();
 			if ($revision !== null) {
-				$glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision.'/..';
-				$stripRevisionTrailer = true;
+				$glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision;
+				$globFlags &= ~GLOB_ONLYDIR;
 			}
 		}
 
-		$objectPaths = glob(ltrim($glob, '/'), GLOB_ONLYDIR | GLOB_NOSORT);
-		if ($stripRevisionTrailer) {
-			$objectPaths = array_map(function ($objectPath) {
-				return substr($objectPath, 0, strrpos($objectPath, '/', -4));
-			}, $objectPaths);
-		}
-		return $objectPaths;
+		return array_map(function($objectPath) {
+			return new Path('/'.$objectPath);
+		}, glob(ltrim($glob, '/'), $globFlags));
 	}
 }

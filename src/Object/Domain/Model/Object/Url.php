@@ -43,35 +43,17 @@ namespace Apparat\Object\Domain\Model\Object;
 class Url
 {
 	/**
-	 * Creation date
-	 *
-	 * @var \DateTimeImmutable
-	 */
-	protected $_creationDate = null;
-	/**
-	 * Object ID
-	 *
-	 * @var int
-	 */
-	protected $_id = null;
-	/**
-	 * Object type
-	 *
-	 * @var Type
-	 */
-	protected $_type = null;
-	/**
-	 * Object revision
-	 *
-	 * @var Revision
-	 */
-	protected $_revision = null;
-	/**
 	 * URL parts
 	 *
 	 * @var array
 	 */
 	protected $_urlParts = null;
+	/**
+	 * Object path
+	 *
+	 * @var Path
+	 */
+	protected $_path = null;
 
 	/**
 	 * Date PCRE pattern
@@ -126,34 +108,7 @@ class Url
 				InvalidArgumentException::INVALID_OBJECT_URL);
 		}
 
-		// /2015/10/01/36704.event/36704-1.md
-
-		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-		$pathPattern = '%^/'.implode('', array_slice(self::$_datePattern, 0,
-				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)/\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?$%';
-		if (empty($this->_urlParts['path']) || !preg_match_all($pathPattern, $this->_urlParts['path'], $pathParts)) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
-				empty($this->_urlParts['path']) ? '(empty)' : $this->_urlParts['path']),
-				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
-		}
-		if ($datePrecision) {
-			$year = $pathParts['year'][0];
-			$month = isset($pathParts['month']) ? $pathParts['month'][0] : '01';
-			$day = isset($pathParts['day']) ? $pathParts['day'][0] : '01';
-			$hour = isset($pathParts['hour']) ? $pathParts['hour'][0] : '00';
-			$minute = isset($pathParts['minute']) ? $pathParts['minute'][0] : '00';
-			$second = isset($pathParts['second']) ? $pathParts['second'][0] : '00';
-			$this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
-		}
-
-		// Set the ID
-		$this->_id = new Id(intval($pathParts['id'][0]));
-
-		// Set the type
-		$this->_type = new Type($pathParts['type'][0]);
-
-		// Set the revision
-		$this->_revision = new Revision(empty($pathParts['revision'][0]) ? Revision::CURRENT : intval($pathParts['revision'][0]));
+		$this->_path = new Path(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path']);
 	}
 
 	/**
@@ -183,7 +138,7 @@ class Url
 	 */
 	public function getCreationDate()
 	{
-		return $this->_creationDate;
+		return $this->_path->getCreationDate();
 	}
 
 	/**
@@ -194,9 +149,8 @@ class Url
 	 */
 	public function setCreationDate($creationDate)
 	{
-		$url = clone $this;
-		$url->_creationDate = $creationDate;
-		return $url;
+		$this->_path = $this->_path->setCreationDate($creationDate);
+		return $this;
 	}
 
 	/**
@@ -206,7 +160,7 @@ class Url
 	 */
 	public function getType()
 	{
-		return $this->_type;
+		return $this->_path->getType();
 	}
 
 	/**
@@ -217,9 +171,8 @@ class Url
 	 */
 	public function setType(Type $type)
 	{
-		$url = clone $this;
-		$url->_type = $type;
-		return $url;
+		$this->_path = $this->_path->setType($type);
+		return $this;
 	}
 
 	/**
@@ -229,7 +182,7 @@ class Url
 	 */
 	public function getId()
 	{
-		return $this->_id;
+		return $this->_path->getId();
 	}
 
 	/**
@@ -240,9 +193,8 @@ class Url
 	 */
 	public function setId(Id $id)
 	{
-		$url = clone $this;
-		$url->_id = $id;
-		return $url;
+		$this->_path = $this->_path->setId($id);
+		return $this;
 	}
 
 
@@ -253,7 +205,7 @@ class Url
 	 */
 	public function getRevision()
 	{
-		return $this->_revision;
+		return $this->_path->getRevision();
 	}
 
 	/**
@@ -264,9 +216,8 @@ class Url
 	 */
 	public function setRevision(Revision $revision)
 	{
-		$url = clone $this;
-		$url->_revision = $revision;
-		return $url;
+		$this->_path = $this->_path->setRevision($revision);
+		return $this;
 	}
 
 	/**
@@ -414,7 +365,7 @@ class Url
 	 */
 	public function getPath()
 	{
-		return $this->_getPath();
+		return strval($this->_path);
 	}
 
 	/**
@@ -425,7 +376,8 @@ class Url
 	 */
 	public function setPath($path)
 	{
-		return new self($this->_getUrl(['path' => $path]));
+		$this->_path = new Path(strval($path));
+		return $this;
 	}
 
 	/**
@@ -535,7 +487,7 @@ class Url
 		if (isset($override['path'])) {
 			$path = $override['path'];
 		} else {
-			$path = $this->_getPath();
+			$path = strval($this->_path);
 		}
 
 		// Prepare the URL query
@@ -553,29 +505,5 @@ class Url
 		}
 
 		return "$scheme$user$pass$host$port$path$query$fragment";
-	}
-
-	/**
-	 * Create and return the object URL path
-	 *
-	 * @return string Object URL path
-	 */
-	protected function _getPath()
-	{
-		$path = [];
-		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-
-		// Add the creation date
-		foreach (array_slice(array_keys(self::$_datePattern), 0, $datePrecision) as $dateFormat) {
-			$path[] = $this->_creationDate->format($dateFormat);
-		}
-
-		// Add the object ID and type
-		$path[] = $this->_id->getId().'.'.$this->_type->getType();
-
-		// Add the ID and revision
-		$path[] = rtrim($this->_id->getId().'-'.$this->_revision->getRevision(), '-');
-
-		return '/'.implode('/', $path);
 	}
 }

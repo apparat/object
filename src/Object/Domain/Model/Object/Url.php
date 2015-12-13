@@ -130,7 +130,7 @@ class Url
 
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 		$pathPattern = '%^/'.implode('', array_slice(self::$_datePattern, 0,
-				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)/\\'.($datePrecision + 1).'(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?$%';
+				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)/\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?$%';
 		if (empty($this->_urlParts['path']) || !preg_match_all($pathPattern, $this->_urlParts['path'], $pathParts)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
 				empty($this->_urlParts['path']) ? '(empty)' : $this->_urlParts['path']),

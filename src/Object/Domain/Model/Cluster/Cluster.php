@@ -68,10 +68,10 @@ class Cluster implements ClusterInterface
 	/**
 	 * Find objects by selector
 	 *
-	 * @param Selector $selector Object selector
+	 * @param SelectorInterface $selector Object selector
 	 * @return Collection Object collection
 	 */
-	public function findObjects(Selector $selector)
+	public function findObjects(SelectorInterface $selector)
 	{
 		$collection = new Collection();
 

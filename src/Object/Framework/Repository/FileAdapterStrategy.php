@@ -36,7 +36,9 @@
 
 namespace Apparat\Object\Framework\Repository;
 
+use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
+use Apparat\Object\Domain\Model\Repository\SelectorInterface;
 
 /**
  * File adapter strategy
@@ -101,5 +103,16 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 	public function getType()
 	{
 		return self::TYPE;
+	}
+
+	/**
+	 * Find objects by selector
+	 *
+	 * @param SelectorInterface $selector Object selector
+	 * @return Collection Object collection
+	 */
+	public function findObjects(SelectorInterface $selector)
+	{
+		// TODO: Implement findObjects() method.
 	}
 }

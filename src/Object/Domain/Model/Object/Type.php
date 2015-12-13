@@ -200,7 +200,7 @@ class Type
 	 */
 	public function __construct($type)
 	{
-		if (!$type || !array_key_exists($type, self::$_types)) {
+		if (!$type || !self::isValidType($type)) {
 			throw new InvalidArgumentException(sprintf('Invalid object type "%s"', $type),
 				InvalidArgumentException::INVALID_OBJECT_TYPE);
 		}
@@ -216,5 +216,16 @@ class Type
 	public function getType()
 	{
 		return $this->_type;
+	}
+
+	/**
+	 * Test if a type string is valid
+	 *
+	 * @param string $type Type string
+	 * @return bool Valid type
+	 */
+	public static function isValidType($type) {
+		$type = trim($type);
+		return strlen($type) && array_key_exists($type, self::$_types);
 	}
 }

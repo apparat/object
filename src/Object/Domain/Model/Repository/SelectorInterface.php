@@ -1,11 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,68 +34,15 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Model\Repository;
 
 /**
- * Object revision
+ * Repository selector interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Object
+ * @subpackage Apparat\Object\Domain
  */
-class Revision
+interface SelectorInterface
 {
-	/**
-	 * Object revision number
-	 *
-	 * @var int
-	 */
-	protected $_revision = null;
-	/**
-	 * Current revision
-	 *
-	 * @var null
-	 */
-	const CURRENT = null;
-	/**
-	 * Draft revision
-	 *
-	 * @var string
-	 */
-	const DRAFT = 0;
 
-	/**
-	 * Revision constructor
-	 *
-	 * @param int $revision Object revision number
-	 */
-	public function __construct($revision)
-	{
-		// If the revision number is invalid
-		if (!self::isValidRevision($revision)) {
-			throw new InvalidArgumentException(sprintf('Invalid object revision number "%s"', $revision),
-				InvalidArgumentException::INVALID_OBJECT_REVISION);
-		}
-
-		$this->_revision = $revision;
-	}
-
-	/**
-	 * Return the object revision number
-	 *
-	 * @return int Object revision number
-	 */
-	public function getRevision()
-	{
-		return $this->_revision;
-	}
-
-	/**
-	 * Test whether a revision number is valid
-	 *
-	 * @param int|NULL $revision Revision number
-	 * @return bool Is valid revision
-	 */
-	public static function isValidRevision($revision) {
-		return ($revision === self::CURRENT) || (is_int($revision) && ($revision >= self::DRAFT));
-	}
 }

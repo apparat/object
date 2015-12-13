@@ -36,7 +36,9 @@
 
 namespace Apparat\Object\Domain\Model\Factory;
 
+use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Model\Repository\Selector as RepositorySelector;
 
 /**
  * Object selector factory
@@ -53,12 +55,12 @@ class Selector
 	 * @see Url::$_datePattern
 	 */
 	protected static $_datePattern = [
-		'Y' => '(?P<year>(?:\d{4})|\*)/',
-		'm' => '(?P<month>(?:\d{2})}|\*)/',
-		'd' => '(?P<day>(?:\d{2})}|\*)/',
-		'H' => '(?P<hour>(?:\d{2})}|\*)/',
-		'i' => '(?P<minute>(?:\d{2})}|\*)/',
-		's' => '(?P<second>(?:\d{2})}|\*)/',
+		'Y' => '/(?P<year>\d{4}|\*)',
+		'm' => '(?:/(?P<month>\d{2}|\*)',
+		'd' => '(?:/(?P<day>\d{2}|\*)',
+		'H' => '(?:/(?P<hour>\d{2}|\*)',
+		'i' => '(?:/(?P<minute>\d{2}|\*)',
+		's' => '(?:/(?P<second>\d{2}|\*)',
 	];
 
 	/**
@@ -71,28 +73,59 @@ class Selector
 	public static function parse($selector)
 	{
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-		$selectorPattern = '%^/'.implode('', array_slice(self::$_datePattern, 0,
-				$datePrecision)).'(?P<id>(?:\d+)|\*)\.(?P<type>(?:[a-z]+)|\*)$%';
+		$selectorPattern = '/(?P<id>(?:\d+)|\*)\.(?P<type>(?:[a-z]+)|\*)(?:/\\k<id>(?:-(?P<revision>\d+))?)?';
+
+		// If the creation date is used as selector component
+		if ($datePrecision) {
+			$selectorPattern = implode('', array_slice(self::$_datePattern, 0,
+					$datePrecision)).'(?:'.$selectorPattern.str_repeat(')?',
+					$datePrecision);
+		}
+		$selectorPattern = '%^'.$selectorPattern.'$%';
 
 		// If the selector is invalid
-		if (!preg_match($selectorPattern, $selector, $selectorParts)) {
+		if (!strlen($selector) || !preg_match($selectorPattern, $selector,
+				$selectorParts) || !strlen($selectorParts[0])
+		) {
 			throw new InvalidArgumentException(sprintf('Invalid respository selector "%s"', $selector),
 				InvalidArgumentException::INVALID_REPOSITORY_SELECTOR);
 		}
 
-		if ($datePrecision) {
-			$year = $selectorParts['year'][0];
-			$month = isset($selectorParts['month']) ? $selectorParts['month'][0] : '01';
-			$day = isset($selectorParts['day']) ? $selectorParts['day'][0] : '01';
-			$hour = isset($selectorParts['hour']) ? $selectorParts['hour'][0] : '00';
-			$minute = isset($selectorParts['minute']) ? $selectorParts['minute'][0] : '00';
-			$second = isset($selectorParts['second']) ? $selectorParts['second'][0] : '00';
-			$creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
-		} else {
-			$creationDate = null;
+		$year = $month = $day = $hour = $minute = $second = $id = null;
+		if (($datePrecision > 0)) {
+			$year = isset($selectorParts['year']) ? self::_castInt($selectorParts['year']) : RepositorySelector::WILDCARD;
 		}
+		if (($datePrecision > 1)) {
+			$month = isset($selectorParts['month']) ? self::_castInt($selectorParts['month']) : RepositorySelector::WILDCARD;
+		}
+		if (($datePrecision > 2)) {
+			$day = isset($selectorParts['day']) ? self::_castInt($selectorParts['day']) : RepositorySelector::WILDCARD;
+		}
+		if (($datePrecision > 3)) {
+			$hour = isset($selectorParts['hour']) ? self::_castInt($selectorParts['hour']) : RepositorySelector::WILDCARD;
+		}
+		if (($datePrecision > 4)) {
+			$minute = isset($selectorParts['minute']) ? self::_castInt($selectorParts['minute']) : RepositorySelector::WILDCARD;
+		}
+		if (($datePrecision > 5)) {
+			$second = isset($selectorParts['second']) ? self::_castInt($selectorParts['second']) : RepositorySelector::WILDCARD;
+		}
+		$id = isset($selectorParts['id']) ? self::_castInt($selectorParts['id']) : RepositorySelector::WILDCARD;
 
-		// TODO: Wildcard date, ID & type
-		return new \Apparat\Object\Domain\Model\Repository\Selector($creationDate, 0, '');
+		$type = empty($selectorParts['type']) ? RepositorySelector::WILDCARD : trim($selectorParts['type']);
+		$revision = (isset($selectorParts['revision']) && strlen($selectorParts['revision'])) ? intval($selectorParts['revision']) : Revision::CURRENT;
+
+		return new RepositorySelector($year, $month, $day, $hour, $minute, $second, $id, $type, $revision);
+	}
+
+	/**
+	 * Cast a value as integer if it's not a wildcard
+	 *
+	 * @param string $value Value
+	 * @return int|string Integer value or wildcard
+	 */
+	protected static function _castInt($value)
+	{
+		return ($value === RepositorySelector::WILDCARD) ? $value : intval($value);
 	}
 }

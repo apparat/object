@@ -65,12 +65,13 @@ class Repository implements RepositoryInterface
 	/**
 	 * Find objects by selector
 	 *
-	 * @param Selector $selector Object selector
-	 * @return SelectorInterface Object collection
+	 * @param SelectorInterface $selector Object selector
+	 * @return Collection Object collection
 	 */
 	public function findObjects(SelectorInterface $selector)
 	{
-		return $this->_adapterStrategy->findObjects($selector);
+		$objectPaths = $this->_adapterStrategy->findObjectPaths($selector);
+		return $objectPaths;
 	}
 
 	/**

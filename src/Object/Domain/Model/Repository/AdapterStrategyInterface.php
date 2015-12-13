@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Domain\Model\Repository;
 
-use Apparat\Object\Domain\Model\Object\Collection;
-
 /**
  * Repository adapter strategy interface
  *
@@ -57,9 +55,9 @@ interface AdapterStrategyInterface
 	 * Find objects by selector
 	 *
 	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
+	 * @return array Object paths
 	 */
-	public function findObjects(SelectorInterface $selector);
+	public function findObjectPaths(SelectorInterface $selector);
 
 	/**
 	 * Return the adapter strategy type

@@ -117,8 +117,9 @@ class SelectorTest extends AbstractTest
 	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1449961609
 	 */
-	public function testFactoryInvaldiSelector() {
-		$selector = Selector::parse('invalid');
+	public function testFactoryInvaldiSelector()
+	{
+		Selector::parse('invalid');
 	}
 
 	/**
@@ -128,7 +129,44 @@ class SelectorTest extends AbstractTest
 	 * @expectedExceptionCode 1449999646
 	 * @expectedExceptionMessageRegExp %year%
 	 */
-	public function testInvalidDateComponent() {
+	public function testInvalidDateComponent()
+	{
 		new RepositorySelector('invalid');
+	}
+
+	/**
+	 * Test an invalid ID component
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1449999646
+	 * @expectedExceptionMessageRegExp %id%
+	 */
+	public function testInvalidIdComponent()
+	{
+		new RepositorySelector(2015, 1, 1, null, null, null, 'invalid');
+	}
+
+	/**
+	 * Test an invalid type component
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1449999646
+	 * @expectedExceptionMessageRegExp %type%
+	 */
+	public function testInvalidTypeComponent()
+	{
+		new RepositorySelector(2015, 1, 1, null, null, null, 1, 'invalid');
+	}
+
+	/**
+	 * Test an invalid revision component
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1449999646
+	 * @expectedExceptionMessageRegExp %revision%
+	 */
+	public function testInvalidRevisionComponent()
+	{
+		new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', 'invalid');
 	}
 }

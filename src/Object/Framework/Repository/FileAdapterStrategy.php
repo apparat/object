@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
+use Apparat\Object\Domain\Model\Repository\Selector;
 use Apparat\Object\Domain\Model\Repository\SelectorInterface;
 
 /**
@@ -108,11 +108,65 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 	/**
 	 * Find objects by selector
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
+	 * @param Selector $selector Object selector
+	 * @return array Object paths
 	 */
-	public function findObjects(SelectorInterface $selector)
+	public function findObjectPaths(SelectorInterface $selector)
 	{
-		// TODO: Implement findObjects() method.
+		chdir($this->_root);
+
+		// Build a glob string from the selector
+		$glob = '';
+		$stripRevisionTrailer = false;
+
+		$year = $selector->getYear();
+		if ($year !== null) {
+			$glob .= '/'.$year;
+		}
+
+		$month = $selector->getMonth();
+		if ($month !== null) {
+			$glob .= '/'.$month;
+		}
+
+		$day = $selector->getDay();
+		if ($day !== null) {
+			$glob .= '/'.$day;
+		}
+
+		$hour = $selector->getHour();
+		if ($hour !== null) {
+			$glob .= '/'.$hour;
+		}
+
+		$minute = $selector->getMinute();
+		if ($minute !== null) {
+			$glob .= '/'.$minute;
+		}
+
+		$second = $selector->getSecond();
+		if ($second !== null) {
+			$glob .= '/'.$second;
+		}
+
+		$id = $selector->getId();
+		$type = $selector->getType();
+		if (($id !== null) || ($type !== null)) {
+			$glob .= '/'.($id ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
+
+			$revision = $selector->getRevision();
+			if ($revision !== null) {
+				$glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision.'/..';
+				$stripRevisionTrailer = true;
+			}
+		}
+
+		$objectPaths = glob(ltrim($glob, '/'), GLOB_ONLYDIR | GLOB_NOSORT);
+		if ($stripRevisionTrailer) {
+			$objectPaths = array_map(function ($objectPath) {
+				return substr($objectPath, 0, strrpos($objectPath, '/', -4));
+			}, $objectPaths);
+		}
+		return $objectPaths;
 	}
 }

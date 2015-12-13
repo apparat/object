@@ -73,7 +73,7 @@ class AdapterStrategyFactory
 
 		// If the adapter strategy type is missing or invalid
 		if (empty($config['type']) || !array_key_exists($config['type'], self::$_types)) {
-			throw new InvalidArgumentException(sprintf('Empty adapter strategy configuration',
+			throw new InvalidArgumentException(sprintf('Invalid adapter strategy type "%s"',
 				empty($config['type']) ? '(empty)' : $config['type']),
 				InvalidArgumentException::INVALID_ADAPTER_STRATEGY_TYPE);
 		}

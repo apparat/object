@@ -38,6 +38,7 @@ namespace ApparatTest;
 
 use Apparat\Object\Domain\Factory\Selector as SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
@@ -84,7 +85,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	protected static $_globRevisions = ['' => 0, '-0' => 0, '-1' => 0];
 
-	/**
+	/**'
 	 * Setup
 	 */
 	public static function setUpBeforeClass()
@@ -280,5 +281,18 @@ class RepositoryTest extends AbstractTest
 		$collection = $fileRepository->findObjects($selector);
 		$this->assertInstanceOf(Collection::class, $collection);
 		$this->assertEquals(self::$_globRevisions['-1'], count($collection));
+	}
+
+	/**
+	 * Test a repository path
+	 */
+	public function testRepositoryPath() {
+		$fileRepository = RepositoryFactory::create([
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => self::$_globBase,
+		]);
+		$repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704.event/36704-1');
+		$this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
+		$this->assertEquals($fileRepository, $repositoryPath->getRepository());
 	}
 }

@@ -34,23 +34,29 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
-
-use Apparat\Object\Domain\Model\Object\Collection;
+namespace Apparat\Object\Application\Utility;
 
 /**
- * Searchable repository interface
+ * Array utility
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface SearchableRepositoryInterface
+class ArrayUtility
 {
 	/**
-	 * Find objects by selector
+	 * Sort an array recursively by key
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
+	 * @param array $array Array
+	 * @return array Sorted array
 	 */
-	public function findObjects(SelectorInterface $selector);
+	public static function sortRecursiveByKey(array $array) {
+		ksort($array, SORT_REGULAR);
+		while(list($key, $value) = each($array)) {
+			if (is_array($value)) {
+				$array[$key] = self::sortRecursiveByKey($value);
+			}
+		}
+		return $array;
+	}
 }

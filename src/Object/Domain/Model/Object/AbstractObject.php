@@ -4,7 +4,7 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -38,7 +38,8 @@ namespace Apparat\Object\Domain\Model\Object;
 /**
  * Abstract object implementation
  *
- * @package Apparat\Object\Domain\Model\Object
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
 abstract class AbstractObject implements ObjectInterface
 {

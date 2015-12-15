@@ -1,11 +1,10 @@
 <?php
 
 /**
- * apparat-object
+ * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,43 +33,56 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Domain\Contract\SingletonInterface;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
 /**
- * Repository cluster factory
+ * Object repository interface
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @package Apparat\Object\Domain\Repository
  */
-class Cluster
+interface RepositoryInterface extends SearchableRepositoryInterface, SingletonInterface
 {
 	/**
-	 * Instanciate and return an object repository cluster
+	 * Add an object to the repository
 	 *
-	 * @param array $config Repository cluster configuration
-	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository cluster configuration is empty
-	 * @api
+	 * @param ObjectInterface $object Object
+	 * @return boolean Success
 	 */
-	public static function create(array $config)
-	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository cluster configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
+	public function addObject(ObjectInterface $object);
 
-		// Instantiate all repositories
-		$repositories = [];
-		foreach ($config as $adapterStrategyConfig) {
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy);
-		}
+	/**
+	 * Delete and object from the repository
+	 *
+	 * @param ObjectInterface $object Object
+	 * @return boolean Success
+	 */
+	public function deleteObject(ObjectInterface $object);
 
-		// Instantiate and return the object repository cluster
-		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
-	}
+	/**
+	 * Update an object in the repository
+	 *
+	 * @param ObjectInterface $object Object
+	 * @return bool Success
+	 */
+	public function updateObject(ObjectInterface $object);
+
+	/**
+	 * Load an object from this repository
+	 *
+	 * @param RepositoryPath $path Repository object path
+	 * @return ObjectInterface Object
+	 */
+	public function loadObject(RepositoryPath $path);
+
+	/**
+	 * Repository singleton instantiator
+	 *
+	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @return RepositoryInterface Repository instance
+	 */
+	public static function create(AdapterStrategyInterface $adapterStrategy);
 }

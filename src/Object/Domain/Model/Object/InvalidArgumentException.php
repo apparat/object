@@ -4,7 +4,7 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -96,4 +96,10 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_OBJECT_URL_PORT = 1449925885;
+	/**
+	 * Invalid collection object or path
+	 *
+	 * @var int
+	 */
+	const INVALID_COLLECTION_OBJECT_OR_PATH = 1450131914;
 }

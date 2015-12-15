@@ -4,7 +4,7 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,8 +35,6 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Repository\Repository;
-
 /**
  * Object interface
  *
@@ -52,10 +50,24 @@ interface ObjectInterface
 	public function getId();
 
 	/**
-	 * Return the object's path within a repository
+	 * Return the object type
 	 *
-	 * @param Repository $repository Repository
-	 * @return string Object path
+	 * @return string
 	 */
-	public function getRepositoryPath(Repository $repository);
+	public function getType();
+
+	/**
+	 * Get the number of existing revisions
+	 *
+	 * @return int
+	 */
+	public function getRevisionCount();
+
+	/**
+	 * Get a particular object revision
+	 *
+	 * @param int|NULL $revision Revision number
+	 * @return ObjectInterface Object revision
+	 */
+	public function getRevision($revision);
 }

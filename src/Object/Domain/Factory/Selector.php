@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,11 +34,11 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Factory;
+namespace Apparat\Object\Domain\Factory;
 
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Repository\InvalidArgumentException;
-use Apparat\Object\Domain\Model\Repository\Selector as RepositorySelector;
+use Apparat\Object\Domain\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 
 /**
  * Object selector factory
@@ -67,7 +67,7 @@ class Selector
 	 * Parse and instantiate an object selector
 	 *
 	 * @param string $selector String selector
-	 * @return \Apparat\Object\Domain\Model\Repository\Selector Object selector
+	 * @return \Apparat\Object\Domain\Repository\Selector Object selector
 	 * @throws InvalidArgumentException If the selector is invalid
 	 */
 	public static function parse($selector)

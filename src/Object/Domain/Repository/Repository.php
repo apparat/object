@@ -4,7 +4,7 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,33 +33,63 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
+namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Object\Domain\Contract\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
 /**
  * Abstract object repository
  *
- * @package Apparat\Object\Domain\Model\Repository
+ * @package Apparat\Object\Domain\Repository
  */
 class Repository implements RepositoryInterface
 {
+	/**
+	 * Use singleton methods
+	 */
+	use SingletonTrait;
+
 	/**
 	 * Adapter strategy
 	 *
 	 * @var AdapterStrategyInterface
 	 */
 	protected $_adapterStrategy = null;
+	/**
+	 * Instance specific object cache
+	 *
+	 * @var array
+	 */
+	protected $_objectCache = [];
 
 	/**
-	 * Repository constructor
+	 * Singleton instances
+	 *
+	 * @var Repository[]
+	 */
+	protected static $_instances = [];
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
+	/**
+	 * Repository singleton instantiator
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @return Repository Repository instance
 	 */
-	public function __construct(AdapterStrategyInterface $adapterStrategy)
+	public static function create(AdapterStrategyInterface $adapterStrategy)
 	{
-		$this->_adapterStrategy = $adapterStrategy;
+		$adapterSignature = $adapterStrategy->getSignature();
+		if (empty(self::$_instances[$adapterSignature])) {
+			self::$_instances[$adapterSignature] = new static($adapterStrategy);
+		}
+
+		return self::$_instances[$adapterSignature];
 	}
 
 	/**
@@ -70,7 +100,7 @@ class Repository implements RepositoryInterface
 	 */
 	public function findObjects(SelectorInterface $selector)
 	{
-		return new Collection($this->_adapterStrategy->findObjectPaths($selector));
+		return new Collection($this->_adapterStrategy->findObjectPaths($selector, $this));
 	}
 
 	/**
@@ -104,5 +134,34 @@ class Repository implements RepositoryInterface
 	public function updateObject(ObjectInterface $object)
 	{
 		// TODO: Implement updateObject() method.
+	}
+
+	/**
+	 * Load an object from this repository
+	 *
+	 * @param RepositoryPath $path Repository object path
+	 * @return ObjectInterface Object
+	 */
+	public function loadObject(RepositoryPath $path)
+	{
+		if (empty($this->_objectCache[$path->getId()->getId()])) {
+
+		}
+
+		// TODO: Implement loadObject() method.
+	}
+
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
+
+	/**
+	 * Repository constructor
+	 *
+	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 */
+	protected function __construct(AdapterStrategyInterface $adapterStrategy)
+	{
+		$this->_adapterStrategy = $adapterStrategy;
 	}
 }

@@ -37,8 +37,8 @@
 namespace Apparat\Object\Domain\Model\Cluster;
 
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Repository\RepositoryInterface;
-use Apparat\Object\Domain\Model\Repository\Selector;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * Object repository cluster

@@ -34,43 +34,36 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
-
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+namespace Apparat\Object\Domain\Repository;
 
 /**
- * Repository cluster factory
+ * Repository adapter strategy interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Domain
  */
-class Cluster
+interface AdapterStrategyInterface
 {
 	/**
-	 * Instanciate and return an object repository cluster
+	 * Find objects by selector
 	 *
-	 * @param array $config Repository cluster configuration
-	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository cluster configuration is empty
-	 * @api
+	 * @param SelectorInterface $selector Object selector
+	 * @param RepositoryInterface $repository Object repository
+	 * @return array [Path] Object paths
 	 */
-	public static function create(array $config)
-	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository cluster configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
+	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
 
-		// Instantiate all repositories
-		$repositories = [];
-		foreach ($config as $adapterStrategyConfig) {
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy);
-		}
+	/**
+	 * Return the adapter strategy type
+	 *
+	 * @return string Adapter strategy type
+	 */
+	public function getType();
 
-		// Instantiate and return the object repository cluster
-		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
-	}
+	/**
+	 * Return a signature uniquely representing this adapters configuration
+	 *
+	 * @return string Adapter signature
+	 */
+	public function getSignature();
 }

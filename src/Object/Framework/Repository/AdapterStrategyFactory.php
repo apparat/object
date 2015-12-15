@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
+use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 
 /**
  * Repository adapter strategy factory

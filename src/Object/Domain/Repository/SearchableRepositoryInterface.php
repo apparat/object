@@ -34,43 +34,23 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Domain\Model\Object\Collection;
 
 /**
- * Repository cluster factory
+ * Searchable repository interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Domain
  */
-class Cluster
+interface SearchableRepositoryInterface
 {
 	/**
-	 * Instanciate and return an object repository cluster
+	 * Find objects by selector
 	 *
-	 * @param array $config Repository cluster configuration
-	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository cluster configuration is empty
-	 * @api
+	 * @param SelectorInterface $selector Object selector
+	 * @return Collection Object collection
 	 */
-	public static function create(array $config)
-	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository cluster configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
-
-		// Instantiate all repositories
-		$repositories = [];
-		foreach ($config as $adapterStrategyConfig) {
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy);
-		}
-
-		// Instantiate and return the object repository cluster
-		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
-	}
+	public function findObjects(SelectorInterface $selector);
 }

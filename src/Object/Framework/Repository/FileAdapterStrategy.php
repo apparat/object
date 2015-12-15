@@ -36,10 +36,11 @@
 
 namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Domain\Model\Object\Path;
-use Apparat\Object\Domain\Model\Repository\AdapterStrategyInterface;
-use Apparat\Object\Domain\Model\Repository\Selector;
-use Apparat\Object\Domain\Model\Repository\SelectorInterface;
+use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\Selector;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * File adapter strategy
@@ -47,7 +48,7 @@ use Apparat\Object\Domain\Model\Repository\SelectorInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class FileAdapterStrategy implements AdapterStrategyInterface
+class FileAdapterStrategy extends AbstractAdapterStrategy
 {
 	/**
 	 * Configuration
@@ -79,7 +80,7 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 	 */
 	public function __construct(array $config)
 	{
-		$this->_config = $config;
+		parent::__construct($config, ['root']);
 
 		// If the root directory configuration is empty
 		if (empty($this->_config['root'])) {
@@ -109,10 +110,11 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 	/**
 	 * Find objects by selector
 	 *
-	 * @param Selector $selector Object selector
+	 * @param Selector|SelectorInterface $selector Object selector
+	 * @param RepositoryInterface $repository Object repository
 	 * @return array[Path] Object paths
 	 */
-	public function findObjectPaths(SelectorInterface $selector)
+	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
 	{
 		chdir($this->_root);
 
@@ -162,8 +164,8 @@ class FileAdapterStrategy implements AdapterStrategyInterface
 			}
 		}
 
-		return array_map(function($objectPath) {
-			return new Path('/'.$objectPath);
+		return array_map(function ($objectPath) use ($repository) {
+			return new RepositoryPath($repository, '/'.$objectPath);
 		}, glob(ltrim($glob, '/'), $globFlags));
 	}
 }

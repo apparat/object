@@ -50,7 +50,7 @@ class Repository
 	 * Instanciate and return an object repository
 	 *
 	 * @param array $config Repository configuration
-	 * @return \Apparat\Object\Domain\Model\Repository\Repository Object repository
+	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
 	 * @throws InvalidArgumentException If the repository configuration is empty
 	 * @api
 	 */
@@ -66,6 +66,6 @@ class Repository
 		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
 
 		// Instantiate and return the object repository
-		return new \Apparat\Object\Domain\Model\Repository\Repository($repositoryAdapterStrategy);
+		return \Apparat\Object\Domain\Repository\Repository::create($repositoryAdapterStrategy);
 	}
 }

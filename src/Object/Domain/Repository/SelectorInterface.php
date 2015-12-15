@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,56 +34,15 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Repository;
+namespace Apparat\Object\Domain\Repository;
 
 /**
- * Repository invalid argument exception
+ * Repository selector interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+interface SelectorInterface
 {
-	/**
-	 * Invalid argument name
-	 *
-	 * @var string
-	 */
-	protected $_argumentName = null;
-	/**
-	 * Invalid repository selector
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR = 1449961609;
-	/**
-	 * Invalid repository selector component
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR_COMPONENT = 1449999646;
 
-	/**
-	 * Exception constructor
-	 *
-	 * @param string $message Exception message
-	 * @param string $code Exception code
-	 * @param Exception|null $previous Previous exception
-	 * @param null $argumentName Invalid argument name
-	 */
-	public function __construct($message = '', $code = '', Exception $previous = null, $argumentName = null)
-	{
-		parent::__construct($message, $code, $previous);
-		$this->_argumentName = $argumentName;
-	}
-
-	/**
-	 * Return the invalid argument name
-	 *
-	 * @return string
-	 */
-	public function getArgumentName()
-	{
-		return $this->_argumentName;
-	}
 }

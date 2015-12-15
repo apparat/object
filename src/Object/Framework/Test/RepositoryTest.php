@@ -36,11 +36,11 @@
 
 namespace ApparatTest;
 
-use Apparat\Object\Domain\Model\Factory\Selector as SelectorFactory;
+use Apparat\Object\Domain\Factory\Selector as SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Repository\InvalidArgumentException;
-use Apparat\Object\Domain\Model\Repository\Repository;
-use Apparat\Object\Domain\Model\Repository\SelectorInterface;
+use Apparat\Object\Domain\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Repository\Repository;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Framework\Api\Repository as RepositoryFactory;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
@@ -208,6 +208,19 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
+	 * Test missing file adapter strategy root
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1450136346
+	 */
+	public function testMissingFileStrategyRoot()
+	{
+		RepositoryFactory::create([
+			'type' => FileAdapterStrategy::TYPE,
+		]);
+	}
+
+	/**
 	 * Test empty file adapter strategy root
 	 *
 	 * @expectedException InvalidArgumentException
@@ -217,6 +230,7 @@ class RepositoryTest extends AbstractTest
 	{
 		RepositoryFactory::create([
 			'type' => FileAdapterStrategy::TYPE,
+			'root' => '',
 		]);
 	}
 

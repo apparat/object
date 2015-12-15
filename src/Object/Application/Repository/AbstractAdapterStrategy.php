@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,43 +34,70 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Application\Repository;
 
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Application\Utility\ArrayUtility;
+use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
+use Apparat\Object\Domain\Repository\InvalidArgumentException;
 
 /**
- * Repository cluster factory
+ * Abstract adapter strategy
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Application
  */
-class Cluster
+abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 {
 	/**
-	 * Instanciate and return an object repository cluster
+	 * Configuration
 	 *
-	 * @param array $config Repository cluster configuration
-	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository cluster configuration is empty
-	 * @api
+	 * Example
+	 *
+	 * @var array
 	 */
-	public static function create(array $config)
+	protected $_config = null;
+	/**
+	 * Adapter signature
+	 *
+	 * @var string
+	 */
+	protected $_signature = null;
+
+	/**
+	 * Adapter strategy type
+	 *
+	 * @var string
+	 */
+	const TYPE = 'abstract';
+
+	/**
+	 * Adapter strategy constructor
+	 *
+	 * @param array $config Adapter strategy configuration
+	 * @param array $signatureConfigKeys Signature relevant configuration properties
+	 */
+	public function __construct(array $config, array $signatureConfigKeys)
 	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository cluster configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
+		$this->_config = $config;
 
-		// Instantiate all repositories
-		$repositories = [];
-		foreach ($config as $adapterStrategyConfig) {
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy);
+		// Build the signature
+		$signatureConfig = array_intersect_key($this->_config, array_flip($signatureConfigKeys));
+		$signatureConfig['type'] = static::TYPE;
+		if (count($signatureConfig) < 2) {
+			throw new InvalidArgumentException(sprintf('Invalid adapter strategy signature configuration "%s"',
+				implode(', ', $signatureConfigKeys)), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE);
 		}
+		$signatureConfig = ArrayUtility::sortRecursiveByKey($signatureConfig);
+		$this->_signature = sha1(serialize($signatureConfig));
+	}
 
-		// Instantiate and return the object repository cluster
-		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
+	/**
+	 * Return a signature uniquely representing this adapters configuration
+	 *
+	 * @return string Adapter signature
+	 */
+	public function getSignature()
+	{
+		return $this->_signature;
 	}
 }

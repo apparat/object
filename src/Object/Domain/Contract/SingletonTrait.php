@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,43 +34,31 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
-
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+namespace Apparat\Object\Domain\Contract;
 
 /**
- * Repository cluster factory
+ * Singleton trait
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Domain
  */
-class Cluster
+trait SingletonTrait
 {
 	/**
-	 * Instanciate and return an object repository cluster
+	 * Private clone method to prevent cloning of the instance of the singleton instance.
 	 *
-	 * @param array $config Repository cluster configuration
-	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
-	 * @throws InvalidArgumentException If the repository cluster configuration is empty
-	 * @api
+	 * @return void
 	 */
-	public static function create(array $config)
+	private function __clone()
 	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository cluster configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
+	}
 
-		// Instantiate all repositories
-		$repositories = [];
-		foreach ($config as $adapterStrategyConfig) {
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy);
-		}
-
-		// Instantiate and return the object repository cluster
-		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);
+	/**
+	 * Private unserialize method to prevent unserializing of the singleton instance.
+	 *
+	 * @return void
+	 */
+	private function __wakeup()
+	{
 	}
 }

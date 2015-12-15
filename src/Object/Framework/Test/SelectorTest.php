@@ -36,10 +36,10 @@
 
 namespace ApparatTest;
 
-use Apparat\Object\Domain\Model\Factory\Selector;
+use Apparat\Object\Domain\Factory\Selector;
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Repository\InvalidArgumentException;
-use Apparat\Object\Domain\Model\Repository\Selector as RepositorySelector;
+use Apparat\Object\Domain\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 
 /**
  * Selector tests

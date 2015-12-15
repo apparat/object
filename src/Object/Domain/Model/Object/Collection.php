@@ -4,7 +4,7 @@
  * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat_<Package>
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -46,7 +46,7 @@ class Collection implements CollectionInterface
 	/**
 	 * Objects
 	 *
-	 * @var AbstractObject[]
+	 * @var ObjectInterface[]|RepositoryPath[]
 	 */
 	protected $_objects = array();
 	/**
@@ -70,17 +70,24 @@ class Collection implements CollectionInterface
 	 * Collection constructor
 	 *
 	 * @param array $objects Collection objects
+	 * @throws InvalidArgumentException If the an invalid object or path is provided
 	 */
 	public function __construct(array $objects = [])
 	{
 		foreach ($objects as $object) {
-			if ($object instanceof AbstractObject) {
+
+			// If it's an object
+			if ($object instanceof ObjectInterface) {
 				$this->_objects[$object->getId()] = $object;
-			} else {
-				if (!($object instanceof Path)) {
-					$object = new Path(strval($object));
-				}
+
+				// Else if it's an object path
+			} elseif ($object instanceof RepositoryPath) {
 				$this->_objects[$object->getId()->getId()] = $object;
+
+				// Else: Error
+			} else {
+				throw new InvalidArgumentException('Invalid collection object or path',
+					InvalidArgumentException::INVALID_COLLECTION_OBJECT_OR_PATH);
 			}
 		}
 
@@ -90,7 +97,7 @@ class Collection implements CollectionInterface
 	/**
 	 * Return the current object
 	 *
-	 * @return AbstractObject Current object
+	 * @return ObjectInterface Current object
 	 */
 	public function current()
 	{
@@ -152,7 +159,7 @@ class Collection implements CollectionInterface
 	 * Get an object with a particular ID
 	 *
 	 * @param int $offset Object ID
-	 * @return AbstractObject Object
+	 * @return ObjectInterface Object
 	 */
 	public function offsetGet($offset)
 	{
@@ -163,7 +170,7 @@ class Collection implements CollectionInterface
 	 * Set an object by ID
 	 *
 	 * @param int $offset Object ID
-	 * @param AbstractObject $value Object
+	 * @param ObjectInterface $value Object
 	 * @return void
 	 * @throws RuntimeException When an object should be set by ID
 	 */
@@ -188,14 +195,14 @@ class Collection implements CollectionInterface
 	/**
 	 * Add an object to the collection
 	 *
-	 * @param string|AbstractObject $object Object or object URL
+	 * @param string|ObjectInterface $object Object or object URL
 	 * @return Collection Modified object collection
 	 */
 	public function addObject($object)
 	{
 
 		// If the object is not yet an object instance
-		if (!($object instanceof AbstractObject)) {
+		if (!($object instanceof ObjectInterface)) {
 			if (!($object instanceof Path)) {
 				$object = new Path(strval($object));
 			}
@@ -209,12 +216,12 @@ class Collection implements CollectionInterface
 	/**
 	 * Remove an object out of this collection
 	 *
-	 * @param string|AbstractObject $object Object or object ID
+	 * @param string|ObjectInterface $object Object or object ID
 	 * @return Collection Modified object collection
 	 */
 	public function removeObject($object)
 	{
-		if ($object instanceof AbstractObject) {
+		if ($object instanceof ObjectInterface) {
 			$object = $object->getId();
 		} else {
 			$object = intval($object);
@@ -259,10 +266,15 @@ class Collection implements CollectionInterface
 	 * Load and return an object by ID
 	 *
 	 * @param int $objectId Object ID
-	 * @return AbstractObject Object
+	 * @return ObjectInterface Object
 	 */
 	protected function _loadObject($objectId)
 	{
+		// Lazy-load the object once
+		if ($this->_objects[$objectId] instanceof RepositoryPath) {
+			$this->_objects[$objectId] = $this->_objects[$objectId]->getRepository()->loadObject($this->_objects[$objectId]);
+		}
+
 		return $this->_objects[$objectId];
 	}
 }

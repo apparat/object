@@ -56,6 +56,7 @@ namespace Apparat\Object\Domain\Model\Object\Url {
 				'pass' => 'password',
 				'host' => 'another.host',
 				'port' => 443,
+				'path' => '/2015/10/01/36704.event/36704-2',
 				'query' => ['param2' => 'value2'],
 				'fragment' => 'fragment2',
 			]);
@@ -202,41 +203,8 @@ namespace ApparatTest {
 		public function testUrlPathOverride()
 		{
 			$url = new Url\TestUrl(self::URL);
-			$this->assertEquals('https://user:password@another.host:443/2015/10/01/36704.event/36704-1?param2=value2#fragment2',
+			$this->assertEquals('https://user:password@another.host:443/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
 				$url->getUrlOverride());
-		}
-
-		/**
-		 * Test an invalid ID
-		 *
-		 * @expectedException InvalidArgumentException
-		 * @expectedExceptionCode 1449876361
-		 */
-		public function testInvalidId()
-		{
-			new Id(0);
-		}
-
-		/**
-		 * Test an invalid type
-		 *
-		 * @expectedException InvalidArgumentException
-		 * @expectedExceptionCode 1449871242
-		 */
-		public function testInvalidType()
-		{
-			new Type('invalid');
-		}
-
-		/**
-		 * Test an invalid Revision
-		 *
-		 * @expectedException InvalidArgumentException
-		 * @expectedExceptionCode 1449871715
-		 */
-		public function testInvalidRevision()
-		{
-			new Revision('abc');
 		}
 	}
 }

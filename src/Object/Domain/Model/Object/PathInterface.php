@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Object\Domain
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,18 +37,35 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Object interface
+ * Object path interface
  *
- * @package Apparat\Object\Domain\Model\Object
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-interface ObjectInterface extends \Countable
+interface PathInterface
 {
+
 	/**
-	 * Return the object ID
+	 * Create and return the object URL path
 	 *
-	 * @return Id Object ID
+	 * @return string Object path
 	 */
-	public function getId();
+	public function __toString();
+
+	/**
+	 * Return the object's creation date
+	 *
+	 * @return \DateTimeImmutable Object creation date
+	 */
+	public function getCreationDate();
+
+	/**
+	 * Set the object's creation date
+	 *
+	 * @param \DateTimeImmutable $creationDate
+	 * @return Path New object path
+	 */
+	public function setCreationDate(\DateTimeImmutable $creationDate);
 
 	/**
 	 * Return the object type
@@ -57,9 +75,40 @@ interface ObjectInterface extends \Countable
 	public function getType();
 
 	/**
+	 * Set the object type
+	 *
+	 * @param Type $type Object type
+	 * @return Path New object path
+	 */
+	public function setType(Type $type);
+
+	/**
+	 * Return the object ID
+	 *
+	 * @return Id Object ID
+	 */
+	public function getId();
+
+	/**
+	 * Set the object ID
+	 *
+	 * @param Id $id Object ID
+	 * @return Path New object path
+	 */
+	public function setId(Id $id);
+
+	/**
 	 * Return the object revision
 	 *
 	 * @return Revision Object revision
 	 */
 	public function getRevision();
+
+	/**
+	 * Set the object revision
+	 *
+	 * @param Revision $revision Object revision
+	 * @return Path New object path
+	 */
+	public function setRevision(Revision $revision);
 }

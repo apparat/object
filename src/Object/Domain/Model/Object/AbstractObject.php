@@ -43,5 +43,78 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 abstract class AbstractObject implements ObjectInterface
 {
+	/**
+	 * Object creation date
+	 *
+	 * @var \DateTimeImmutable
+	 */
+	private $_creationDate;
+	/**
+	 * Object ID
+	 *
+	 * @var Id
+	 */
+	protected $_id = null;
+	/**
+	 * Object type
+	 *
+	 * @var Type
+	 */
+	protected $_type = null;
+	/**
+	 * Object revision
+	 *
+	 * @var Revision
+	 */
+	protected $_revision = null;
+
+	/**
+	 * Abstract object constructor
+	 *
+	 * @param \DateTimeImmutable $creationDate Object creation date (if already persisted)
+	 * @param Id|null $id Object ID (if already persisted)
+	 * @param Revision|null $revision Object revision (if already persisted)
+	 */
+	public function __construct(\DateTimeImmutable $creationDate = null, Id $id = null, Revision $revision = null)
+	{
+		$this->_id = $id;
+		$this->_revision = $revision;
+		$this->_creationDate = $creationDate;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getId()
+	{
+		return $this->_id;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getType()
+	{
+		return $this->_type;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getRevision()
+	{
+		return $this->_revision;
+	}
+
+	/**
+	 * Count the available object revisions (excluding a possibly existing draft)
+	 *
+	 * @return int Number of available object revisions
+	 */
+	public function count()
+	{
+		// TODO: Implement count() method.
+	}
+
 
 }

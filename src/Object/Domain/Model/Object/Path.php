@@ -42,7 +42,7 @@ namespace Apparat\Object\Domain\Model\Object;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Path
+class Path implements PathInterface
 {
 	/**
 	 * Creation date
@@ -162,7 +162,7 @@ class Path
 	 * @param \DateTimeImmutable $creationDate
 	 * @return Path New object path
 	 */
-	public function setCreationDate($creationDate)
+	public function setCreationDate(\DateTimeImmutable $creationDate)
 	{
 		$path = clone $this;
 		$path->_creationDate = $creationDate;

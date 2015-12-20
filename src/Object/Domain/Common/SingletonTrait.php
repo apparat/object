@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Model
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,15 +34,31 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Common;
 
 /**
- * Domain object properties
+ * Singleton trait
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Object
+ * @subpackage Apparat\Object\Domain
  */
-abstract class DomainProperties extends AbstractProperties
+trait SingletonTrait
 {
+	/**
+	 * Private clone method to prevent cloning of the instance of the singleton instance.
+	 *
+	 * @return void
+	 */
+	private function __clone()
+	{
+	}
 
+	/**
+	 * Private unserialize method to prevent unserializing of the singleton instance.
+	 *
+	 * @return void
+	 */
+	private function __wakeup()
+	{
+	}
 }

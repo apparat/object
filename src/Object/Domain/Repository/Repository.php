@@ -35,8 +35,9 @@
 
 namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Contract\SingletonTrait;
+use Apparat\Object\Domain\Common\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Object\FactoryInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
@@ -59,6 +60,12 @@ class Repository implements RepositoryInterface
 	 */
 	protected $_adapterStrategy = null;
 	/**
+	 * Object factory
+	 *
+	 * @var FactoryInterface
+	 */
+	protected $_objectFactory = null;
+	/**
 	 * Instance specific object cache
 	 *
 	 * @var array
@@ -73,24 +80,29 @@ class Repository implements RepositoryInterface
 	protected static $_instances = [];
 
 	/*******************************************************************************
-	 * PUBLIC METHODS
+	 * STATIC METHODS
 	 *******************************************************************************/
 
 	/**
 	 * Repository singleton instantiator
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @param FactoryInterface $objectFactory Object factory
 	 * @return Repository Repository instance
 	 */
-	public static function create(AdapterStrategyInterface $adapterStrategy)
+	public static function create(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
 	{
-		$adapterSignature = $adapterStrategy->getSignature();
-		if (empty(self::$_instances[$adapterSignature])) {
-			self::$_instances[$adapterSignature] = new static($adapterStrategy);
+		$signature = $adapterStrategy->getSignature().$objectFactory->getSignature();
+		if (empty(self::$_instances[$signature])) {
+			self::$_instances[$signature] = new static($adapterStrategy, $objectFactory);
 		}
 
-		return self::$_instances[$adapterSignature];
+		return self::$_instances[$signature];
 	}
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
 
 	/**
 	 * Find objects by selector
@@ -144,11 +156,12 @@ class Repository implements RepositoryInterface
 	 */
 	public function loadObject(RepositoryPath $path)
 	{
+		// TODO: Really OK to cache? (Immutability ...)
 		if (empty($this->_objectCache[$path->getId()->getId()])) {
-
+			$this->_objectCache[$path->getId()->getId()] = $this->_objectFactory->loadObject($path);
 		}
 
-		// TODO: Implement loadObject() method.
+		return $this->_objectCache[$path->getId()->getId()];
 	}
 
 	/*******************************************************************************
@@ -159,9 +172,11 @@ class Repository implements RepositoryInterface
 	 * Repository constructor
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @param FactoryInterface $objectFactory Object factory
 	 */
-	protected function __construct(AdapterStrategyInterface $adapterStrategy)
+	protected function __construct(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
 	{
 		$this->_adapterStrategy = $adapterStrategy;
+		$this->_objectFactory = $objectFactory;
 	}
 }

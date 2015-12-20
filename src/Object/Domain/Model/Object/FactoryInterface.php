@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Model
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,13 +36,38 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+
 /**
- * Abstract properties object
+ * Object factory interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Object
+ * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractProperties implements PropertiesInterface
+interface FactoryInterface
 {
+	/**
+	 * Create and return a new object
+	 *
+	 * @param RepositoryInterface $repository Repository
+	 * @param Type $type Object type
+	 * @param array $data Object data
+	 * @return ObjectInterface Object
+	 */
+	public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
 
+	/**
+	 * Load an object from a repository
+	 *
+	 * @param RepositoryPath $path Repository object path
+	 * @return ObjectInterface Object
+	 */
+	public function loadObject(RepositoryPath $path);
+
+	/**
+	 * Return a signature uniquely representing this factory configuration
+	 *
+	 * @return string Factory signature
+	 */
+	public function getSignature();
 }

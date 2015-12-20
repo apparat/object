@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Framework\Api;
 
+use Apparat\Object\Framework\Factory\ObjectFactory;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
@@ -66,6 +67,6 @@ class Repository
 		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
 
 		// Instantiate and return the object repository
-		return \Apparat\Object\Domain\Repository\Repository::create($repositoryAdapterStrategy);
+		return \Apparat\Object\Domain\Repository\Repository::create($repositoryAdapterStrategy, new ObjectFactory());
 	}
 }

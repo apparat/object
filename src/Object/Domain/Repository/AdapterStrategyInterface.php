@@ -61,7 +61,7 @@ interface AdapterStrategyInterface
 	public function getType();
 
 	/**
-	 * Return a signature uniquely representing this adapters configuration
+	 * Return a signature uniquely representing this adapter's configuration
 	 *
 	 * @return string Adapter signature
 	 */

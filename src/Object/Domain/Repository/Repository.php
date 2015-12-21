@@ -90,7 +90,7 @@ class Repository implements RepositoryInterface
 	 * @param FactoryInterface $objectFactory Object factory
 	 * @return Repository Repository instance
 	 */
-	public static function create(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
+	public static function instance(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
 	{
 		$signature = $adapterStrategy->getSignature().$objectFactory->getSignature();
 		if (empty(self::$_instances[$signature])) {
@@ -105,10 +105,7 @@ class Repository implements RepositoryInterface
 	 *******************************************************************************/
 
 	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
+	 * @inheritDoc
 	 */
 	public function findObjects(SelectorInterface $selector)
 	{
@@ -116,10 +113,7 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @inheritDoc
 	 */
 	public function addObject(ObjectInterface $object)
 	{
@@ -127,10 +121,7 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
+	 * @inheritDoc
 	 */
 	public function deleteObject(ObjectInterface $object)
 	{
@@ -138,10 +129,7 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
+	 * @inheritDoc
 	 */
 	public function updateObject(ObjectInterface $object)
 	{
@@ -149,10 +137,7 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * Load an object from this repository
-	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
+	 * @inheritDoc
 	 */
 	public function loadObject(RepositoryPath $path)
 	{
@@ -162,6 +147,14 @@ class Repository implements RepositoryInterface
 		}
 
 		return $this->_objectCache[$path->getId()->getId()];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getAdapterStrategy()
+	{
+		return $this->_adapterStrategy;
 	}
 
 	/*******************************************************************************

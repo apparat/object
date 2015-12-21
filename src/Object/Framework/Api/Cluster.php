@@ -68,7 +68,7 @@ class Cluster
 		$repositories = [];
 		foreach ($config as $adapterStrategyConfig) {
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::create($repositoryAdapterStrategy, new ObjectFactory());
+			$repositories[] = Repository::instance($repositoryAdapterStrategy, new ObjectFactory);
 		}
 
 		// Instantiate and return the object repository cluster

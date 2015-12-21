@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,39 +34,18 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Framework\Model\Object;
 
-use Apparat\Object\Framework\Factory\ObjectFactory;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+
+use Apparat\Object\Domain\Model\Object\AbstractObject;
 
 /**
- * Repository factory
+ * Article object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class Repository
+class Article extends AbstractObject
 {
-	/**
-	 * Instanciate and return an object repository
-	 *
-	 * @param array $config Repository configuration
-	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
-	 * @throws InvalidArgumentException If the repository configuration is empty
-	 * @api
-	 */
-	public static function create(array $config)
-	{
-		// If no repositories are configured
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
 
-		// Instantiate the repository adapter strategy
-		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
-
-		// Instantiate and return the object repository
-		return \Apparat\Object\Domain\Repository\Repository::instance($repositoryAdapterStrategy, new ObjectFactory);
-	}
 }

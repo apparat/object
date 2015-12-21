@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Object;
  *
  * @package Apparat\Object\Domain\Model\Object
  */
-interface ObjectInterface extends \Countable
+interface ObjectInterface
 {
 	/**
 	 * Return the object ID

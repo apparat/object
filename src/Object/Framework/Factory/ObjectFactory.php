@@ -71,6 +71,12 @@ class ObjectFactory implements FactoryInterface
 	 */
 	public function loadObject(RepositoryPath $path)
 	{
+		$repository = $path->getRepository();
+		$adapterStrategy = $repository->getAdapterStrategy();
+
+
+
+		echo gettype($adapterStrategy);
 		// TODO: Implement loadObject() method.
 	}
 

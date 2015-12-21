@@ -80,11 +80,18 @@ interface RepositoryInterface extends SearchableRepositoryInterface, SingletonIn
 	public function loadObject(RepositoryPath $path);
 
 	/**
+	 * Return the repository's adapter strategy
+	 *
+	 * @return AdapterStrategyInterface Adapter strategy
+	 */
+	public function getAdapterStrategy();
+
+	/**
 	 * Repository singleton instantiator
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 * @param FactoryInterface $objectFactory Object factory
 	 * @return RepositoryInterface Repository instance
 	 */
-	public static function create(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory);
+	public static function instance(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory);
 }

@@ -105,16 +105,4 @@ abstract class AbstractObject implements ObjectInterface
 	{
 		return $this->_revision;
 	}
-
-	/**
-	 * Count the available object revisions (excluding a possibly existing draft)
-	 *
-	 * @return int Number of available object revisions
-	 */
-	public function count()
-	{
-		// TODO: Implement count() method.
-	}
-
-
 }

@@ -36,7 +36,7 @@
 namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Contract\SingletonInterface;
-use Apparat\Object\Domain\Model\Object\FactoryInterface;
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
@@ -90,8 +90,8 @@ interface RepositoryInterface extends SearchableRepositoryInterface, SingletonIn
 	 * Repository singleton instantiator
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param FactoryInterface $objectFactory Object factory
-	 * @return RepositoryInterface Repository instance
+	 * @param ManagerInterface $objectManager Object manager
+	 * @return Repository Repository instance
 	 */
-	public static function instance(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory);
+	public static function instance(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager);
 }

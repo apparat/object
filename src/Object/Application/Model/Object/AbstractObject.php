@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,46 +34,24 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
-
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+namespace Apparat\Object\Application\Model\Object;
 
 /**
- * Repository adapter strategy interface
+ * Abstract object
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface AdapterStrategyInterface
+abstract class AbstractObject extends \Apparat\Object\Domain\Model\Object\AbstractObject implements ObjectInterface
 {
 	/**
-	 * Find objects by selector
+	 * Object constructor
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @param ResourceInterface $resource Object resource
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
-
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath);
-
-	/**
-	 * Return the adapter strategy type
-	 *
-	 * @return string Adapter strategy type
-	 */
-	public function getType();
-
-	/**
-	 * Return a signature uniquely representing this adapter's configuration
-	 *
-	 * @return string Adapter signature
-	 */
-	public function getSignature();
+	public function __construct(ResourceInterface $resource)
+	{
+		// TODO: Call parent constructor
+		// parent::__construct($creationDate, $id, $revision);
+	}
 }

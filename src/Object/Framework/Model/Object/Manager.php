@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,46 +34,56 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
+namespace Apparat\Object\Framework\Model\Object;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Application\Factory\Object;
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
- * Repository adapter strategy interface
+ * Object manager
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Framework
  */
-interface AdapterStrategyInterface
+class Manager implements ManagerInterface
 {
 	/**
-	 * Find objects by selector
+	 * Create and return a new object
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @param RepositoryInterface $repository Repository
+	 * @param Type $type Object type
+	 * @param array $data Object data
+	 * @return ObjectInterface Object
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+	public function createObject(RepositoryInterface $repository, Type $type, array $data = [])
+	{
+		// TODO: Implement createObject() method.
+	}
 
 	/**
-	 * Find and return an object resource
+	 * Load an object from a repository
 	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
+	 * @param RepositoryPath $path Repository object path
+	 * @return ObjectInterface Object
 	 */
-	public function getObjectResource($resourcePath);
+	public function loadObject(RepositoryPath $path)
+	{
+		/** @var \Apparat\Object\Framework\Model\Object\Resource $objectResource */
+		$objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource($path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
+		return Object::createFromResource($objectResource);
+	}
 
 	/**
-	 * Return the adapter strategy type
+	 * Return a signature uniquely representing this factory configuration
 	 *
-	 * @return string Adapter strategy type
+	 * @return string Factory signature
 	 */
-	public function getType();
-
-	/**
-	 * Return a signature uniquely representing this adapter's configuration
-	 *
-	 * @return string Adapter signature
-	 */
-	public function getSignature();
+	public function getSignature()
+	{
+		return self::class;
+	}
 }

@@ -37,7 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Factory\ObjectFactory;
+use Apparat\Object\Framework\Model\Object\Manager;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
@@ -68,7 +68,7 @@ class Cluster
 		$repositories = [];
 		foreach ($config as $adapterStrategyConfig) {
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::instance($repositoryAdapterStrategy, new ObjectFactory);
+			$repositories[] = Repository::instance($repositoryAdapterStrategy, new Manager());
 		}
 
 		// Instantiate and return the object repository cluster

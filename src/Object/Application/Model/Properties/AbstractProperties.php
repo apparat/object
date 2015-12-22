@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,40 +34,67 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
-
-use Apparat\Object\Domain\Repository\RepositoryInterface;
+namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Object factory interface
+ * Abstract object properties collection
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface FactoryInterface
+abstract class AbstractProperties implements PropertiesInterface
 {
 	/**
-	 * Create and return a new object
+	 * Property data
 	 *
-	 * @param RepositoryInterface $repository Repository
-	 * @param Type $type Object type
-	 * @param array $data Object data
-	 * @return ObjectInterface Object
+	 * @var array
 	 */
-	public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
+	protected $_data = [];
 
 	/**
-	 * Load an object from a repository
+	 * Property collection constructor
 	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
+	 * @param array $data Properties
 	 */
-	public function loadObject(RepositoryPath $path);
+	public function __construct(array $data)
+	{
+		$this->_data = $data;
+	}
 
 	/**
-	 * Return a signature uniquely representing this factory configuration
+	 * Get a particular property value
 	 *
-	 * @return string Factory signature
+	 * Multi-level properties might be traversed by property name paths separated with colons (":").
+	 *
+	 * @param string $property Property name
+	 * @return mixed Property value
+	 * @throws InvalidArgumentException If the property name is empty
 	 */
-	public function getSignature();
+	public function getProperty($property)
+	{
+		$propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
+
+		// If the property traversal path is empty
+		if (!count($propertyPath)) {
+			throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
+		}
+
+		// Traverse the property tree
+		$propertyPathTraversed = [];
+		$data =& $this->_data;
+		foreach ($propertyPath as $property) {
+			$propertyPathTraversed[] = $property;
+
+			// If the property name step is invalid
+			if (!array_key_exists($property, $data)) {
+				throw new InvalidArgumentException(sprintf('Invalid property name "%s"',
+					implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathTraversed)),
+					InvalidArgumentException::INVALID_PROPERTY_NAME);
+			}
+
+			$data =& $data[$property];
+		}
+
+		return $data;
+	}
 }

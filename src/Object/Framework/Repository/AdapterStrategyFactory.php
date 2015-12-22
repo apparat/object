@@ -52,7 +52,7 @@ class AdapterStrategyFactory
 	 * @var array
 	 */
 	protected static $_types = [
-		'file' => FileAdapterStrategy::class,
+		FileAdapterStrategy::TYPE => FileAdapterStrategy::class,
 	];
 
 	/**

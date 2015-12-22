@@ -36,16 +36,25 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
+use Apparat\Object\Domain\Model\Object\Type;
 
-use Apparat\Object\Domain\Model\Object\AbstractObject;
 
 /**
- * Article obeject
+ * Article object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
 class Article extends AbstractObject
 {
-
+	/**
+	 * Object constructor
+	 *
+	 * @param ResourceInterface $resource Object resource
+	 */
+	public function __construct(ResourceInterface $resource)
+	{
+		$this->_type = new Type(Type::ARTICLE);
+		parent::__construct($resource);
+	}
 }

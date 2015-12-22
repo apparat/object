@@ -34,26 +34,43 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Model\Object;
+namespace ApparatTest;
 
-use Apparat\Object\Domain\Model\Object\Type;
-
+use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Repository\Repository;
+use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
 /**
- * Article object
+ * Object tests
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage ApparatTest
  */
-class Article extends AbstractObject
+class ObjectTest extends AbstractTest
 {
 	/**
-	 * @inheritDoc
+	 * Test repository
+	 *
+	 * @var Repository
 	 */
-	public function __construct(\DateTimeImmutable $creationDate, $id, $revision)
+	protected static $_repository = null;
+
+	/**
+	 * Setup
+	 */
+	public static function setUpBeforeClass()
 	{
-		$this->_type = new Type(Type::ARTICLE);
-		parent::__construct($creationDate, $id, $revision);
+		self::$_repository = \Apparat\Object\Framework\Api\Repository::create([
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+		]);
 	}
 
+	public function testLoadArticleObjectCurrentRevision()
+	{
+		$articleObjectPath = new RepositoryPath(self::$_repository, '/2015/12/21/1.article/1');
+		$articleObject = self::$_repository->loadObject($articleObjectPath);
+		$this->assertInstanceOf(Article::class, $articleObject);
+	}
 }

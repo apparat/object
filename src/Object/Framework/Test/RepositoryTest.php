@@ -85,7 +85,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	protected static $_globRevisions = ['' => 0, '-0' => 0, '-1' => 0];
 
-	/**'
+	/**
 	 * Setup
 	 */
 	public static function setUpBeforeClass()

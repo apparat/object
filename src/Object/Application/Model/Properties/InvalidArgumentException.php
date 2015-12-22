@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,46 +34,48 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
-
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Repository adapter strategy interface
+ * Object properties invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface AdapterStrategyInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Find objects by selector
+	 * Empty property name
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @var int
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+	const EMPTY_PROPERTY_NAME = 1450817720;
 
 	/**
-	 * Find and return an object resource
+	 * Invalid property name
 	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
+	 * @var int
 	 */
-	public function getObjectResource($resourcePath);
+	const INVALID_PROPERTY_NAME = 1450818168;
 
 	/**
-	 * Return the adapter strategy type
+	 * Empty property collection name
 	 *
-	 * @return string Adapter strategy type
+	 * @var int
 	 */
-	public function getType();
+	const EMPTY_COLLECTION_NAME = 1450821755;
 
 	/**
-	 * Return a signature uniquely representing this adapter's configuration
+	 * Invalid property collection name
 	 *
-	 * @return string Adapter signature
+	 * @var int
 	 */
-	public function getSignature();
+	const INVALID_COLLECTION_NAME = 1450821628;
+
+	/**
+	 * Invalid object type
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_TYPE = 1450824343;
 }

@@ -69,4 +69,15 @@ class RepositoryPath extends Path
 	{
 		return $this->_repository;
 	}
+
+	/**
+	 * Return the repository relative object path with a file extension
+	 *
+	 * @param string $extension File extension
+	 * @return string Repository relative object path with extension
+	 */
+	public function withExtension($extension)
+	{
+		return $this.'.'.strtolower($extension);
+	}
 }

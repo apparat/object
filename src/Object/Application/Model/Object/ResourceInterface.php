@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,46 +34,77 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
+namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Application\Model\Properties\MetaProperties;
+use Apparat\Object\Application\Model\Properties\SystemProperties;
 
 /**
- * Repository adapter strategy interface
+ * Object resource interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface AdapterStrategyInterface
+interface ResourceInterface
 {
 	/**
-	 * Find objects by selector
+	 * Get the system object properties collection
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @return SystemProperties System object properties collection
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+	public function getSystemProperties();
 
 	/**
-	 * Find and return an object resource
+	 * Set the system object properties collection
 	 *
-	 * @param string $resourcePath Repository relative resource path
+	 * @param SystemProperties $systemProperties
 	 * @return ResourceInterface Object resource
 	 */
-	public function getObjectResource($resourcePath);
+	public function setSystemProperties(SystemProperties $systemProperties);
 
 	/**
-	 * Return the adapter strategy type
+	 * Get the meta object properties collection
 	 *
-	 * @return string Adapter strategy type
+	 * @return MetaProperties Meta object properties collection
 	 */
-	public function getType();
+	public function getMetaProperties();
 
 	/**
-	 * Return a signature uniquely representing this adapter's configuration
+	 * Set the meta object properties collection
 	 *
-	 * @return string Adapter signature
+	 * @param MetaProperties $metaProperties
+	 * @return ResourceInterface Object resource
 	 */
-	public function getSignature();
+	public function setMetaProperties(MetaProperties $metaProperties);
+
+	/**
+	 * Get the domain object properties collection
+	 *
+	 * @return AbstractDomainProperties Domain object properties collection
+	 */
+	public function getDomainProperties();
+
+	/**
+	 * Set the domain object properties collection
+	 *
+	 * @param AbstractDomainProperties $domainProperties
+	 * @return ResourceInterface Object resource
+	 */
+	public function setDomainProperties(AbstractDomainProperties $domainProperties);
+
+	/**
+	 * Return the object payload
+	 *
+	 * @return string Object payload
+	 */
+	public function getPayload();
+
+	/**
+	 * Set the object payload
+	 *
+	 * @param string $payload Object payload
+	 * @return ResourceInterface Object resource
+	 */
+	public function setPayload($payload);
 }

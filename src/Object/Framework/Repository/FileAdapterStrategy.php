@@ -36,11 +36,14 @@
 
 namespace Apparat\Object\Framework\Repository;
 
+use Apparat\Object\Application\Model\Object\ResourceInterface;
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Framework\Factory\ResourceFactory;
+use Apparat\Resource\Framework\Io\File\AbstractFileReaderWriter;
 
 /**
  * File adapter strategy
@@ -59,7 +62,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 	 */
 	protected $_config = null;
 	/**
-	 * Root directory
+	 * Root directory (without
 	 *
 	 * @var string
 	 */
@@ -112,7 +115,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 	 *
 	 * @param Selector|SelectorInterface $selector Object selector
 	 * @param RepositoryInterface $repository Object repository
-	 * @return array[Path] Object paths
+	 * @return array[PathInterface] Object paths
 	 */
 	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
 	{
@@ -167,5 +170,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 		return array_map(function ($objectPath) use ($repository) {
 			return new RepositoryPath($repository, '/'.$objectPath);
 		}, glob(ltrim($glob, '/'), $globFlags));
+	}
+
+	/**
+	 * Find and return an object resource
+	 *
+	 * @param string $resourcePath Repository relative resource path
+	 * @return ResourceInterface Object resource
+	 */
+	public function getObjectResource($resourcePath)
+	{
+		return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->_root.$resourcePath);
 	}
 }

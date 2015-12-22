@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,46 +34,30 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
-
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Repository adapter strategy interface
+ * Properties collection interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface AdapterStrategyInterface
+interface PropertiesInterface
 {
 	/**
-	 * Find objects by selector
+	 * Property traversal separator
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @var string
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
 
 	/**
-	 * Find and return an object resource
+	 * Get a particular property value
 	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath);
-
-	/**
-	 * Return the adapter strategy type
+	 * Multi-level properties might be traversed by property name paths separated with colons (":").
 	 *
-	 * @return string Adapter strategy type
+	 * @param string $property Property name
+	 * @return mixed Property value
 	 */
-	public function getType();
-
-	/**
-	 * Return a signature uniquely representing this adapter's configuration
-	 *
-	 * @return string Adapter signature
-	 */
-	public function getSignature();
+	public function getProperty($property);
 }

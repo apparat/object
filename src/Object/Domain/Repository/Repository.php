@@ -37,7 +37,7 @@ namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Common\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\FactoryInterface;
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
@@ -62,9 +62,9 @@ class Repository implements RepositoryInterface
 	/**
 	 * Object factory
 	 *
-	 * @var FactoryInterface
+	 * @var ManagerInterface
 	 */
-	protected $_objectFactory = null;
+	protected $_objectManager = null;
 	/**
 	 * Instance specific object cache
 	 *
@@ -87,14 +87,14 @@ class Repository implements RepositoryInterface
 	 * Repository singleton instantiator
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param FactoryInterface $objectFactory Object factory
+	 * @param ManagerInterface $objectManager Object manager
 	 * @return Repository Repository instance
 	 */
-	public static function instance(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
+	public static function instance(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
 	{
-		$signature = $adapterStrategy->getSignature().$objectFactory->getSignature();
+		$signature = $adapterStrategy->getSignature().$objectManager->getSignature();
 		if (empty(self::$_instances[$signature])) {
-			self::$_instances[$signature] = new static($adapterStrategy, $objectFactory);
+			self::$_instances[$signature] = new static($adapterStrategy, $objectManager);
 		}
 
 		return self::$_instances[$signature];
@@ -143,7 +143,7 @@ class Repository implements RepositoryInterface
 	{
 		// TODO: Really OK to cache? (Immutability ...)
 		if (empty($this->_objectCache[$path->getId()->getId()])) {
-			$this->_objectCache[$path->getId()->getId()] = $this->_objectFactory->loadObject($path);
+			$this->_objectCache[$path->getId()->getId()] = $this->_objectManager->loadObject($path);
 		}
 
 		return $this->_objectCache[$path->getId()->getId()];
@@ -165,11 +165,11 @@ class Repository implements RepositoryInterface
 	 * Repository constructor
 	 *
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param FactoryInterface $objectFactory Object factory
+	 * @param ManagerInterface $objectManager Object factory
 	 */
-	protected function __construct(AdapterStrategyInterface $adapterStrategy, FactoryInterface $objectFactory)
+	protected function __construct(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
 	{
 		$this->_adapterStrategy = $adapterStrategy;
-		$this->_objectFactory = $objectFactory;
+		$this->_objectManager = $objectManager;
 	}
 }

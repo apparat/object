@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Framework\Model\Object;
 
+use Apparat\Object\Domain\Model\Object\Type;
 
-use Apparat\Object\Domain\Model\Object\AbstractObject;
 
 /**
  * Article object
@@ -47,5 +47,13 @@ use Apparat\Object\Domain\Model\Object\AbstractObject;
  */
 class Article extends AbstractObject
 {
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct(\DateTimeImmutable $creationDate, $id, $revision)
+	{
+		$this->_type = new Type(Type::ARTICLE);
+		parent::__construct($creationDate, $id, $revision);
+	}
 
 }

@@ -90,6 +90,24 @@ class Revision
 	}
 
 	/**
+	 * Test wheter this is the draft revision
+	 *
+	 * @return bool Is draft revision
+	 */
+	public function isDraft() {
+		return $this->_revision === self::DRAFT;
+	}
+
+	/**
+	 * Test wheter this is the current revision
+	 *
+	 * @return bool Is current revision
+	 */
+	public function isCurrent() {
+		return $this->_revision === self::CURRENT;
+	}
+
+	/**
 	 * Test whether a revision number is valid
 	 *
 	 * @param int|NULL $revision Revision number

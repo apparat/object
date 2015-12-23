@@ -36,12 +36,7 @@
 
 namespace Apparat\Object\Framework\Model\Object;
 
-use Apparat\Object\Application\Factory\Properties;
 use Apparat\Object\Application\Model\Object\ResourceInterface;
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Application\Model\Properties\MetaProperties;
-use Apparat\Object\Application\Model\Properties\SystemProperties;
-use Apparat\Resource\Domain\Contract\ReaderInterface;
 use Apparat\Resource\Framework\Model\Resource\FrontMarkResource;
 
 /**
@@ -53,124 +48,25 @@ use Apparat\Resource\Framework\Model\Resource\FrontMarkResource;
 class Resource extends FrontMarkResource implements ResourceInterface
 {
 	/**
-	 * Property data
+	 * Return the property data
 	 *
-	 * @var array
+	 * @return array Property data
 	 */
-	protected $_propertyData = null;
-	/**
-	 * System properties
-	 *
-	 * @var SystemProperties
-	 */
-	protected $_systemProperties = null;
-	/**
-	 * Meta properties
-	 *
-	 * @var MetaProperties
-	 */
-	protected $_metaProperties = null;
-	/**
-	 * Domain properties
-	 *
-	 * @var AbstractDomainProperties
-	 */
-	protected $_domainProperties = null;
-
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
-
-	/**
-	 * Object resource constructor
-	 *
-	 * @param ReaderInterface $reader Reader instance
-	 */
-	public function __construct(ReaderInterface $reader)
+	public function getPropertyData()
 	{
-		parent::__construct($reader);
-
-		// Load the property data
-		$this->_propertyData = $this->getData();
+		return $this->getData();
 	}
 
 	/**
-	 * Get the system object properties collection
+	 * Set the property data
 	 *
-	 * @return SystemProperties System object properties collection
-	 */
-	public function getSystemProperties()
-	{
-		// Lazy-loading the system properties
-		if (!$this->_systemProperties instanceof SystemProperties) {
-			$this->_systemProperties = Properties::create(SystemProperties::COLLECTION, $this->_propertyData, null);
-		}
-
-		return $this->_systemProperties;
-	}
-
-	/**
-	 * Set the system object properties collection
-	 *
-	 * @param SystemProperties $systemProperties
+	 * @param array $data Property data
 	 * @return ResourceInterface Object resource
 	 */
-	public function setSystemProperties(SystemProperties $systemProperties)
+	public function setPropertyData(array $data)
 	{
-		// TODO: Implement setSystemProperties() method.
-	}
-
-	/**
-	 * Get the meta object properties collection
-	 *
-	 * @return MetaProperties Meta object properties collection
-	 */
-	public function getMetaProperties()
-	{
-		// Lazy-loading the meta properties
-		if (!$this->_metaProperties instanceof MetaProperties) {
-			$this->_metaProperties = Properties::create(MetaProperties::COLLECTION, $this->_propertyData, null);
-		}
-
-		return $this->_metaProperties;
-	}
-
-	/**
-	 * Set the meta object properties collection
-	 *
-	 * @param MetaProperties $metaProperties
-	 * @return ResourceInterface Object resource
-	 */
-	public function setMetaProperties(MetaProperties $metaProperties)
-	{
-		// TODO: Implement setMetaProperties() method.
-	}
-
-	/**
-	 * Get the domain object properties collection
-	 *
-	 * @return AbstractDomainProperties Domain object properties collection
-	 */
-	public function getDomainProperties()
-	{
-		// Lazy-loading the domain properties
-		if (!$this->_domainProperties instanceof AbstractDomainProperties) {
-			$this->_domainProperties = Properties::create(AbstractDomainProperties::COLLECTION, $this->_propertyData,
-				$this->getSystemProperties()->getProperty('type'));
-		}
-
-		return $this->_domainProperties;
-	}
-
-	/**
-	 * Set the domain object properties collection
-	 *
-	 * @param AbstractDomainProperties $domainProperties
-	 * @return ResourceInterface Object resource
-	 */
-	public function setDomainProperties(AbstractDomainProperties $domainProperties)
-	{
-		// TODO: Implement setDomainProperties() method.
+		$this->setData($data);
+		return $this;
 	}
 
 	/**
@@ -180,7 +76,7 @@ class Resource extends FrontMarkResource implements ResourceInterface
 	 */
 	public function getPayload()
 	{
-		// TODO: Implement getPayload() method.
+		return $this->get();
 	}
 
 	/**
@@ -191,6 +87,7 @@ class Resource extends FrontMarkResource implements ResourceInterface
 	 */
 	public function setPayload($payload)
 	{
-		// TODO: Implement setPayload() method.
+		$this->set($payload);
+		return $this;
 	}
 }

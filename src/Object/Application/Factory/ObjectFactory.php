@@ -38,7 +38,11 @@ namespace Apparat\Object\Application\Factory;
 
 use Apparat\Object\Application\Model\Object\InvalidArgumentException;
 use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Application\Model\Properties\MetaProperties;
+use Apparat\Object\Application\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
 use Apparat\Object\Domain\Model\Object\Type;
 
 /**
@@ -47,23 +51,54 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application\Factory
  */
-class Object
+class ObjectFactory
 {
 	/**
 	 * Create an object
 	 *
 	 * @param ResourceInterface $objectResource
+	 * @param RepositoryPath $path Repository object path
 	 * @return ObjectInterface Object
+	 * @throws InvalidArgumentException If the object type is undefined
+	 * @throws InvalidArgumentException If the object type is invalid
 	 */
-	public static function createFromResource(ResourceInterface $objectResource)
+	public static function createFromResource(ResourceInterface $objectResource, RepositoryPath $path)
 	{
-		$objectType = $objectResource->getSystemProperties()->getProperty('type');
+		$propertyData = $objectResource->getPropertyData();
+
+		// If the object type is undefined
+		if (
+			!array_key_exists(SystemProperties::COLLECTION, $propertyData) ||
+			!is_array($propertyData[SystemProperties::COLLECTION]) ||
+			empty($propertyData[SystemProperties::COLLECTION]['type'])
+		) {
+			throw new InvalidArgumentException('Undefined object type',
+				InvalidArgumentException::UNDEFINED_OBJECT_TYPE);
+		}
+
+		// If the object type is invalid
+		$objectType = $propertyData[SystemProperties::COLLECTION]['type'];
 		$objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
-		if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
+		$domainPropertyCollectionClass = 'Apparat\\Object\\Application\\Model\\Properties\\Domain\\'.ucfirst($objectType);
+		if (!Type::isValidType($objectType) || !class_exists($objectClass) || !class_exists($domainPropertyCollectionClass)) {
 			throw new InvalidArgumentException(sprintf('Invalid object type "%s"', $objectType),
 				InvalidArgumentException::INVALID_OBJECT_TYPE);
 		}
 
-		return new $objectClass($objectResource);
+		// Instantiate the system properties
+		$systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array($propertyData[SystemProperties::COLLECTION])) ? [] : $propertyData[SystemProperties::COLLECTION];
+		$systemProperties = new SystemProperties($systemPropertyData);
+
+		// Instantiate the meta properties
+		$metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array($propertyData[MetaProperties::COLLECTION])) ? [] : $propertyData[MetaProperties::COLLECTION];
+		$metaProperties = new MetaProperties($metaPropertyData);
+
+		// Instantiate the domain properties
+		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
+		$domainProperties = new $domainPropertyCollectionClass($domainPropertyData);
+
+		// Instantiate the object
+		return new $objectClass($systemProperties, $metaProperties, $domainProperties, $objectResource->getPayload(),
+			$path);
 	}
 }

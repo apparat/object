@@ -36,10 +36,6 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Application\Model\Properties\MetaProperties;
-use Apparat\Object\Application\Model\Properties\SystemProperties;
-
 /**
  * Object resource interface
  *
@@ -49,49 +45,19 @@ use Apparat\Object\Application\Model\Properties\SystemProperties;
 interface ResourceInterface
 {
 	/**
-	 * Get the system object properties collection
+	 * Return the property data
 	 *
-	 * @return SystemProperties System object properties collection
+	 * @return array Property data
 	 */
-	public function getSystemProperties();
+	public function getPropertyData();
 
 	/**
-	 * Set the system object properties collection
+	 * Set the property data
 	 *
-	 * @param SystemProperties $systemProperties
+	 * @param array $data Property data
 	 * @return ResourceInterface Object resource
 	 */
-	public function setSystemProperties(SystemProperties $systemProperties);
-
-	/**
-	 * Get the meta object properties collection
-	 *
-	 * @return MetaProperties Meta object properties collection
-	 */
-	public function getMetaProperties();
-
-	/**
-	 * Set the meta object properties collection
-	 *
-	 * @param MetaProperties $metaProperties
-	 * @return ResourceInterface Object resource
-	 */
-	public function setMetaProperties(MetaProperties $metaProperties);
-
-	/**
-	 * Get the domain object properties collection
-	 *
-	 * @return AbstractDomainProperties Domain object properties collection
-	 */
-	public function getDomainProperties();
-
-	/**
-	 * Set the domain object properties collection
-	 *
-	 * @param AbstractDomainProperties $domainProperties
-	 * @return ResourceInterface Object resource
-	 */
-	public function setDomainProperties(AbstractDomainProperties $domainProperties);
+	public function setPropertyData(array $data);
 
 	/**
 	 * Return the object payload

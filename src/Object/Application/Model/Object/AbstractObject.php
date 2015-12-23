@@ -36,21 +36,72 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
+use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Application\Model\Properties\MetaProperties;
+use Apparat\Object\Application\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Model\Object\RepositoryPath;
+
 /**
  * Abstract object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractObject extends \Apparat\Object\Domain\Model\Object\AbstractObject implements ObjectInterface
+abstract class AbstractObject implements ObjectInterface
 {
+	/**
+	 * System properties
+	 *
+	 * @var SystemProperties
+	 */
+	protected $_systemProperties;
+	/**
+	 * Meta properties
+	 *
+	 * @var MetaProperties
+	 */
+	protected $_metaProperties;
+	/**
+	 * Domain properties
+	 *
+	 * @var AbstractDomainProperties
+	 */
+	protected $_domainProperties;
+	/**
+	 * Object payload
+	 *
+	 * @var string
+	 */
+	protected $_payload;
+	/**
+	 * Repository path
+	 *
+	 * @var RepositoryPath
+	 */
+	protected $_path;
+
 	/**
 	 * Object constructor
 	 *
-	 * @param ResourceInterface $resource Object resource
+	 * @param SystemProperties $systemProperties System properties
+	 * @param MetaProperties $metaProperties Meta properties
+	 * @param AbstractDomainProperties $domainProperties Domain properties
+	 * @param string $payload Object payload
+	 * @param RepositoryPath $path Object repository path
 	 */
-	public function __construct(ResourceInterface $resource)
-	{
+	public function __construct(
+		SystemProperties $systemProperties,
+		MetaProperties $metaProperties,
+		AbstractDomainProperties $domainProperties,
+		$payload = '',
+		RepositoryPath $path
+	) {
+		$this->_systemProperties = $systemProperties;
+		$this->_metaProperties = $metaProperties;
+		$this->_domainProperties = $domainProperties;
+		$this->_payload = $payload;
+		$this->_path = $path;
+
 		// TODO: Call parent constructor
 		// parent::__construct($creationDate, $id, $revision);
 	}

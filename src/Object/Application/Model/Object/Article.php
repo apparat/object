@@ -48,13 +48,9 @@ use Apparat\Object\Domain\Model\Object\Type;
 class Article extends AbstractObject
 {
 	/**
-	 * Object constructor
+	 * Object type
 	 *
-	 * @param ResourceInterface $resource Object resource
+	 * @var string
 	 */
-	public function __construct(ResourceInterface $resource)
-	{
-		$this->_type = new Type(Type::ARTICLE);
-		parent::__construct($resource);
-	}
+	const TYPE = Type::ARTICLE;
 }

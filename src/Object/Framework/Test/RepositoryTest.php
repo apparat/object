@@ -36,7 +36,7 @@
 
 namespace ApparatTest;
 
-use Apparat\Object\Domain\Factory\Selector as SelectorFactory;
+use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
@@ -286,7 +286,8 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test a repository path
 	 */
-	public function testRepositoryPath() {
+	public function testRepositoryPath()
+	{
 		$fileRepository = RepositoryFactory::create([
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,

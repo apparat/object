@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Framework\Model\Object;
 
-use Apparat\Object\Application\Factory\Object;
+use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
@@ -74,7 +74,7 @@ class Manager implements ManagerInterface
 	{
 		/** @var \Apparat\Object\Framework\Model\Object\Resource $objectResource */
 		$objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource($path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
-		return Object::createFromResource($objectResource);
+		return ObjectFactory::createFromResource($objectResource, $path);
 	}
 
 	/**

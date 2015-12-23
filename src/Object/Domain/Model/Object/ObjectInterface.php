@@ -42,24 +42,5 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 interface ObjectInterface
 {
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId();
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType();
-
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision();
 }

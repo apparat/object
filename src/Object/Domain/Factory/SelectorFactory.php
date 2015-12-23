@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Selector
+class SelectorFactory
 {
 	/**
 	 * Date PCRE pattern

@@ -187,7 +187,6 @@ class SystemProperties extends AbstractProperties
 	 * Set the object ID
 	 *
 	 * @param Id $id
-	 * @return SystemProperties
 	 */
 	protected function _setId(Id $id)
 	{
@@ -232,6 +231,5 @@ class SystemProperties extends AbstractProperties
 	protected function _setHash($hash)
 	{
 		$this->_hash = $hash;
-		return $this;
 	}
 }

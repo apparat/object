@@ -45,9 +45,84 @@ namespace Apparat\Object\Application\Model\Properties;
 class MetaProperties extends AbstractProperties
 {
 	/**
+	 * Object keywords
+	 *
+	 * @var array
+	 */
+	protected $_keywords = [];
+
+	/**
+	 * Object categories
+	 *
+	 * @var array
+	 */
+	protected $_categories = [];
+
+	/**
 	 * Collection name
 	 *
 	 * @var string
 	 */
 	const COLLECTION = 'meta';
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
+	/**
+	 * System properties constructor
+	 *
+	 * @param array $data System properties
+	 */
+	public function __construct(array $data)
+	{
+		parent::__construct($data);
+
+		// Initialize the keywords
+		if (array_key_exists('keywords', $this->_data)) {
+			$this->setKeywords((array)$this->_data['keywords']);
+		}
+	}
+
+	/**
+	 * Return the object keywords
+	 *
+	 * @return array Object keywords
+	 */
+	public function getKeywords()
+	{
+		return $this->_keywords;
+	}
+
+	/**
+	 * Set the object keywords
+	 *
+	 * @param array $keywords Object keywords
+	 */
+	public function setKeywords(array $keywords)
+	{
+		$this->_keywords = array_unique($keywords);
+		sort($this->_keywords, SORT_NATURAL);
+	}
+
+	/**
+	 * Return the object categories
+	 *
+	 * @return array Object categories
+	 */
+	public function getCategories()
+	{
+		return $this->_categories;
+	}
+
+	/**
+	 * Set the object categories
+	 *
+	 * @param array $categories Object categories
+	 */
+	public function setCategories(array $categories)
+	{
+		$this->_categories = array_unique($categories);
+		sort($this->_categories, SORT_NATURAL);
+	}
 }

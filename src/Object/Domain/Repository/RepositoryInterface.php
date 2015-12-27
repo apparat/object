@@ -89,9 +89,10 @@ interface RepositoryInterface extends SearchableRepositoryInterface, SingletonIn
 	/**
 	 * Repository singleton instantiator
 	 *
+	 * @param string $url Apparat base URL
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 * @param ManagerInterface $objectManager Object manager
 	 * @return Repository Repository instance
 	 */
-	public static function instance(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager);
+	public static function instance($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager);
 }

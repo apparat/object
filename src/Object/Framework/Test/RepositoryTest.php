@@ -192,7 +192,10 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testInvalidAdapterStrategyType()
 	{
-		AdapterStrategyFactory::create(['type' => 'invalid']);
+		AdapterStrategyFactory::create([
+			'url' => 'http://apparat',
+			'type' => 'invalid',
+		]);
 	}
 
 	/**
@@ -201,6 +204,7 @@ class RepositoryTest extends AbstractTest
 	public function testFileAdapterStrategy()
 	{
 		$fileAdapterStrategy = AdapterStrategyFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__,
 		]);
@@ -217,6 +221,7 @@ class RepositoryTest extends AbstractTest
 	public function testMissingFileStrategyRoot()
 	{
 		RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 		]);
 	}
@@ -230,6 +235,7 @@ class RepositoryTest extends AbstractTest
 	public function testEmptyFileStrategyRoot()
 	{
 		RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => '',
 		]);
@@ -244,6 +250,7 @@ class RepositoryTest extends AbstractTest
 	public function testInvalidFileStrategyRoot()
 	{
 		RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __FILE__,
 		]);
@@ -255,6 +262,7 @@ class RepositoryTest extends AbstractTest
 	public function testFileRepository()
 	{
 		$fileRepository = RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);
@@ -273,6 +281,7 @@ class RepositoryTest extends AbstractTest
 	public function testFileRepositoryRevisions()
 	{
 		$fileRepository = RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);
@@ -289,6 +298,7 @@ class RepositoryTest extends AbstractTest
 	public function testRepositoryPath()
 	{
 		$fileRepository = RepositoryFactory::create([
+			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);

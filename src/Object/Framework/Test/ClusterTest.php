@@ -66,6 +66,7 @@ class ClusterTest extends AbstractTest
 	{
 		$fileRepositoryCluster = ClusterFactory::create([
 			[
+				'url' => 'http://apparat',
 				'type' => FileAdapterStrategy::TYPE,
 				'root' => __DIR__,
 			]

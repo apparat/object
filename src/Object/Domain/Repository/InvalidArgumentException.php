@@ -68,6 +68,12 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_ADAPTER_STRATEGY_SIGNATURE = 1450136346;
+	/**
+	 * Invalid apparat base URL
+	 *
+	 * @var string
+	 */
+	const INVALID_APPARAT_BASE_URL = 1451162015;
 
 	/**
 	 * Exception constructor

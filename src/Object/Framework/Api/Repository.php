@@ -53,6 +53,7 @@ class Repository
 	 * @param array $config Repository configuration
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
 	 * @throws InvalidArgumentException If the repository configuration is empty
+	 * @throws InvalidArgumentException If the apparat base URL is not defined
 	 * @api
 	 */
 	public static function create(array $config)
@@ -63,10 +64,16 @@ class Repository
 				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
 		}
 
+		// If the apparat base URL is not defined
+		if (empty($config['url'])) {
+			throw new InvalidArgumentException('Missing apparat base URL',
+				InvalidArgumentException::MISSING_APPARAT_BASE_URL);
+		}
+
 		// Instantiate the repository adapter strategy
 		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
 
 		// Instantiate and return the object repository
-		return \Apparat\Object\Domain\Repository\Repository::instance($repositoryAdapterStrategy, new Manager());
+		return \Apparat\Object\Domain\Repository\Repository::instance($config['url'], $repositoryAdapterStrategy, new Manager());
 	}
 }

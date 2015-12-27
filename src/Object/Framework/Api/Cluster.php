@@ -54,6 +54,7 @@ class Cluster
 	 * @param array $config Repository cluster configuration
 	 * @return \Apparat\Object\Domain\Model\Cluster\Cluster Object repository cluster
 	 * @throws InvalidArgumentException If the repository cluster configuration is empty
+	 * @throws InvalidArgumentException If the apparat base URL is not defined
 	 * @api
 	 */
 	public static function create(array $config)
@@ -67,9 +68,18 @@ class Cluster
 		// Instantiate all repositories
 		$repositories = [];
 		foreach ($config as $adapterStrategyConfig) {
+
+			// If the apparat base URL is not defined
+			if (empty($adapterStrategyConfig['url'])) {
+				throw new InvalidArgumentException('Missing apparat base URL',
+					InvalidArgumentException::MISSING_APPARAT_BASE_URL);
+			}
+
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
-			$repositories[] = Repository::instance($repositoryAdapterStrategy, new Manager());
+			$repositories[] = Repository::instance($adapterStrategyConfig['url'], $repositoryAdapterStrategy, new Manager());
 		}
+
+		// TODO: Include apparat base URL in repository instantiation
 
 		// Instantiate and return the object repository cluster
 		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);

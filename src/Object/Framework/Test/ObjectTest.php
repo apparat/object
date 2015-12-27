@@ -62,6 +62,7 @@ class ObjectTest extends AbstractTest
 	public static function setUpBeforeClass()
 	{
 		self::$_repository = \Apparat\Object\Framework\Api\Repository::create([
+			'url' => getenv('APPARAT_BASE_URL'),
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
 		]);

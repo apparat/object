@@ -6,6 +6,7 @@
     </testsuites>
 
     <php>
+        <env name="APPARAT_BASE_URL" value="http://apparat/"/>
         <env name="OBJECT_DATE_PRECISION" value="3"/>
         <env name="OBJECT_RESOURCE_EXTENSION" value="md"/>
     </php>

@@ -54,6 +54,12 @@ class Repository implements RepositoryInterface
 	use SingletonTrait;
 
 	/**
+	 * Apparat base URL
+	 *
+	 * @var string
+	 */
+	protected $_url = null;
+	/**
 	 * Adapter strategy
 	 *
 	 * @var AdapterStrategyInterface
@@ -86,15 +92,16 @@ class Repository implements RepositoryInterface
 	/**
 	 * Repository singleton instantiator
 	 *
+	 * @param string $url Apparat base URL
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 * @param ManagerInterface $objectManager Object manager
 	 * @return Repository Repository instance
 	 */
-	public static function instance(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
+	public static function instance($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
 	{
-		$signature = $adapterStrategy->getSignature().$objectManager->getSignature();
+		$signature = $url.$adapterStrategy->getSignature().$objectManager->getSignature();
 		if (empty(self::$_instances[$signature])) {
-			self::$_instances[$signature] = new static($adapterStrategy, $objectManager);
+			self::$_instances[$signature] = new static($url, $adapterStrategy, $objectManager);
 		}
 
 		return self::$_instances[$signature];
@@ -164,11 +171,20 @@ class Repository implements RepositoryInterface
 	/**
 	 * Repository constructor
 	 *
+	 * @param string $url Apparat base URL
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 * @param ManagerInterface $objectManager Object factory
+	 * @throws InvalidArgumentException If the apparat base URL isn't valid
 	 */
-	protected function __construct(AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
+	protected function __construct($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
 	{
+		// If the apparat base URL isn't valid
+		if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match("%^https?\:\/\/%i", $url)) {
+			throw new InvalidArgumentException(sprintf('Invalid apparat base URL "%s"', $url),
+				InvalidArgumentException::INVALID_APPARAT_BASE_URL);
+		}
+
+		$this->_url = $url;
 		$this->_adapterStrategy = $adapterStrategy;
 		$this->_objectManager = $objectManager;
 	}

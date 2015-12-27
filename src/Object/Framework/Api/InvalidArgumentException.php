@@ -50,4 +50,10 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const EMPTY_REPOSITORY_CONFIG = 1449947621;
+	/**
+	 * Missing apparat base URL
+	 *
+	 * @var int
+	 */
+	const MISSING_APPARAT_BASE_URL = 1451162237;
 }

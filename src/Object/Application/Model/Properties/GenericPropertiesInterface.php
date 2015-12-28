@@ -37,12 +37,21 @@
 namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Abstract object properties collection
+ * Generics properties interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractProperties implements PropertiesInterface
+interface GenericPropertiesInterface extends PropertiesInterface
 {
 
+	/**
+	 * Get a particular property value
+	 *
+	 * Multi-level properties might be traversed by property name paths separated with colons (":").
+	 *
+	 * @param string $property Property name
+	 * @return mixed Property value
+	 */
+	public function getProperty($property);
 }

@@ -38,6 +38,8 @@ namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Application\Model\Properties\MetaProperties;
+use Apparat\Object\Application\Model\Properties\ProcessingInstructions;
+use Apparat\Object\Application\Model\Properties\Relations;
 use Apparat\Object\Application\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
 
@@ -68,6 +70,18 @@ abstract class AbstractObject implements ObjectInterface
 	 */
 	protected $_domainProperties;
 	/**
+	 * Object relations
+	 *
+	 * @var Relations
+	 */
+	private $_relations;
+	/**
+	 * Processing instructions
+	 *
+	 * @var ProcessingInstructions
+	 */
+	private $_processingInstructions;
+	/**
 	 * Object payload
 	 *
 	 * @var string
@@ -86,6 +100,8 @@ abstract class AbstractObject implements ObjectInterface
 	 * @param SystemProperties $systemProperties System properties
 	 * @param MetaProperties $metaProperties Meta properties
 	 * @param AbstractDomainProperties $domainProperties Domain properties
+	 * @param Relations $relations Object relations
+	 * @param ProcessingInstructions $processingInstructions Processing instructions
 	 * @param string $payload Object payload
 	 * @param RepositoryPath $path Object repository path
 	 */
@@ -93,16 +109,17 @@ abstract class AbstractObject implements ObjectInterface
 		SystemProperties $systemProperties,
 		MetaProperties $metaProperties,
 		AbstractDomainProperties $domainProperties,
+		Relations $relations,
+		ProcessingInstructions $processingInstructions,
 		$payload = '',
 		RepositoryPath $path
 	) {
 		$this->_systemProperties = $systemProperties;
 		$this->_metaProperties = $metaProperties;
 		$this->_domainProperties = $domainProperties;
+		$this->_relations = $relations;
+		$this->_processingInstructions = $processingInstructions;
 		$this->_payload = $payload;
 		$this->_path = $path;
-
-		// TODO: Call parent constructor
-		// parent::__construct($creationDate, $id, $revision);
 	}
 }

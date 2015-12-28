@@ -40,6 +40,8 @@ use Apparat\Object\Application\Model\Object\InvalidArgumentException;
 use Apparat\Object\Application\Model\Object\ResourceInterface;
 use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Application\Model\Properties\MetaProperties;
+use Apparat\Object\Application\Model\Properties\ProcessingInstructions;
+use Apparat\Object\Application\Model\Properties\Relations;
 use Apparat\Object\Application\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
@@ -97,8 +99,17 @@ class ObjectFactory
 		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
 		$domainProperties = new $domainPropertyCollectionClass($domainPropertyData);
 
+		// Instantiate the object relations
+		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
+		$relations = new Relations($relationData);
+
+		// Instantiate the processing instructions
+		$processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array($propertyData[ProcessingInstructions::COLLECTION])) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
+		$processingInstructions = new ProcessingInstructions($processingInstructionData);
+
 		// Instantiate the object
-		return new $objectClass($systemProperties, $metaProperties, $domainProperties, $objectResource->getPayload(),
+		return new $objectClass($systemProperties, $metaProperties, $domainProperties, $relations,
+			$processingInstructions, $objectResource->getPayload(),
 			$path);
 	}
 }

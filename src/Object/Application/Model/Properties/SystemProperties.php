@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class SystemProperties extends AbstractProperties
+class SystemProperties implements PropertiesInterface
 {
 	/**
 	 * Object ID
@@ -68,6 +68,13 @@ class SystemProperties extends AbstractProperties
 	 * @var Revision
 	 */
 	protected $_revision = null;
+
+	/**
+	 * Creation date
+	 *
+	 * @var \DateTimeImmutable
+	 */
+	protected $_created = null;
 
 	/**
 	 * Publication date
@@ -101,31 +108,34 @@ class SystemProperties extends AbstractProperties
 	 */
 	public function __construct(array $data)
 	{
-		parent::__construct($data);
-
 		// Initialize the object ID
-		if (array_key_exists('id', $this->_data)) {
-			$this->_setId(new Id(intval($this->_data['id'])));
+		if (array_key_exists('id', $data)) {
+			$this->_setId(new Id(intval($data['id'])));
 		}
 
 		// Initialize the object type
-		if (array_key_exists('type', $this->_data)) {
-			$this->_setType(new Type($this->_data['type']));
+		if (array_key_exists('type', $data)) {
+			$this->_setType(new Type($data['type']));
 		}
 
 		// Initialize the object revision
-		if (array_key_exists('revision', $this->_data)) {
-			$this->_setRevision(new Revision(intval($this->_data['revision'])));
+		if (array_key_exists('revision', $data)) {
+			$this->_setRevision(new Revision(intval($data['revision'])));
+		}
+
+		// Initialize the object creation date
+		if (array_key_exists('created', $data)) {
+			$this->_setCreated(new \DateTimeImmutable('@'.$data['created']));
 		}
 
 		// Initialize the object publication date
-		if (array_key_exists('published', $this->_data)) {
-			$this->_setPublished(new \DateTimeImmutable('@'.$this->_data['published']));
+		if (array_key_exists('published', $data)) {
+			$this->_setPublished(new \DateTimeImmutable('@'.$data['published']));
 		}
 
 		// Initialize the object hash
-		if (array_key_exists('hash', $this->_data)) {
-			$this->_setHash($this->_data['hash']);
+		if (array_key_exists('hash', $data)) {
+			$this->_setHash($data['hash']);
 		}
 	}
 
@@ -157,6 +167,16 @@ class SystemProperties extends AbstractProperties
 	public function getRevision()
 	{
 		return $this->_revision;
+	}
+
+	/**
+	 * Return the creation date & time
+	 *
+	 * @return \DateTimeImmutable Creation date & time
+	 */
+	public function getCreated()
+	{
+		return $this->_created;
 	}
 
 	/**
@@ -221,6 +241,16 @@ class SystemProperties extends AbstractProperties
 	protected function _setPublished(\DateTimeImmutable $published)
 	{
 		$this->_published = $published;
+	}
+
+	/**
+	 * Set the creation date & time
+	 *
+	 * @param \DateTimeImmutable $published Creation date & time
+	 */
+	protected function _setCreated(\DateTimeImmutable $created)
+	{
+		$this->_created = $created;
 	}
 
 	/**

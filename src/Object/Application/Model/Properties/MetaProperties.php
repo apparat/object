@@ -42,7 +42,7 @@ namespace Apparat\Object\Application\Model\Properties;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class MetaProperties extends AbstractProperties
+class MetaProperties implements PropertiesInterface
 {
 	/**
 	 * Object keywords
@@ -76,11 +76,9 @@ class MetaProperties extends AbstractProperties
 	 */
 	public function __construct(array $data)
 	{
-		parent::__construct($data);
-
 		// Initialize the keywords
-		if (array_key_exists('keywords', $this->_data)) {
-			$this->setKeywords((array)$this->_data['keywords']);
+		if (array_key_exists('keywords', $data)) {
+			$this->setKeywords((array)$data['keywords']);
 		}
 	}
 

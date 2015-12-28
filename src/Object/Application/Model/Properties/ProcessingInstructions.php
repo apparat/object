@@ -37,12 +37,17 @@
 namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Abstract object properties collection
+ * Processing instructions
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractProperties implements PropertiesInterface
+class ProcessingInstructions extends AbstractGenericProperties
 {
-
+	/**
+	 * Collection name
+	 *
+	 * @var string
+	 */
+	const COLLECTION = 'procinst';
 }

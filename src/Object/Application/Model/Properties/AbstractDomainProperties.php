@@ -42,7 +42,7 @@ namespace Apparat\Object\Application\Model\Properties;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractDomainProperties extends AbstractProperties
+abstract class AbstractDomainProperties extends AbstractGenericProperties
 {
 	/**
 	 * Collection name

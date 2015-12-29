@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Object\Domain
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,67 +34,85 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Model\Path;
+
+use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * Object invalid argument exception
+ * Object path interface
  *
- * @package Apparat\Object\Domain\Model\Url
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+interface PathInterface
 {
+
 	/**
-	 * Unkown object ID
+	 * Create and return the object URL path
 	 *
-	 * @var int
+	 * @return string Object path
 	 */
-	const UNKNOWN_OBJECT_ID = 1448737190;
+	public function __toString();
+
 	/**
-	 * Invalid object type
+	 * Return the object's creation date
 	 *
-	 * @var int
+	 * @return \DateTimeImmutable Object creation date
 	 */
-	const INVALID_OBJECT_TYPE = 1449871242;
+	public function getCreationDate();
+
 	/**
-	 * Invalid object ID
+	 * Set the object's creation date
 	 *
-	 * @var int
+	 * @param \DateTimeImmutable $creationDate
+	 * @return Path New object path
 	 */
-	const INVALID_OBJECT_ID = 1449876361;
+	public function setCreationDate(\DateTimeImmutable $creationDate);
+
 	/**
-	 * Invalid object revision number
+	 * Return the object type
 	 *
-	 * @var int
+	 * @return Type Object type
 	 */
-	const INVALID_OBJECT_REVISION = 1449871715;
+	public function getType();
+
 	/**
-	 * Invalid object URL
+	 * Set the object type
 	 *
-	 * @var int
+	 * @param Type $type Object type
+	 * @return Path New object path
 	 */
-	const INVALID_OBJECT_URL = 1449873819;
+	public function setType(Type $type);
+
 	/**
-	 * Invalid object URL scheme
+	 * Return the object ID
 	 *
-	 * @var int
+	 * @return Id Object ID
 	 */
-	const INVALID_OBJECT_URL_SCHEME = 1449924914;
+	public function getId();
+
 	/**
-	 * Invalid object URL host
+	 * Set the object ID
 	 *
-	 * @var int
+	 * @param Id $id Object ID
+	 * @return Path New object path
 	 */
-	const INVALID_OBJECT_URL_HOST = 1449925567;
+	public function setId(Id $id);
+
 	/**
-	 * Invalid object URL port
+	 * Return the object revision
 	 *
-	 * @var int
+	 * @return Revision Object revision
 	 */
-	const INVALID_OBJECT_URL_PORT = 1449925885;
+	public function getRevision();
+
 	/**
-	 * Invalid collection object or path
+	 * Set the object revision
 	 *
-	 * @var int
+	 * @param Revision $revision Object revision
+	 * @return Path New object path
 	 */
-	const INVALID_COLLECTION_OBJECT_OR_PATH = 1450131914;
+	public function setRevision(Revision $revision);
 }

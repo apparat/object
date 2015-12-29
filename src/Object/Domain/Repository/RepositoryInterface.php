@@ -38,7 +38,7 @@ namespace Apparat\Object\Domain\Repository;
 use Apparat\Object\Domain\Contract\SingletonInterface;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
  * Object repository interface

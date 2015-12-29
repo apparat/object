@@ -37,6 +37,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;

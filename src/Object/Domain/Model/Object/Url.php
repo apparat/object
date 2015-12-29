@@ -35,6 +35,8 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Path\Path;
+
 /**
  * Object URL
  *

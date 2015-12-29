@@ -35,6 +35,10 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Path\Path;
+use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
+
 /**
  * Lazy loading object collection
  *
@@ -78,7 +82,7 @@ class Collection implements CollectionInterface
 
 			// If it's an object
 			if ($object instanceof ObjectInterface) {
-				$this->_objects[$object->getId()] = $object;
+				$this->_objects[$object->getId()->getId()] = $object;
 
 				// Else if it's an object path
 			} elseif ($object instanceof RepositoryPath) {
@@ -203,7 +207,7 @@ class Collection implements CollectionInterface
 
 		// If the object is not yet an object instance
 		if (!($object instanceof ObjectInterface)) {
-			if (!($object instanceof Path)) {
+			if (!($object instanceof PathInterface)) {
 				$object = new Path(strval($object));
 			}
 		}

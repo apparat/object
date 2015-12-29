@@ -38,7 +38,7 @@ namespace ApparatTest;
 
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;

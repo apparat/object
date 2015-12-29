@@ -39,7 +39,7 @@ namespace Apparat\Object\Framework\Model\Object;
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 

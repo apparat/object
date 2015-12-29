@@ -34,81 +34,55 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Model\Path;
+
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
- * Object path interface
+ * Repository object path
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface PathInterface
+class RepositoryPath extends Path
 {
+	/**
+	 * Repository
+	 *
+	 * @var RepositoryInterface
+	 */
+	protected $_repository;
 
 	/**
-	 * Create and return the object URL path
+	 * Repository path constructor
 	 *
-	 * @return string Object path
+	 * @param RepositoryInterface $repository Object repository this path applies to
+	 * @param string $path Object path
 	 */
-	public function __toString();
+	public function __construct(RepositoryInterface $repository, $path)
+	{
+		parent::__construct($path);
+		$this->_repository = $repository;
+	}
 
 	/**
-	 * Return the object's creation date
+	 * Return the repository this path applies to
 	 *
-	 * @return \DateTimeImmutable Object creation date
+	 * @return RepositoryInterface
 	 */
-	public function getCreationDate();
+	public function getRepository()
+	{
+		return $this->_repository;
+	}
 
 	/**
-	 * Set the object's creation date
+	 * Return the repository relative object path with a file extension
 	 *
-	 * @param \DateTimeImmutable $creationDate
-	 * @return Path New object path
+	 * @param string $extension File extension
+	 * @return string Repository relative object path with extension
 	 */
-	public function setCreationDate(\DateTimeImmutable $creationDate);
-
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType();
-
-	/**
-	 * Set the object type
-	 *
-	 * @param Type $type Object type
-	 * @return Path New object path
-	 */
-	public function setType(Type $type);
-
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId();
-
-	/**
-	 * Set the object ID
-	 *
-	 * @param Id $id Object ID
-	 * @return Path New object path
-	 */
-	public function setId(Id $id);
-
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision();
-
-	/**
-	 * Set the object revision
-	 *
-	 * @param Revision $revision Object revision
-	 * @return Path New object path
-	 */
-	public function setRevision(Revision $revision);
+	public function withExtension($extension)
+	{
+		return $this.'.'.strtolower($extension);
+	}
 }

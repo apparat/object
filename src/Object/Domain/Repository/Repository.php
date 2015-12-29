@@ -39,7 +39,7 @@ use Apparat\Object\Domain\Common\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
  * Abstract object repository

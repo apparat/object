@@ -1,11 +1,10 @@
 <?php
 
 /**
- * apparat-object
+ * apparat-resource
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,55 +33,19 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
-
-use Apparat\Object\Domain\Repository\RepositoryInterface;
+namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Repository object path
+ * Object invalid argument exception
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @package Apparat\Object\Domain\Model\Url
  */
-class RepositoryPath extends Path
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Repository
+	 * Invalid object URL path
 	 *
-	 * @var RepositoryInterface
+	 * @var int
 	 */
-	protected $_repository;
-
-	/**
-	 * Repository path constructor
-	 *
-	 * @param RepositoryInterface $repository Object repository this path applies to
-	 * @param string $path Object path
-	 */
-	public function __construct(RepositoryInterface $repository, $path)
-	{
-		parent::__construct($path);
-		$this->_repository = $repository;
-	}
-
-	/**
-	 * Return the repository this path applies to
-	 *
-	 * @return RepositoryInterface
-	 */
-	public function getRepository()
-	{
-		return $this->_repository;
-	}
-
-	/**
-	 * Return the repository relative object path with a file extension
-	 *
-	 * @param string $extension File extension
-	 * @return string Repository relative object path with extension
-	 */
-	public function withExtension($extension)
-	{
-		return $this.'.'.strtolower($extension);
-	}
+	const INVALID_OBJECT_URL_PATH = 1449874494;
 }

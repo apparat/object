@@ -37,7 +37,7 @@
 namespace ApparatTest;
 
 use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 

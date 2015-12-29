@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**

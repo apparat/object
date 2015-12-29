@@ -36,9 +36,9 @@
 
 namespace Apparat\Object\Framework\Repository;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;

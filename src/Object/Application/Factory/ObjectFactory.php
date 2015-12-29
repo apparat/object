@@ -37,7 +37,7 @@
 namespace Apparat\Object\Application\Factory;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;

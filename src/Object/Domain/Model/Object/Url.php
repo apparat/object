@@ -35,7 +35,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\Path;
+use Apparat\Object\Domain\Model\Path\LocalPath;
 
 /**
  * Object URL
@@ -53,7 +53,7 @@ class Url
 	/**
 	 * Object path
 	 *
-	 * @var Path
+	 * @var LocalPath
 	 */
 	protected $_path = null;
 
@@ -110,7 +110,7 @@ class Url
 				InvalidArgumentException::INVALID_OBJECT_URL);
 		}
 
-		$this->_path = new Path(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path']);
+		$this->_path = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path']);
 	}
 
 	/**
@@ -378,7 +378,7 @@ class Url
 	 */
 	public function setPath($path)
 	{
-		$this->_path = new Path(strval($path));
+		$this->_path = new LocalPath(strval($path));
 		return $this;
 	}
 

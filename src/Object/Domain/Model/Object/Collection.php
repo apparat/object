@@ -35,7 +35,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\Path;
+use Apparat\Object\Domain\Model\Path\LocalPath;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
@@ -208,7 +208,7 @@ class Collection implements CollectionInterface
 		// If the object is not yet an object instance
 		if (!($object instanceof ObjectInterface)) {
 			if (!($object instanceof PathInterface)) {
-				$object = new Path(strval($object));
+				$object = new LocalPath(strval($object));
 			}
 		}
 

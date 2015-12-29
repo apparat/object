@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Path implements PathInterface
+class LocalPath implements PathInterface
 {
 	/**
 	 * Creation date
@@ -164,7 +164,7 @@ class Path implements PathInterface
 	 * Set the object's creation date
 	 *
 	 * @param \DateTimeImmutable $creationDate
-	 * @return Path New object path
+	 * @return LocalPath New object path
 	 */
 	public function setCreationDate(\DateTimeImmutable $creationDate)
 	{
@@ -187,7 +187,7 @@ class Path implements PathInterface
 	 * Set the object type
 	 *
 	 * @param Type $type Object type
-	 * @return Path New object path
+	 * @return LocalPath New object path
 	 */
 	public function setType(Type $type)
 	{
@@ -210,7 +210,7 @@ class Path implements PathInterface
 	 * Set the object ID
 	 *
 	 * @param Id $id Object ID
-	 * @return Path New object path
+	 * @return LocalPath New object path
 	 */
 	public function setId(Id $id)
 	{
@@ -233,7 +233,7 @@ class Path implements PathInterface
 	 * Set the object revision
 	 *
 	 * @param Revision $revision Object revision
-	 * @return Path New object path
+	 * @return LocalPath New object path
 	 */
 	public function setRevision(Revision $revision)
 	{

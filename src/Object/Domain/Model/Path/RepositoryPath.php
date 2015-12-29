@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class RepositoryPath extends Path
+class RepositoryPath extends LocalPath
 {
 	/**
 	 * Repository

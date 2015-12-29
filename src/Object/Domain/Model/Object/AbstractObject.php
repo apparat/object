@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,20 +34,19 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Application\Model\Properties\MetaProperties;
-use Apparat\Object\Application\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Application\Model\Properties\Relations;
-use Apparat\Object\Application\Model\Properties\SystemProperties;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Domain\Model\Properties\MetaProperties;
+use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
+use Apparat\Object\Domain\Model\Properties\Relations;
+use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
 /**
  * Abstract object
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 abstract class AbstractObject implements ObjectInterface
 {

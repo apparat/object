@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\DomainF
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,20 +34,43 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Object;
 
 /**
- * Properties collection interface
+ * Object resource interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-interface PropertiesInterface
+interface ResourceInterface
 {
 	/**
-	 * Property traversal separator
+	 * Return the property data
 	 *
-	 * @var string
+	 * @return array Property data
 	 */
-	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
+	public function getPropertyData();
+
+	/**
+	 * Set the property data
+	 *
+	 * @param array $data Property data
+	 * @return ResourceInterface Object resource
+	 */
+	public function setPropertyData(array $data);
+
+	/**
+	 * Return the object payload
+	 *
+	 * @return string Object payload
+	 */
+	public function getPayload();
+
+	/**
+	 * Set the object payload
+	 *
+	 * @param string $payload Object payload
+	 * @return ResourceInterface Object resource
+	 */
+	public function setPayload($payload);
 }

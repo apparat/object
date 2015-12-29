@@ -34,20 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Abstract domain object properties collection
+ * Properties collection interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractDomainProperties extends AbstractGenericProperties
+interface PropertiesInterface
 {
 	/**
-	 * Collection name
+	 * Property traversal separator
 	 *
 	 * @var string
 	 */
-	const COLLECTION = 'domain';
+	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
 }

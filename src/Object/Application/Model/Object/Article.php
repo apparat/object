@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
+use Apparat\Object\Domain\Model\Object\AbstractObject;
 use Apparat\Object\Domain\Model\Object\Type;
-
 
 /**
  * Article object

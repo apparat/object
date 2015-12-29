@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Framework\Model\Object;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Resource\Framework\Model\Resource\FrontMarkResource;
 
 /**

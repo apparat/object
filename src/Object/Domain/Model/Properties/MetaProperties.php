@@ -34,80 +34,93 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Object resource relations
+ * Meta object properties collection
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Relations extends AbstractProperties
+class MetaProperties implements PropertiesInterface
 {
+	/**
+	 * Object keywords
+	 *
+	 * @var array
+	 */
+	protected $_keywords = [];
+
+	/**
+	 * Object categories
+	 *
+	 * @var array
+	 */
+	protected $_categories = [];
+
 	/**
 	 * Collection name
 	 *
 	 * @var string
 	 */
-	const COLLECTION = 'relations';
+	const COLLECTION = 'meta';
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
 	/**
-	 * Active resource referral
+	 * System properties constructor
 	 *
-	 * @var string
+	 * @param array $data System properties
 	 */
-	const REFERS_TO = 'refers-to';
+	public function __construct(array $data)
+	{
+		// Initialize the keywords
+		if (array_key_exists('keywords', $data)) {
+			$this->setKeywords((array)$data['keywords']);
+		}
+	}
+
 	/**
-	 * Passive resource referral
+	 * Return the object keywords
 	 *
-	 * @var string
+	 * @return array Object keywords
 	 */
-	const REFERRED_BY = 'referred-by';
+	public function getKeywords()
+	{
+		return $this->_keywords;
+	}
+
 	/**
-	 * Active resource embedding
+	 * Set the object keywords
 	 *
-	 * @var string
+	 * @param array $keywords Object keywords
 	 */
-	const EMBEDS = 'embeds';
+	public function setKeywords(array $keywords)
+	{
+		$this->_keywords = array_unique($keywords);
+		sort($this->_keywords, SORT_NATURAL);
+	}
+
 	/**
-	 * Passive resource embedding
+	 * Return the object categories
 	 *
-	 * @var string
+	 * @return array Object categories
 	 */
-	const EMBEDDED_BY = 'embedded-by';
+	public function getCategories()
+	{
+		return $this->_categories;
+	}
+
 	/**
-	 * Active resource reply
+	 * Set the object categories
 	 *
-	 * @var string
+	 * @param array $categories Object categories
 	 */
-	const REPLIES_TO = 'replies-to';
-	/**
-	 * Passive resource reply
-	 *
-	 * @var string
-	 */
-	const REPLIED_BY = 'replied-by';
-	/**
-	 * Active resource liking
-	 *
-	 * @var string
-	 */
-	const LIKES = 'likes';
-	/**
-	 * Passive resource liking
-	 *
-	 * @var string
-	 */
-	const LIKED_BY = 'liked-by';
-	/**
-	 * Active resource re-posting
-	 *
-	 * @var string
-	 */
-	const REPOSTS = 'reposts';
-	/**
-	 * Passive resource re-posting
-	 *
-	 * @var string
-	 */
-	const REPOSTED_BY = 'reposted-by';
+	public function setCategories(array $categories)
+	{
+		$this->_categories = array_unique($categories);
+		sort($this->_categories, SORT_NATURAL);
+	}
 }

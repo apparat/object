@@ -36,9 +36,14 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
+/**
+ * Repository object path
+ *
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
+ */
 class RepositoryPath extends Path
 {
 	/**

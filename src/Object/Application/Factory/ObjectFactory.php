@@ -36,16 +36,15 @@
 
 namespace Apparat\Object\Application\Factory;
 
-use Apparat\Object\Application\Model\Object\InvalidArgumentException;
-use Apparat\Object\Application\Model\Object\ResourceInterface;
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Application\Model\Properties\MetaProperties;
-use Apparat\Object\Application\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Application\Model\Properties\Relations;
-use Apparat\Object\Application\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\RepositoryPath;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Domain\Model\Properties\MetaProperties;
+use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
+use Apparat\Object\Domain\Model\Properties\Relations;
+use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
 /**
  * Object factory

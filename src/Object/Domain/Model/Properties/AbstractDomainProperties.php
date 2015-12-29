@@ -34,43 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Object resource interface
+ * Abstract domain object properties collection
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface ResourceInterface
+abstract class AbstractDomainProperties extends AbstractGenericProperties
 {
 	/**
-	 * Return the property data
+	 * Collection name
 	 *
-	 * @return array Property data
+	 * @var string
 	 */
-	public function getPropertyData();
-
-	/**
-	 * Set the property data
-	 *
-	 * @param array $data Property data
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPropertyData(array $data);
-
-	/**
-	 * Return the object payload
-	 *
-	 * @return string Object payload
-	 */
-	public function getPayload();
-
-	/**
-	 * Set the object payload
-	 *
-	 * @param string $payload Object payload
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPayload($payload);
+	const COLLECTION = 'domain';
 }

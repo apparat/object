@@ -34,48 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Object properties invalid argument exception
+ * Processing instructions
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class ProcessingInstructions extends AbstractGenericProperties
 {
 	/**
-	 * Empty property name
+	 * Collection name
 	 *
-	 * @var int
+	 * @var string
 	 */
-	const EMPTY_PROPERTY_NAME = 1450817720;
-
-	/**
-	 * Invalid property name
-	 *
-	 * @var int
-	 */
-	const INVALID_PROPERTY_NAME = 1450818168;
-
-	/**
-	 * Empty property collection name
-	 *
-	 * @var int
-	 */
-	const EMPTY_COLLECTION_NAME = 1450821755;
-
-	/**
-	 * Invalid property collection name
-	 *
-	 * @var int
-	 */
-	const INVALID_COLLECTION_NAME = 1450821628;
-
-	/**
-	 * Invalid object type
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_TYPE = 1450824343;
+	const COLLECTION = 'procinst';
 }

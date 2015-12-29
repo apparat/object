@@ -34,20 +34,15 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Processing instructions
+ * Abstract object properties collection
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class ProcessingInstructions extends AbstractGenericProperties
+abstract class AbstractProperties implements PropertiesInterface
 {
-	/**
-	 * Collection name
-	 *
-	 * @var string
-	 */
-	const COLLECTION = 'procinst';
+
 }

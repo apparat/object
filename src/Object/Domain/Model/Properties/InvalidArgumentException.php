@@ -34,24 +34,48 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Generics properties interface
+ * Object properties invalid argument exception
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface GenericPropertiesInterface extends PropertiesInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
+	/**
+	 * Empty property name
+	 *
+	 * @var int
+	 */
+	const EMPTY_PROPERTY_NAME = 1450817720;
 
 	/**
-	 * Get a particular property value
+	 * Invalid property name
 	 *
-	 * Multi-level properties might be traversed by property name paths separated with colons (":").
-	 *
-	 * @param string $property Property name
-	 * @return mixed Property value
+	 * @var int
 	 */
-	public function getProperty($property);
+	const INVALID_PROPERTY_NAME = 1450818168;
+
+	/**
+	 * Empty property collection name
+	 *
+	 * @var int
+	 */
+	const EMPTY_COLLECTION_NAME = 1450821755;
+
+	/**
+	 * Invalid property collection name
+	 *
+	 * @var int
+	 */
+	const INVALID_COLLECTION_NAME = 1450821628;
+
+	/**
+	 * Invalid object type
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_TYPE = 1450824343;
 }

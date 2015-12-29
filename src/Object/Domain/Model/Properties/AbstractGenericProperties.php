@@ -34,93 +34,67 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Meta object properties collection
+ * Abstract generic object properties collection
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class MetaProperties implements PropertiesInterface
+abstract class AbstractGenericProperties extends AbstractProperties implements GenericPropertiesInterface
 {
 	/**
-	 * Object keywords
+	 * Property data
 	 *
 	 * @var array
 	 */
-	protected $_keywords = [];
+	protected $_data = [];
 
 	/**
-	 * Object categories
+	 * Property collection constructor
 	 *
-	 * @var array
-	 */
-	protected $_categories = [];
-
-	/**
-	 * Collection name
-	 *
-	 * @var string
-	 */
-	const COLLECTION = 'meta';
-
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
-
-	/**
-	 * System properties constructor
-	 *
-	 * @param array $data System properties
+	 * @param array $data Properties
 	 */
 	public function __construct(array $data)
 	{
-		// Initialize the keywords
-		if (array_key_exists('keywords', $data)) {
-			$this->setKeywords((array)$data['keywords']);
+		$this->_data = $data;
+	}
+
+	/**
+	 * Get a particular property value
+	 *
+	 * Multi-level properties might be traversed by property name paths separated with colons (":").
+	 *
+	 * @param string $property Property name
+	 * @return mixed Property value
+	 * @throws InvalidArgumentException If the property name is empty
+	 */
+	public function getProperty($property)
+	{
+		$propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
+
+		// If the property traversal path is empty
+		if (!count($propertyPath)) {
+			throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
 		}
-	}
 
-	/**
-	 * Return the object keywords
-	 *
-	 * @return array Object keywords
-	 */
-	public function getKeywords()
-	{
-		return $this->_keywords;
-	}
+		// Traverse the property tree
+		$propertyPathTraversed = [];
+		$data =& $this->_data;
+		foreach ($propertyPath as $property) {
+			$propertyPathTraversed[] = $property;
 
-	/**
-	 * Set the object keywords
-	 *
-	 * @param array $keywords Object keywords
-	 */
-	public function setKeywords(array $keywords)
-	{
-		$this->_keywords = array_unique($keywords);
-		sort($this->_keywords, SORT_NATURAL);
-	}
+			// If the property name step is invalid
+			if (!array_key_exists($property, $data)) {
+				throw new InvalidArgumentException(sprintf('Invalid property name "%s"',
+					implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathTraversed)),
+					InvalidArgumentException::INVALID_PROPERTY_NAME);
+			}
 
-	/**
-	 * Return the object categories
-	 *
-	 * @return array Object categories
-	 */
-	public function getCategories()
-	{
-		return $this->_categories;
-	}
+			$data =& $data[$property];
+		}
 
-	/**
-	 * Set the object categories
-	 *
-	 * @param array $categories Object categories
-	 */
-	public function setCategories(array $categories)
-	{
-		$this->_categories = array_unique($categories);
-		sort($this->_categories, SORT_NATURAL);
+		return $data;
 	}
 }

@@ -34,15 +34,80 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Abstract object properties collection
+ * Object resource relations
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractProperties implements PropertiesInterface
+class Relations extends AbstractProperties
 {
-
+	/**
+	 * Collection name
+	 *
+	 * @var string
+	 */
+	const COLLECTION = 'relations';
+	/**
+	 * Active resource referral
+	 *
+	 * @var string
+	 */
+	const REFERS_TO = 'refers-to';
+	/**
+	 * Passive resource referral
+	 *
+	 * @var string
+	 */
+	const REFERRED_BY = 'referred-by';
+	/**
+	 * Active resource embedding
+	 *
+	 * @var string
+	 */
+	const EMBEDS = 'embeds';
+	/**
+	 * Passive resource embedding
+	 *
+	 * @var string
+	 */
+	const EMBEDDED_BY = 'embedded-by';
+	/**
+	 * Active resource reply
+	 *
+	 * @var string
+	 */
+	const REPLIES_TO = 'replies-to';
+	/**
+	 * Passive resource reply
+	 *
+	 * @var string
+	 */
+	const REPLIED_BY = 'replied-by';
+	/**
+	 * Active resource liking
+	 *
+	 * @var string
+	 */
+	const LIKES = 'likes';
+	/**
+	 * Passive resource liking
+	 *
+	 * @var string
+	 */
+	const LIKED_BY = 'liked-by';
+	/**
+	 * Active resource re-posting
+	 *
+	 * @var string
+	 */
+	const REPOSTS = 'reposts';
+	/**
+	 * Passive resource re-posting
+	 *
+	 * @var string
+	 */
+	const REPOSTED_BY = 'reposted-by';
 }

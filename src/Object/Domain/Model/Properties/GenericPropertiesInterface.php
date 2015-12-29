@@ -34,15 +34,24 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Object interface
+ * Generics properties interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface ObjectInterface extends \Apparat\Object\Domain\Model\Object\ObjectInterface
+interface GenericPropertiesInterface extends PropertiesInterface
 {
 
+	/**
+	 * Get a particular property value
+	 *
+	 * Multi-level properties might be traversed by property name paths separated with colons (":").
+	 *
+	 * @param string $property Property name
+	 * @return mixed Property value
+	 */
+	public function getProperty($property);
 }

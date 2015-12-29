@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,85 +34,83 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Object\Id;
-use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Path\Url;
 
 /**
- * Object path interface
+ * Object proxy (lazy loading)
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Domain\Model\Object
  */
-interface PathInterface
+class ObjectProxy implements ObjectInterface
 {
+	/**
+	 * Object URL
+	 *
+	 * @var Url
+	 */
+	protected $_url = null;
+	/**
+	 * Object
+	 *
+	 * @var ObjectInterface
+	 */
+	protected $_object = null;
+
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
 
 	/**
-	 * Create and return the object URL path
+	 * Constructor
 	 *
-	 * @return string Object path
+	 * @param Url $url Remote object URL
 	 */
-	public function __toString();
+	public function __construct(Url $url)
+	{
+		$this->_url = $url;
+	}
+
+	/*******************************************************************************
+	 * MAGIG METHODS
+	 *******************************************************************************/
 
 	/**
-	 * Return the object's creation date
+	 * Generic caller
 	 *
-	 * @return \DateTimeImmutable Object creation date
+	 * @param string $name Method name
+	 * @param array $arguments Method arguments
 	 */
-	public function getCreationDate();
+	public function __call($name, $arguments)
+	{
+		$object = $this->_object();
+		if (is_callable(array($object, $name))) {
+			return $object->$name(...$arguments);
+		}
+
+		throw new InvalidArgumentException(sprintf('Invalid object proxy method "%s"', $name),
+			InvalidArgumentException::INVALID_OBJECT_PROXY_METHOD);
+	}
+
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
 
 	/**
-	 * Set the object's creation date
+	 * Return the enclosed remote object
 	 *
-	 * @param \DateTimeImmutable $creationDate
-	 * @return LocalPath New object path
+	 * @return ObjectInterface Remote object
 	 */
-	public function setCreationDate(\DateTimeImmutable $creationDate);
+	protected function _object()
+	{
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType();
+		// Lazy-load the remote object if necessary
+		if (!$this->_object instanceof ObjectInterface) {
+			// TODO: Lazy loading
+		}
 
-	/**
-	 * Set the object type
-	 *
-	 * @param Type $type Object type
-	 * @return LocalPath New object path
-	 */
-	public function setType(Type $type);
-
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId();
-
-	/**
-	 * Set the object ID
-	 *
-	 * @param Id $id Object ID
-	 * @return LocalPath New object path
-	 */
-	public function setId(Id $id);
-
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision();
-
-	/**
-	 * Set the object revision
-	 *
-	 * @param Revision $revision Object revision
-	 * @return LocalPath New object path
-	 */
-	public function setRevision(Revision $revision);
+		return $this->_object;
+	}
 }

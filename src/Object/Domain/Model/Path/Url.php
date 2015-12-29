@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  *
  * @package Apparat\Object\Domain\Model
  */
-class Url
+class Url implements PathInterface
 {
 	/**
 	 * URL parts
@@ -59,20 +59,6 @@ class Url
 	 */
 	protected $_path = null;
 
-	/**
-	 * Date PCRE pattern
-	 *
-	 * @var array
-	 * @see Selector::$_datePattern
-	 */
-	protected static $_datePattern = [
-		'Y' => '(?P<year>\d{4})/',
-		'm' => '(?P<month>\d{2})/',
-		'd' => '(?P<day>\d{2})/',
-		'H' => '(?P<hour>\d{2})/',
-		'i' => '(?P<minute>\d{2})/',
-		's' => '(?P<second>\d{2})/',
-	];
 	/**
 	 * Valid schemes
 	 *
@@ -149,9 +135,9 @@ class Url
 	 * Set the object's creation date
 	 *
 	 * @param \DateTimeImmutable $creationDate
-	 * @return Url New object URL
+	 * @return LocalPath New object path
 	 */
-	public function setCreationDate($creationDate)
+	public function setCreationDate(\DateTimeImmutable $creationDate)
 	{
 		$this->_path = $this->_path->setCreationDate($creationDate);
 		return $this;

@@ -33,9 +33,11 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Model\Path;
 
-use Apparat\Object\Domain\Model\Path\LocalPath;
+use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\Type;
 
 /**
  * Object URL

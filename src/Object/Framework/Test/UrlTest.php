@@ -34,9 +34,9 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object\Url {
+namespace Apparat\Object\Domain\Model\Path\Url {
 
-	use Apparat\Object\Domain\Model\Object\Url;
+	use Apparat\Object\Domain\Model\Path\Url;
 
 	/**
 	 * URL version with test extension
@@ -70,7 +70,7 @@ namespace ApparatTest {
 	use Apparat\Object\Domain\Model\Object\InvalidArgumentException;
 	use Apparat\Object\Domain\Model\Object\Revision;
 	use Apparat\Object\Domain\Model\Object\Type;
-	use Apparat\Object\Domain\Model\Object\Url;
+	use Apparat\Object\Domain\Model\Path\Url;
 
 	/**
 	 * Object URL tests

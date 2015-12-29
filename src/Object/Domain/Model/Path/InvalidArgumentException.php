@@ -38,7 +38,7 @@ namespace Apparat\Object\Domain\Model\Path;
 /**
  * Object invalid argument exception
  *
- * @package Apparat\Object\Domain\Model\Url
+ * @package Apparat\Object\Domain
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
@@ -48,4 +48,28 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_OBJECT_URL_PATH = 1449874494;
+	/**
+	 * Invalid object URL
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_URL = 1449873819;
+	/**
+	 * Invalid object URL scheme
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_URL_SCHEME = 1449924914;
+	/**
+	 * Invalid object URL host
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_URL_HOST = 1449925567;
+	/**
+	 * Invalid object URL port
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_URL_PORT = 1449925885;
 }

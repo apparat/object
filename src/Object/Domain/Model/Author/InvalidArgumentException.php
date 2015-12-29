@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,45 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace ApparatTest;
-
-use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+namespace Apparat\Object\Domain\Model\Author;
 
 /**
- * Object tests
+ * Author invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Domain
  */
-class ObjectTest extends AbstractTest
+class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
-	 * Test repository
+	 * Invalid generic author
 	 *
-	 * @var Repository
+	 * @var int
 	 */
-	protected static $_repository = null;
-
+	const INVALID_GENERIC_AUTHOR = 1451423259;
 	/**
-	 * Setup
+	 * Invalid author format
+	 *
+	 * @var int
 	 */
-	public static function setUpBeforeClass()
-	{
-		self::$_repository = \Apparat\Object\Framework\Api\Repository::create([
-			'url' => getenv('APPARAT_BASE_URL'),
-			'type' => FileAdapterStrategy::TYPE,
-			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-		]);
-	}
-
-	public function testLoadArticleObjectCurrentRevision()
-	{
-		$articleObjectPath = new RepositoryPath(self::$_repository, '/2015/12/21/1.article/1');
-		$articleObject = self::$_repository->loadObject($articleObjectPath);
-		$this->assertInstanceOf(Article::class, $articleObject);
-//		print_r($articleObject);
-	}
+	const INVALID_AUTHOR_FORMAT = 1451426440;
 }

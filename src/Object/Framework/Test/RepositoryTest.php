@@ -268,7 +268,7 @@ class RepositoryTest extends AbstractTest
 		]);
 		$this->assertInstanceOf(Repository::class, $fileRepository);
 
-		$selector = SelectorFactory::parse('/*');
+		$selector = SelectorFactory::createFromString('/*');
 		$this->assertInstanceOf(SelectorInterface::class, $selector);
 		$collection = $fileRepository->findObjects($selector);
 		$this->assertInstanceOf(Collection::class, $collection);
@@ -286,7 +286,7 @@ class RepositoryTest extends AbstractTest
 			'root' => self::$_globBase,
 		]);
 
-		$selector = SelectorFactory::parse('/*/*/*/*/*/*/*.*/*-1');
+		$selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*-1');
 		$collection = $fileRepository->findObjects($selector);
 		$this->assertInstanceOf(Collection::class, $collection);
 		$this->assertEquals(self::$_globRevisions['-1'], count($collection));

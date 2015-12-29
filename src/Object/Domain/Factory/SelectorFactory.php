@@ -70,7 +70,7 @@ class SelectorFactory
 	 * @return \Apparat\Object\Domain\Repository\Selector Object selector
 	 * @throws InvalidArgumentException If the selector is invalid
 	 */
-	public static function parse($selector)
+	public static function createFromString($selector)
 	{
 		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 		$selectorPattern = '/(?P<id>(?:\d+)|\*)\.(?P<type>(?:[a-z]+)|\*)(?:/\\k<id>(?:-(?P<revision>\d+))?)?';

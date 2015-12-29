@@ -35,6 +35,8 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
+
 /**
  * Object interface
  *
@@ -42,5 +44,53 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 interface ObjectInterface
 {
+	/**
+	 * Return the object ID
+	 *
+	 * @return Id Object ID
+	 */
+	public function getId();
 
+	/**
+	 * Return the object type
+	 *
+	 * @return Type Object type
+	 */
+	public function getType();
+
+	/**
+	 * Return the object revision
+	 *
+	 * @return Revision Object revision
+	 */
+	public function getRevision();
+
+	/**
+	 * Return the creation date & time
+	 *
+	 * @return \DateTimeImmutable Creation date & time
+	 */
+	public function getCreated();
+
+	/**
+	 * Return the publication date & time
+	 *
+	 * @return \DateTimeImmutable Publication date & time
+	 */
+	public function getPublished();
+
+	/**
+	 * Return all object authors
+	 *
+	 * @return AuthorInterface[] Authors
+	 */
+	public function getAuthors();
+
+	/**
+	 * Add an object author
+	 *
+	 * @param AuthorInterface $author Author
+	 * @return ObjectInterface Self reference
+	 */
+	public function addAuthor(AuthorInterface $author);
 }

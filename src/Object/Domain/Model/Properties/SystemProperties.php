@@ -110,17 +110,17 @@ class SystemProperties implements PropertiesInterface
 	{
 		// Initialize the object ID
 		if (array_key_exists('id', $data)) {
-			$this->_setId(new Id(intval($data['id'])));
+			$this->_setId(Id::unserialize($data['id']));
 		}
 
 		// Initialize the object type
 		if (array_key_exists('type', $data)) {
-			$this->_setType(new Type($data['type']));
+			$this->_setType(Type::unserialize($data['type']));
 		}
 
 		// Initialize the object revision
 		if (array_key_exists('revision', $data)) {
-			$this->_setRevision(new Revision(intval($data['revision'])));
+			$this->_setRevision(Revision::unserialize($data['revision']));
 		}
 
 		// Initialize the object creation date

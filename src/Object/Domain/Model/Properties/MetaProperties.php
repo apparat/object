@@ -36,6 +36,9 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Factory\AuthorFactory;
+
 /**
  * Meta object properties collection
  *
@@ -59,6 +62,13 @@ class MetaProperties implements PropertiesInterface
 	protected $_categories = [];
 
 	/**
+	 * Object authors
+	 *
+	 * @var AuthorInterface[]
+	 */
+	protected $_authors = [];
+
+	/**
 	 * Collection name
 	 *
 	 * @var string
@@ -80,6 +90,16 @@ class MetaProperties implements PropertiesInterface
 		if (array_key_exists('keywords', $data)) {
 			$this->setKeywords((array)$data['keywords']);
 		}
+
+		// Initialize the categories
+		if (array_key_exists('categories', $data)) {
+			$this->setCategories((array)$data['categories']);
+		}
+
+		// Initialize the authors
+		if (array_key_exists('authors', $data)) {
+			$this->setAuthors($data['authors']);
+		}
 	}
 
 	/**
@@ -96,11 +116,13 @@ class MetaProperties implements PropertiesInterface
 	 * Set the object keywords
 	 *
 	 * @param array $keywords Object keywords
+	 * @return MetaProperties Self reference
 	 */
 	public function setKeywords(array $keywords)
 	{
 		$this->_keywords = array_unique($keywords);
 		sort($this->_keywords, SORT_NATURAL);
+		return $this;
 	}
 
 	/**
@@ -117,10 +139,55 @@ class MetaProperties implements PropertiesInterface
 	 * Set the object categories
 	 *
 	 * @param array $categories Object categories
+	 * @return MetaProperties Self reference
 	 */
 	public function setCategories(array $categories)
 	{
 		$this->_categories = array_unique($categories);
 		sort($this->_categories, SORT_NATURAL);
+		return $this;
 	}
+
+	/**
+	 * Return the object authors
+	 *
+	 * @return AuthorInterface[]
+	 */
+	public function getAuthors()
+	{
+		return $this->_authors;
+	}
+
+	/**
+	 * Set the object authors
+	 *
+	 * @param array $authors Object authors
+	 * @return MetaProperties Self reference
+	 * @throws InvalidArgumentException If an author is invalid
+	 */
+	public function setAuthors(array $authors)
+	{
+		$newAuthors = [];
+
+		// Run through and validate all authors
+		foreach ($authors as $author) {
+
+			// If the author is invalid
+			if (is_string($author)) {
+				$author = AuthorFactory::createFromString($author);
+			}
+
+			// If the author is invalid
+			if (!$author instanceof AuthorInterface) {
+				throw new InvalidArgumentException('Invalid object author',
+					InvalidArgumentException::INVALID_OBJECT_AUTHOR);
+			}
+
+			$newAuthors[$author->getSignature()] = $author;
+		}
+
+		$this->_authors = array_values($newAuthors);
+		return $this;
+	}
+
 }

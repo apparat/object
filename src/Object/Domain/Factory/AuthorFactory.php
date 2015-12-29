@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,45 +34,39 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace ApparatTest;
+namespace Apparat\Object\Domain\Factory;
 
-use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Domain\Model\Object\RepositoryPath;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Author\GenericAuthor;
+use Apparat\Object\Domain\Model\Author\InvalidArgumentException;
 
 /**
- * Object tests
+ * Author factory
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Domain
  */
-class ObjectTest extends AbstractTest
+class AuthorFactory
 {
 	/**
-	 * Test repository
+	 * Parse and instantiate an author serialization
 	 *
-	 * @var Repository
+	 * @param string $author Author serialization
+	 * @return AuthorInterface Object author
+	 * @throws InvalidArgumentException If the author format is invalid
 	 */
-	protected static $_repository = null;
-
-	/**
-	 * Setup
-	 */
-	public static function setUpBeforeClass()
+	public static function createFromString($author)
 	{
-		self::$_repository = \Apparat\Object\Framework\Api\Repository::create([
-			'url' => getenv('APPARAT_BASE_URL'),
-			'type' => FileAdapterStrategy::TYPE,
-			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-		]);
-	}
 
-	public function testLoadArticleObjectCurrentRevision()
-	{
-		$articleObjectPath = new RepositoryPath(self::$_repository, '/2015/12/21/1.article/1');
-		$articleObject = self::$_repository->loadObject($articleObjectPath);
-		$this->assertInstanceOf(Article::class, $articleObject);
-//		print_r($articleObject);
+		// TODO: Implement apparat author
+
+		// Try to instantiate a generic author
+		try {
+			return GenericAuthor::unserialize($author);
+		} catch (InvalidArgumentException $e) {
+		}
+
+		throw new InvalidArgumentException(sprintf('Invalid author format "%s"', $author),
+			InvalidArgumentException::INVALID_AUTHOR_FORMAT);
 	}
 }

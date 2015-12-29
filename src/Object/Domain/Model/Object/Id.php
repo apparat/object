@@ -36,13 +36,15 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
+
 /**
  * Object ID
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Object
+ * @subpackage Apparat\Object\Domain
  */
-class Id
+class Id implements SerializablePropertyInterface
 {
 	/**
 	 * Object ID
@@ -75,5 +77,26 @@ class Id
 	public function getId()
 	{
 		return $this->_id;
+	}
+
+	/**
+	 * Serialize the property
+	 *
+	 * @return mixed Property serialization
+	 */
+	public function serialize()
+	{
+		return $this->getId();
+	}
+
+	/**
+	 * Unserialize the string representation of this property
+	 *
+	 * @param string $str Serialized property
+	 * @return Id ID property
+	 */
+	public static function unserialize($str)
+	{
+		return new static(intval($str));
 	}
 }

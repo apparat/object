@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
@@ -120,5 +121,79 @@ abstract class AbstractObject implements ObjectInterface
 		$this->_processingInstructions = $processingInstructions;
 		$this->_payload = $payload;
 		$this->_path = $path;
+	}
+
+	/**
+	 * Return the object ID
+	 *
+	 * @return Id Object ID
+	 */
+	public function getId()
+	{
+		return $this->_systemProperties->getId();
+	}
+
+	/**
+	 * Return the object type
+	 *
+	 * @return Type Object type
+	 */
+	public function getType()
+	{
+		return $this->_systemProperties->getType();
+	}
+
+	/**
+	 * Return the object revision
+	 *
+	 * @return Revision Object revision
+	 */
+	public function getRevision()
+	{
+		return $this->_systemProperties->getRevision();
+	}
+
+	/**
+	 * Return the creation date & time
+	 *
+	 * @return \DateTimeImmutable Creation date & time
+	 */
+	public function getCreated()
+	{
+		return $this->_systemProperties->getCreated();
+	}
+
+	/**
+	 * Return the publication date & time
+	 *
+	 * @return \DateTimeImmutable Publication date & time
+	 */
+	public function getPublished()
+	{
+		return $this->_systemProperties->getPublished();
+	}
+
+	/**
+	 * Return all object authors
+	 *
+	 * @return AuthorInterface[] Authors
+	 */
+	public function getAuthors()
+	{
+		return $this->_metaProperties->getAuthors();
+	}
+
+	/**
+	 * Add an object author
+	 *
+	 * @param AuthorInterface $author Author
+	 * @return ObjectInterface Self reference
+	 */
+	public function addAuthor(AuthorInterface $author)
+	{
+		$authors = $this->_metaProperties->getAuthors();
+		$authors[] = $author;
+		$this->_metaProperties->setAuthors($authors);
+		return $this;
 	}
 }

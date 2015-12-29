@@ -78,4 +78,10 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_OBJECT_TYPE = 1450824343;
+	/**
+	 * Invalid object author
+	 *
+	 * @var int
+	 */
+	const INVALID_OBJECT_AUTHOR = 1451425516;
 }

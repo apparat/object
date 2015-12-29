@@ -37,7 +37,15 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 
-class Type
+use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
+
+/**
+ * Object type
+ *
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
+ */
+class Type implements SerializablePropertyInterface
 {
 	/**
 	 * Object type
@@ -227,5 +235,26 @@ class Type
 	public static function isValidType($type) {
 		$type = trim($type);
 		return strlen($type) && array_key_exists($type, self::$_types);
+	}
+
+	/**
+	 * Serialize the property
+	 *
+	 * @return mixed Property serialization
+	 */
+	public function serialize()
+	{
+		return $this->getType();
+	}
+
+	/**
+	 * Unserialize the string representation of this property
+	 *
+	 * @param string $str Serialized property
+	 * @return Type Type property
+	 */
+	public static function unserialize($str)
+	{
+		return new static($str);
 	}
 }

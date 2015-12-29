@@ -61,7 +61,7 @@ class SelectorTest extends AbstractTest
 	 */
 	public function testFactoryValidSelector()
 	{
-		$selector = SelectorFactory::parse(self::SELECTOR);
+		$selector = SelectorFactory::createFromString(self::SELECTOR);
 		$this->assertInstanceOf(RepositorySelector::class, $selector);
 		$this->assertEquals(2015, $selector->getYear());
 		$this->assertEquals(10, $selector->getMonth());
@@ -81,7 +81,7 @@ class SelectorTest extends AbstractTest
 	{
 		$datePrecision = getenv('OBJECT_DATE_PRECISION');
 		putenv('OBJECT_DATE_PRECISION=6');
-		$selector = SelectorFactory::parse('/*/*/*/*/*/*/*.*/*');
+		$selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*');
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
@@ -99,7 +99,7 @@ class SelectorTest extends AbstractTest
 	 */
 	public function testFactoryMinimalSelector()
 	{
-		$selector = SelectorFactory::parse('/*');
+		$selector = SelectorFactory::createFromString('/*');
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
 		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
@@ -119,7 +119,7 @@ class SelectorTest extends AbstractTest
 	 */
 	public function testFactoryInvaldiSelector()
 	{
-		SelectorFactory::parse('invalid');
+		SelectorFactory::createFromString('invalid');
 	}
 
 	/**

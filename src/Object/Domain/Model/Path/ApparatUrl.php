@@ -1,10 +1,11 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Object\Domain
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2015 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,46 +37,45 @@
 namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Object invalid argument exception
+ * Apparat URL
  *
- * @package Apparat\Object\Domain
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain\Model\Path
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class ApparatUrl extends Url
 {
 	/**
-	 * Invalid object URL path
+	 * Valid schemes
 	 *
-	 * @var int
+	 * @var array
 	 */
-	const INVALID_OBJECT_URL_PATH = 1449874494;
+	protected static $_schemes = [self::SCHEME_APRT => true, self::SCHEME_APRTS => true];
+
 	/**
-	 * Invalid object URL
+	 * APRT-Schema
 	 *
-	 * @var int
+	 * @var string
 	 */
-	const INVALID_OBJECT_URL = 1449873819;
+	const SCHEME_APRT = 'aprt';
 	/**
-	 * Invalid object URL scheme
+	 * APRTS-Schema
 	 *
-	 * @var int
+	 * @var string
 	 */
-	const INVALID_OBJECT_URL_SCHEME = 1449924914;
+	const SCHEME_APRTS = 'aprts';
+
 	/**
-	 * Invalid object URL host
+	 * Apparat URL constructor.
 	 *
-	 * @var int
+	 * @param string $url
 	 */
-	const INVALID_OBJECT_URL_HOST = 1449925567;
-	/**
-	 * Invalid object URL port
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_URL_PORT = 1449925885;
-	/**
-	 * Invalid Apparat URL
-	 *
-	 * @var int
-	 */
-	const INVALID_APPARAT_URL = 1451435429;
+	public function __construct($url)
+	{
+		parent::__construct($url);
+
+		// If this is not a valid Apparat URL
+		if (!$this->isAbsolute() || !in_array($this->_urlParts['scheme'], self::$_schemes)) {
+			throw new InvalidArgumentException(sprintf('Invalid apparat URL "%s"', $url), InvalidArgumentException::INVALID_APPARAT_URL);
+		}
+	}
 }

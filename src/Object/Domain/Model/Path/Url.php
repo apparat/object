@@ -230,7 +230,7 @@ class Url implements PathInterface
 	public function setScheme($scheme)
 	{
 		// If the URL scheme is not valid
-		if (!array_key_exists($scheme, self::$_schemes)) {
+		if (strlen($scheme) && !array_key_exists($scheme, static::$_schemes)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL scheme "%s"', $scheme),
 				InvalidArgumentException::INVALID_OBJECT_URL_SCHEME);
 		}
@@ -418,6 +418,15 @@ class Url implements PathInterface
 		$url = clone $this;
 		$url->_urlParts['fragment'] = $fragment;
 		return $url;
+	}
+
+	/**
+	 * Return whether this URL is absolute
+	 *
+	 * @return bool Absolute URL
+	 */
+	public function isAbsolute() {
+		return !empty($this->_urlParts['scheme']) && !empty($this->_urlParts['host']);
 	}
 
 	/*******************************************************************************

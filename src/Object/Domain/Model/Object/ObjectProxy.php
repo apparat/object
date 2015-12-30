@@ -38,6 +38,7 @@ namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Path\Url;
 
+/** @noinspection PhpHierarchyChecksInspection */
 /**
  * Object proxy (lazy loading)
  *

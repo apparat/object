@@ -87,8 +87,11 @@ class Url implements PathInterface
 	 * Object URL constructor
 	 *
 	 * @param string $url Object URL
+	 * @param boolean $remote Accept remote URL (less strict date component checking)
+	 * @throws InvalidArgumentException If the object URL is invalid
+	 * @throws InvalidArgumentException If remote URLs are not allowed and a remote URL is given
 	 */
-	public function __construct($url)
+	public function __construct($url, $remote = false)
 	{
 
 		// Parse the URL
@@ -98,7 +101,14 @@ class Url implements PathInterface
 				InvalidArgumentException::INVALID_OBJECT_URL);
 		}
 
-		$this->_path = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path']);
+		// If it's an invalid remote object URL
+		if ($this->isAbsolute() && !$remote) {
+			throw new InvalidArgumentException(sprintf('Unallowed remote object URL "%s"', $url),
+				InvalidArgumentException::UNALLOWED_REMOTE_OBJECT_URL);
+		}
+
+		$this->_path = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'],
+			$remote ? true : null);
 	}
 
 	/**
@@ -425,7 +435,8 @@ class Url implements PathInterface
 	 *
 	 * @return bool Absolute URL
 	 */
-	public function isAbsolute() {
+	public function isAbsolute()
+	{
 		return !empty($this->_urlParts['scheme']) && !empty($this->_urlParts['host']);
 	}
 

@@ -67,14 +67,15 @@ class ApparatUrl extends Url
 	/**
 	 * Apparat URL constructor.
 	 *
-	 * @param string $url
+	 * @param string $url Apparat URL
+	 * @param boolean $remote Accept remote URL (less strict date component checking)
 	 */
-	public function __construct($url)
+	public function __construct($url, $remote = false)
 	{
-		parent::__construct($url);
+		parent::__construct($url, $remote);
 
 		// If this is not a valid Apparat URL
-		if (!$this->isAbsolute() || !in_array($this->_urlParts['scheme'], self::$_schemes)) {
+		if ($this->isAbsolute() && !array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
 			throw new InvalidArgumentException(sprintf('Invalid apparat URL "%s"', $url), InvalidArgumentException::INVALID_APPARAT_URL);
 		}
 	}

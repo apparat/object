@@ -76,15 +76,14 @@ class LocalPath implements PathInterface
 	 * Date PCRE pattern
 	 *
 	 * @var array
-	 * @see Selector::$_datePattern
 	 */
 	protected static $_datePattern = [
-		'Y' => '(?P<year>\d{4})/',
-		'm' => '(?P<month>\d{2})/',
-		'd' => '(?P<day>\d{2})/',
-		'H' => '(?P<hour>\d{2})/',
-		'i' => '(?P<minute>\d{2})/',
-		's' => '(?P<second>\d{2})/',
+		'Y' => '(?P<year>\d{4})',
+		'm' => '(?P<month>\d{2})',
+		'd' => '(?P<day>\d{2})',
+		'H' => '(?P<hour>\d{2})',
+		'i' => '(?P<minute>\d{2})',
+		's' => '(?P<second>\d{2})',
 	];
 
 	/*******************************************************************************
@@ -95,12 +94,37 @@ class LocalPath implements PathInterface
 	 * Object URL constructor
 	 *
 	 * @param string $path Object path
+	 * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object URLs)]
+	 * @throws InvalidArgumentException If the date precision is invalid
+	 * @throws InvalidArgumentException If the object URL path is invalid
 	 */
-	public function __construct($path)
+	public function __construct($path, $datePrecision = null)
 	{
-		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-		$pathPattern = '%^/'.implode('', array_slice(self::$_datePattern, 0,
-				$datePrecision)).'(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+
+		// If the local default date precision should be used
+		if ($datePrecision === null) {
+			$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
+		}
+
+		// If a valid integer date precision is given
+		if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
+			$pathPattern = '%^/'.implode('/',
+					array_slice(self::$_datePattern, 0, $datePrecision)).($datePrecision ? '/' : '');
+
+			// Else if the date precision may be arbitrary
+		} elseif ($datePrecision === true) {
+			$pathPattern = '%^(?:/'.implode('(?:/', self::$_datePattern);
+			$pathPattern .= str_repeat(')?', count(self::$_datePattern));
+			$pathPattern .= '/';
+
+			// Else: Error
+		} else {
+			throw new InvalidArgumentException(sprintf('Invalid date precision "%s" (%s)', strval($datePrecision),
+				gettype($datePrecision)), InvalidArgumentException::INVALID_DATE_PRECISION);
+		}
+
+		$pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+
 		if (empty($path) || !preg_match_all($pathPattern, $path, $pathParts)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
 				empty($path) ? '(empty)' : $path),
@@ -108,11 +132,11 @@ class LocalPath implements PathInterface
 		}
 		if ($datePrecision) {
 			$year = $pathParts['year'][0];
-			$month = isset($pathParts['month']) ? $pathParts['month'][0] : '01';
-			$day = isset($pathParts['day']) ? $pathParts['day'][0] : '01';
-			$hour = isset($pathParts['hour']) ? $pathParts['hour'][0] : '00';
-			$minute = isset($pathParts['minute']) ? $pathParts['minute'][0] : '00';
-			$second = isset($pathParts['second']) ? $pathParts['second'][0] : '00';
+			$month = isset($pathParts['month']) ? $pathParts['month'][0] ?: '01' : '01';
+			$day = isset($pathParts['day']) ? $pathParts['day'][0] ?: '01' : '01';
+			$hour = isset($pathParts['hour']) ? $pathParts['hour'][0] ?: '00' : '00';
+			$minute = isset($pathParts['minute']) ? $pathParts['minute'][0] ?: '00' : '00';
+			$second = isset($pathParts['second']) ? $pathParts['second'][0] ?: '00' : '00';
 			$this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
 		}
 

@@ -67,9 +67,11 @@ namespace Apparat\Object\Domain\Model\Path\Url {
 namespace ApparatTest {
 
 	use Apparat\Object\Domain\Model\Object\Id;
-	use Apparat\Object\Domain\Model\Object\InvalidArgumentException;
 	use Apparat\Object\Domain\Model\Object\Revision;
 	use Apparat\Object\Domain\Model\Object\Type;
+	use Apparat\Object\Domain\Model\Path\ApparatUrl;
+	use Apparat\Object\Domain\Model\Path\InvalidArgumentException;
+	use Apparat\Object\Domain\Model\Path\LocalPath;
 	use Apparat\Object\Domain\Model\Path\Url;
 
 	/**
@@ -81,20 +83,54 @@ namespace ApparatTest {
 	class UrlTest extends AbstractTest
 	{
 		/**
+		 * Example query fragment
+		 *
+		 * @var string
+		 */
+		const QUERY_FRAGMENT = '?param=value#fragment';
+		/**
+		 * Example path
+		 *
+		 * @var string
+		 */
+		const PATH = '/2015/10/01/36704.event/36704-1';
+		/**
 		 * Example URL
 		 *
 		 * @var string
 		 */
-		const URL = 'http://apparat:tools@apparat.tools:80/2015/10/01/36704.event/36704-1?param=value#fragment';
+		const URL = self::PATH.self::QUERY_FRAGMENT;
+		/**
+		 * Example URL
+		 *
+		 * @var string
+		 */
+		const REMOTE_URL = 'http://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+		/**
+		 * Example apparat URL
+		 *
+		 * @var string
+		 */
+		const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+
+		/**
+		 * Test an URL
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1451515385
+		 */
+		public function testInvalidRemoteUrl() {
+			new Url(self::REMOTE_URL);
+		}
 
 		/**
 		 * Test an URL
 		 */
 		public function testUrl()
 		{
-			$url = new Url(self::URL);
+			$url = new Url(self::REMOTE_URL, true);
 			$this->assertInstanceOf(Url::class, $url);
-			$this->assertEquals(self::URL, strval($url));
+			$this->assertEquals(self::REMOTE_URL, strval($url));
 			$this->assertEquals('http', $url->getScheme());
 			$this->assertEquals('apparat', $url->getUser());
 			$this->assertEquals('tools', $url->getPassword());
@@ -132,7 +168,7 @@ namespace ApparatTest {
 		 */
 		public function testInvalidUrlPath()
 		{
-			new Url('http://invalid~url*path');
+			new Url('http://invalid~url*path', true);
 		}
 
 		/**
@@ -205,6 +241,71 @@ namespace ApparatTest {
 			$url = new Url\TestUrl(self::URL);
 			$this->assertEquals('https://user:password@another.host:443/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
 				$url->getUrlOverride());
+		}
+
+		/**
+		 * Test absolute URL
+		 */
+		public function testUrlAbsolute()
+		{
+			$url = new Url(self::REMOTE_URL, true);
+			$this->assertEquals(true, $url->isAbsolute());
+		}
+
+		/**
+		 * Test relative URL
+		 */
+		public function testUrlReative()
+		{
+			$url = new Url(self::PATH.self::QUERY_FRAGMENT);
+			$this->assertEquals(false, $url->isAbsolute());
+		}
+
+		/**
+		 * Test an invalid apparat URL
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1451435429
+		 */
+		public function testInvalidApparatUrl()
+		{
+			new ApparatUrl(self::REMOTE_URL, true);
+		}
+
+		/**
+		 * Test an absolute apparat URL
+		 */
+		public function testAbsoluteApparatUrl()
+		{
+			$apparatUrl = new ApparatUrl(self::APPARAT_URL, true);
+			$this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+		}
+
+		/**
+		 * Test a relative apparat URL
+		 */
+		public function testRelativeApparatUrl()
+		{
+			$apparatUrl = new ApparatUrl(self::URL);
+			$this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+		}
+
+		/**
+		 * Test invalid date precision
+		 *
+		 * @expectedException InvalidArgumentException
+		 * @expectedExceptionCode 1451514114
+		 */
+		public function testInvalidDatePrecision() {
+			new LocalPath(self::PATH, -1);
+		}
+
+		/**
+		 * Test arbitrary date precision
+		 */
+		public function testArbitraryDatePrecision() {
+			$path = new LocalPath(self::PATH, true);
+			$this->assertInstanceOf(LocalPath::class, $path);
 		}
 	}
 }

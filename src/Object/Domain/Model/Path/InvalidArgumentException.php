@@ -43,6 +43,12 @@ namespace Apparat\Object\Domain\Model\Path;
 class InvalidArgumentException extends \InvalidArgumentException
 {
 	/**
+	 * Invalid date precision
+	 *
+	 * @var int
+	 */
+	const INVALID_DATE_PRECISION = 1451514114;
+	/**
 	 * Invalid object URL path
 	 *
 	 * @var int
@@ -54,6 +60,12 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_OBJECT_URL = 1449873819;
+	/**
+	 * Invalid remote object URL
+	 *
+	 * @var int
+	 */
+	const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
 	/**
 	 * Invalid object URL scheme
 	 *

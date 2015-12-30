@@ -62,6 +62,14 @@ class AuxiliaryText extends AbstractTest
 	}
 
 	/**
+	 * Test ID serialization
+	 */
+	public function testIdSerialization() {
+		$id = new Id(123);
+		$this->assertEquals(123, $id->serialize());
+	}
+
+	/**
 	 * Test an invalid type
 	 *
 	 * @expectedException InvalidArgumentException
@@ -73,6 +81,14 @@ class AuxiliaryText extends AbstractTest
 	}
 
 	/**
+	 * Test type serialization
+	 */
+	public function testTypeSerialization() {
+		$type = new Type(Type::ARTICLE);
+		$this->assertEquals(Type::ARTICLE, $type->serialize());
+	}
+
+	/**
 	 * Test an invalid Revision
 	 *
 	 * @expectedException InvalidArgumentException
@@ -81,6 +97,32 @@ class AuxiliaryText extends AbstractTest
 	public function testInvalidRevision()
 	{
 		new Revision('abc');
+	}
+
+	/**
+	 * Test revision serialization
+	 */
+	public function testRevisionSerialization() {
+		$revision = new Revision(123);
+		$this->assertEquals(123, $revision->serialize());
+		$revision = new Revision(Revision::CURRENT);
+		$this->assertEquals(Revision::CURRENT, $revision->serialize());
+	}
+
+	/**
+	 * Test current revision
+	 */
+	public function testCurrentRevision() {
+		$revision = new Revision(Revision::CURRENT);
+		$this->assertTrue($revision->isCurrent());
+	}
+
+	/**
+	 * Test draft revision
+	 */
+	public function testDraftRevision() {
+		$revision = new Revision(Revision::DRAFT);
+		$this->assertTrue($revision->isDraft());
 	}
 
 	/**

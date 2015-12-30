@@ -36,8 +36,11 @@
 
 namespace ApparatTest;
 
+use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
@@ -66,6 +69,40 @@ class ObjectTest extends AbstractTest
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
 		]);
+	}
+
+	/**
+	 * Test undefined object type
+	 *
+	 * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+	 * @expectedExceptionCode 1450905868
+	 */
+	public function testUndefinedObjectType()
+	{
+		$resource = $this->getMock(ResourceInterface::class);
+		$resource->method('getPropertyData')->willReturn([]);
+		$repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
+
+		/** @var ResourceInterface $resource */
+		/** @var RepositoryPath $repositoryPath */
+		ObjectFactory::createFromResource($resource, $repositoryPath);
+	}
+
+	/**
+	 * Test invalid object type
+	 *
+	 * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+	 * @expectedExceptionCode 1450824842
+	 */
+	public function testInvalidObjectType()
+	{
+		$resource = $this->getMock(ResourceInterface::class);
+		$resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
+		$repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
+
+		/** @var ResourceInterface $resource */
+		/** @var RepositoryPath $repositoryPath */
+		ObjectFactory::createFromResource($resource, $repositoryPath);
 	}
 
 	public function testLoadArticleObjectCurrentRevision()

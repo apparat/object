@@ -44,7 +44,7 @@ use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
  * Repository cluster factory
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Domain
  */
 class Cluster
 {

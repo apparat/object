@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Model\Path\Url;
  * Object proxy (lazy loading)
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Object
+ * @subpackage Apparat\Object\Domain
  */
 class ObjectProxy implements ObjectInterface
 {

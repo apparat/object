@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Path;
  * Apparat URL
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Path
+ * @subpackage Apparat\Object\Domain
  */
 class ApparatUrl extends Url
 {

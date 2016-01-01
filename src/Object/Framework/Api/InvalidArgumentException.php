@@ -40,7 +40,7 @@ namespace Apparat\Object\Framework\Api;
  * Api invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain\Model\Api
+ * @subpackage Apparat\Object\Domain
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {

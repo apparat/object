@@ -37,7 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Model\Object\Manager;
+use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**
@@ -78,8 +78,6 @@ class Cluster
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create($adapterStrategyConfig);
 			$repositories[] = Repository::instance($adapterStrategyConfig['url'], $repositoryAdapterStrategy, new Manager());
 		}
-
-		// TODO: Include apparat base URL in repository instantiation
 
 		// Instantiate and return the object repository cluster
 		return new \Apparat\Object\Domain\Model\Cluster\Cluster($repositories);

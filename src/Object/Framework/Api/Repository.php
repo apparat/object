@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Framework\Api;
 
-use Apparat\Object\Framework\Model\Object\Manager;
+use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
 
 /**

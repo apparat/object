@@ -50,7 +50,7 @@ use Apparat\Object\Domain\Model\Properties\SystemProperties;
  * Object factory
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application\Factory
+ * @subpackage Apparat\Object\Application
  */
 class ObjectFactory
 {

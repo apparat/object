@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -37,7 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Application\Model\Object\Manager;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 
 /**
  * Repository factory

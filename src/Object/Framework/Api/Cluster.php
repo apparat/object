@@ -38,7 +38,7 @@ namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Application\Model\Object\Manager;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 
 /**
  * Repository cluster factory

@@ -34,26 +34,52 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Repository;
+namespace Apparat\Object\Framework\Factory;
+
+use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
+use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
 /**
- * Repository invalid argument exception
+ * Repository adapter strategy factory
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class AdapterStrategyFactory
 {
 	/**
-	 * Empty file adapter strategy root
+	 * Known adapter strategy types
 	 *
-	 * @var int
+	 * @var array
 	 */
-	const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
+	protected static $_types = [
+		FileAdapterStrategy::TYPE => FileAdapterStrategy::class,
+	];
+
 	/**
-	 * Invalid file adapter strategy root
+	 * Instantiate and return an adapter strategy
 	 *
-	 * @var int
+	 * @param array $config Adapter strategy config
+	 * @return AdapterStrategyInterface Repository adapter
+	 * @throws InvalidArgumentException If the adapter strategy config is empty
+	 * @throws InvalidArgumentException If the adapter strategy type is missing or invalid
 	 */
-	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+	public static function create(array $config)
+	{
+		// If the adapter strategy config is empty
+		if (!count($config)) {
+			throw new InvalidArgumentException('Empty adapter strategy configuration',
+				InvalidArgumentException::EMPTY_ADAPTER_STRATEGY_CONFIG);
+		}
+
+		// If the adapter strategy type is missing or invalid
+		if (empty($config['type']) || !array_key_exists($config['type'], self::$_types)) {
+			throw new InvalidArgumentException(sprintf('Invalid adapter strategy type "%s"',
+				empty($config['type']) ? '(empty)' : $config['type']),
+				InvalidArgumentException::INVALID_ADAPTER_STRATEGY_TYPE);
+		}
+
+		// Instantiate the adapter strategy
+		return new self::$_types[$config['type']]($config);
+	}
 }

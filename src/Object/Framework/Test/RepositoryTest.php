@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Framework\Api\Repository as RepositoryFactory;
-use Apparat\Object\Framework\Repository\AdapterStrategyFactory;
+use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
 /**

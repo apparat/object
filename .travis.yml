@@ -6,7 +6,8 @@ php:
   - hhvm
 
 env:
-- APP_ENV=development
+- OBJECT_RESOURCE_EXTENSION=md
+- OBJECT_DATE_PRECISION=3
 
 matrix:
   allow_failures:

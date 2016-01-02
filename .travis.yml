@@ -6,8 +6,7 @@ php:
   - hhvm
 
 env:
-- OBJECT_RESOURCE_EXTENSION=md
-- OBJECT_DATE_PRECISION=3
+- OBJECT_RESOURCE_EXTENSION=md OBJECT_DATE_PRECISION=3
 
 matrix:
   allow_failures:

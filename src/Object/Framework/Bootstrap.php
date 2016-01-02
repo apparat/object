@@ -1,10 +1,11 @@
 <?php
 
 /**
- * Apparat
+ * apparat-object
  *
  * @category    Apparat
- * @package     Apparat_Resource
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Framework
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -33,11 +34,15 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-error_reporting(E_ALL);
-$autoloader = __DIR__.'/vendor/autoload.php';
-if (!file_exists($autoloader)) {
-	echo "Composer autoloader not found: $autoloader".PHP_EOL;
-	echo "Please issue 'composer install' and try again.".PHP_EOL;
-	exit(1);
+// Instantiate Dotenv
+$dotenv = new \Dotenv\Dotenv(dirname(dirname(dirname(__DIR__))));
+if (getenv('APP_ENV') === 'development') {
+	$dotenv->load();
 }
-require $autoloader;
+
+// Validate the required environment variables
+$dotenv->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
+$dotenv->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
+
+// Unset Dotenv
+unset($dotenv);

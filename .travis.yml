@@ -5,6 +5,9 @@ php:
   - 7.0
   - hhvm
 
+env:
+- APP_ENV=development
+
 matrix:
   allow_failures:
     - php: hhvm

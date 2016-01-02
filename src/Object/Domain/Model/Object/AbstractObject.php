@@ -175,6 +175,26 @@ abstract class AbstractObject implements ObjectInterface
 	}
 
 	/**
+	 * Return all object keywords
+	 *
+	 * @return array Object keywords
+	 */
+	public function getKeywords()
+	{
+		return $this->_metaProperties->getKeywords();
+	}
+
+	/**
+	 * Return all object categories
+	 *
+	 * @return array Object categories
+	 */
+	public function getCategories()
+	{
+		return $this->_metaProperties->getCategories();
+	}
+
+	/**
 	 * Return all object authors
 	 *
 	 * @return AuthorInterface[] Authors

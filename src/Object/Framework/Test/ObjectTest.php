@@ -64,11 +64,12 @@ class ObjectTest extends AbstractTest
 	 */
 	public static function setUpBeforeClass()
 	{
-		self::$_repository = \Apparat\Object\Framework\Api\Repository::create([
-			'url' => getenv('APPARAT_BASE_URL'),
+		\Apparat\Object\Framework\Api\Repository::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
 		]);
+
+		self::$_repository = \Apparat\Object\Framework\Api\Repository::instance(getenv('REPOSITORY_URL'));
 	}
 
 	/**
@@ -105,11 +106,15 @@ class ObjectTest extends AbstractTest
 		ObjectFactory::createFromResource($resource, $repositoryPath);
 	}
 
-	public function testLoadArticleObjectCurrentRevision()
+	/**
+	 * Load an article object and test its meta properties
+	 */
+	public function testLoadArticleObjectMetaProperties()
 	{
 		$articleObjectPath = new RepositoryPath(self::$_repository, '/2015/12/21/1.article/1');
 		$articleObject = self::$_repository->loadObject($articleObjectPath);
 		$this->assertInstanceOf(Article::class, $articleObject);
-//		print_r($articleObject);
+		$this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
+		$this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
 	}
 }

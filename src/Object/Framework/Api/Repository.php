@@ -48,32 +48,73 @@ use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 class Repository
 {
 	/**
-	 * Instanciate and return an object repository
+	 * Registered repositories
 	 *
-	 * @param array $config Repository configuration
-	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
-	 * @throws InvalidArgumentException If the repository configuration is empty
-	 * @throws InvalidArgumentException If the apparat base URL is not defined
-	 * @api
+	 * @var array
 	 */
-	public static function create(array $config)
-	{
-		// If no repositories are configured
+	protected static $_registry = [];
+
+	/**
+	 * Register a repository
+	 *
+	 * @param string $url Public repository URL
+	 * @param array $config Repository configuration
+	 * @throws InvalidArgumentException If the public repository URL is invalid
+	 * @throws InvalidArgumentException If the repository configuration is empty
+	 */
+	public static function register($url, array $config) {
+
+		// If the public repository URL is invalid
+		if (!strlen($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
+			throw new InvalidArgumentException(sprintf('Invalid public repository URL "%s"', $url),
+				InvalidArgumentException::INVALID_PUBLIC_REPOSITORY_URL);
+		}
+
+		// If the repository configuration is empty
 		if (!count($config)) {
 			throw new InvalidArgumentException('Empty repository configuration',
 				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
 		}
 
-		// If the apparat base URL is not defined
-		if (empty($config['url'])) {
-			throw new InvalidArgumentException('Missing apparat base URL',
-				InvalidArgumentException::MISSING_APPARAT_BASE_URL);
+		// Registration
+		self::$_registry[$url] = [
+			'config' => $config,
+			'instance' => null,
+		];
+	}
+
+	/**
+	 * Instanciate and return an object repository
+	 *
+	 * @param string $url Public repository URL
+	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
+	 * @throws InvalidArgumentException If the public repository URL is invalid
+	 * @throws InvalidArgumentException If the public repository URL is unknown
+	 * @api
+	 */
+	public static function instance($url)
+	{
+		// If the public repository URL is invalid
+		if (!strlen($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
+			throw new InvalidArgumentException(sprintf('Invalid public repository URL "%s"', $url),
+				InvalidArgumentException::INVALID_PUBLIC_REPOSITORY_URL);
 		}
 
-		// Instantiate the repository adapter strategy
-		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
+		// If the public repository URL is unknown
+		if (empty(self::$_registry[$url])) {
+			throw new InvalidArgumentException(sprintf('Unknown public repository URL "%s"', $url),
+				InvalidArgumentException::UNKNOWN_PUBLIC_REPOSITORY_URL);
+		}
 
-		// Instantiate and return the object repository
-		return \Apparat\Object\Domain\Repository\Repository::instance($config['url'], $repositoryAdapterStrategy, new Manager());
+		if (!self::$_registry[$url]['instance'] instanceof \Apparat\Object\Domain\Repository\Repository) {
+
+			// Instantiate the repository adapter strategy
+			$repositoryAdapterStrategy = AdapterStrategyFactory::create(self::$_registry[$url]['config']);
+
+			// Instantiate and return the object repository
+			self::$_registry[$url]['instance'] = \Apparat\Object\Domain\Repository\Repository::instance($url, $repositoryAdapterStrategy, new Manager());
+		}
+
+		return self::$_registry[$url]['instance'];
 	}
 }

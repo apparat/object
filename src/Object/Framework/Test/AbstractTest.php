@@ -42,88 +42,125 @@ namespace ApparatTest;
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Framework
  */
-abstract class AbstractTest extends \PHPUnit_Framework_TestCase {
-    /**
-     * Temporary FILES
-     *
-     * @var array
-     */
-    protected $_tmpFiles = array();
+abstract class AbstractTest extends \PHPUnit_Framework_TestCase
+{
+	/**
+	 * Temporary FILES
+	 *
+	 * @var array
+	 */
+	protected $_tmpFiles = array();
 
-    /**
-     * Tears down the fixture
-     */
-    protected function tearDown() {
-        foreach ($this->_tmpFiles as $tmpFile) {
-            if (@is_file($tmpFile)) {
-                @unlink($tmpFile);
-            } else {
-                @rmdir($tmpFile);
-            }
-        }
-    }
+	/**
+	 * Tears down the fixture
+	 */
+	protected function tearDown()
+	{
+		foreach ($this->_tmpFiles as $tmpFile) {
+			if (@is_file($tmpFile)) {
+				@unlink($tmpFile);
+			} else {
+				@rmdir($tmpFile);
+			}
+		}
+	}
 
-    /**
-     * Prepare and register a temporary file name
-     *
-     * @param bool $nameOnly Return the name only (don't create file)
-     * @return string Temporary file name
-     */
-    protected function _createTemporaryFile($nameOnly = false) {
-        $this->_tmpFiles[] = $tempFileName = tempnam(sys_get_temp_dir(), 'apparat_test_');
-        if ($nameOnly) {
-            @unlink($tempFileName);
-        }
-        return $tempFileName;
-    }
+	/**
+	 * Prepare and register a temporary file name
+	 *
+	 * @param bool $nameOnly Return the name only (don't create file)
+	 * @return string Temporary file name
+	 */
+	protected function _createTemporaryFile($nameOnly = false)
+	{
+		$this->_tmpFiles[] = $tempFileName = tempnam(sys_get_temp_dir(), 'apparat_test_');
+		if ($nameOnly) {
+			@unlink($tempFileName);
+		}
+		return $tempFileName;
+	}
 
-    /**
-     * Test if two arrays equal in their keys and values
-     *
-     * @param array $expected       Expected result
-     * @param array $actual         Actual result
-     * @param string $message       Message
-     */
-    public function assertArrayEquals(array $expected, array $actual, $message = '') {
-        $this->assertEquals($this->_sortArrayForComparison($expected), $this->_sortArrayForComparison($actual), $message);
-    }
+	/**
+	 * Test if two arrays equal in their keys and values
+	 *
+	 * @param array $expected Expected result
+	 * @param array $actual Actual result
+	 * @param string $message Message
+	 */
+	public function assertArrayEquals(array $expected, array $actual, $message = '')
+	{
+		$this->assertEquals($this->_sortArrayForComparison($expected), $this->_sortArrayForComparison($actual),
+			$message);
+	}
 
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
 
-    /**
-     * Recursively sort an array for comparison with another array
-     *
-     * @param array $array          Array
-     * @return array                Sorted array
-     */
-    protected function _sortArrayForComparison(array $array) {
+	/**
+	 * Recursively sort an array for comparison with another array
+	 *
+	 * @param array $array Array
+	 * @return array                Sorted array
+	 */
+	protected function _sortArrayForComparison(array $array)
+	{
 
-        // Test if all array keys are numeric
-        $allNumeric = true;
-        foreach (array_keys($array) as $key) {
-            if (!is_numeric($key)) {
-                $allNumeric = false;
-                break;
-            }
-        }
+		// Test if all array keys are numeric
+		$allNumeric = true;
+		foreach (array_keys($array) as $key) {
+			if (!is_numeric($key)) {
+				$allNumeric = false;
+				break;
+			}
+		}
 
-        // If not all keys are numeric: Sort the array by key
-        if (!$allNumeric) {
-            ksort($array, SORT_STRING);
-        }
+		// If not all keys are numeric: Sort the array by key
+		if (!$allNumeric) {
+			ksort($array, SORT_STRING);
 
-        // Run through all elements and sort them recursively if they are an array
-        reset($array);
-        while (list($key, $value) = each($array)) {
-            if (is_array($value)) {
-                $array[$key] = $this->_sortArrayForComparison($value);
-            }
-        }
+			// Run through all elements and sort them recursively if they are an array
+			reset($array);
+			while (list($key, $value) = each($array)) {
+				if (is_array($value)) {
+					$array[$key] = $this->_sortArrayForComparison($value);
+				}
+			}
 
-        return $array;
-    }
+			// Else sort them by data type and value
+		} else {
+
+			// Run through all elements and sort them recursively if they are an array
+			reset($array);
+			while (list($key, $value) = each($array)) {
+				if (is_array($value)) {
+					$array[$key] = $this->_sortArrayForComparison($value);
+				}
+			}
+
+			usort($array, function ($a, $b) {
+				$aType = gettype($a);
+				$bType = gettype($b);
+				if ($aType === $bType) {
+					switch ($aType) {
+						case 'array':
+							return strcmp(implode('', array_keys($a)), implode('', array_keys($b)));
+							break;
+						case 'object':
+							return strcmp(spl_object_hash($a), spl_object_hash($b));
+							break;
+						default:
+							return strcmp(strval($a), strval($b));
+							break;
+					}
+				} else {
+					return strcmp($aType, $bType);
+				}
+			});
+		}
+
+		return $array;
+	}
 
 	/**
 	 * Normalize HTML contents

@@ -163,6 +163,28 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
+	 * Test empty public repository URL
+	 *
+	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedExceptionCode 1451771588
+	 */
+	public function testEmptyRepositoryUrl()
+	{
+		RepositoryFactory::register('', []);
+	}
+
+	/**
+	 * Test invalid public repository URL
+	 *
+	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedExceptionCode 1451771588
+	 */
+	public function testInvalidRepositoryUrl()
+	{
+		RepositoryFactory::register('invalid', []);
+	}
+
+	/**
 	 * Test empty repository config
 	 *
 	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
@@ -170,7 +192,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testEmptyRepositoryConfig()
 	{
-		RepositoryFactory::create([]);
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), []);
 	}
 
 	/**
@@ -193,7 +215,6 @@ class RepositoryTest extends AbstractTest
 	public function testInvalidAdapterStrategyType()
 	{
 		AdapterStrategyFactory::create([
-			'url' => 'http://apparat',
 			'type' => 'invalid',
 		]);
 	}
@@ -204,7 +225,6 @@ class RepositoryTest extends AbstractTest
 	public function testFileAdapterStrategy()
 	{
 		$fileAdapterStrategy = AdapterStrategyFactory::create([
-			'url' => 'http://apparat',
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__,
 		]);
@@ -213,17 +233,45 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
-	 * Test missing file adapter strategy root
+	 * Test invalid file adapter strategy root
 	 *
 	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1450136346
 	 */
 	public function testMissingFileStrategyRoot()
 	{
-		RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 		]);
+		RepositoryFactory::instance(getenv('REPOSITORY_URL'));
+	}
+
+	/**
+	 * Test invalid public repository URL during instantiation
+	 *
+	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedExceptionCode 1451771588
+	 */
+	public function testInvalidRepositoryUrlInstance()
+	{
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+		]);
+		RepositoryFactory::instance('');
+	}
+
+	/**
+	 * Test invalid public repository URL during instantiation
+	 *
+	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedExceptionCode 1451771889
+	 */
+	public function testUnknownRepositoryUrlInstance()
+	{
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+		]);
+		RepositoryFactory::instance('http://unknown');
 	}
 
 	/**
@@ -234,11 +282,11 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testEmptyFileStrategyRoot()
 	{
-		RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => '',
 		]);
+		RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 	}
 
 	/**
@@ -249,11 +297,11 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testInvalidFileStrategyRoot()
 	{
-		RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
-			'root' => __FILE__,
+			'root' => '__FILE__',
 		]);
+		RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 	}
 
 	/**
@@ -261,11 +309,11 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testFileRepository()
 	{
-		$fileRepository = RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);
+		$fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 		$this->assertInstanceOf(Repository::class, $fileRepository);
 
 		$selector = SelectorFactory::createFromString('/*');
@@ -280,11 +328,11 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testFileRepositoryRevisions()
 	{
-		$fileRepository = RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);
+		$fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 
 		$selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*-1');
 		$collection = $fileRepository->findObjects($selector);
@@ -297,11 +345,11 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testRepositoryPath()
 	{
-		$fileRepository = RepositoryFactory::create([
-			'url' => 'http://apparat',
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => self::$_globBase,
 		]);
+		$fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 		$repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704.event/36704-1');
 		$this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
 		$this->assertEquals($fileRepository, $repositoryPath->getRepository());

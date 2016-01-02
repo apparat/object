@@ -80,6 +80,20 @@ interface ObjectInterface
 	public function getPublished();
 
 	/**
+	 * Return all object keywords
+	 *
+	 * @return array Object keywords
+	 */
+	public function getKeywords();
+
+	/**
+	 * Return all object categories
+	 *
+	 * @return array Object categories
+	 */
+	public function getCategories();
+
+	/**
 	 * Return all object authors
 	 *
 	 * @return AuthorInterface[] Authors

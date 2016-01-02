@@ -51,9 +51,15 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 */
 	const EMPTY_REPOSITORY_CONFIG = 1449947621;
 	/**
-	 * Missing apparat base URL
+	 * Invalid public repository URL
 	 *
 	 * @var int
 	 */
-	const MISSING_APPARAT_BASE_URL = 1451162237;
+	const INVALID_PUBLIC_REPOSITORY_URL = 1451771588;
+	/**
+	 * Unknown public repository URL
+	 *
+	 * @var int
+	 */
+	const UNKNOWN_PUBLIC_REPOSITORY_URL = 1451771889;
 }

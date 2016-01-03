@@ -40,7 +40,7 @@ use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 
 /**
- * Repository factory
+ * Repository facade
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
@@ -54,20 +54,26 @@ class Repository
 	 */
 	protected static $_registry = [];
 
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
 	/**
 	 * Register a repository
 	 *
-	 * @param string $url Public repository URL
+	 * @param string $url Public repository URL (relative to apparat base URL)
 	 * @param array $config Repository configuration
 	 * @throws InvalidArgumentException If the public repository URL is invalid
 	 * @throws InvalidArgumentException If the repository configuration is empty
+	 * @api
 	 */
-	public static function register($url, array $config) {
-
-		// If the public repository URL is invalid
-		if (!strlen($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
-			throw new InvalidArgumentException(sprintf('Invalid public repository URL "%s"', $url),
-				InvalidArgumentException::INVALID_PUBLIC_REPOSITORY_URL);
+	public static function register($url, array $config)
+	{
+		// Strip off the potentially leading apparat base URL
+		try {
+			$url = self::_normalizeRepositoryUrl($url);
+		} catch(\RuntimeException $e) {
+			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
 		// If the repository configuration is empty
@@ -86,7 +92,7 @@ class Repository
 	/**
 	 * Instanciate and return an object repository
 	 *
-	 * @param string $url Public repository URL
+	 * @param string $url Public repository URL (relative to apparat base URL)
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
 	 * @throws InvalidArgumentException If the public repository URL is invalid
 	 * @throws InvalidArgumentException If the public repository URL is unknown
@@ -94,10 +100,11 @@ class Repository
 	 */
 	public static function instance($url)
 	{
-		// If the public repository URL is invalid
-		if (!strlen($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
-			throw new InvalidArgumentException(sprintf('Invalid public repository URL "%s"', $url),
-				InvalidArgumentException::INVALID_PUBLIC_REPOSITORY_URL);
+		// Strip off the potentially leading apparat base URL
+		try {
+			$url = self::_normalizeRepositoryUrl($url);
+		} catch(\RuntimeException $e) {
+			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
 		// If the public repository URL is unknown
@@ -112,9 +119,35 @@ class Repository
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create(self::$_registry[$url]['config']);
 
 			// Instantiate and return the object repository
-			self::$_registry[$url]['instance'] = \Apparat\Object\Domain\Repository\Repository::instance($url, $repositoryAdapterStrategy, new Manager());
+			self::$_registry[$url]['instance'] = \Apparat\Object\Domain\Repository\Repository::instance($url,
+				$repositoryAdapterStrategy, new Manager());
 		}
 
 		return self::$_registry[$url]['instance'];
+	}
+
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
+
+	/**
+	 * Normalize the public repository URL
+	 *
+	 * @param string $url Public repository URL
+	 * @return bool|string Normalized repository URL
+	 * @throws InvalidArgumentException If the respository URL is external
+	 */
+	protected static function _normalizeRepositoryUrl($url)
+	{
+		$apparatBaseUrl = getenv('APPARAT_BASE_URL');
+		$url = ltrim((strpos($url, $apparatBaseUrl) === 0) ? substr($url, strlen($apparatBaseUrl)) : $url, '/');
+
+		// If this is still a valid absolute URL, it must be external
+		if (filter_var($url, FILTER_VALIDATE_URL)) {
+			throw new InvalidArgumentException(sprintf('External respository URL "%s" not allowed', $url),
+				InvalidArgumentException::EXTERNAL_REPOSITORY_URL_NOT_ALLOWED);
+		}
+
+		return \Apparat\Object\Framework\isAbsoluteBareUrl($apparatBaseUrl.$url) ? $url : false;
 	}
 }

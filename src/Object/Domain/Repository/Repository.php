@@ -178,12 +178,6 @@ class Repository implements RepositoryInterface
 	 */
 	protected function __construct($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
 	{
-		// If the apparat base URL isn't valid
-		if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match("%^https?\:\/\/%i", $url)) {
-			throw new InvalidArgumentException(sprintf('Invalid apparat base URL "%s"', $url),
-				InvalidArgumentException::INVALID_APPARAT_BASE_URL);
-		}
-
 		$this->_url = $url;
 		$this->_adapterStrategy = $adapterStrategy;
 		$this->_objectManager = $objectManager;

@@ -6,7 +6,7 @@
     </testsuites>
 
     <php>
-        <env name="REPOSITORY_URL" value="http://apparat/repo"/>
+        <env name="REPOSITORY_URL" value="repo"/>
     </php>
 
     <logging>

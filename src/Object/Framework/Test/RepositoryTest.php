@@ -163,14 +163,55 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
-	 * Test invalid public repository URL registration
+	 * Test a bare URL with invalid schema
+	 *
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1451776352
+	 */
+	public static function testInvalidSchemaBareUrl() {
+		\Apparat\Object\Framework\isAbsoluteBareUrl('ftp://example.com');
+	}
+
+	/**
+	 * Test a bare URL with query
+	 *
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1451776509
+	 */
+	public static function testInvalidQueryBareUrl() {
+		\Apparat\Object\Framework\isAbsoluteBareUrl('http://example.com/?a=1');
+	}
+
+	/**
+	 * Test a bare URL with fragment
+	 *
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionCode 1451776570
+	 */
+	public static function testInvalidFragmentBareUrl() {
+		\Apparat\Object\Framework\isAbsoluteBareUrl('http://example.com/#1');
+	}
+
+	/**
+	 * Test invalid remote repository URL registration
 	 *
 	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
-	public function testRegisterInvalidRepositoryUrl()
+	public function testRegisterInvalidRemoteRepositoryUrl()
 	{
 		RepositoryFactory::register('http://example.com', []);
+	}
+
+	/**
+	 * Test invalid query repository URL registration
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1451776509
+	 */
+	public function testRegisterInvalidQueryRepositoryUrl()
+	{
+		RepositoryFactory::register(getenv('REPOSITORY_URL').'?a=1', []);
 	}
 
 	/**
@@ -186,6 +227,21 @@ class RepositoryTest extends AbstractTest
 			'root' => __DIR__,
 		]);
 		RepositoryFactory::instance('http://example.com');
+	}
+
+	/**
+	 * Test invalid query repository URL registration
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1451776509
+	 */
+	public function testInstantiateInvalidQueryRepositoryUrl()
+	{
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => __DIR__,
+		]);
+		RepositoryFactory::instance(getenv('REPOSITORY_URL').'?a=1');
 	}
 
 	/**

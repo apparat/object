@@ -75,6 +75,7 @@ namespace ApparatTest {
 	use Apparat\Object\Domain\Model\Path\InvalidArgumentException;
 	use Apparat\Object\Domain\Model\Path\LocalPath;
 	use Apparat\Object\Domain\Model\Path\ObjectUrl;
+	use Apparat\Object\Domain\Model\Path\Url;
 
 	/**
 	 * Object URL tests
@@ -121,7 +122,8 @@ namespace ApparatTest {
 		 * @expectedException InvalidArgumentException
 		 * @expectedExceptionCode 1451515385
 		 */
-		public function testInvalidRemoteUrl() {
+		public function testInvalidRemoteUrl()
+		{
 			new ObjectUrl(self::REMOTE_URL);
 		}
 
@@ -154,7 +156,8 @@ namespace ApparatTest {
 		/**
 		 * Test a local URL with path prefix
 		 */
-		public function testLeadedLocalUrl() {
+		public function testLeadedLocalUrl()
+		{
 			$pathPrefix = '/prefix/path';
 			$url = new ObjectUrl($pathPrefix.self::PATH);
 			$this->assertEquals($pathPrefix, $url->getPath());
@@ -272,6 +275,40 @@ namespace ApparatTest {
 		}
 
 		/**
+		 * Test URL comparison
+		 */
+		public function testUrlComparison()
+		{
+			$this->assertFalse((new Url('http://example.com'))->matches(new Url('https://example.com')));
+			$this->assertFalse((new Url('http://user1@example.com'))->matches(new Url('http://user2@example.com')));
+			$this->assertFalse((new Url('http://user:pass1@example.com'))->matches(new Url('http://user:pass2@example.com')));
+			$this->assertFalse((new Url('http://example1.com'))->matches(new Url('http://example2.com')));
+			$this->assertFalse((new Url('http://example.com:80'))->matches(new Url('http://example.com:443')));
+			$this->assertFalse((new Url('http://example.com/a'))->matches(new Url('http://example.com/b')));
+			$this->assertFalse((new Url('http://example.com/?a=1'))->matches(new Url('http://example.com/?a=2')));
+			$this->assertFalse((new Url('http://example.com/#a'))->matches(new Url('http://example.com/#b')));
+			$this->assertTrue((new Url(self::REMOTE_URL))->matches(new Url(self::REMOTE_URL)));
+		}
+
+		/**
+		 * Test object URL comparison
+		 */
+		public function testObjectUrlComparison()
+		{
+			$this->assertFalse((new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-1',
+				true))->matches(new ObjectUrl('https://example.com/2015/10/01/36704.event/36704-1', true)));
+			$this->assertFalse((new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-1',
+				true))->matches(new ObjectUrl('http://example.com/2016/10/01/36704.event/36704-1', true)));
+			$this->assertFalse((new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-1',
+				true))->matches(new ObjectUrl('http://example.com/2015/10/01/36705.event/36705-1', true)));
+			$this->assertFalse((new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-1',
+				true))->matches(new ObjectUrl('http://example.com/2015/10/01/36704.article/36704-1', true)));
+			$this->assertFalse((new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-1',
+				true))->matches(new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-2', true)));
+			$this->assertTrue((new ObjectUrl(self::REMOTE_URL, true))->matches(new ObjectUrl(self::REMOTE_URL, true)));
+		}
+
+		/**
 		 * Test an invalid apparat URL
 		 *
 		 * @expectedException InvalidArgumentException
@@ -306,14 +343,16 @@ namespace ApparatTest {
 		 * @expectedException InvalidArgumentException
 		 * @expectedExceptionCode 1451514114
 		 */
-		public function testInvalidDatePrecision() {
+		public function testInvalidDatePrecision()
+		{
 			new LocalPath(self::PATH, -1);
 		}
 
 		/**
 		 * Test arbitrary date precision
 		 */
-		public function testArbitraryDatePrecision() {
+		public function testArbitraryDatePrecision()
+		{
 			$path = new LocalPath(self::PATH, true);
 			$this->assertInstanceOf(LocalPath::class, $path);
 		}

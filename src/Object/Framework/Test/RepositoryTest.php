@@ -39,7 +39,6 @@ namespace ApparatTest;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Framework\Api\Repository as RepositoryFactory;
@@ -195,7 +194,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid remote repository URL registration
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
 	public function testRegisterInvalidRemoteRepositoryUrl()
@@ -206,7 +205,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid query repository URL registration
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451776509
 	 */
 	public function testRegisterInvalidQueryRepositoryUrl()
@@ -217,7 +216,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid public repository URL instantiation
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
 	public function testInstantiateInvalidRepositoryUrl()
@@ -232,7 +231,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid query repository URL registration
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451776509
 	 */
 	public function testInstantiateInvalidQueryRepositoryUrl()
@@ -247,7 +246,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test unknown public repository URL instantiation
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451771889
 	 */
 	public function testInstantiateUnknownRepositoryUrl()
@@ -262,7 +261,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test empty repository config
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449947621
 	 */
 	public function testEmptyRepositoryConfig()
@@ -273,7 +272,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test empty adapter strategy configuration
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
 	 * @expectedExceptionCode 1449956347
 	 */
 	public function testEmptyAdapterStrategyConfig()
@@ -284,7 +283,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid adapter strategy type
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
 	 * @expectedExceptionCode 1449956471
 	 */
 	public function testInvalidAdapterStrategyType()
@@ -310,7 +309,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid file adapter strategy root
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1450136346
 	 */
 	public function testMissingFileStrategyRoot()
@@ -324,7 +323,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid public repository URL during instantiation
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
 	public function testUnknownRepositoryUrlInstance()
@@ -338,7 +337,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test empty file adapter strategy root
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449956977
 	 */
 	public function testEmptyFileStrategyRoot()
@@ -353,7 +352,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid file adapter strategy root
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449957017
 	 */
 	public function testInvalidFileStrategyRoot()

@@ -59,17 +59,28 @@ class Object
 	{
 		// Instantiate the apparat base URL
 		$apparatBaseUrl = new Url(getenv('APPARAT_BASE_URL'));
+		$apparatBaseUrlPath = $apparatBaseUrl->getPath();
 
 		// Instantiate the object URL
 		$objectUrl = new ObjectUrl($url, true);
 
-		// If the object URL matches the local apparat instance
-		if ($objectUrl->matches($apparatBaseUrl)) {
+		// If the object URL matches matches the apparat instance
+		if ($objectUrl->matches($apparatBaseUrl->setPath('')) && !strncmp($apparatBaseUrlPath, $objectUrl->getPath(),
+				strlen($apparatBaseUrlPath))
+		) {
+			$repoUrl = substr($objectUrl->getPath(), strlen($apparatBaseUrlPath));
 
+			// Else: If it's not an absolute object URL
+		} elseif(!$objectUrl->isAbsolute()) {
+			$repoUrl = $objectUrl->getPath();
 
 			// Else: Remote repository
 		} else {
-
+			// TODO
+			die('Remote repository TBD');
 		}
+
+		// Instantiate the object repository, load and return the object
+		return Repository::instance($repoUrl)->loadObject($objectUrl);
 	}
 }

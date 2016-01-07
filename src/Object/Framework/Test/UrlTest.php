@@ -72,7 +72,6 @@ namespace ApparatTest {
 	use Apparat\Object\Domain\Model\Object\Revision;
 	use Apparat\Object\Domain\Model\Object\Type;
 	use Apparat\Object\Domain\Model\Path\ApparatUrl;
-	use Apparat\Object\Domain\Model\Path\InvalidArgumentException;
 	use Apparat\Object\Domain\Model\Path\LocalPath;
 	use Apparat\Object\Domain\Model\Path\ObjectUrl;
 	use Apparat\Object\Domain\Model\Path\Url;
@@ -119,7 +118,7 @@ namespace ApparatTest {
 		/**
 		 * Test an URL
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1451515385
 		 */
 		public function testInvalidRemoteUrl()
@@ -166,7 +165,7 @@ namespace ApparatTest {
 		/**
 		 * Test an invalid URL
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1449873819
 		 */
 		public function testInvalidUrl()
@@ -177,7 +176,7 @@ namespace ApparatTest {
 		/**
 		 * Test an invalid URL path
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1449874494
 		 */
 		public function testInvalidUrlPath()
@@ -188,7 +187,7 @@ namespace ApparatTest {
 		/**
 		 * Test the scheme setter
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1449924914
 		 */
 		public function testUrlSchemeSetter()
@@ -201,7 +200,7 @@ namespace ApparatTest {
 		/**
 		 * Test the host setter
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1449925567
 		 */
 		public function testUrlHostSetter()
@@ -214,7 +213,7 @@ namespace ApparatTest {
 		/**
 		 * Test the port setter
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1449925885
 		 */
 		public function testUrlPortSetter()
@@ -311,7 +310,7 @@ namespace ApparatTest {
 		/**
 		 * Test an invalid apparat URL
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1451435429
 		 */
 		public function testInvalidApparatUrl()
@@ -340,7 +339,7 @@ namespace ApparatTest {
 		/**
 		 * Test invalid date precision
 		 *
-		 * @expectedException InvalidArgumentException
+		 * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
 		 * @expectedExceptionCode 1451514114
 		 */
 		public function testInvalidDatePrecision()

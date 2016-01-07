@@ -38,7 +38,7 @@ namespace Apparat\Object\Domain\Repository;
 use Apparat\Object\Domain\Contract\SingletonInterface;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 
 /**
  * Object repository interface
@@ -74,10 +74,10 @@ interface RepositoryInterface extends SearchableRepositoryInterface, SingletonIn
 	/**
 	 * Load an object from this repository
 	 *
-	 * @param RepositoryPath $path Repository object path
+	 * @param PathInterface $path Object path
 	 * @return ObjectInterface Object
 	 */
-	public function loadObject(RepositoryPath $path);
+	public function loadObject(PathInterface $path);
 
 	/**
 	 * Return the repository's adapter strategy

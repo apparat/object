@@ -39,6 +39,7 @@ use Apparat\Object\Domain\Common\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
@@ -144,13 +145,17 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Load an object from this repository
+	 *
+	 * @param PathInterface $path Object path
+	 * @return ObjectInterface Object
 	 */
-	public function loadObject(RepositoryPath $path)
+	public function loadObject(PathInterface $path)
 	{
 		// TODO: Really OK to cache? (Immutability ...)
 		if (empty($this->_objectCache[$path->getId()->getId()])) {
-			$this->_objectCache[$path->getId()->getId()] = $this->_objectManager->loadObject($path);
+			$this->_objectCache[$path->getId()->getId()] = $this->_objectManager->loadObject(new RepositoryPath($this,
+				$path));
 		}
 
 		return $this->_objectCache[$path->getId()->getId()];

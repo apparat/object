@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Repository\Repository;
+use Apparat\Object\Framework\Api\Object;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
 /**
@@ -58,6 +59,13 @@ class ObjectTest extends AbstractTest
 	 * @var Repository
 	 */
 	protected static $_repository = null;
+
+	/**
+	 * Example object path
+	 *
+	 * @var string
+	 */
+	const OBJECT_PATH = '/2015/12/21/1.article/1';
 
 	/**
 	 * Setup
@@ -111,10 +119,40 @@ class ObjectTest extends AbstractTest
 	 */
 	public function testLoadArticleObjectMetaProperties()
 	{
-		$articleObjectPath = new RepositoryPath(self::$_repository, '/2015/12/21/1.article/1');
+		$articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
 		$articleObject = self::$_repository->loadObject($articleObjectPath);
 		$this->assertInstanceOf(Article::class, $articleObject);
 		$this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
 		$this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
+	}
+
+	/**
+	 * Test the object facade with an absolute object URL
+	 */
+	public function testObjectFacadeAbsolute()
+	{
+		$object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+		$this->assertInstanceOf(Article::class, $object);
+	}
+
+	/**
+	 * Test the object facade with a relative object URL
+	 */
+	public function testObjectFacadeRelative()
+	{
+		$object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+		$this->assertInstanceOf(Article::class, $object);
+	}
+
+	/**
+	 * Test the object facade with an invalid relative object URL
+	 *
+	 * @expectedException \Apparat\Resource\Framework\Io\File\InvalidArgumentException
+	 * @expectedExceptionCode 1447616824
+	 */
+	public function testObjectFacadeRelativeInvalid()
+	{
+		$object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
+		$this->assertInstanceOf(Article::class, $object);
 	}
 }

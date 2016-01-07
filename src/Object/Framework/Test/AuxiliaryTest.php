@@ -40,7 +40,6 @@ use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Repository\InvalidArgumentException;
 
 /**
  * Selector tests
@@ -53,7 +52,7 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test an invalid ID
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
 	 * @expectedExceptionCode 1449876361
 	 */
 	public function testInvalidId()
@@ -64,7 +63,8 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test ID serialization
 	 */
-	public function testIdSerialization() {
+	public function testIdSerialization()
+	{
 		$id = new Id(123);
 		$this->assertEquals(123, $id->serialize());
 	}
@@ -72,7 +72,7 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test an invalid type
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
 	 * @expectedExceptionCode 1449871242
 	 */
 	public function testInvalidType()
@@ -83,7 +83,8 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test type serialization
 	 */
-	public function testTypeSerialization() {
+	public function testTypeSerialization()
+	{
 		$type = new Type(Type::ARTICLE);
 		$this->assertEquals(Type::ARTICLE, $type->serialize());
 	}
@@ -91,7 +92,7 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test an invalid Revision
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
 	 * @expectedExceptionCode 1449871715
 	 */
 	public function testInvalidRevision()
@@ -102,7 +103,8 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test revision serialization
 	 */
-	public function testRevisionSerialization() {
+	public function testRevisionSerialization()
+	{
 		$revision = new Revision(123);
 		$this->assertEquals(123, $revision->serialize());
 		$revision = new Revision(Revision::CURRENT);
@@ -112,7 +114,8 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test current revision
 	 */
-	public function testCurrentRevision() {
+	public function testCurrentRevision()
+	{
 		$revision = new Revision(Revision::CURRENT);
 		$this->assertTrue($revision->isCurrent());
 	}
@@ -120,7 +123,8 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test draft revision
 	 */
-	public function testDraftRevision() {
+	public function testDraftRevision()
+	{
 		$revision = new Revision(Revision::DRAFT);
 		$this->assertTrue($revision->isDraft());
 	}
@@ -128,16 +132,18 @@ class AuxiliaryText extends AbstractTest
 	/**
 	 * Test a repository invalid argument exception
 	 */
-	public function testInvalidArgumentException() {
-		$exception = new InvalidArgumentException('Test', 0, null, 'test');
-		$this->assertInstanceOf(InvalidArgumentException::class, $exception);
+	public function testInvalidArgumentException()
+	{
+		$exception = new \Apparat\Object\Domain\Repository\InvalidArgumentException('Test', 0, null, 'test');
+		$this->assertInstanceOf(\Apparat\Object\Domain\Repository\InvalidArgumentException::class, $exception);
 		$this->assertEquals('test', $exception->getArgumentName());
 	}
 
 	/**
 	 * Test recursive array sorting by key
 	 */
-	public function testSortArrayByKeyRecursively() {
+	public function testSortArrayByKeyRecursively()
+	{
 		$unsorted = ['b' => 2, 'a' => ['c' => 3, 'a' => 1]];
 		$sorted = ['a' => ['a' => 1, 'c' => 3], 'b' => 2];
 		$this->assertEquals(serialize($sorted), serialize(ArrayUtility::sortRecursiveByKey($unsorted)));

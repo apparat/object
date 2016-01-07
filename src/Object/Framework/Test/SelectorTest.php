@@ -38,7 +38,6 @@ namespace ApparatTest;
 
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 
 /**
@@ -114,7 +113,7 @@ class SelectorTest extends AbstractTest
 	/**
 	 * Test an invalid selector
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449961609
 	 */
 	public function testFactoryInvaldiSelector()
@@ -125,7 +124,7 @@ class SelectorTest extends AbstractTest
 	/**
 	 * Test an invalid date component
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449999646
 	 * @expectedExceptionMessageRegExp %year%
 	 */
@@ -137,7 +136,7 @@ class SelectorTest extends AbstractTest
 	/**
 	 * Test an invalid ID component
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449999646
 	 * @expectedExceptionMessageRegExp %id%
 	 */
@@ -149,7 +148,7 @@ class SelectorTest extends AbstractTest
 	/**
 	 * Test an invalid type component
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449999646
 	 * @expectedExceptionMessageRegExp %type%
 	 */
@@ -161,7 +160,7 @@ class SelectorTest extends AbstractTest
 	/**
 	 * Test an invalid revision component
 	 *
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1449999646
 	 * @expectedExceptionMessageRegExp %revision%
 	 */

@@ -57,11 +57,22 @@ class RepositoryPath extends LocalPath
 	 * Repository path constructor
 	 *
 	 * @param RepositoryInterface $repository Object repository this path applies to
-	 * @param string $path Object path
+	 * @param string|PathInterface $path Object path
 	 */
 	public function __construct(RepositoryInterface $repository, $path)
 	{
-		parent::__construct($path);
+		// If an instantiated path (local path, respository path, object URL) is given
+		if ($path instanceof PathInterface) {
+			$this->_creationDate = $path->getCreationDate();
+			$this->_id = $path->getId();
+			$this->_type = $path->getType();
+			$this->_revision = $path->getRevision();
+
+			// Else: Parse as string
+		} else {
+			parent::__construct($path);
+		}
+
 		$this->_repository = $repository;
 	}
 

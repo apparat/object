@@ -163,14 +163,44 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
-	 * Test invalid public repository URL
+	 * Test invalid public repository URL registration
 	 *
 	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
-	public function testInvalidRepositoryUrl()
+	public function testRegisterInvalidRepositoryUrl()
 	{
 		RepositoryFactory::register('http://example.com', []);
+	}
+
+	/**
+	 * Test invalid public repository URL instantiation
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1451776352
+	 */
+	public function testInstantiateInvalidRepositoryUrl()
+	{
+		RepositoryFactory::register(getenv('APPARAT_BASE_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => __DIR__,
+		]);
+		RepositoryFactory::instance('http://example.com');
+	}
+
+	/**
+	 * Test unknown public repository URL instantiation
+	 *
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionCode 1451771889
+	 */
+	public function testInstantiateUnknownRepositoryUrl()
+	{
+		RepositoryFactory::register(getenv('APPARAT_BASE_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => __DIR__,
+		]);
+		RepositoryFactory::instance('unknown');
 	}
 
 	/**

@@ -56,7 +56,8 @@ namespace Apparat\Object\Domain\Model\Path\Url {
 				'pass' => 'password',
 				'host' => 'another.host',
 				'port' => 443,
-				'path' => '/2015/10/01/36704.event/36704-2',
+				'path' => '/path/prefix',
+				'object' => '/2015/10/01/36704.event/36704-2',
 				'query' => ['param2' => 'value2'],
 				'fragment' => 'fragment2',
 			]);
@@ -229,8 +230,7 @@ namespace ApparatTest {
 			$this->assertEquals(null, $url->setUser(null)->getUser());
 			$this->assertEquals('password', $url->setPassword('password')->getPassword());
 			$this->assertEquals(null, $url->setPassword(null)->getPassword());
-			$this->assertEquals('/2015/10/01/36704.event/36704',
-				$url->setPath('/2015/10/01/36704.event/36704')->getPath());
+			$this->assertEquals('/path/prefix', $url->setPath('/path/prefix')->getPath());
 			$this->assertEquals(['param2' => 'value2'], $url->setQuery(['param2' => 'value2'])->getQuery());
 			$this->assertEquals('fragment2', $url->setFragment('fragment2')->getFragment());
 
@@ -248,7 +248,7 @@ namespace ApparatTest {
 		public function testUrlPathOverride()
 		{
 			$url = new Url\TestUrl(self::URL);
-			$this->assertEquals('https://user:password@another.host:443/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
+			$this->assertEquals('https://user:password@another.host:443/path/prefix/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
 				$url->getUrlOverride());
 		}
 

@@ -450,7 +450,7 @@ class Url implements PathInterface
 	/**
 	 * Return the a complete serialized object URL
 	 *
-	 * @param array $override Override componentes
+	 * @param array $override Override components
 	 * @return string Serialized URL
 	 */
 	protected function _getUrl(array $override = [])
@@ -496,11 +496,18 @@ class Url implements PathInterface
 			$port = !empty($this->_urlParts['port']) ? ':'.$this->getPort() : '';
 		}
 
-		// Prepare the URL path
+		// Prepare the URL path prefix
 		if (isset($override['path'])) {
 			$path = $override['path'];
 		} else {
-			$path = strval($this->_localPath);
+			$path = $this->_urlParts['path'];
+		}
+
+		// Prepare the local object path
+		if (isset($override['object'])) {
+			$object = $override['object'];
+		} else {
+			$object = strval($this->_localPath);
 		}
 
 		// Prepare the URL query
@@ -517,6 +524,6 @@ class Url implements PathInterface
 			$fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->getFragment() : '';
 		}
 
-		return "$scheme$user$pass$host$port$path$query$fragment";
+		return "$scheme$user$pass$host$port$path$object$query$fragment";
 	}
 }

@@ -69,7 +69,7 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 */
 	const UNKNOWN_PUBLIC_REPOSITORY_URL = 1451771889;
 	/**
-	 * External respository URL not allowed
+	 * External repository URL not allowed
 	 *
 	 * @var int
 	 */

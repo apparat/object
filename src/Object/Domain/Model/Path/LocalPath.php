@@ -95,12 +95,12 @@ class LocalPath implements PathInterface
 	 *
 	 * @param string $path Object path
 	 * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object URLs)]
+	 * @param string $leader Leading base path
 	 * @throws InvalidArgumentException If the date precision is invalid
 	 * @throws InvalidArgumentException If the object URL path is invalid
 	 */
-	public function __construct($path, $datePrecision = null)
+	public function __construct($path, $datePrecision = null, &$leader = '')
 	{
-
 		// If the local default date precision should be used
 		if ($datePrecision === null) {
 			$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
@@ -108,12 +108,12 @@ class LocalPath implements PathInterface
 
 		// If a valid integer date precision is given
 		if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-			$pathPattern = '%^/'.implode('/',
+			$pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode('/',
 					array_slice(self::$_datePattern, 0, $datePrecision)).($datePrecision ? '/' : '');
 
 			// Else if the date precision may be arbitrary
 		} elseif ($datePrecision === true) {
-			$pathPattern = '%^(?:/'.implode('(?:/', self::$_datePattern);
+			$pathPattern = '%(?:/'.implode('(?:/', self::$_datePattern);
 			$pathPattern .= str_repeat(')?', count(self::$_datePattern));
 			$pathPattern .= '/';
 
@@ -130,6 +130,10 @@ class LocalPath implements PathInterface
 				empty($path) ? '(empty)' : $path),
 				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
 		}
+
+//		print_r($pathParts);
+
+		// If date components are used
 		if ($datePrecision) {
 			$year = $pathParts['year'][0];
 			$month = isset($pathParts['month']) ? $pathParts['month'][0] ?: '01' : '01';
@@ -139,6 +143,9 @@ class LocalPath implements PathInterface
 			$second = isset($pathParts['second']) ? $pathParts['second'][0] ?: '00' : '00';
 			$this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
 		}
+
+		// Determine the leader
+		$leader = ($datePrecision === true) ? substr($path, 0, strlen($path) - strlen($pathParts[0][0])) : $pathParts['leader'][0];
 
 		// Set the ID
 		$this->_id = new Id(intval($pathParts['id'][0]));

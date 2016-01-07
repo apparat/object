@@ -91,7 +91,7 @@ class Repository
 	}
 
 	/**
-	 * Instanciate and return an object repository
+	 * Instantiate and return an object repository
 	 *
 	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
@@ -134,15 +134,14 @@ class Repository
 	 *******************************************************************************/
 
 	/**
-	 * Normalize the public repository URL
+	 * Normalize the repository URL
 	 *
 	 * @param string $url Public repository URL
 	 * @return bool|string Normalized repository URL
-	 * @throws InvalidArgumentException If the respository URL is external
+	 * @throws InvalidArgumentException If the repository URL is external
 	 */
 	protected static function _normalizeRepositoryUrl($url)
 	{
-
 		// Strip the leading apparat base URL
 		$apparatBaseUrl = getenv('APPARAT_BASE_URL');
 		if (strpos($url, $apparatBaseUrl) === 0) {

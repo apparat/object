@@ -57,7 +57,7 @@ class Url implements PathInterface
 	 *
 	 * @var LocalPath
 	 */
-	protected $_path = null;
+	protected $_localPath = null;
 
 	/**
 	 * Valid schemes
@@ -107,8 +107,8 @@ class Url implements PathInterface
 				InvalidArgumentException::UNALLOWED_REMOTE_OBJECT_URL);
 		}
 
-		$this->_path = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'],
-			$remote ? true : null);
+		$this->_localPath = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'],
+			$remote ? true : null, $this->_urlParts['path']);
 	}
 
 	/**
@@ -138,7 +138,7 @@ class Url implements PathInterface
 	 */
 	public function getCreationDate()
 	{
-		return $this->_path->getCreationDate();
+		return $this->_localPath->getCreationDate();
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Url implements PathInterface
 	 */
 	public function setCreationDate(\DateTimeImmutable $creationDate)
 	{
-		$this->_path = $this->_path->setCreationDate($creationDate);
+		$this->_localPath = $this->_localPath->setCreationDate($creationDate);
 		return $this;
 	}
 
@@ -160,7 +160,7 @@ class Url implements PathInterface
 	 */
 	public function getType()
 	{
-		return $this->_path->getType();
+		return $this->_localPath->getType();
 	}
 
 	/**
@@ -171,7 +171,7 @@ class Url implements PathInterface
 	 */
 	public function setType(Type $type)
 	{
-		$this->_path = $this->_path->setType($type);
+		$this->_localPath = $this->_localPath->setType($type);
 		return $this;
 	}
 
@@ -182,7 +182,7 @@ class Url implements PathInterface
 	 */
 	public function getId()
 	{
-		return $this->_path->getId();
+		return $this->_localPath->getId();
 	}
 
 	/**
@@ -193,7 +193,7 @@ class Url implements PathInterface
 	 */
 	public function setId(Id $id)
 	{
-		$this->_path = $this->_path->setId($id);
+		$this->_localPath = $this->_localPath->setId($id);
 		return $this;
 	}
 
@@ -205,7 +205,7 @@ class Url implements PathInterface
 	 */
 	public function getRevision()
 	{
-		return $this->_path->getRevision();
+		return $this->_localPath->getRevision();
 	}
 
 	/**
@@ -216,7 +216,7 @@ class Url implements PathInterface
 	 */
 	public function setRevision(Revision $revision)
 	{
-		$this->_path = $this->_path->setRevision($revision);
+		$this->_localPath = $this->_localPath->setRevision($revision);
 		return $this;
 	}
 
@@ -365,7 +365,7 @@ class Url implements PathInterface
 	 */
 	public function getPath()
 	{
-		return strval($this->_path);
+		return $this->_urlParts['path'];
 	}
 
 	/**
@@ -376,8 +376,11 @@ class Url implements PathInterface
 	 */
 	public function setPath($path)
 	{
-		$this->_path = new LocalPath(strval($path));
-		return $this;
+		$path = trim($path, '/');
+
+		$url = clone $this;
+		$url->_urlParts['path'] = strlen($path) ? '/'.$path : null;
+		return $url;
 	}
 
 	/**
@@ -497,7 +500,7 @@ class Url implements PathInterface
 		if (isset($override['path'])) {
 			$path = $override['path'];
 		} else {
-			$path = strval($this->_path);
+			$path = strval($this->_localPath);
 		}
 
 		// Prepare the URL query

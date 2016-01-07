@@ -126,7 +126,7 @@ namespace ApparatTest {
 		/**
 		 * Test an URL
 		 */
-		public function testUrl()
+		public function testRemoteUrl()
 		{
 			$url = new Url(self::REMOTE_URL, true);
 			$this->assertInstanceOf(Url::class, $url);
@@ -136,7 +136,7 @@ namespace ApparatTest {
 			$this->assertEquals('tools', $url->getPassword());
 			$this->assertEquals('apparat.tools', $url->getHost());
 			$this->assertEquals(80, $url->getPort());
-			$this->assertEquals('/2015/10/01/36704.event/36704-1', $url->getPath());
+			$this->assertEquals('', $url->getPath());
 			$this->assertEquals(['param' => 'value'], $url->getQuery());
 			$this->assertEquals('fragment', $url->getFragment());
 			$this->assertInstanceOf(\DateTimeImmutable::class, $url->getCreationDate());
@@ -147,6 +147,15 @@ namespace ApparatTest {
 			$this->assertEquals(new Type('event'), $url->getType());
 			$this->assertInstanceOf(Revision::class, $url->getRevision());
 			$this->assertEquals(new Revision(1), $url->getRevision());
+		}
+
+		/**
+		 * Test a local URL with path prefix
+		 */
+		public function testLeadedLocalUrl() {
+			$pathPrefix = '/prefix/path';
+			$url = new Url($pathPrefix.self::PATH);
+			$this->assertEquals($pathPrefix, $url->getPath());
 		}
 
 		/**

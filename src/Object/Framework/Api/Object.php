@@ -36,6 +36,9 @@
 
 namespace Apparat\Object\Framework\Api;
 
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\Url;
+
 /**
  * Object facade
  *
@@ -44,5 +47,15 @@ namespace Apparat\Object\Framework\Api;
  */
 class Object
 {
+	/**
+	 * Instantiate and return an object
+	 *
+	 * @param string $url Object URL (relative or absolute including the apparat base URL)
+	 * @return ObjectInterface Object
+	 * @api
+	 */
+	public static function instance($url)
+	{
 
+	}
 }

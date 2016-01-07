@@ -35,16 +35,14 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
-use Apparat\Object\Domain\Model\Object\Id;
-use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Application\Utility\ArrayUtility;
 
 /**
  * Object URL
  *
  * @package Apparat\Object\Domain\Model
  */
-class Url implements PathInterface
+class Url
 {
 	/**
 	 * URL parts
@@ -52,12 +50,6 @@ class Url implements PathInterface
 	 * @var array
 	 */
 	protected $_urlParts = null;
-	/**
-	 * Object path
-	 *
-	 * @var LocalPath
-	 */
-	protected $_localPath = null;
 
 	/**
 	 * Valid schemes
@@ -84,37 +76,26 @@ class Url implements PathInterface
 	 *******************************************************************************/
 
 	/**
-	 * Object URL constructor
+	 * URL constructor
 	 *
-	 * @param string $url Object URL
-	 * @param boolean $remote Accept remote URL (less strict date component checking)
-	 * @throws InvalidArgumentException If the object URL is invalid
-	 * @throws InvalidArgumentException If remote URLs are not allowed and a remote URL is given
+	 * @param string $url URL
+	 * @throws InvalidArgumentException If the URL is invalid
 	 */
-	public function __construct($url, $remote = false)
+	public function __construct($url)
 	{
 
 		// Parse the URL
 		$this->_urlParts = @parse_url($url);
 		if ($this->_urlParts === false) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL "%s"', $url),
-				InvalidArgumentException::INVALID_OBJECT_URL);
+			throw new InvalidArgumentException(sprintf('Invalid URL "%s"', $url),
+				InvalidArgumentException::INVALID_URL);
 		}
-
-		// If it's an invalid remote object URL
-		if ($this->isAbsolute() && !$remote) {
-			throw new InvalidArgumentException(sprintf('Unallowed remote object URL "%s"', $url),
-				InvalidArgumentException::UNALLOWED_REMOTE_OBJECT_URL);
-		}
-
-		$this->_localPath = new LocalPath(empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'],
-			$remote ? true : null, $this->_urlParts['path']);
 	}
 
 	/**
-	 * Return the serialized object URL
+	 * Return the serialized URL
 	 *
-	 * @return string Serialized object URL
+	 * @return string Serialized URL
 	 */
 	public function __toString()
 	{
@@ -122,102 +103,13 @@ class Url implements PathInterface
 	}
 
 	/**
-	 * Return the full serialized object URL
+	 * Return the full serialized URL
 	 *
-	 * @return string Full object URL
+	 * @return string Full URL
 	 */
 	public function getUrl()
 	{
 		return $this->_getUrl();
-	}
-
-	/**
-	 * Return the object's creation date
-	 *
-	 * @return \DateTimeImmutable Object creation date
-	 */
-	public function getCreationDate()
-	{
-		return $this->_localPath->getCreationDate();
-	}
-
-	/**
-	 * Set the object's creation date
-	 *
-	 * @param \DateTimeImmutable $creationDate
-	 * @return LocalPath New object path
-	 */
-	public function setCreationDate(\DateTimeImmutable $creationDate)
-	{
-		$this->_localPath = $this->_localPath->setCreationDate($creationDate);
-		return $this;
-	}
-
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType()
-	{
-		return $this->_localPath->getType();
-	}
-
-	/**
-	 * Set the object type
-	 *
-	 * @param Type $type Object type
-	 * @return Url New object URL
-	 */
-	public function setType(Type $type)
-	{
-		$this->_localPath = $this->_localPath->setType($type);
-		return $this;
-	}
-
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId()
-	{
-		return $this->_localPath->getId();
-	}
-
-	/**
-	 * Set the object ID
-	 *
-	 * @param Id $id Object ID
-	 * @return Url New object URL
-	 */
-	public function setId(Id $id)
-	{
-		$this->_localPath = $this->_localPath->setId($id);
-		return $this;
-	}
-
-
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision()
-	{
-		return $this->_localPath->getRevision();
-	}
-
-	/**
-	 * Set the object revision
-	 *
-	 * @param Revision $revision Object revision
-	 * @return Url New object URL
-	 */
-	public function setRevision(Revision $revision)
-	{
-		$this->_localPath = $this->_localPath->setRevision($revision);
-		return $this;
 	}
 
 	/**
@@ -234,15 +126,15 @@ class Url implements PathInterface
 	 * Set the URL scheme
 	 *
 	 * @param string $scheme URL scheme
-	 * @return Url New object URL
+	 * @return Url New URL
 	 * @throws InvalidArgumentException If the URL scheme is invalid
 	 */
 	public function setScheme($scheme)
 	{
 		// If the URL scheme is not valid
 		if (strlen($scheme) && !array_key_exists($scheme, static::$_schemes)) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL scheme "%s"', $scheme),
-				InvalidArgumentException::INVALID_OBJECT_URL_SCHEME);
+			throw new InvalidArgumentException(sprintf('Invalid URL scheme "%s"', $scheme),
+				InvalidArgumentException::INVALID_URL_SCHEME);
 		}
 
 		$url = clone $this;
@@ -264,7 +156,7 @@ class Url implements PathInterface
 	 * Set the URL host
 	 *
 	 * @param string $host URL host
-	 * @return Url New object URL
+	 * @return Url New URL
 	 * @throws InvalidArgumentException If the URL host is invalid
 	 */
 	public function setHost($host)
@@ -273,8 +165,8 @@ class Url implements PathInterface
 		if (preg_match("%[/\?#]%", $host) || (!filter_var('http://'.$host, FILTER_VALIDATE_URL) && !filter_var($host,
 					FILTER_VALIDATE_IP))
 		) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL host "%s"', $host),
-				InvalidArgumentException::INVALID_OBJECT_URL_HOST);
+			throw new InvalidArgumentException(sprintf('Invalid URL host "%s"', $host),
+				InvalidArgumentException::INVALID_URL_HOST);
 		}
 
 		$url = clone $this;
@@ -296,15 +188,15 @@ class Url implements PathInterface
 	 * Set the URL port
 	 *
 	 * @param int $port URL port
-	 * @return Url New object URL
+	 * @return Url New URL
 	 * @throws InvalidArgumentException If the URL port is invalid
 	 */
 	public function setPort($port)
 	{
 		// If the URL port is invalid
 		if (!is_int($port) || ($port < 0) || ($port > 65535)) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL port "%s"', $port),
-				InvalidArgumentException::INVALID_OBJECT_URL_PORT);
+			throw new InvalidArgumentException(sprintf('Invalid URL port "%s"', $port),
+				InvalidArgumentException::INVALID_URL_PORT);
 		}
 
 		$url = clone $this;
@@ -326,7 +218,7 @@ class Url implements PathInterface
 	 * Set the URL user
 	 *
 	 * @param string|NULL $user URL user
-	 * @return Url New object URL
+	 * @return Url New URL
 	 */
 	public function setUser($user)
 	{
@@ -349,7 +241,7 @@ class Url implements PathInterface
 	 * Set the URL password
 	 *
 	 * @param string $pass URL password
-	 * @return Url New object URL
+	 * @return Url New URL
 	 */
 	public function setPassword($pass)
 	{
@@ -372,7 +264,7 @@ class Url implements PathInterface
 	 * Set the URL path
 	 *
 	 * @param string $path URL path
-	 * @return Url New object URL
+	 * @return Url New URL
 	 */
 	public function setPath($path)
 	{
@@ -394,14 +286,14 @@ class Url implements PathInterface
 		if (isset($this->_urlParts['query']) && !empty($this->_urlParts['query'])) {
 			@parse_str($this->_urlParts['query'], $query);
 		}
-		return $query;
+		return ArrayUtility::sortRecursiveByKey($query);
 	}
 
 	/**
 	 * Set the URL query
 	 *
 	 * @param array $query URL query
-	 * @return Url New object URL
+	 * @return Url New URL
 	 */
 	public function setQuery(array $query)
 	{
@@ -424,7 +316,7 @@ class Url implements PathInterface
 	 * Set the URL fragment
 	 *
 	 * @param string $fragment URL fragment
-	 * @return Url New object URL
+	 * @return Url New URL
 	 */
 	public function setFragment($fragment)
 	{
@@ -443,17 +335,83 @@ class Url implements PathInterface
 		return !empty($this->_urlParts['scheme']) && !empty($this->_urlParts['host']);
 	}
 
+	/**
+	 * Test if this URL matches all available parts of a given URL
+	 *
+	 * @param Url $url Comparison URL
+	 * @return bool This URL matches all available parts of the given URL
+	 */
+	public function matches(Url $url)
+	{
+
+		// Test the scheme
+		$urlScheme = $url->getScheme();
+		if (($urlScheme !== null) && ($this->getScheme() !== $urlScheme)) {
+			return false;
+		}
+
+		// Test the user
+		$urlUser = $url->getUser();
+		if (($urlUser !== null) && ($this->getUser() !== $urlUser)) {
+			return false;
+		}
+
+		// Test the password
+		$urlPassword = $url->getPassword();
+		if (($urlPassword !== null) && ($this->getPassword() !== $urlPassword)) {
+			return false;
+		}
+
+		// Test the host
+		$urlHost = $url->getHost();
+		if (($urlHost !== null) && ($this->getHost() !== $urlHost)) {
+			return false;
+		}
+
+		// Test the port
+		$urlPort = $url->getPort();
+		if (($urlPort !== null) && ($this->getPort() !== $urlPort)) {
+			return false;
+		}
+
+		// Test the port
+		$urlPort = $url->getPort();
+		if (($urlPort !== null) && ($this->getPort() !== $urlPort)) {
+			return false;
+		}
+
+		// Test the path
+		$urlPath = $url->getPath();
+		if (($urlPath !== null) && ($this->getPath() !== $urlPath)) {
+			return false;
+		}
+
+		// Test the query
+		$urlQuery = $url->getQuery();
+		if (serialize($this->getQuery()) !== serialize($urlQuery)) {
+			return false;
+		}
+
+		// Test the fragment
+		$urlFragment = $url->getFragment();
+		if (($urlFragment !== null) && ($this->getFragment() !== $urlFragment)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/*******************************************************************************
 	 * PRIVATE METHODS
 	 *******************************************************************************/
 
 	/**
-	 * Return the a complete serialized object URL
+	 * Return the a complete serialized URL
 	 *
 	 * @param array $override Override components
 	 * @return string Serialized URL
 	 */
-	protected function _getUrl(array $override = [])
+	protected function _getUrl(array &$override = [])
 	{
 		// Prepare the URL scheme
 		if (isset($override['scheme'])) {
@@ -464,6 +422,7 @@ class Url implements PathInterface
 		} else {
 			$scheme = !empty($this->_urlParts['scheme']) ? $this->getScheme().'://' : '';
 		}
+		$override['scheme'] = $scheme;
 
 		// Prepare the URL user
 		if (isset($override['user'])) {
@@ -471,6 +430,7 @@ class Url implements PathInterface
 		} else {
 			$user = !empty($this->_urlParts['user']) ? rawurlencode($this->getUser()) : '';
 		}
+		$override['user'] = $user;
 
 		// Prepare the URL password
 		if (isset($override['pass'])) {
@@ -481,6 +441,7 @@ class Url implements PathInterface
 		if ($user || $pass) {
 			$pass .= '@';
 		}
+		$override['pass'] = $pass;
 
 		// Prepare the URL host
 		if (isset($override['host'])) {
@@ -488,6 +449,7 @@ class Url implements PathInterface
 		} else {
 			$host = !empty($this->_urlParts['host']) ? $this->getHost() : '';
 		}
+		$override['host'] = $host;
 
 		// Prepare the URL port
 		if (isset($override['port'])) {
@@ -495,20 +457,15 @@ class Url implements PathInterface
 		} else {
 			$port = !empty($this->_urlParts['port']) ? ':'.$this->getPort() : '';
 		}
+		$override['port'] = $port;
 
-		// Prepare the URL path prefix
+		// Prepare the URL path
 		if (isset($override['path'])) {
 			$path = $override['path'];
 		} else {
 			$path = $this->_urlParts['path'];
 		}
-
-		// Prepare the local object path
-		if (isset($override['object'])) {
-			$object = $override['object'];
-		} else {
-			$object = strval($this->_localPath);
-		}
+		$override['path'] = $path;
 
 		// Prepare the URL query
 		if (isset($override['query'])) {
@@ -516,6 +473,7 @@ class Url implements PathInterface
 		} else {
 			$query = !empty($this->_urlParts['query']) ? '?'.$this->_urlParts['query'] : '';
 		}
+		$override['query'] = $query;
 
 		// Prepare the URL fragment
 		if (isset($override['fragment'])) {
@@ -523,7 +481,8 @@ class Url implements PathInterface
 		} else {
 			$fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->getFragment() : '';
 		}
+		$override['fragment'] = $fragment;
 
-		return "$scheme$user$pass$host$port$path$object$query$fragment";
+		return "$scheme$user$pass$host$port$path$query$fragment";
 	}
 }

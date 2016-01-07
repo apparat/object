@@ -131,8 +131,6 @@ class LocalPath implements PathInterface
 				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
 		}
 
-//		print_r($pathParts);
-
 		// If date components are used
 		if ($datePrecision) {
 			$year = $pathParts['year'][0];

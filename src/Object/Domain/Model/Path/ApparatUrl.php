@@ -42,7 +42,7 @@ namespace Apparat\Object\Domain\Model\Path;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class ApparatUrl extends Url
+class ApparatUrl extends ObjectUrl
 {
 	/**
 	 * Valid schemes

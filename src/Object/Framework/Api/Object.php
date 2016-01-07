@@ -37,6 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Path\Url;
 
 /**
@@ -56,6 +57,19 @@ class Object
 	 */
 	public static function instance($url)
 	{
+		// Instantiate the apparat base URL
+		$apparatBaseUrl = new Url(getenv('APPARAT_BASE_URL'));
 
+		// Instantiate the object URL
+		$objectUrl = new ObjectUrl($url, true);
+
+		// If the object URL matches the local apparat instance
+		if ($objectUrl->matches($apparatBaseUrl)) {
+
+
+			// Else: Remote repository
+		} else {
+
+		}
 	}
 }

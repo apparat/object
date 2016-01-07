@@ -34,24 +34,24 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path\Url {
+namespace Apparat\Object\Domain\Model\Path\ObjectUrl {
 
-	use Apparat\Object\Domain\Model\Path\Url;
+	use Apparat\Object\Domain\Model\Path\ObjectUrl;
 
 	/**
 	 * URL version with test extension
 	 *
 	 * @package Apparat\Resource
 	 */
-	class TestUrl extends Url
+	class TestUrl extends ObjectUrl
 	{
 		/**
 		 * Test the URL getter with override parameters
 		 */
 		public function getUrlOverride()
 		{
-			return $this->_getUrl([
-				'scheme' => Url::SCHEME_HTTPS,
+			$override = [
+				'scheme' => ObjectUrl::SCHEME_HTTPS,
 				'user' => 'user',
 				'pass' => 'password',
 				'host' => 'another.host',
@@ -60,7 +60,8 @@ namespace Apparat\Object\Domain\Model\Path\Url {
 				'object' => '/2015/10/01/36704.event/36704-2',
 				'query' => ['param2' => 'value2'],
 				'fragment' => 'fragment2',
-			]);
+			];
+			return $this->_getUrl($override);
 		}
 	}
 }
@@ -73,7 +74,7 @@ namespace ApparatTest {
 	use Apparat\Object\Domain\Model\Path\ApparatUrl;
 	use Apparat\Object\Domain\Model\Path\InvalidArgumentException;
 	use Apparat\Object\Domain\Model\Path\LocalPath;
-	use Apparat\Object\Domain\Model\Path\Url;
+	use Apparat\Object\Domain\Model\Path\ObjectUrl;
 
 	/**
 	 * Object URL tests
@@ -121,7 +122,7 @@ namespace ApparatTest {
 		 * @expectedExceptionCode 1451515385
 		 */
 		public function testInvalidRemoteUrl() {
-			new Url(self::REMOTE_URL);
+			new ObjectUrl(self::REMOTE_URL);
 		}
 
 		/**
@@ -129,8 +130,8 @@ namespace ApparatTest {
 		 */
 		public function testRemoteUrl()
 		{
-			$url = new Url(self::REMOTE_URL, true);
-			$this->assertInstanceOf(Url::class, $url);
+			$url = new ObjectUrl(self::REMOTE_URL, true);
+			$this->assertInstanceOf(ObjectUrl::class, $url);
 			$this->assertEquals(self::REMOTE_URL, strval($url));
 			$this->assertEquals('http', $url->getScheme());
 			$this->assertEquals('apparat', $url->getUser());
@@ -155,7 +156,7 @@ namespace ApparatTest {
 		 */
 		public function testLeadedLocalUrl() {
 			$pathPrefix = '/prefix/path';
-			$url = new Url($pathPrefix.self::PATH);
+			$url = new ObjectUrl($pathPrefix.self::PATH);
 			$this->assertEquals($pathPrefix, $url->getPath());
 		}
 
@@ -167,7 +168,7 @@ namespace ApparatTest {
 		 */
 		public function testInvalidUrl()
 		{
-			new Url('invalid://');
+			new ObjectUrl('invalid://');
 		}
 
 		/**
@@ -178,7 +179,7 @@ namespace ApparatTest {
 		 */
 		public function testInvalidUrlPath()
 		{
-			new Url('http://invalid~url*path', true);
+			new ObjectUrl('http://invalid~url*path', true);
 		}
 
 		/**
@@ -189,8 +190,8 @@ namespace ApparatTest {
 		 */
 		public function testUrlSchemeSetter()
 		{
-			$url = new Url(self::URL);
-			$this->assertEquals(Url::SCHEME_HTTPS, $url->setScheme(Url::SCHEME_HTTPS)->getScheme());
+			$url = new ObjectUrl(self::URL);
+			$this->assertEquals(ObjectUrl::SCHEME_HTTPS, $url->setScheme(ObjectUrl::SCHEME_HTTPS)->getScheme());
 			$url->setScheme('invalid');
 		}
 
@@ -202,7 +203,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlHostSetter()
 		{
-			$url = new Url(self::URL);
+			$url = new ObjectUrl(self::URL);
 			$this->assertEquals('apparat.com', $url->setHost('apparat.com')->getHost());
 			$url->setHost('_');
 		}
@@ -215,7 +216,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlPortSetter()
 		{
-			$url = new Url(self::URL);
+			$url = new ObjectUrl(self::URL);
 			$this->assertEquals(443, $url->setPort(443)->getPort());
 			$url->setPort(123456789);
 		}
@@ -225,7 +226,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlSetters()
 		{
-			$url = new Url(self::URL);
+			$url = new ObjectUrl(self::URL);
 			$this->assertEquals('test', $url->setUser('test')->getUser());
 			$this->assertEquals(null, $url->setUser(null)->getUser());
 			$this->assertEquals('password', $url->setPassword('password')->getPassword());
@@ -247,7 +248,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlPathOverride()
 		{
-			$url = new Url\TestUrl(self::URL);
+			$url = new ObjectUrl\TestUrl(self::URL);
 			$this->assertEquals('https://user:password@another.host:443/path/prefix/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
 				$url->getUrlOverride());
 		}
@@ -257,7 +258,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlAbsolute()
 		{
-			$url = new Url(self::REMOTE_URL, true);
+			$url = new ObjectUrl(self::REMOTE_URL, true);
 			$this->assertEquals(true, $url->isAbsolute());
 		}
 
@@ -266,7 +267,7 @@ namespace ApparatTest {
 		 */
 		public function testUrlReative()
 		{
-			$url = new Url(self::PATH.self::QUERY_FRAGMENT);
+			$url = new ObjectUrl(self::PATH.self::QUERY_FRAGMENT);
 			$this->assertEquals(false, $url->isAbsolute());
 		}
 

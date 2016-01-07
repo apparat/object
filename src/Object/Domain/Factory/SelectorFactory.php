@@ -52,7 +52,7 @@ class SelectorFactory
 	 * Date PCRE pattern
 	 *
 	 * @var array
-	 * @see Url::$_datePattern
+	 * @see ObjectUrl::$_datePattern
 	 */
 	protected static $_datePattern = [
 		'Y' => '/(?P<year>\d{4}|\*)',

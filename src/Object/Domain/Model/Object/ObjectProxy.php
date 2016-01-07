@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Path\ObjectUrl;
 
 /** @noinspection PhpHierarchyChecksInspection */
 /**
@@ -50,7 +50,7 @@ class ObjectProxy implements ObjectInterface
 	/**
 	 * Object URL
 	 *
-	 * @var Url
+	 * @var ObjectUrl
 	 */
 	protected $_url = null;
 	/**
@@ -67,9 +67,9 @@ class ObjectProxy implements ObjectInterface
 	/**
 	 * Constructor
 	 *
-	 * @param Url $url Remote object URL
+	 * @param ObjectUrl $url Remote object URL
 	 */
-	public function __construct(Url $url)
+	public function __construct(ObjectUrl $url)
 	{
 		$this->_url = $url;
 	}

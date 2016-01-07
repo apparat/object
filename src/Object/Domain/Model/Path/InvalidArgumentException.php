@@ -55,11 +55,11 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 */
 	const INVALID_OBJECT_URL_PATH = 1449874494;
 	/**
-	 * Invalid object URL
+	 * Invalid URL
 	 *
 	 * @var int
 	 */
-	const INVALID_OBJECT_URL = 1449873819;
+	const INVALID_URL = 1449873819;
 	/**
 	 * Invalid remote object URL
 	 *
@@ -67,23 +67,23 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 */
 	const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
 	/**
-	 * Invalid object URL scheme
+	 * Invalid URL scheme
 	 *
 	 * @var int
 	 */
-	const INVALID_OBJECT_URL_SCHEME = 1449924914;
+	const INVALID_URL_SCHEME = 1449924914;
 	/**
-	 * Invalid object URL host
+	 * Invalid URL host
 	 *
 	 * @var int
 	 */
-	const INVALID_OBJECT_URL_HOST = 1449925567;
+	const INVALID_URL_HOST = 1449925567;
 	/**
-	 * Invalid object URL port
+	 * Invalid URL port
 	 *
 	 * @var int
 	 */
-	const INVALID_OBJECT_URL_PORT = 1449925885;
+	const INVALID_URL_PORT = 1449925885;
 	/**
 	 * Invalid Apparat URL
 	 *

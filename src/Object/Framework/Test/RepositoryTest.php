@@ -165,7 +165,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid public repository URL
 	 *
-	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
 	public function testInvalidRepositoryUrl()
@@ -176,7 +176,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test empty repository config
 	 *
-	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1449947621
 	 */
 	public function testEmptyRepositoryConfig()
@@ -238,7 +238,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid public repository URL during instantiation
 	 *
-	 * @expectedException \Apparat\Object\Framework\Api\InvalidArgumentException
+	 * @expectedException InvalidArgumentException
 	 * @expectedExceptionCode 1451776352
 	 */
 	public function testUnknownRepositoryUrlInstance()

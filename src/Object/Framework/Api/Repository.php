@@ -38,6 +38,7 @@ namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
+use Apparat\Object\Framework\Repository\InvalidArgumentException;
 
 /**
  * Repository facade
@@ -61,18 +62,18 @@ class Repository
 	/**
 	 * Register a repository
 	 *
-	 * @param string $url Public repository URL (relative to apparat base URL)
+	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
 	 * @param array $config Repository configuration
-	 * @throws InvalidArgumentException If the public repository URL is invalid
+	 * @throws InvalidArgumentException If the repository URL is invalid
 	 * @throws InvalidArgumentException If the repository configuration is empty
 	 * @api
 	 */
 	public static function register($url, array $config)
 	{
-		// Strip off the potentially leading apparat base URL
+		// Normalize to local repository URL
 		try {
 			$url = self::_normalizeRepositoryUrl($url);
-		} catch(\RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
@@ -82,7 +83,7 @@ class Repository
 				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
 		}
 
-		// Registration
+		// Repository registration
 		self::$_registry[$url] = [
 			'config' => $config,
 			'instance' => null,
@@ -92,37 +93,39 @@ class Repository
 	/**
 	 * Instanciate and return an object repository
 	 *
-	 * @param string $url Public repository URL (relative to apparat base URL)
+	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
-	 * @throws InvalidArgumentException If the public repository URL is invalid
-	 * @throws InvalidArgumentException If the public repository URL is unknown
+	 * @throws InvalidArgumentException If the repository URL is invalid
+	 * @throws InvalidArgumentException If the repository URL is unknown
 	 * @api
 	 */
 	public static function instance($url)
 	{
-		// Strip off the potentially leading apparat base URL
+		// Normalize to local repository URL
 		try {
 			$url = self::_normalizeRepositoryUrl($url);
-		} catch(\RuntimeException $e) {
+		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
-		// If the public repository URL is unknown
+		// If the local repository URL is unknown
 		if (empty(self::$_registry[$url])) {
 			throw new InvalidArgumentException(sprintf('Unknown public repository URL "%s"', $url),
 				InvalidArgumentException::UNKNOWN_PUBLIC_REPOSITORY_URL);
 		}
 
+		// If the repository hasn't been instantiated yet
 		if (!self::$_registry[$url]['instance'] instanceof \Apparat\Object\Domain\Repository\Repository) {
 
 			// Instantiate the repository adapter strategy
 			$repositoryAdapterStrategy = AdapterStrategyFactory::create(self::$_registry[$url]['config']);
 
-			// Instantiate and return the object repository
+			// Instantiate and register the object repository
 			self::$_registry[$url]['instance'] = \Apparat\Object\Domain\Repository\Repository::instance($url,
 				$repositoryAdapterStrategy, new Manager());
 		}
 
+		// Return the repository instance
 		return self::$_registry[$url]['instance'];
 	}
 
@@ -139,8 +142,15 @@ class Repository
 	 */
 	protected static function _normalizeRepositoryUrl($url)
 	{
+
+		// Strip the leading apparat base URL
 		$apparatBaseUrl = getenv('APPARAT_BASE_URL');
-		$url = ltrim((strpos($url, $apparatBaseUrl) === 0) ? substr($url, strlen($apparatBaseUrl)) : $url, '/');
+		if (strpos($url, $apparatBaseUrl) === 0) {
+			$url = substr($url, strlen($apparatBaseUrl));
+		}
+
+		// Strip leading slashes
+		$url = ltrim($url, '/');
 
 		// If this is still a valid absolute URL, it must be external
 		if (filter_var($url, FILTER_VALIDATE_URL)) {
@@ -148,6 +158,7 @@ class Repository
 				InvalidArgumentException::EXTERNAL_REPOSITORY_URL_NOT_ALLOWED);
 		}
 
+		// Ensure this is a bare URL (without query and fragment)
 		return \Apparat\Object\Framework\isAbsoluteBareUrl($apparatBaseUrl.$url) ? $url : false;
 	}
 }

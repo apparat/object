@@ -45,12 +45,14 @@ namespace Apparat\Object\Framework;
  * @throws \RuntimeException If the URL has query parameters
  * @throws \RuntimeException If the URL has a fragment
  */
-function isAbsoluteBareUrl($url) {
+function isAbsoluteBareUrl($url)
+{
 	if (!filter_var($url) || !preg_match("%^https?\:\/\/%i", $url)) {
 		throw new \RuntimeException(sprintf('Apparat base URL "%s" must be valid', $url), 1451776352);
 	}
 	if (strlen(parse_url($url, PHP_URL_QUERY))) {
-		throw new \RuntimeException(sprintf('Apparat base URL "%s" must not contain query parameters', $url), 1451776509);
+		throw new \RuntimeException(sprintf('Apparat base URL "%s" must not contain query parameters', $url),
+			1451776509);
 	}
 	if (strlen(parse_url($url, PHP_URL_FRAGMENT))) {
 		throw new \RuntimeException(sprintf('Apparat base URL "%s" must not contain a fragment', $url), 1451776570);

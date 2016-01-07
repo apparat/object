@@ -56,4 +56,22 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+	/**
+	 * Empty repository cluster configuration
+	 *
+	 * @var int
+	 */
+	const EMPTY_REPOSITORY_CONFIG = 1449947621;
+	/**
+	 * Unknown public repository URL
+	 *
+	 * @var int
+	 */
+	const UNKNOWN_PUBLIC_REPOSITORY_URL = 1451771889;
+	/**
+	 * External respository URL not allowed
+	 *
+	 * @var int
+	 */
+	const EXTERNAL_REPOSITORY_URL_NOT_ALLOWED = 1451776352;
 }

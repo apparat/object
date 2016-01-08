@@ -50,4 +50,11 @@ interface PropertiesInterface
 	 * @var string
 	 */
 	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
+
+	/**
+	 * Properties constructor
+	 *
+	 * @param array $data Property data
+	 */
+	public function __construct(array $data);
 }

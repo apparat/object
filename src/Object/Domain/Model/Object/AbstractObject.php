@@ -134,13 +134,13 @@ abstract class AbstractObject implements ObjectInterface
 		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
 		$this->_domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData);
 
-		// Instantiate the object relations
-		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
-		$this->_relations = new Relations($relationData);
-
 		// Instantiate the processing instructions
 		$processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array($propertyData[ProcessingInstructions::COLLECTION])) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
 		$this->_processingInstructions = new ProcessingInstructions($processingInstructionData);
+
+		// Instantiate the object relations
+		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
+		$this->_relations = new Relations($relationData, $this->_path);
 	}
 
 

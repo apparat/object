@@ -100,18 +100,17 @@ class ObjectTest extends AbstractTest
 	/**
 	 * Test invalid object type
 	 *
-	 * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
-	 * @expectedExceptionCode 1450824842
+	 * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
+	 * @expectedExceptionCode 1449871242
 	 */
 	public function testInvalidObjectType()
 	{
 		$resource = $this->getMock(ResourceInterface::class);
 		$resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-		$repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
+		$articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
 
 		/** @var ResourceInterface $resource */
-		/** @var RepositoryPath $repositoryPath */
-		ObjectFactory::createFromResource($resource, $repositoryPath);
+		ObjectFactory::createFromResource($resource, $articleObjectPath);
 	}
 
 	/**

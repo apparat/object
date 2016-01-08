@@ -36,13 +36,15 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
+
 /**
  * Object resource relations
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Relations extends AbstractProperties
+class Relations
 {
 	/**
 	 * Collection name
@@ -110,4 +112,15 @@ class Relations extends AbstractProperties
 	 * @var string
 	 */
 	const REPOSTED_BY = 'reposted-by';
+
+	/**
+	 * Properties constructor
+	 *
+	 * @param array $data Property data
+	 * @param RepositoryPath $path Repository path
+	 */
+	public function __construct(array $data, RepositoryPath $path)
+	{
+
+	}
 }

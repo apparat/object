@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Model\Object;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
@@ -98,31 +99,50 @@ abstract class AbstractObject implements ObjectInterface
 	/**
 	 * Object constructor
 	 *
-	 * @param SystemProperties $systemProperties System properties
-	 * @param MetaProperties $metaProperties Meta properties
-	 * @param AbstractDomainProperties $domainProperties Domain properties
-	 * @param Relations $relations Object relations
-	 * @param ProcessingInstructions $processingInstructions Processing instructions
-	 * @param string $payload Object payload
 	 * @param RepositoryPath $path Object repository path
+	 * @param string $domainPropertyCollectionClass Domain property class
+	 * @param array $propertyData Property data
+	 * @param string $payload Object payload
+	 * @throws PropertyInvalidArgumentException If the domain property collection class is invalid
 	 */
 	public function __construct(
-		SystemProperties $systemProperties,
-		MetaProperties $metaProperties,
-		AbstractDomainProperties $domainProperties,
-		Relations $relations,
-		ProcessingInstructions $processingInstructions,
-		$payload = '',
-		RepositoryPath $path
+		RepositoryPath $path,
+		$domainPropertyCollectionClass,
+		array $propertyData = [],
+		$payload = ''
 	) {
-		$this->_systemProperties = $systemProperties;
-		$this->_metaProperties = $metaProperties;
-		$this->_domainProperties = $domainProperties;
-		$this->_relations = $relations;
-		$this->_processingInstructions = $processingInstructions;
+
+		// If the domain property collection class is invalid
+		if (!is_subclass_of($domainPropertyCollectionClass, AbstractDomainProperties::class)) {
+			throw new PropertyInvalidArgumentException(sprintf('Invalid domain property collection class "%s"',
+				$domainPropertyCollectionClass),
+				PropertyInvalidArgumentException::INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS);
+		}
+
 		$this->_payload = $payload;
 		$this->_path = $path;
+
+		// Instantiate the system properties
+		$systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array($propertyData[SystemProperties::COLLECTION])) ? [] : $propertyData[SystemProperties::COLLECTION];
+		$this->_systemProperties = new SystemProperties($systemPropertyData);
+
+		// Instantiate the meta properties
+		$metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array($propertyData[MetaProperties::COLLECTION])) ? [] : $propertyData[MetaProperties::COLLECTION];
+		$this->_metaProperties = new MetaProperties($metaPropertyData);
+
+		// Instantiate the domain properties
+		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
+		$this->_domainProperties = new $domainPropertyCollectionClass($domainPropertyData);
+
+		// Instantiate the object relations
+		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
+		$this->_relations = new Relations($relationData);
+
+		// Instantiate the processing instructions
+		$processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array($propertyData[ProcessingInstructions::COLLECTION])) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
+		$this->_processingInstructions = new ProcessingInstructions($processingInstructionData);
 	}
+
 
 	/**
 	 * Return the object ID

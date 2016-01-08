@@ -36,6 +36,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
  * Object interface
@@ -44,6 +45,16 @@ use Apparat\Object\Domain\Model\Author\AuthorInterface;
  */
 interface ObjectInterface
 {
+	/**
+	 * Object constructor
+	 *
+	 * @param RepositoryPath $path Object repository path
+	 * @param string $domainPropertyCollectionClass Domain property class
+	 * @param array $propertyData Property data
+	 * @param string $payload Object payload
+	 */
+	public function __construct(RepositoryPath $path, $domainPropertyCollectionClass, array $propertyData = [], $payload = '');
+
 	/**
 	 * Return the object ID
 	 *

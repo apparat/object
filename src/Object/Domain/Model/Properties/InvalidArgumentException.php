@@ -84,4 +84,10 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_OBJECT_AUTHOR = 1451425516;
+	/**
+	 * Invalid domain property collection class
+	 *
+	 * @var int
+	 */
+	const INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS = 1452288429;
 }

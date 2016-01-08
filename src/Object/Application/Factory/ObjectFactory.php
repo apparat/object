@@ -37,13 +37,9 @@
 namespace Apparat\Object\Application\Factory;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Domain\Model\Properties\MetaProperties;
-use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Domain\Model\Properties\Relations;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
 /**
@@ -86,29 +82,7 @@ class ObjectFactory
 				InvalidArgumentException::INVALID_OBJECT_TYPE);
 		}
 
-		// Instantiate the system properties
-		$systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array($propertyData[SystemProperties::COLLECTION])) ? [] : $propertyData[SystemProperties::COLLECTION];
-		$systemProperties = new SystemProperties($systemPropertyData);
-
-		// Instantiate the meta properties
-		$metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array($propertyData[MetaProperties::COLLECTION])) ? [] : $propertyData[MetaProperties::COLLECTION];
-		$metaProperties = new MetaProperties($metaPropertyData);
-
-		// Instantiate the domain properties
-		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-		$domainProperties = new $domainPropertyCollectionClass($domainPropertyData);
-
-		// Instantiate the object relations
-		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
-		$relations = new Relations($relationData);
-
-		// Instantiate the processing instructions
-		$processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array($propertyData[ProcessingInstructions::COLLECTION])) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-		$processingInstructions = new ProcessingInstructions($processingInstructionData);
-
 		// Instantiate the object
-		return new $objectClass($systemProperties, $metaProperties, $domainProperties, $relations,
-			$processingInstructions, $objectResource->getPayload(),
-			$path);
+		return new $objectClass($path, $domainPropertyCollectionClass, $propertyData, $objectResource->getPayload());
 	}
 }

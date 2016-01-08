@@ -95,27 +95,27 @@ abstract class AbstractObject implements ObjectInterface
 	 * @var RepositoryPath
 	 */
 	protected $_path;
+	/**
+	 * Domain property collection class
+	 *
+	 * @var string
+	 */
+	protected $_domainPropertyCollectionClass = null;
 
 	/**
 	 * Object constructor
 	 *
 	 * @param RepositoryPath $path Object repository path
-	 * @param string $domainPropertyCollectionClass Domain property class
 	 * @param array $propertyData Property data
 	 * @param string $payload Object payload
 	 * @throws PropertyInvalidArgumentException If the domain property collection class is invalid
 	 */
-	public function __construct(
-		RepositoryPath $path,
-		$domainPropertyCollectionClass,
-		array $propertyData = [],
-		$payload = ''
-	) {
-
+	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '')
+	{
 		// If the domain property collection class is invalid
-		if (!is_subclass_of($domainPropertyCollectionClass, AbstractDomainProperties::class)) {
+		if (!is_subclass_of($this->_domainPropertyCollectionClass, AbstractDomainProperties::class)) {
 			throw new PropertyInvalidArgumentException(sprintf('Invalid domain property collection class "%s"',
-				$domainPropertyCollectionClass),
+				$this->_domainPropertyCollectionClass),
 				PropertyInvalidArgumentException::INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS);
 		}
 
@@ -132,7 +132,7 @@ abstract class AbstractObject implements ObjectInterface
 
 		// Instantiate the domain properties
 		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-		$this->_domainProperties = new $domainPropertyCollectionClass($domainPropertyData);
+		$this->_domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData);
 
 		// Instantiate the object relations
 		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];

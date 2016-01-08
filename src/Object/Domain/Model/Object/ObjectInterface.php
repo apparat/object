@@ -49,11 +49,10 @@ interface ObjectInterface
 	 * Object constructor
 	 *
 	 * @param RepositoryPath $path Object repository path
-	 * @param string $domainPropertyCollectionClass Domain property class
 	 * @param array $propertyData Property data
 	 * @param string $payload Object payload
 	 */
-	public function __construct(RepositoryPath $path, $domainPropertyCollectionClass, array $propertyData = [], $payload = '');
+	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '');
 
 	/**
 	 * Return the object ID

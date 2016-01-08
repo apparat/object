@@ -76,13 +76,12 @@ class ObjectFactory
 		// If the object type is invalid
 		$objectType = $propertyData[SystemProperties::COLLECTION]['type'];
 		$objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
-		$domainPropertyCollectionClass = 'Apparat\\Object\\Application\\Model\\Properties\\Domain\\'.ucfirst($objectType);
-		if (!Type::isValidType($objectType) || !class_exists($objectClass) || !class_exists($domainPropertyCollectionClass)) {
+		if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
 			throw new InvalidArgumentException(sprintf('Invalid object type "%s"', $objectType),
 				InvalidArgumentException::INVALID_OBJECT_TYPE);
 		}
 
 		// Instantiate the object
-		return new $objectClass($path, $domainPropertyCollectionClass, $propertyData, $objectResource->getPayload());
+		return new $objectClass($path, $propertyData, $objectResource->getPayload());
 	}
 }

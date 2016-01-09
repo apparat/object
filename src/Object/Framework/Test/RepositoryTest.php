@@ -246,7 +246,7 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test unknown public repository URL instantiation
 	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
 	 * @expectedExceptionCode 1451771889
 	 */
 	public function testInstantiateUnknownRepositoryUrl()
@@ -321,20 +321,6 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
-	 * Test invalid public repository URL during instantiation
-	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1451776352
-	 */
-	public function testUnknownRepositoryUrlInstance()
-	{
-		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
-			'type' => FileAdapterStrategy::TYPE,
-		]);
-		RepositoryFactory::instance('http://example.com');
-	}
-
-	/**
 	 * Test empty file adapter strategy root
 	 *
 	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
@@ -362,6 +348,21 @@ class RepositoryTest extends AbstractTest
 			'root' => '__FILE__',
 		]);
 		RepositoryFactory::instance(getenv('REPOSITORY_URL'));
+	}
+
+	/**
+	 * Test invalid repository URL during instantiation
+	 *
+	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+	 * @expectedExceptionCode 1451776352
+	 */
+	public function testUnknownRepositoryUrlInstance()
+	{
+		RepositoryFactory::register(getenv('REPOSITORY_URL'), [
+			'type' => FileAdapterStrategy::TYPE,
+			'root' => self::$_globBase,
+		]);
+		RepositoryFactory::instance('http://example.com');
 	}
 
 	/**

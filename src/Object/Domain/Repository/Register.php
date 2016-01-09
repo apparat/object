@@ -37,71 +37,51 @@
 namespace Apparat\Object\Domain\Repository;
 
 /**
- * Repository invalid argument exception
+ * Repository register
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class Register
 {
 	/**
-	 * Invalid argument name
+	 * Registered repositories
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected $_argumentName = null;
-	/**
-	 * Invalid repository selector
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR = 1449961609;
-	/**
-	 * Invalid repository selector component
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR_COMPONENT = 1449999646;
-	/**
-	 * Invalid adapter strategy signature configuration
-	 *
-	 * @var int
-	 */
-	const INVALID_ADAPTER_STRATEGY_SIGNATURE = 1450136346;
-	/**
-	 * Invalid apparat base URL
-	 *
-	 * @var string
-	 */
-	const INVALID_APPARAT_BASE_URL = 1451162015;
-	/**
-	 * Unknown repository URL
-	 *
-	 * @var int
-	 */
-	const UNKNOWN_REPOSITORY_URL = 1451771889;
+	protected static $_registry = [];
 
 	/**
-	 * Exception constructor
+	 * Register a repository
 	 *
-	 * @param string $message Exception message
-	 * @param string $code Exception code
-	 * @param \Exception|null $previous Previous exception
-	 * @param null $argumentName Invalid argument name
+	 * @param string $url Relative repository URL
+	 * @param RepositoryInterface $repository Repository
+	 * @api
 	 */
-	public function __construct($message = '', $code = '', \Exception $previous = null, $argumentName = null)
+	public static function register($url, RepositoryInterface $repository)
 	{
-		parent::__construct($message, $code, $previous);
-		$this->_argumentName = $argumentName;
+		// Repository registration
+		self::$_registry[$url] = $repository;
 	}
 
 	/**
-	 * Return the invalid argument name
+	 * Instantiate and return an object repository
 	 *
-	 * @return string
+	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
+	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
+	 * @throws InvalidArgumentException If the repository URL is invalid
+	 * @throws InvalidArgumentException If the repository URL is unknown
+	 * @api
 	 */
-	public function getArgumentName()
+	public static function instance($url)
 	{
-		return $this->_argumentName;
+		// If the local repository URL is unknown
+		if (empty(self::$_registry[$url])) {
+			throw new InvalidArgumentException(sprintf('Unknown repository URL "%s"', $url),
+				InvalidArgumentException::UNKNOWN_REPOSITORY_URL);
+		}
+
+		// Return the repository instance
+		return self::$_registry[$url];
 	}
 }

@@ -68,11 +68,11 @@ class Object
 		if ($objectUrl->matches($apparatBaseUrl->setPath('')) && !strncmp($apparatBaseUrlPath, $objectUrl->getPath(),
 				strlen($apparatBaseUrlPath))
 		) {
-			$repoUrl = substr($objectUrl->getPath(), strlen($apparatBaseUrlPath));
+			$repositoryUrl = substr($objectUrl->getPath(), strlen($apparatBaseUrlPath));
 
 			// Else: If it's not an absolute object URL
 		} elseif(!$objectUrl->isAbsolute()) {
-			$repoUrl = $objectUrl->getPath();
+			$repositoryUrl = $objectUrl->getPath();
 
 			// Else: Remote repository
 		} else {
@@ -81,6 +81,6 @@ class Object
 		}
 
 		// Instantiate the object repository, load and return the object
-		return Repository::instance($repoUrl)->loadObject($objectUrl);
+		return Repository::instance($repositoryUrl)->loadObject($objectUrl);
 	}
 }

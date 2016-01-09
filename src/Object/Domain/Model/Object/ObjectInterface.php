@@ -48,11 +48,14 @@ interface ObjectInterface
 	/**
 	 * Object constructor
 	 *
+	 * The constructor is not part of the interface as the object proxy class also implements it
+	 * without having the same constructor signature
+	 *
 	 * @param RepositoryPath $path Object repository path
 	 * @param array $propertyData Property data
 	 * @param string $payload Object payload
 	 */
-	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '');
+//	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '');
 
 	/**
 	 * Return the object ID

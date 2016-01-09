@@ -37,6 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Application\Model\Object\Manager;
+use Apparat\Object\Domain\Repository\Register;
 use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 use Apparat\Object\Framework\Repository\InvalidArgumentException;
 
@@ -48,12 +49,6 @@ use Apparat\Object\Framework\Repository\InvalidArgumentException;
  */
 class Repository
 {
-	/**
-	 * Registered repositories
-	 *
-	 * @var array
-	 */
-	protected static $_registry = [];
 
 	/*******************************************************************************
 	 * PUBLIC METHODS
@@ -83,11 +78,15 @@ class Repository
 				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
 		}
 
-		// Repository registration
-		self::$_registry[$url] = [
-			'config' => $config,
-			'instance' => null,
-		];
+		// Instantiate the repository adapter strategy
+		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
+
+		// Instantiate and register the object repository
+		$repository = \Apparat\Object\Domain\Repository\Repository::instance($url, $repositoryAdapterStrategy,
+			new Manager());
+
+		// Register the repository
+		Register::register($url, $repository);
 	}
 
 	/**
@@ -108,25 +107,8 @@ class Repository
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
-		// If the local repository URL is unknown
-		if (empty(self::$_registry[$url])) {
-			throw new InvalidArgumentException(sprintf('Unknown public repository URL "%s"', $url),
-				InvalidArgumentException::UNKNOWN_PUBLIC_REPOSITORY_URL);
-		}
-
-		// If the repository hasn't been instantiated yet
-		if (!self::$_registry[$url]['instance'] instanceof \Apparat\Object\Domain\Repository\Repository) {
-
-			// Instantiate the repository adapter strategy
-			$repositoryAdapterStrategy = AdapterStrategyFactory::create(self::$_registry[$url]['config']);
-
-			// Instantiate and register the object repository
-			self::$_registry[$url]['instance'] = \Apparat\Object\Domain\Repository\Repository::instance($url,
-				$repositoryAdapterStrategy, new Manager());
-		}
-
 		// Return the repository instance
-		return self::$_registry[$url]['instance'];
+		return Register::instance($url);
 	}
 
 	/*******************************************************************************

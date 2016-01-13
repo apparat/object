@@ -125,7 +125,7 @@ class LocalPath implements PathInterface
 
 		$pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
-		if (empty($path) || !preg_match_all($pathPattern, $path, $pathParts)) {
+		if (empty($path) || !preg_match($pathPattern, $path, $pathParts)) {
 			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
 				empty($path) ? '(empty)' : $path),
 				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
@@ -133,26 +133,26 @@ class LocalPath implements PathInterface
 
 		// If date components are used
 		if ($datePrecision) {
-			$year = $pathParts['year'][0];
-			$month = isset($pathParts['month']) ? $pathParts['month'][0] ?: '01' : '01';
-			$day = isset($pathParts['day']) ? $pathParts['day'][0] ?: '01' : '01';
-			$hour = isset($pathParts['hour']) ? $pathParts['hour'][0] ?: '00' : '00';
-			$minute = isset($pathParts['minute']) ? $pathParts['minute'][0] ?: '00' : '00';
-			$second = isset($pathParts['second']) ? $pathParts['second'][0] ?: '00' : '00';
+			$year = $pathParts['year'];
+			$month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
+			$day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
+			$hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
+			$minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
+			$second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
 			$this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
 		}
 
 		// Determine the leader
-		$leader = ($datePrecision === true) ? substr($path, 0, strlen($path) - strlen($pathParts[0][0])) : $pathParts['leader'][0];
+		$leader = ($datePrecision === true) ? substr($path, 0, strlen($path) - strlen($pathParts[0])) : $pathParts['leader'];
 
 		// Set the ID
-		$this->_id = new Id(intval($pathParts['id'][0]));
+		$this->_id = new Id(intval($pathParts['id']));
 
 		// Set the type
-		$this->_type = new Type($pathParts['type'][0]);
+		$this->_type = new Type($pathParts['type']);
 
 		// Set the revision
-		$this->_revision = new Revision(empty($pathParts['revision'][0]) ? Revision::CURRENT : intval($pathParts['revision'][0]));
+		$this->_revision = new Revision(empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']));
 	}
 
 	/**

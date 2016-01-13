@@ -36,6 +36,8 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+
 /**
  * Abstract object properties collection
  *
@@ -44,5 +46,31 @@ namespace Apparat\Object\Domain\Model\Properties;
  */
 abstract class AbstractProperties implements PropertiesInterface
 {
+	/**
+	 * Owner object
+	 *
+	 * @var ObjectInterface
+	 */
+	protected $_object = null;
 
+	/**
+	 * Meta properties constructor
+	 *
+	 * @param array $data Property data
+	 * @param ObjectInterface $object Owner object
+	 */
+	public function __construct(array $data, ObjectInterface $object)
+	{
+		$this->_object = $object;
+	}
+
+	/**
+	 * Return the owner object
+	 *
+	 * @return ObjectInterface Owner object
+	 */
+	public function getObject()
+	{
+		return $this->_object;
+	}
 }

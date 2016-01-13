@@ -36,6 +36,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
@@ -120,4 +121,11 @@ interface ObjectInterface
 	 * @return ObjectInterface Self reference
 	 */
 	public function addAuthor(AuthorInterface $author);
+
+	/**
+	 * Return the object repository path
+	 *
+	 * @return PathInterface Object repository path
+	 */
+	public function getRepositoryPath();
 }

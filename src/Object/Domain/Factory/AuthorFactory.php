@@ -36,9 +36,12 @@
 
 namespace Apparat\Object\Domain\Factory;
 
+use Apparat\Object\Domain\Model\Author\ApparatAuthor;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Author\GenericAuthor;
 use Apparat\Object\Domain\Model\Author\InvalidArgumentException;
+use Apparat\Object\Domain\Model\Author\InvalidAuthor;
+use Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException;
 
 /**
  * Author factory
@@ -57,12 +60,23 @@ class AuthorFactory
 	 */
 	public static function createFromString($author)
 	{
+		// Try to instantiate an apparat object based author
+		try {
+			return ApparatAuthor::unserialize($author);
 
-		// TODO: Implement apparat author
+			// If there's an apparat URL problem
+		} catch (ApparatInvalidArgumentException $e) {
+			return new InvalidAuthor($author, $e);
+
+			// Proceed on other errors
+		} catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
+		}
 
 		// Try to instantiate a generic author
 		try {
 			return GenericAuthor::unserialize($author);
+
+			// Proceed on errors
 		} catch (InvalidArgumentException $e) {
 		}
 

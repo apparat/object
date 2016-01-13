@@ -36,9 +36,11 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 
-/** @noinspection PhpHierarchyChecksInspection */
 /**
  * Object proxy (lazy loading)
  *
@@ -48,9 +50,9 @@ use Apparat\Object\Domain\Model\Path\ObjectUrl;
 class ObjectProxy implements ObjectInterface
 {
 	/**
-	 * Object URL
+	 * Apparat object URL
 	 *
-	 * @var ObjectUrl
+	 * @var ApparatUrl
 	 */
 	protected $_url = null;
 	/**
@@ -65,13 +67,121 @@ class ObjectProxy implements ObjectInterface
 	 *******************************************************************************/
 
 	/**
-	 * Constructor
+	 * Object proxy constructor
 	 *
-	 * @param ObjectUrl $url Remote object URL
+	 * @param ApparatUrl $url Apparat object URL
 	 */
-	public function __construct(ObjectUrl $url)
+	public function __construct(ApparatUrl $url)
 	{
 		$this->_url = $url;
+	}
+
+	/**
+	 * Return the object repository path
+	 *
+	 * @return PathInterface Object repository path
+	 */
+	public function getRepositoryPath()
+	{
+		// If the object has already been instatiated
+		if ($this->_object instanceof ObjectInterface) {
+			return $this->_object->getRepositoryPath();
+
+			// Else
+		} else {
+			return $this->_url->getLocalPath();
+		}
+	}
+
+	/**
+	 * Return the object ID
+	 *
+	 * @return Id Object ID
+	 */
+	public function getId()
+	{
+		return $this->_object()->getId();
+	}
+
+	/**
+	 * Return the object type
+	 *
+	 * @return Type Object type
+	 */
+	public function getType()
+	{
+		return $this->_object()->getType();
+	}
+
+	/**
+	 * Return the object revision
+	 *
+	 * @return Revision Object revision
+	 */
+	public function getRevision()
+	{
+		return $this->_object()->getRevision();
+	}
+
+	/**
+	 * Return the creation date & time
+	 *
+	 * @return \DateTimeImmutable Creation date & time
+	 */
+	public function getCreated()
+	{
+		return $this->_object()->getCreated();
+	}
+
+	/**
+	 * Return the publication date & time
+	 *
+	 * @return \DateTimeImmutable Publication date & time
+	 */
+	public function getPublished()
+	{
+		return $this->_object()->getPublished();
+	}
+
+	/**
+	 * Return all object keywords
+	 *
+	 * @return array Object keywords
+	 */
+	public function getKeywords()
+	{
+		return $this->_object()->getKeywords();
+	}
+
+	/**
+	 * Return all object categories
+	 *
+	 * @return array Object categories
+	 */
+	public function getCategories()
+	{
+		return $this->_object()->getCategories();
+	}
+
+	/**
+	 * Return all object authors
+	 *
+	 * @return AuthorInterface[] Authors
+	 */
+	public function getAuthors()
+	{
+		return $this->_object()->getAuthors();
+	}
+
+	/**
+	 * Add an object author
+	 *
+	 * @param AuthorInterface $author Author
+	 * @return ObjectInterface Self reference
+	 */
+	public function addAuthor(AuthorInterface $author)
+	{
+		return $this->_object()->addAuthor($author);
 	}
 
 	/*******************************************************************************
@@ -106,7 +216,6 @@ class ObjectProxy implements ObjectInterface
 	 */
 	protected function _object()
 	{
-
 		// Lazy-load the remote object if necessary
 		if (!$this->_object instanceof ObjectInterface) {
 			// TODO: Lazy loading

@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
  * Object resource relations
@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Model\Path\RepositoryPath;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Relations
+class Relations extends AbstractProperties
 {
 	/**
 	 * Collection name
@@ -114,13 +114,13 @@ class Relations
 	const REPOSTED_BY = 'reposted-by';
 
 	/**
-	 * Properties constructor
+	 * Relations constructor
 	 *
 	 * @param array $data Property data
-	 * @param RepositoryPath $path Repository path
+	 * @param ObjectInterface $object Owner object
 	 */
-	public function __construct(array $data, RepositoryPath $path)
+	public function __construct(array $data, ObjectInterface $object)
 	{
-
+		parent::__construct($data, $object);
 	}
 }

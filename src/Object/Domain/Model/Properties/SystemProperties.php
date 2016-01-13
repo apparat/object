@@ -37,6 +37,7 @@
 namespace Apparat\Object\Domain\Model\Properties;
 
 use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 
@@ -46,7 +47,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class SystemProperties implements PropertiesInterface
+class SystemProperties extends AbstractProperties
 {
 	/**
 	 * Object ID
@@ -104,10 +105,13 @@ class SystemProperties implements PropertiesInterface
 	/**
 	 * System properties constructor
 	 *
-	 * @param array $data System properties
+	 * @param array $data Property data
+	 * @param ObjectInterface $object Owner object
 	 */
-	public function __construct(array $data)
+	public function __construct(array $data, ObjectInterface $object)
 	{
+		parent::__construct($data, $object);
+
 		// Initialize the object ID
 		if (array_key_exists('id', $data)) {
 			$this->_setId(Id::unserialize($data['id']));

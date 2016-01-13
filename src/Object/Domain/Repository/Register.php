@@ -51,6 +51,10 @@ class Register
 	 */
 	protected static $_registry = [];
 
+	/*******************************************************************************
+	 * PUBLIC METHODS
+	 *******************************************************************************/
+
 	/**
 	 * Register a repository
 	 *
@@ -61,7 +65,7 @@ class Register
 	public static function register($url, RepositoryInterface $repository)
 	{
 		// Repository registration
-		self::$_registry[$url] = $repository;
+		self::$_registry[self::_normalizeRepositoryUrl($url)] = $repository;
 	}
 
 	/**
@@ -75,6 +79,8 @@ class Register
 	 */
 	public static function instance($url)
 	{
+		$url = self::_normalizeRepositoryUrl($url);
+
 		// If the local repository URL is unknown
 		if (empty(self::$_registry[$url])) {
 			throw new InvalidArgumentException(sprintf('Unknown repository URL "%s"', $url),
@@ -83,5 +89,29 @@ class Register
 
 		// Return the repository instance
 		return self::$_registry[$url];
+	}
+
+	/**
+	 * Test whether a repository URL is registered
+	 *
+	 * @param string $url Repository URL
+	 * @return bool Repository URL is registered
+	 */
+	public static function isRegistered($url) {
+		return array_key_exists(self::_normalizeRepositoryUrl($url), self::$_registry);
+	}
+
+	/*******************************************************************************
+	 * PRIVATE METHODS
+	 *******************************************************************************/
+
+	/**
+	 * Normalize a repository URL
+	 *
+	 * @param string $url Repository URL
+	 * @return string Normalized repository URL
+	 */
+	protected static function _normalizeRepositoryUrl($url) {
+		return ltrim($url, '/');
 	}
 }

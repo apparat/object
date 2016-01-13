@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,30 +34,81 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
+namespace Apparat\Object\Domain\Model\Author;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+
+use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 
 /**
- * Properties collection interface
+ * Invalid author stub
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-interface PropertiesInterface
+class InvalidAuthor implements AuthorInterface
 {
 	/**
-	 * Property traversal separator
+	 * String value
 	 *
 	 * @var string
 	 */
-	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
+	protected $_value = '';
+	/**
+	 * Underlying exception
+	 *
+	 * @var \Exception
+	 */
+	protected $_exception = null;
 
 	/**
-	 * Properties constructor
+	 * Invalid author constructor
 	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
+	 * @param string $value Value
 	 */
-	public function __construct(array $data, ObjectInterface $object);
+	public function __construct($value, \Exception $exception = null)
+	{
+		$this->_value = $value;
+		$this->_exception = $exception;
+	}
+
+	/**
+	 * Return the underying exception
+	 *
+	 * @return \Exception Underlying exception
+	 */
+	public function getException()
+	{
+		return $this->_exception;
+	}
+
+	/**
+	 * Return a signature uniquely representing this author
+	 *
+	 * @return string Author signature
+	 */
+	public function getSignature()
+	{
+		return sha1($this->serialize());
+	}
+
+	/**
+	 * Serialize the property
+	 *
+	 * @return mixed Property serialization
+	 */
+	public function serialize()
+	{
+		return $this->_value;
+	}
+
+	/**
+	 * Unserialize the string representation of this property
+	 *
+	 * @param string $str Serialized property
+	 * @return SerializablePropertyInterface Property
+	 */
+	public static function unserialize($str)
+	{
+		return new static($str);
+	}
 }

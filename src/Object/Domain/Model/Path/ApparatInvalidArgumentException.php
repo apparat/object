@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,30 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
-
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Properties collection interface
+ * Apparat URL specific invalid argumment exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-interface PropertiesInterface
+class ApparatInvalidArgumentException extends InvalidArgumentException
 {
 	/**
-	 * Property traversal separator
+	 * Invalid Apparat URL
 	 *
-	 * @var string
+	 * @var int
 	 */
-	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
-
+	const INVALID_ABSOLUTE_APPARAT_URL = 1451435429;
 	/**
-	 * Properties constructor
+	 * Unknown local repository URL
 	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
+	 * @var int
 	 */
-	public function __construct(array $data, ObjectInterface $object);
+	const UNKNOWN_LOCAL_REPOSITORY_URL = 1452695654;
 }

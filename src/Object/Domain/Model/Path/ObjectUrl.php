@@ -213,6 +213,16 @@ class ObjectUrl extends Url implements PathInterface
 		return true;
 	}
 
+	/**
+	 * Return the local object path
+	 *
+	 * @return LocalPath Local object path
+	 */
+	public function getLocalPath()
+	{
+		return $this->_localPath;
+	}
+
 	/*******************************************************************************
 	 * PRIVATE METHODS
 	 *******************************************************************************/

@@ -37,6 +37,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
@@ -124,25 +125,24 @@ abstract class AbstractObject implements ObjectInterface
 
 		// Instantiate the system properties
 		$systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array($propertyData[SystemProperties::COLLECTION])) ? [] : $propertyData[SystemProperties::COLLECTION];
-		$this->_systemProperties = new SystemProperties($systemPropertyData);
+		$this->_systemProperties = new SystemProperties($systemPropertyData, $this);
 
 		// Instantiate the meta properties
 		$metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array($propertyData[MetaProperties::COLLECTION])) ? [] : $propertyData[MetaProperties::COLLECTION];
-		$this->_metaProperties = new MetaProperties($metaPropertyData);
+		$this->_metaProperties = new MetaProperties($metaPropertyData, $this);
 
 		// Instantiate the domain properties
 		$domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array($propertyData[AbstractDomainProperties::COLLECTION])) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-		$this->_domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData);
+		$this->_domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData, $this);
 
 		// Instantiate the processing instructions
 		$processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array($propertyData[ProcessingInstructions::COLLECTION])) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-		$this->_processingInstructions = new ProcessingInstructions($processingInstructionData);
+		$this->_processingInstructions = new ProcessingInstructions($processingInstructionData, $this);
 
 		// Instantiate the object relations
 		$relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array($propertyData[Relations::COLLECTION])) ? [] : $propertyData[Relations::COLLECTION];
-		$this->_relations = new Relations($relationData, $this->_path);
+		$this->_relations = new Relations($relationData, $this);
 	}
-
 
 	/**
 	 * Return the object ID
@@ -236,5 +236,15 @@ abstract class AbstractObject implements ObjectInterface
 		$authors[] = $author;
 		$this->_metaProperties->setAuthors($authors);
 		return $this;
+	}
+
+	/**
+	 * Return the object repository path
+	 *
+	 * @return PathInterface Object repository path
+	 */
+	public function getRepositoryPath()
+	{
+		return $this->_path;
 	}
 }

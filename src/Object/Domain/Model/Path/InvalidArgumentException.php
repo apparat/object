@@ -84,10 +84,4 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const INVALID_URL_PORT = 1449925885;
-	/**
-	 * Invalid Apparat URL
-	 *
-	 * @var int
-	 */
-	const INVALID_APPARAT_URL = 1451435429;
 }

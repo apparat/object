@@ -38,6 +38,7 @@ namespace Apparat\Object\Domain\Model\Properties;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Factory\AuthorFactory;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
  * Meta object properties collection
@@ -45,8 +46,22 @@ use Apparat\Object\Domain\Factory\AuthorFactory;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class MetaProperties implements PropertiesInterface
+class MetaProperties extends AbstractProperties
 {
+	/**
+	 * Object description
+	 *
+	 * @var string
+	 */
+	protected $_description = '';
+
+	/**
+	 * Object abstract
+	 *
+	 * @var string
+	 */
+	protected $_abstract = '';
+
 	/**
 	 * Object keywords
 	 *
@@ -80,12 +95,25 @@ class MetaProperties implements PropertiesInterface
 	 *******************************************************************************/
 
 	/**
-	 * System properties constructor
+	 * Meta properties constructor
 	 *
-	 * @param array $data System properties
+	 * @param array $data Property data
+	 * @param ObjectInterface $object Owner object
 	 */
-	public function __construct(array $data)
+	public function __construct(array $data, ObjectInterface $object)
 	{
+		parent::__construct($data, $object);
+
+		// Initialize the description
+		if (array_key_exists('description', $data)) {
+			$this->setDescription($data['description']);
+		}
+
+		// Initialize the abstract
+		if (array_key_exists('abstract', $data)) {
+			$this->setAbstract($data['abstract']);
+		}
+
 		// Initialize the keywords
 		if (array_key_exists('keywords', $data)) {
 			$this->setKeywords((array)$data['keywords']);
@@ -100,6 +128,50 @@ class MetaProperties implements PropertiesInterface
 		if (array_key_exists('authors', $data)) {
 			$this->setAuthors($data['authors']);
 		}
+	}
+
+	/**
+	 * Return the object description
+	 *
+	 * @return string Object description
+	 */
+	public function getDescription()
+	{
+		return $this->_description;
+	}
+
+	/**
+	 * Set the object description
+	 *
+	 * @param string $description Object description
+	 * @return MetaProperties Self reference
+	 */
+	public function setDescription($description)
+	{
+		$this->_description = $description;
+		return $this;
+	}
+
+	/**
+	 * Return the object abstract
+	 *
+	 * @return string Object abstract
+	 */
+	public function getAbstract()
+	{
+		return $this->_abstract;
+	}
+
+	/**
+	 * Set the object abstract
+	 *
+	 * @param string $abstract Object abstract
+	 * @return MetaProperties Self reference
+	 */
+	public function setAbstract($abstract)
+	{
+		$this->_abstract = $abstract;
+		return $this;
 	}
 
 	/**

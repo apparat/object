@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,30 +34,50 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
+namespace Apparat\Object\Domain\Model\Author;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+
+use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
+use Apparat\Object\Domain\Model\Object\ObjectProxy;
+use Apparat\Object\Domain\Model\Path\ApparatUrl;
 
 /**
- * Properties collection interface
+ * Apparat object author
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain\Model\Author
  */
-interface PropertiesInterface
+class ApparatAuthor extends ObjectProxy implements AuthorInterface
 {
 	/**
-	 * Property traversal separator
+	 * Return a signature uniquely representing this author
 	 *
-	 * @var string
+	 * @return string Author signature
 	 */
-	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
+	public function getSignature()
+	{
+		return sha1($this->serialize());
+	}
 
 	/**
-	 * Properties constructor
+	 * Serialize the property
 	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
+	 * @return mixed Property serialization
 	 */
-	public function __construct(array $data, ObjectInterface $object);
+	public function serialize()
+	{
+		// TODO: Use absolute object URL for signature
+		// Ideally, a local URL should be used if possible
+	}
+
+	/**
+	 * Unserialize the string representation of this property
+	 *
+	 * @param string $str Serialized property
+	 * @return SerializablePropertyInterface Property
+	 */
+	public static function unserialize($str)
+	{
+		return new static(new ApparatUrl($str, true));
+	}
 }

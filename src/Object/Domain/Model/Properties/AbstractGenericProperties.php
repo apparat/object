@@ -36,6 +36,8 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+
 /**
  * Abstract generic object properties collection
  *
@@ -54,10 +56,13 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
 	/**
 	 * Property collection constructor
 	 *
-	 * @param array $data Properties
+	 * @param array $data Property data
+	 * @param ObjectInterface $object Owner object
 	 */
-	public function __construct(array $data)
+	public function __construct(array $data, ObjectInterface $object)
 	{
+		parent::__construct($data, $object);
+
 		$this->_data = $data;
 	}
 

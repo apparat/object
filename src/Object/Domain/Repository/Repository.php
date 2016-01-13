@@ -35,7 +35,6 @@
 
 namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Common\SingletonTrait;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
@@ -49,11 +48,6 @@ use Apparat\Object\Domain\Model\Path\RepositoryPath;
  */
 class Repository implements RepositoryInterface
 {
-	/**
-	 * Use singleton methods
-	 */
-	use SingletonTrait;
-
 	/**
 	 * Apparat base URL
 	 *
@@ -79,38 +73,24 @@ class Repository implements RepositoryInterface
 	 */
 	protected $_objectCache = [];
 
-	/**
-	 * Singleton instances
-	 *
-	 * @var Repository[]
-	 */
-	protected static $_instances = [];
-
-	/*******************************************************************************
-	 * STATIC METHODS
-	 *******************************************************************************/
-
-	/**
-	 * Repository singleton instantiator
-	 *
-	 * @param string $url Apparat base URL
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param ManagerInterface $objectManager Object manager
-	 * @return Repository Repository instance
-	 */
-	public static function instance($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
-	{
-		$signature = $url.$adapterStrategy->getSignature().$objectManager->getSignature();
-		if (empty(self::$_instances[$signature])) {
-			self::$_instances[$signature] = new static($url, $adapterStrategy, $objectManager);
-		}
-
-		return self::$_instances[$signature];
-	}
-
 	/*******************************************************************************
 	 * PUBLIC METHODS
 	 *******************************************************************************/
+
+	/**
+	 * Repository constructor
+	 *
+	 * @param string $url Apparat base URL
+	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
+	 * @param ManagerInterface $objectManager Object factory
+	 * @throws InvalidArgumentException If the apparat base URL isn't valid
+	 */
+	public function __construct($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
+	{
+		$this->_url = $url;
+		$this->_adapterStrategy = $adapterStrategy;
+		$this->_objectManager = $objectManager;
+	}
 
 	/**
 	 * @inheritDoc
@@ -169,22 +149,15 @@ class Repository implements RepositoryInterface
 		return $this->_adapterStrategy;
 	}
 
-	/*******************************************************************************
-	 * PRIVATE METHODS
-	 *******************************************************************************/
-
 	/**
-	 * Repository constructor
+	 * Return the repository URL (relative to Apparat base URL)
 	 *
-	 * @param string $url Apparat base URL
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param ManagerInterface $objectManager Object factory
-	 * @throws InvalidArgumentException If the apparat base URL isn't valid
+	 * @return string Repository URL
 	 */
-	protected function __construct($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
+	public function getUrl()
 	{
-		$this->_url = $url;
-		$this->_adapterStrategy = $adapterStrategy;
-		$this->_objectManager = $objectManager;
+		return $this->_url;
 	}
+
+
 }

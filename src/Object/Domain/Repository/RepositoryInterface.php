@@ -35,8 +35,6 @@
 
 namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Contract\SingletonInterface;
-use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 
@@ -45,7 +43,7 @@ use Apparat\Object\Domain\Model\Path\PathInterface;
  *
  * @package Apparat\Object\Domain\Repository
  */
-interface RepositoryInterface extends SearchableRepositoryInterface, SingletonInterface
+interface RepositoryInterface extends SearchableRepositoryInterface
 {
 	/**
 	 * Add an object to the repository
@@ -87,12 +85,9 @@ interface RepositoryInterface extends SearchableRepositoryInterface, SingletonIn
 	public function getAdapterStrategy();
 
 	/**
-	 * Repository singleton instantiator
+	 * Return the repository URL (relative to Apparat base URL)
 	 *
-	 * @param string $url Apparat base URL
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param ManagerInterface $objectManager Object manager
-	 * @return Repository Repository instance
+	 * @return string Repository URL
 	 */
-	public static function instance($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager);
+	public function getUrl();
 }

@@ -82,8 +82,7 @@ class Repository
 		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
 
 		// Instantiate and register the object repository
-		$repository = \Apparat\Object\Domain\Repository\Repository::instance($url, $repositoryAdapterStrategy,
-			new Manager());
+		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $repositoryAdapterStrategy, new Manager());
 
 		// Register the repository
 		Register::register($url, $repository);

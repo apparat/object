@@ -184,6 +184,16 @@ class ObjectProxy implements ObjectInterface
 		return $this->_object()->addAuthor($author);
 	}
 
+	/**
+	 * Return the absolute object URL
+	 *
+	 * @return string
+	 */
+	public function getAbsoluteUrl()
+	{
+		return strval($this->_url);
+	}
+
 	/*******************************************************************************
 	 * MAGIG METHODS
 	 *******************************************************************************/

@@ -128,4 +128,11 @@ interface ObjectInterface
 	 * @return PathInterface Object repository path
 	 */
 	public function getRepositoryPath();
+
+	/**
+	 * Return the absolute object URL
+	 *
+	 * @return string
+	 */
+	public function getAbsoluteUrl();
 }

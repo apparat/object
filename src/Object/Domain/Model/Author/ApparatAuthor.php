@@ -66,8 +66,7 @@ class ApparatAuthor extends ObjectProxy implements AuthorInterface
 	 */
 	public function serialize()
 	{
-		// TODO: Use absolute object URL for signature
-		// Ideally, a local URL should be used if possible
+		return $this->getAbsoluteUrl();
 	}
 
 	/**

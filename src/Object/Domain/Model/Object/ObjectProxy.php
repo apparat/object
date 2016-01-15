@@ -228,7 +228,7 @@ class ObjectProxy implements ObjectInterface
 	{
 		// Lazy-load the remote object if necessary
 		if (!$this->_object instanceof ObjectInterface) {
-			// TODO: Lazy loading
+			echo $this->getAbsoluteUrl();
 		}
 
 		return $this->_object;

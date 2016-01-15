@@ -38,6 +38,7 @@ namespace ApparatTest;
 
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Model\Author\ApparatAuthor;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
@@ -141,6 +142,11 @@ class ObjectTest extends AbstractTest
 	{
 		$object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
 		$this->assertInstanceOf(Article::class, $object);
+		foreach ($object->getAuthors() as $author) {
+			if ($author instanceof ApparatAuthor) {
+				echo $author->getId()->getId();
+			}
+		}
 	}
 
 	/**

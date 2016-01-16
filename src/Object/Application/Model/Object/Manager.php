@@ -76,14 +76,4 @@ class Manager implements ManagerInterface
 		$objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource($path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
 		return ObjectFactory::createFromResource($objectResource, $path);
 	}
-
-	/**
-	 * Return a signature uniquely representing this factory configuration
-	 *
-	 * @return string Factory signature
-	 */
-	public function getSignature()
-	{
-		return self::class;
-	}
 }

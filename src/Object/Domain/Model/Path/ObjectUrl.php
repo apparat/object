@@ -223,6 +223,34 @@ class ObjectUrl extends Url implements PathInterface
 		return $this->_localPath;
 	}
 
+	/**
+	 * Return the repository URL part of this object URL
+	 *
+	 * @return string Repository URL
+	 */
+	public function getRepositoryUrl()
+	{
+		// If the object URL is absolute and local: Extract the repository URL
+		if ($this->isAbsoluteLocal()) {
+			$repositoryUrl = substr($this->getPath(), strlen((new Url(getenv('APPARAT_BASE_URL')))->getPath()));
+
+			// Else: If it's a relative URL: Extract the repository URL
+		} elseif (!$this->isAbsolute()) {
+			$repositoryUrl = $this->getPath();
+
+			// Else: It must be a remote repository
+		} else {
+			$override = [
+				'object' => '',
+				'query' => '',
+				'fragment' => '',
+			];
+			$repositoryUrl = $this->_getUrl($override);
+		}
+
+		return $repositoryUrl;
+	}
+
 	/*******************************************************************************
 	 * PRIVATE METHODS
 	 *******************************************************************************/

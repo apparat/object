@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,34 +34,29 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * Object manager interface
+ * Contact object
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
-interface ManagerInterface
+class Contact extends AbstractObject
 {
 	/**
-	 * Create and return a new object
+	 * Domain property collection class
 	 *
-	 * @param RepositoryInterface $repository Repository
-	 * @param Type $type Object type
-	 * @param array $data Object data
-	 * @return ObjectInterface Object
+	 * @var string
 	 */
-	public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
-
+	protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
 	/**
-	 * Load an object from a repository
+	 * Object type
 	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
+	 * @var string
 	 */
-	public function loadObject(RepositoryPath $path);
+	const TYPE = Type::CONTACT;
 }

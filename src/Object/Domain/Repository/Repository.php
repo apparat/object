@@ -93,7 +93,10 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Find objects by selector
+	 *
+	 * @param SelectorInterface $selector Object selector
+	 * @return Collection Object collection
 	 */
 	public function findObjects(SelectorInterface $selector)
 	{
@@ -101,7 +104,10 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Add an object to the repository
+	 *
+	 * @param ObjectInterface $object Object
+	 * @return boolean Success
 	 */
 	public function addObject(ObjectInterface $object)
 	{
@@ -109,7 +115,10 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Delete and object from the repository
+	 *
+	 * @param ObjectInterface $object Object
+	 * @return boolean Success
 	 */
 	public function deleteObject(ObjectInterface $object)
 	{
@@ -117,7 +126,10 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Update an object in the repository
+	 *
+	 * @param ObjectInterface $object Object
+	 * @return bool Success
 	 */
 	public function updateObject(ObjectInterface $object)
 	{
@@ -142,7 +154,9 @@ class Repository implements RepositoryInterface
 	}
 
 	/**
-	 * @inheritDoc
+	 * Return the repository's adapter strategy
+	 *
+	 * @return AdapterStrategyInterface Adapter strategy
 	 */
 	public function getAdapterStrategy()
 	{
@@ -158,6 +172,4 @@ class Repository implements RepositoryInterface
 	{
 		return $this->_url;
 	}
-
-
 }

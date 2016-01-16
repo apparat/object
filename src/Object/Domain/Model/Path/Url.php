@@ -401,6 +401,33 @@ class Url
 		return true;
 	}
 
+	/**
+	 * Test whether this URL belongs to the local Apparat instance
+	 *
+	 * @return bool URL belongs to the local Apparat instance
+	 */
+	public function isAbsoluteLocal()
+	{
+		// Instantiate the apparat base URL
+		$apparatBaseUrl = new self(getenv('APPARAT_BASE_URL'));
+		$apparatBaseUrlPath = $apparatBaseUrl->getPath();
+		$apparatBaseUrl = $apparatBaseUrl->setScheme('')->setPath('');
+
+		// If the URL matches the Apparat base URL (the scheme is disregarded)
+		return $this->isAbsolute() && $this->matches($apparatBaseUrl) && !strncmp($apparatBaseUrlPath,
+			$this->getPath(), strlen($apparatBaseUrlPath));
+	}
+
+	/**
+	 * Test whether this URL is remote
+	 *
+	 * @return bool Remote URL
+	 */
+	public function isRemote()
+	{
+		return $this->isAbsolute() && !$this->isAbsoluteLocal();
+	}
+
 	/*******************************************************************************
 	 * PRIVATE METHODS
 	 *******************************************************************************/
@@ -469,7 +496,10 @@ class Url
 
 		// Prepare the URL query
 		if (isset($override['query'])) {
-			$query = '?'.(is_array($override['query']) ? http_build_query($override['query']) : strval($override['query']));
+			$query = (is_array($override['query']) ? http_build_query($override['query']) : strval($override['query']));
+			if (strlen($query)) {
+				$query = '?'.$query;
+			}
 		} else {
 			$query = !empty($this->_urlParts['query']) ? '?'.$this->_urlParts['query'] : '';
 		}
@@ -477,7 +507,10 @@ class Url
 
 		// Prepare the URL fragment
 		if (isset($override['fragment'])) {
-			$fragment = '#'.$override['fragment'];
+			$fragment = $override['fragment'];
+			if (strlen($fragment)) {
+				$fragment = '#'.$fragment;
+			}
 		} else {
 			$fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->getFragment() : '';
 		}

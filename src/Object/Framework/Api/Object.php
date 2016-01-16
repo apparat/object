@@ -38,7 +38,6 @@ namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
-use Apparat\Object\Domain\Model\Path\Url;
 
 /**
  * Object facade
@@ -57,30 +56,10 @@ class Object
 	 */
 	public static function instance($url)
 	{
-		// Instantiate the apparat base URL
-		$apparatBaseUrl = new Url(getenv('APPARAT_BASE_URL'));
-		$apparatBaseUrlPath = $apparatBaseUrl->getPath();
-
 		// Instantiate the object URL
 		$objectUrl = new ObjectUrl($url, true);
 
-		// If the object URL matches matches the apparat instance
-		if ($objectUrl->matches($apparatBaseUrl->setPath('')) && !strncmp($apparatBaseUrlPath, $objectUrl->getPath(),
-				strlen($apparatBaseUrlPath))
-		) {
-			$repositoryUrl = substr($objectUrl->getPath(), strlen($apparatBaseUrlPath));
-
-			// Else: If it's not an absolute object URL
-		} elseif(!$objectUrl->isAbsolute()) {
-			$repositoryUrl = $objectUrl->getPath();
-
-			// Else: Remote repository
-		} else {
-			// TODO
-			die('Remote repository TBD');
-		}
-
-		// Instantiate the object repository, load and return the object
-		return Repository::instance($repositoryUrl)->loadObject($objectUrl);
+		// Instantiate the local object repository, load and return the object
+		return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
 	}
 }

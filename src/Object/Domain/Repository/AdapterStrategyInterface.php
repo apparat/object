@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 
 /**
  * Repository adapter strategy interface
@@ -69,11 +69,4 @@ interface AdapterStrategyInterface
 	 * @return string Adapter strategy type
 	 */
 	public function getType();
-
-	/**
-	 * Return a signature uniquely representing this adapter's configuration
-	 *
-	 * @return string Adapter signature
-	 */
-	public function getSignature();
 }

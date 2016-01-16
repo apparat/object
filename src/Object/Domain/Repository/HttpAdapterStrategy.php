@@ -34,34 +34,55 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 
 /**
- * Object manager interface
+ * HTTP / HTTPS adapter strategy
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface ManagerInterface
+class HttpAdapterStrategy implements AdapterStrategyInterface
 {
 	/**
-	 * Create and return a new object
+	 * Adapter strategy type
 	 *
-	 * @param RepositoryInterface $repository Repository
-	 * @param Type $type Object type
-	 * @param array $data Object data
-	 * @return ObjectInterface Object
+	 * @var string
 	 */
-	public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
+	const TYPE = 'http';
 
 	/**
-	 * Load an object from a repository
+	 * Find objects by selector
 	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
+	 * @param SelectorInterface $selector Object selector
+	 * @param RepositoryInterface $repository Object repository
+	 * @return array[PathInterface] Object paths
 	 */
-	public function loadObject(RepositoryPath $path);
+	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+	{
+		// TODO: Implement findObjectPaths() method.
+	}
+
+	/**
+	 * Find and return an object resource
+	 *
+	 * @param string $resourcePath Repository relative resource path
+	 * @return ResourceInterface Object resource
+	 */
+	public function getObjectResource($resourcePath)
+	{
+		// TODO: Implement getObjectResource() method.
+	}
+
+	/**
+	 * Return the adapter strategy type
+	 *
+	 * @return string Adapter strategy type
+	 */
+	public function getType()
+	{
+		return self::TYPE;
+	}
 }

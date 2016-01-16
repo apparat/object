@@ -67,6 +67,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 	 * @var string
 	 */
 	protected $_root = null;
+
 	/**
 	 * Adapter strategy type
 	 *

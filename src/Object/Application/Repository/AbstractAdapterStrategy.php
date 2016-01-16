@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Application\Repository;
 
-use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
 
 /**
@@ -55,12 +54,6 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 	 * @var array
 	 */
 	protected $_config = null;
-	/**
-	 * Adapter signature
-	 *
-	 * @var string
-	 */
-	protected $_signature = null;
 
 	/**
 	 * Adapter strategy type
@@ -86,17 +79,5 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 			throw new InvalidArgumentException(sprintf('Invalid adapter strategy signature configuration "%s"',
 				implode(', ', $signatureConfigKeys)), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE);
 		}
-		$signatureConfig = ArrayUtility::sortRecursiveByKey($signatureConfig);
-		$this->_signature = sha1(serialize($signatureConfig));
-	}
-
-	/**
-	 * Return a signature uniquely representing this adapters configuration
-	 *
-	 * @return string Adapter signature
-	 */
-	public function getSignature()
-	{
-		return $this->_signature;
 	}
 }

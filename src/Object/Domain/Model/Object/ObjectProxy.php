@@ -40,6 +40,7 @@ use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Repository\Register;
 
 /**
  * Object proxy (lazy loading)
@@ -228,7 +229,15 @@ class ObjectProxy implements ObjectInterface
 	{
 		// Lazy-load the remote object if necessary
 		if (!$this->_object instanceof ObjectInterface) {
-			echo $this->getAbsoluteUrl();
+
+			// If it's a remote URL
+			if ($this->_url->isRemote()) {
+
+
+			} else {
+				// Instantiate the local object repository, load and return the object
+				$this->_object = Register::instance($this->_url->getRepositoryUrl())->loadObject($this->_url->getLocalPath());
+			}
 		}
 
 		return $this->_object;

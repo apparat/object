@@ -36,24 +36,62 @@
 
 namespace Apparat\Object\Framework\Repository;
 
+
+use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Repository\AutoConnectorInterface;
+use Apparat\Object\Framework\Api\Repository;
+
 /**
- * Repository invalid argument exception
+ * Repository auto-connector service
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class AutoConnector implements AutoConnectorInterface
 {
+
 	/**
-	 * Empty file adapter strategy root
+	 * Auto-connect a repository with by URL default settings
 	 *
-	 * @var int
+	 * @param string $url Repository URL
+	 * @return boolean Success
 	 */
-	const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
-	/**
-	 * Invalid file adapter strategy root
-	 *
-	 * @var int
-	 */
-	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+	public function connect($url)
+	{
+		echo "Auto-connecting: $url\n";
+		$config = null;
+
+		// If it's an absolute URL
+		$url = new Url($url);
+		if ($url->isAbsolute()) {
+
+
+			// Else: Relative / local URL -> Instantiate as file repository
+		} else {
+
+			// If this is run via CLI
+			if (PHP_SAPI == 'cli') {
+				$documentRoot = ini_get('doc_root') ?: getcwd();
+
+				// Else: Use the server's document root
+			} else {
+				$documentRoot = empty($_SERVER['DOCUMENT_ROOT']) ? ini_get('doc_root') : $_SERVER['DOCUMENT_ROOT'];
+			}
+
+			// If the is a document root: Create a file repository configuration
+			if (strlen($documentRoot)) {
+				$config = [
+					'type' => FileAdapterStrategy::TYPE,
+					'root' => rtrim($documentRoot, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$url,
+				];
+			}
+		}
+
+		// If a repository configuration has been created
+		if ($config !== null) {
+			return Repository::register($url, $config) instanceof \Apparat\Object\Domain\Repository\Repository;
+		}
+
+		return true;
+	}
 }

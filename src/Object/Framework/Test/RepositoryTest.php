@@ -231,8 +231,8 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test empty repository config
 	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449947621
+	 * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
+	 * @expectedExceptionCode 1449956347
 	 */
 	public function testEmptyRepositoryConfig()
 	{

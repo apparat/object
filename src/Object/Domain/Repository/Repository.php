@@ -61,12 +61,6 @@ class Repository implements RepositoryInterface
 	 */
 	protected $_adapterStrategy = null;
 	/**
-	 * Object factory
-	 *
-	 * @var ManagerInterface
-	 */
-	protected $_objectManager = null;
-	/**
 	 * Instance specific object cache
 	 *
 	 * @var array
@@ -81,17 +75,14 @@ class Repository implements RepositoryInterface
 	 * Repository constructor
 	 *
 	 * @param string $url Apparat base URL
-	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
-	 * @param ManagerInterface $objectManager Object factory
+	 * @param array $config Adapter strategy configuration
 	 */
 	public function __construct(
 		$url,
-		AdapterStrategyInterface $adapterStrategy,
-		ManagerInterface $objectManager
+		array $config
 	) {
-		$this->_url = $url;
-		$this->_adapterStrategy = $adapterStrategy;
-		$this->_objectManager = $objectManager;
+		$this->_url = rtrim('/'.$url, '/');
+		$this->_adapterStrategy = Service::getAdapterStrategyFactory()->createFromConfig($config);
 	}
 
 	/**
@@ -148,7 +139,7 @@ class Repository implements RepositoryInterface
 	{
 		// TODO: Really OK to cache? (Immutability ...)
 		if (empty($this->_objectCache[$path->getId()->getId()])) {
-			$this->_objectCache[$path->getId()->getId()] = $this->_objectManager->loadObject(new RepositoryPath($this,
+			$this->_objectCache[$path->getId()->getId()] = Service::getObjectManager()->loadObject(new RepositoryPath($this,
 				$path));
 		}
 

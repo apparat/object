@@ -40,6 +40,7 @@ namespace Apparat\Object\Domain\Model\Author;
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 use Apparat\Object\Domain\Model\Object\ObjectProxy;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Apparat object author

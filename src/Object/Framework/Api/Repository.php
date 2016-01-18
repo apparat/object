@@ -59,6 +59,7 @@ class Repository
 	 *
 	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
 	 * @param array $config Repository configuration
+	 * @return Repository Repositoy instance
 	 * @throws InvalidArgumentException If the repository URL is invalid
 	 * @throws InvalidArgumentException If the repository configuration is empty
 	 * @api
@@ -72,25 +73,14 @@ class Repository
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
 
-		// If the repository configuration is empty
-		if (!count($config)) {
-			throw new InvalidArgumentException('Empty repository configuration',
-				InvalidArgumentException::EMPTY_REPOSITORY_CONFIG);
-		}
-
-		// Instantiate the repository adapter strategy
-		$adapterStrategyFactory = new AdapterStrategyFactory;
-		$repositoryAdapterStrategy = $adapterStrategyFactory->createFromConfig($config);
-
-		// Instantiate the object manager
-		$objectManager = new Manager();
-
-		// Instantiate and register the object repository
-		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $repositoryAdapterStrategy,
-			$objectManager);
+		// Instantiate the object repository
+		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $config);
 
 		// Register the repository
 		Service::register($url, $repository);
+
+		// Return the registered repository instance
+		return $repository;
 	}
 
 	/**

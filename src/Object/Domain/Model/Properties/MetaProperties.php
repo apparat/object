@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
-use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Factory\AuthorFactory;
+use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
@@ -246,7 +246,8 @@ class MetaProperties extends AbstractProperties
 
 			// If the author is invalid
 			if (is_string($author)) {
-				$author = AuthorFactory::createFromString($author);
+				$author = AuthorFactory::createFromString($author,
+					$this->getObject()->getRepositoryPath()->getRepository());
 			}
 
 			// If the author is invalid
@@ -261,5 +262,4 @@ class MetaProperties extends AbstractProperties
 		$this->_authors = array_values($newAuthors);
 		return $this;
 	}
-
 }

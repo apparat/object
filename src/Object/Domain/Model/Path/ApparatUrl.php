@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -72,27 +73,40 @@ class ApparatUrl extends ObjectUrl
 	 * If the constructor doesn't throw an exception, the URL is valid and
 	 *
 	 * 1. either an absolute URL (local or remote) or
-	 * 2. a relative URL to a known local repository
+	 * 2. a relative URL to a known local repository (respectively the to the context repository if given)
 	 *
 	 * @param string $url Apparat URL
 	 * @param boolean $remote Accept remote URL (less strict date component checking)
+	 * @param RepositoryInterface $contextRepository Context repository
 	 * @throws ApparatInvalidArgumentException If the URL is absolute but doesn't have the apparat scheme
 	 * @throws ApparatInvalidArgumentException If this is a local Apparat URL with an unknown repository
 	 */
-	public function __construct($url, $remote = false)
+	public function __construct($url, $remote = false, RepositoryInterface $contextRepository = null)
 	{
 		parent::__construct($url, $remote);
 
-		// If the URL is absolute but doesn't have the apparat scheme
-		if ($this->isAbsolute() && !array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
-			throw new ApparatInvalidArgumentException(sprintf('Invalid absolute apparat URL "%s"', $url),
-				ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL);
-		}
+		// If it's an absolute URL
+		if ($this->isAbsolute()) {
 
-		// If this is a local Apparat URL with an unknown repository
-		if (!$this->isAbsolute() && !Service::isRegistered($this->getPath())) {
-			throw new ApparatInvalidArgumentException(sprintf('Unknown local repository URL "%s"', $this->getPath()),
-				ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL);
+			// If the Apparat URL scheme is invalid
+			if (!array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
+				throw new ApparatInvalidArgumentException(sprintf('Invalid absolute apparat URL "%s"', $url),
+					ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL);
+			}
+
+			// Else: It's a relative URL
+		} else {
+
+			// If this URL doesn't have a repository URL and a context repository is given: Inherit its URL
+			if (!strlen($this->getPath()) && ($contextRepository instanceof RepositoryInterface)) {
+				$this->_urlParts['path'] = $contextRepository->getUrl();
+			}
+
+			// If the the repository involved is unknown and cannot be auto-connected
+			if (!Service::isRegistered($this->getPath())) {
+				throw new ApparatInvalidArgumentException(sprintf('Unknown local repository URL "%s"', $this->getPath()),
+					ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL);
+			};
 		}
 	}
 

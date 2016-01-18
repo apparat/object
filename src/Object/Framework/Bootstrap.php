@@ -39,6 +39,7 @@ namespace Apparat\Object\Framework;
 // Instantiate Dotenv
 use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
+use Apparat\Object\Framework\Repository\AutoConnector;
 
 $dotenv = new \Dotenv\Dotenv(dirname(dirname(dirname(__DIR__))));
 if (getenv('APP_ENV') === 'development') {
@@ -62,4 +63,4 @@ unset($dotenv);
 unset($apparatBaseUrl);
 
 // Configure the repository service
-\Apparat\Object\Domain\Repository\Service::configure(new AdapterStrategyFactory(), new Manager());
+\Apparat\Object\Domain\Repository\Service::configure(new AutoConnector(), new AdapterStrategyFactory(), new Manager());

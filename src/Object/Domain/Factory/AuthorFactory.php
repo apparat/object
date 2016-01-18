@@ -42,6 +42,8 @@ use Apparat\Object\Domain\Model\Author\GenericAuthor;
 use Apparat\Object\Domain\Model\Author\InvalidArgumentException;
 use Apparat\Object\Domain\Model\Author\InvalidAuthor;
 use Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException;
+use Apparat\Object\Domain\Model\Path\ApparatUrl;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Author factory
@@ -55,14 +57,16 @@ class AuthorFactory
 	 * Parse and instantiate an author serialization
 	 *
 	 * @param string $author Author serialization
+	 * @param RepositoryInterface $contextRepository Context repository
 	 * @return AuthorInterface Object author
 	 * @throws InvalidArgumentException If the author format is invalid
 	 */
-	public static function createFromString($author)
+	public static function createFromString($author, RepositoryInterface $contextRepository = null)
 	{
 		// Try to instantiate an apparat object based author
 		try {
-			return ApparatAuthor::unserialize($author);
+			$apparatUrl = new ApparatUrl($author, true, $contextRepository);
+			return new ApparatAuthor($apparatUrl);
 
 			// If there's an apparat URL problem
 		} catch (ApparatInvalidArgumentException $e) {

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,26 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Repository;
+namespace Apparat\Object\Domain\Repository;
 
 /**
- * Repository invalid argument exception
+ * Repository runtime exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class RuntimeException extends \RuntimeException
 {
 	/**
-	 * Empty file adapter strategy root
+	 * The repository service is not configured
 	 *
 	 * @var int
 	 */
-	const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
-	/**
-	 * Invalid file adapter strategy root
-	 *
-	 * @var int
-	 */
-	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+	const SERVICE_NOT_CONFIGURED = 1453111671;
 }

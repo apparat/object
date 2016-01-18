@@ -36,6 +36,9 @@
 
 namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Object\Domain\Model\Path\ApparatUrl;
+use Apparat\Object\Domain\Model\Path\ObjectUrl;
+
 /**
  * Repository register
  *
@@ -58,20 +61,20 @@ class Register
 	/**
 	 * Register a repository
 	 *
-	 * @param string $url Relative repository URL
+	 * @param string|ObjectUrl $url Repository URL
 	 * @param RepositoryInterface $repository Repository
 	 * @api
 	 */
 	public static function register($url, RepositoryInterface $repository)
 	{
 		// Repository registration
-		self::$_registry[self::_normalizeRepositoryUrl($url)] = $repository;
+		self::$_registry[self::normalizeRepositoryUrl($url)] = $repository;
 	}
 
 	/**
 	 * Instantiate and return an object repository
 	 *
-	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
+	 * @param string|ObjectUrl $url Repository URL (relative or absolute including the apparat base URL)
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
 	 * @throws InvalidArgumentException If the repository URL is invalid
 	 * @throws InvalidArgumentException If the repository URL is unknown
@@ -79,7 +82,7 @@ class Register
 	 */
 	public static function instance($url)
 	{
-		$url = self::_normalizeRepositoryUrl($url);
+		$url = self::normalizeRepositoryUrl($url);
 
 		// If the local repository URL is unknown
 		if (empty(self::$_registry[$url])) {
@@ -97,8 +100,9 @@ class Register
 	 * @param string $url Repository URL
 	 * @return bool Repository URL is registered
 	 */
-	public static function isRegistered($url) {
-		return array_key_exists(self::_normalizeRepositoryUrl($url), self::$_registry);
+	public static function isRegistered($url)
+	{
+		return array_key_exists(self::normalizeRepositoryUrl($url), self::$_registry);
 	}
 
 	/*******************************************************************************
@@ -108,10 +112,29 @@ class Register
 	/**
 	 * Normalize a repository URL
 	 *
-	 * @param string $url Repository URL
+	 * @param string|ObjectUrl $url Repository URL
 	 * @return string Normalized repository URL
+	 * @throws InvalidArgumentException If the repository URL is invalid
 	 */
-	protected static function _normalizeRepositoryUrl($url) {
-		return ltrim($url, '/');
+	public static function normalizeRepositoryUrl($url)
+	{
+		// If it's an apparat URL
+		if ($url instanceof ApparatUrl) {
+			$url = $url->getNormalizedRepositoryUrl();
+
+			// Else: If it's an object URL
+		} elseif ($url instanceof ObjectUrl) {
+			$url = $url->getRepositoryUrl();
+		}
+
+		// If the URL is a string
+		if (is_string($url) || ($url === null)) {
+			return ltrim($url, '/');
+
+			// Else: The URL is invalid
+		} else {
+			throw new InvalidArgumentException(sprintf('Invalid repository URL "%s"', $url),
+				InvalidArgumentException::INVALID_REPOSITORY_URL);
+		}
 	}
 }

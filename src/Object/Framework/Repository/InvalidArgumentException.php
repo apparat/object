@@ -62,10 +62,4 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const EMPTY_REPOSITORY_CONFIG = 1449947621;
-	/**
-	 * External repository URL not allowed
-	 *
-	 * @var int
-	 */
-	const EXTERNAL_REPOSITORY_URL_NOT_ALLOWED = 1451776352;
 }

@@ -75,6 +75,8 @@ namespace ApparatTest {
 	use Apparat\Object\Domain\Model\Path\LocalPath;
 	use Apparat\Object\Domain\Model\Path\ObjectUrl;
 	use Apparat\Object\Domain\Model\Path\Url;
+	use Apparat\Object\Framework\Api\Repository;
+	use Apparat\Object\Framework\Repository\FileAdapterStrategy;
 
 	/**
 	 * Object URL tests
@@ -91,6 +93,12 @@ namespace ApparatTest {
 		 */
 		const QUERY_FRAGMENT = '?param=value#fragment';
 		/**
+		 * Repository URL
+		 *
+		 * @var string
+		 */
+		const REPOSITORY_URL = '/repo';
+		/**
 		 * Example path
 		 *
 		 * @var string
@@ -101,7 +109,7 @@ namespace ApparatTest {
 		 *
 		 * @var string
 		 */
-		const URL = self::PATH.self::QUERY_FRAGMENT;
+		const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
 		/**
 		 * Example URL
 		 *
@@ -328,10 +336,26 @@ namespace ApparatTest {
 		}
 
 		/**
+		 * Test an unknown relative apparat URL
+		 *
+		 * @expectedException \Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException
+		 * @expectedExceptionCode 1452695654
+		 */
+		public function testUnknownRelativeApparatUrl()
+		{
+			$apparatUrl = new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
+			$this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+		}
+
+		/**
 		 * Test a relative apparat URL
 		 */
 		public function testRelativeApparatUrl()
 		{
+			Repository::register(self::REPOSITORY_URL, [
+				'type' => FileAdapterStrategy::TYPE,
+				'root' => __DIR__,
+			]);
 			$apparatUrl = new ApparatUrl(self::URL);
 			$this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
 		}

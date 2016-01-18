@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Repository\InvalidArgumentException;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
+abstract class AbstractAdapterStrategy extends \Apparat\Object\Domain\Repository\AbstractAdapterStrategy
 {
 	/**
 	 * Configuration
@@ -54,13 +54,6 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 	 * @var array
 	 */
 	protected $_config = null;
-
-	/**
-	 * Adapter strategy type
-	 *
-	 * @var string
-	 */
-	const TYPE = 'abstract';
 
 	/**
 	 * Adapter strategy constructor

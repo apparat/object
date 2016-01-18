@@ -36,43 +36,28 @@
 
 namespace Apparat\Object\Domain\Repository;
 
-use Apparat\Object\Domain\Model\Object\ResourceInterface;
-
 /**
- * HTTP / HTTPS adapter strategy
+ * Abstract adapter strategy
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class HttpAdapterStrategy extends AbstractAdapterStrategy
+abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 {
 	/**
 	 * Adapter strategy type
 	 *
 	 * @var string
 	 */
-	const TYPE = 'http';
+	const TYPE = 'abstract';
 
 	/**
-	 * Find objects by selector
+	 * Return the adapter strategy type
 	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
+	 * @return string Adapter strategy type
 	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+	public function getType()
 	{
-		// TODO: Implement findObjectPaths() method.
-	}
-
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath)
-	{
-		// TODO: Implement getObjectResource() method.
+		return static::TYPE;
 	}
 }

@@ -80,6 +80,12 @@ class InvalidArgumentException extends \InvalidArgumentException
 	 * @var int
 	 */
 	const UNKNOWN_REPOSITORY_URL = 1451771889;
+	/**
+	 * Invalid repository URL
+	 *
+	 * @var int
+	 */
+	const INVALID_REPOSITORY_URL = 1453097878;
 
 	/**
 	 * Exception constructor

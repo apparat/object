@@ -85,12 +85,24 @@ class ApparatUrl extends ObjectUrl
 
 		// If the URL is absolute but doesn't have the apparat scheme
 		if ($this->isAbsolute() && !array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
-			throw new ApparatInvalidArgumentException(sprintf('Invalid absolute apparat URL "%s"', $url), ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL);
+			throw new ApparatInvalidArgumentException(sprintf('Invalid absolute apparat URL "%s"', $url),
+				ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL);
 		}
 
 		// If this is a local Apparat URL with an unknown repository
 		if (!$this->isAbsolute() && !Register::isRegistered($this->getPath())) {
-			throw new ApparatInvalidArgumentException(sprintf('Unknown local repository URL "%s"', $this->getPath()), ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL);
+			throw new ApparatInvalidArgumentException(sprintf('Unknown local repository URL "%s"', $this->getPath()),
+				ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL);
 		}
+	}
+
+	/**
+	 * Return the normalized repository URL part of this object URL
+	 *
+	 * @return string Repository URL
+	 */
+	public function getNormalizedRepositoryUrl()
+	{
+		return preg_replace("%^aprt(s?)://%", "http\\1://", $this->getRepositoryUrl());
 	}
 }

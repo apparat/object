@@ -125,20 +125,18 @@ class Repository
 	{
 		// Strip the leading apparat base URL
 		$apparatBaseUrl = getenv('APPARAT_BASE_URL');
-		if (strpos($url, $apparatBaseUrl) === 0) {
+		if (is_string($url) && (strpos($url, $apparatBaseUrl) === 0)) {
 			$url = substr($url, strlen($apparatBaseUrl));
 		}
 
 		// Strip leading slashes
-		$url = ltrim($url, '/');
-
-		// If this is still a valid absolute URL, it must be external
-		if (filter_var($url, FILTER_VALIDATE_URL)) {
-			throw new InvalidArgumentException(sprintf('External respository URL "%s" not allowed', $url),
-				InvalidArgumentException::EXTERNAL_REPOSITORY_URL_NOT_ALLOWED);
-		}
+		$url = Register::normalizeRepositoryUrl($url);
 
 		// Ensure this is a bare URL (without query and fragment)
-		return \Apparat\Object\Framework\isAbsoluteBareUrl($apparatBaseUrl.$url) ? $url : false;
+		if (\Apparat\Object\Framework\isAbsoluteBareUrl($apparatBaseUrl.$url)) {
+			return $url;
+		}
+
+		return false;
 	}
 }

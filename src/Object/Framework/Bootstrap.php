@@ -57,6 +57,7 @@ function isAbsoluteBareUrl($url)
 	if (strlen(parse_url($url, PHP_URL_FRAGMENT))) {
 		throw new \RuntimeException(sprintf('Apparat base URL "%s" must not contain a fragment', $url), 1451776570);
 	}
+
 	return true;
 }
 

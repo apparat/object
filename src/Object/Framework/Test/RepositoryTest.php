@@ -192,17 +192,6 @@ class RepositoryTest extends AbstractTest
 	}
 
 	/**
-	 * Test invalid remote repository URL registration
-	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1451776352
-	 */
-	public function testRegisterInvalidRemoteRepositoryUrl()
-	{
-		RepositoryFactory::register('http://example.com', []);
-	}
-
-	/**
 	 * Test invalid query repository URL registration
 	 *
 	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
@@ -211,21 +200,6 @@ class RepositoryTest extends AbstractTest
 	public function testRegisterInvalidQueryRepositoryUrl()
 	{
 		RepositoryFactory::register(getenv('REPOSITORY_URL').'?a=1', []);
-	}
-
-	/**
-	 * Test invalid public repository URL instantiation
-	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1451776352
-	 */
-	public function testInstantiateInvalidRepositoryUrl()
-	{
-		RepositoryFactory::register(getenv('APPARAT_BASE_URL'), [
-			'type' => FileAdapterStrategy::TYPE,
-			'root' => __DIR__,
-		]);
-		RepositoryFactory::instance('http://example.com');
 	}
 
 	/**
@@ -353,8 +327,8 @@ class RepositoryTest extends AbstractTest
 	/**
 	 * Test invalid repository URL during instantiation
 	 *
-	 * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1451776352
+	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+	 * @expectedExceptionCode 1451771889
 	 */
 	public function testUnknownRepositoryUrlInstance()
 	{

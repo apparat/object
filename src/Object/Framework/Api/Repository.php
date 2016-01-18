@@ -37,7 +37,7 @@
 namespace Apparat\Object\Framework\Api;
 
 use Apparat\Object\Application\Model\Object\Manager;
-use Apparat\Object\Domain\Repository\Register;
+use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 use Apparat\Object\Framework\Repository\InvalidArgumentException;
 
@@ -67,7 +67,7 @@ class Repository
 	{
 		// Normalize to local repository URL
 		try {
-			$url = Register::normalizeRepositoryUrl($url);
+			$url = Service::normalizeRepositoryUrl($url);
 		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
@@ -79,13 +79,18 @@ class Repository
 		}
 
 		// Instantiate the repository adapter strategy
-		$repositoryAdapterStrategy = AdapterStrategyFactory::create($config);
+		$adapterStrategyFactory = new AdapterStrategyFactory;
+		$repositoryAdapterStrategy = $adapterStrategyFactory->createFromConfig($config);
+
+		// Instantiate the object manager
+		$objectManager = new Manager();
 
 		// Instantiate and register the object repository
-		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $repositoryAdapterStrategy, new Manager());
+		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $repositoryAdapterStrategy,
+			$objectManager);
 
 		// Register the repository
-		Register::register($url, $repository);
+		Service::register($url, $repository);
 	}
 
 	/**
@@ -101,7 +106,7 @@ class Repository
 	{
 		// Normalize to return a repository instance matching this URL
 		try {
-			return Register::instance($url);
+			return Service::get($url);
 		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}

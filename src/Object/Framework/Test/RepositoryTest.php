@@ -247,7 +247,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testEmptyAdapterStrategyConfig()
 	{
-		AdapterStrategyFactory::create([]);
+		(new AdapterStrategyFactory)->createFromConfig([]);
 	}
 
 	/**
@@ -258,7 +258,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testInvalidAdapterStrategyType()
 	{
-		AdapterStrategyFactory::create([
+		(new AdapterStrategyFactory)->createFromConfig([
 			'type' => 'invalid',
 		]);
 	}
@@ -268,7 +268,7 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testFileAdapterStrategy()
 	{
-		$fileAdapterStrategy = AdapterStrategyFactory::create([
+		$fileAdapterStrategy = (new AdapterStrategyFactory)->createFromConfig([
 			'type' => FileAdapterStrategy::TYPE,
 			'root' => __DIR__,
 		]);

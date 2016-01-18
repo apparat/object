@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 
@@ -45,7 +46,7 @@ use Apparat\Object\Domain\Model\Path\ObjectUrl;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Register
+class Service
 {
 	/**
 	 * Registered repositories
@@ -53,48 +54,57 @@ class Register
 	 * @var array
 	 */
 	protected static $_registry = [];
+	/**
+	 * Registered adapter strategy factory
+	 *
+	 * @var AdapterStrategyFactoryInterface
+	 */
+	protected static $_adapterStrategyFactory = null;
+	/**
+	 * Object manager
+	 *
+	 * @var ManagerInterface
+	 */
+	protected static $_manager = null;
 
 	/*******************************************************************************
 	 * PUBLIC METHODS
 	 *******************************************************************************/
 
 	/**
-	 * Register a repository
+	 * Pre-register a repository
+	 *
+	 * The purpose of repository pre-registration is to provide custom arguments (like a base
+	 * directory or basic authentication credentials.
+	 * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
 	 *
 	 * @param string|ObjectUrl $url Repository URL
 	 * @param RepositoryInterface $repository Repository
-	 * @api
 	 */
 	public static function register($url, RepositoryInterface $repository)
 	{
 		// Repository registration
 		$repositoryUrl = self::normalizeRepositoryUrl($url);
-
-		if (!strlen($repositoryUrl)) {
-			try {
-				throw  new \Exception;
-			} catch(\Exception $e) {
-				echo $e->getTraceAsString();
-			}
-		}
-
 		self::$_registry[$repositoryUrl] = $repository;
 	}
 
 	/**
-	 * Instantiate and return an object repository
+	 * Return an object repository by URL
 	 *
-	 * @param string|ObjectUrl $url Repository URL (relative or absolute including the apparat base URL)
+	 * If a repository URL hasn't been pre-registered, the method tries to perform an adhoc registration
+	 * based on the URL given.
+	 * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
+	 *
+	 * @param string|ObjectUrl $url Repository URL
 	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
 	 * @throws InvalidArgumentException If the repository URL is invalid
 	 * @throws InvalidArgumentException If the repository URL is unknown
-	 * @api
 	 */
-	public static function instance($url)
+	public static function get($url)
 	{
 		$url = self::normalizeRepositoryUrl($url);
 
-		// If the local repository URL is unknown
+		// If the repository URL is unknown
 		if (empty(self::$_registry[$url])) {
 			throw new InvalidArgumentException(sprintf('Unknown repository URL "%s"', $url),
 				InvalidArgumentException::UNKNOWN_REPOSITORY_URL);
@@ -115,9 +125,28 @@ class Register
 		return array_key_exists(self::normalizeRepositoryUrl($url), self::$_registry);
 	}
 
-	/*******************************************************************************
-	 * PRIVATE METHODS
-	 *******************************************************************************/
+	/**
+	 * Register an adapter strategy factory for creating new objects
+	 *
+	 * @param AdapterStrategyFactoryInterface|null $adapterStrategyFactory Adapter strategy factory
+	 */
+	public static function configure(
+		AdapterStrategyFactoryInterface $adapterStrategyFactory = null,
+		ManagerInterface $manager = null
+	) {
+		self::$_adapterStrategyFactory = $adapterStrategyFactory;
+		self::$_manager = $manager;
+	}
+
+	/**
+	 * Check whether the service is configured for auto-connecting to repositories
+	 *
+	 * @return bool Service is configured for auto-connecting
+	 */
+	public static function isConfigured()
+	{
+		return (self::$_adapterStrategyFactory instanceof AdapterStrategyFactoryInterface) && (self::$_manager instanceof ManagerInterface);
+	}
 
 	/**
 	 * Normalize a repository URL

@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
-use Apparat\Object\Domain\Repository\Register;
+use Apparat\Object\Domain\Repository\Service;
 
 /**
  * Apparat URL
@@ -90,7 +90,7 @@ class ApparatUrl extends ObjectUrl
 		}
 
 		// If this is a local Apparat URL with an unknown repository
-		if (!$this->isAbsolute() && !Register::isRegistered($this->getPath())) {
+		if (!$this->isAbsolute() && !Service::isRegistered($this->getPath())) {
 			throw new ApparatInvalidArgumentException(sprintf('Unknown local repository URL "%s"', $this->getPath()),
 				ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL);
 		}

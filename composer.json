@@ -30,6 +30,7 @@
       "Apparat\\": "src/"
     },
     "files": [
+      "src/Object/Domain/Functions.php",
       "src/Object/Framework/Bootstrap.php"
     ]
   },

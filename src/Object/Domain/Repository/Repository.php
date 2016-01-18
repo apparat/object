@@ -83,10 +83,12 @@ class Repository implements RepositoryInterface
 	 * @param string $url Apparat base URL
 	 * @param AdapterStrategyInterface $adapterStrategy Repository adapter strategy
 	 * @param ManagerInterface $objectManager Object factory
-	 * @throws InvalidArgumentException If the apparat base URL isn't valid
 	 */
-	public function __construct($url, AdapterStrategyInterface $adapterStrategy, ManagerInterface $objectManager)
-	{
+	public function __construct(
+		$url,
+		AdapterStrategyInterface $adapterStrategy,
+		ManagerInterface $objectManager
+	) {
 		$this->_url = $url;
 		$this->_adapterStrategy = $adapterStrategy;
 		$this->_objectManager = $objectManager;

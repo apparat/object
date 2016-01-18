@@ -37,8 +37,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
-use Apparat\Object\Domain\Model\Path\PathInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
@@ -93,7 +92,7 @@ abstract class AbstractObject implements ObjectInterface
 	/**
 	 * Repository path
 	 *
-	 * @var RepositoryPath
+	 * @var RepositoryPathInterface
 	 */
 	protected $_path;
 	/**
@@ -106,12 +105,12 @@ abstract class AbstractObject implements ObjectInterface
 	/**
 	 * Object constructor
 	 *
-	 * @param RepositoryPath $path Object repository path
+	 * @param RepositoryPathInterface $path Object repository path
 	 * @param array $propertyData Property data
 	 * @param string $payload Object payload
 	 * @throws PropertyInvalidArgumentException If the domain property collection class is invalid
 	 */
-	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '')
+	public function __construct(RepositoryPathInterface $path, array $propertyData = [], $payload = '')
 	{
 		// If the domain property collection class is invalid
 		if (!is_subclass_of($this->_domainPropertyCollectionClass, AbstractDomainProperties::class)) {
@@ -241,7 +240,7 @@ abstract class AbstractObject implements ObjectInterface
 	/**
 	 * Return the object repository path
 	 *
-	 * @return PathInterface Object repository path
+	 * @return RepositoryPathInterface Object repository path
 	 */
 	public function getRepositoryPath()
 	{
@@ -257,6 +256,4 @@ abstract class AbstractObject implements ObjectInterface
 	{
 		return getenv('APPARAT_BASE_URL').$this->_path->getRepository()->getUrl().strval($this->_path);
 	}
-
-
 }

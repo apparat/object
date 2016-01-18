@@ -40,7 +40,7 @@ use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
-use Apparat\Object\Domain\Repository\Register;
+use Apparat\Object\Domain\Repository\Service;
 
 /**
  * Object proxy (lazy loading)
@@ -231,7 +231,7 @@ class ObjectProxy implements ObjectInterface
 		if (!$this->_object instanceof ObjectInterface) {
 
 			// Instantiate the local object repository, load and return the object
-			$this->_object = Register::instance($this->_url)->loadObject($this->_url->getLocalPath());
+			$this->_object = Service::get($this->_url)->loadObject($this->_url->getLocalPath());
 		}
 
 		return $this->_object;

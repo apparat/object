@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,61 +34,22 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Repository;
+namespace Apparat\Object\Domain\Model\Path;
 
-use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
-use Apparat\Object\Domain\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
- * Abstract adapter strategy
+ * Repository path interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
+interface RepositoryPathInterface extends PathInterface
 {
 	/**
-	 * Configuration
+	 * Return the repository this path applies to
 	 *
-	 * Example
-	 *
-	 * @var array
+	 * @return RepositoryInterface Repository
 	 */
-	protected $_config = null;
-
-	/**
-	 * Adapter strategy type
-	 *
-	 * @var string
-	 */
-	const TYPE = 'abstract';
-
-	/**
-	 * Adapter strategy constructor
-	 *
-	 * @param array $config Adapter strategy configuration
-	 * @param array $signatureConfigKeys Signature relevant configuration properties
-	 */
-	public function __construct(array $config, array $signatureConfigKeys)
-	{
-		$this->_config = $config;
-
-		// Build the signature
-		$signatureConfig = array_intersect_key($this->_config, array_flip($signatureConfigKeys));
-		$signatureConfig['type'] = static::TYPE;
-		if (count($signatureConfig) < 2) {
-			throw new InvalidArgumentException(sprintf('Invalid adapter strategy signature configuration "%s"',
-				implode(', ', $signatureConfigKeys)), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE);
-		}
-	}
-
-	/**
-	 * Return the adapter strategy type
-	 *
-	 * @return string Adapter strategy type
-	 */
-	public function getType()
-	{
-		return static::TYPE;
-	}
+	public function getRepository();
 }

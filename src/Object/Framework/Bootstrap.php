@@ -37,6 +37,9 @@
 namespace Apparat\Object\Framework;
 
 // Instantiate Dotenv
+use Apparat\Object\Application\Model\Object\Manager;
+use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
+
 $dotenv = new \Dotenv\Dotenv(dirname(dirname(dirname(__DIR__))));
 if (getenv('APP_ENV') === 'development') {
 	$dotenv->load();
@@ -57,3 +60,6 @@ putenv('APPARAT_BASE_URL='.rtrim($apparatBaseUrl, '/').'/');
 // Unset global variables
 unset($dotenv);
 unset($apparatBaseUrl);
+
+// Configure the repository service
+\Apparat\Object\Domain\Repository\Service::configure(new AdapterStrategyFactory(), new Manager());

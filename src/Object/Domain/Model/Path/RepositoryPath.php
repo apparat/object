@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class RepositoryPath extends LocalPath
+class RepositoryPath extends LocalPath implements RepositoryPathInterface
 {
 	/**
 	 * Repository
@@ -79,7 +79,7 @@ class RepositoryPath extends LocalPath
 	/**
 	 * Return the repository this path applies to
 	 *
-	 * @return RepositoryInterface
+	 * @return RepositoryInterface Repository
 	 */
 	public function getRepository()
 	{

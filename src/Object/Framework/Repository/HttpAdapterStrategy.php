@@ -34,30 +34,48 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Repository;
+namespace Apparat\Object\Framework\Repository;
+
+use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
- * Abstract adapter strategy
+ * HTTP / HTTPS adapter strategy
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
+class HttpAdapterStrategy extends AbstractAdapterStrategy
 {
 	/**
 	 * Adapter strategy type
 	 *
 	 * @var string
 	 */
-	const TYPE = 'abstract';
+	const TYPE = 'http';
 
 	/**
-	 * Return the adapter strategy type
+	 * Find objects by selector
 	 *
-	 * @return string Adapter strategy type
+	 * @param SelectorInterface $selector Object selector
+	 * @param RepositoryInterface $repository Object repository
+	 * @return array[PathInterface] Object paths
 	 */
-	public function getType()
+	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
 	{
-		return static::TYPE;
+		// TODO: Implement findObjectPaths() method.
+	}
+
+	/**
+	 * Find and return an object resource
+	 *
+	 * @param string $resourcePath Repository relative resource path
+	 * @return ResourceInterface Object resource
+	 */
+	public function getObjectResource($resourcePath)
+	{
+		// TODO: Implement getObjectResource() method.
 	}
 }

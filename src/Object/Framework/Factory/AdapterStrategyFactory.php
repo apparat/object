@@ -36,8 +36,10 @@
 
 namespace Apparat\Object\Framework\Factory;
 
+use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+use Apparat\Object\Framework\Repository\HttpAdapterStrategy;
 
 /**
  * Repository adapter strategy factory
@@ -45,7 +47,7 @@ use Apparat\Object\Framework\Repository\FileAdapterStrategy;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class AdapterStrategyFactory
+class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
 {
 	/**
 	 * Known adapter strategy types
@@ -54,6 +56,7 @@ class AdapterStrategyFactory
 	 */
 	protected static $_types = [
 		FileAdapterStrategy::TYPE => FileAdapterStrategy::class,
+		HttpAdapterStrategy::TYPE => HttpAdapterStrategy::class,
 	];
 
 	/**
@@ -64,7 +67,7 @@ class AdapterStrategyFactory
 	 * @throws InvalidArgumentException If the adapter strategy config is empty
 	 * @throws InvalidArgumentException If the adapter strategy type is missing or invalid
 	 */
-	public static function create(array $config)
+	public function createFromConfig(array $config)
 	{
 		// If the adapter strategy config is empty
 		if (!count($config)) {

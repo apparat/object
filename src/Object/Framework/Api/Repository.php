@@ -67,7 +67,7 @@ class Repository
 	{
 		// Normalize to local repository URL
 		try {
-			$url = self::_normalizeRepositoryUrl($url);
+			$url = Register::normalizeRepositoryUrl($url);
 		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
@@ -99,44 +99,11 @@ class Repository
 	 */
 	public static function instance($url)
 	{
-		// Normalize to local repository URL
+		// Normalize to return a repository instance matching this URL
 		try {
-			$url = self::_normalizeRepositoryUrl($url);
+			return Register::instance($url);
 		} catch (\RuntimeException $e) {
 			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
 		}
-
-		// Return the repository instance
-		return Register::instance($url);
-	}
-
-	/*******************************************************************************
-	 * PRIVATE METHODS
-	 *******************************************************************************/
-
-	/**
-	 * Normalize the repository URL
-	 *
-	 * @param string $url Public repository URL
-	 * @return bool|string Normalized repository URL
-	 * @throws InvalidArgumentException If the repository URL is external
-	 */
-	protected static function _normalizeRepositoryUrl($url)
-	{
-		// Strip the leading apparat base URL
-		$apparatBaseUrl = getenv('APPARAT_BASE_URL');
-		if (is_string($url) && (strpos($url, $apparatBaseUrl) === 0)) {
-			$url = substr($url, strlen($apparatBaseUrl));
-		}
-
-		// Strip leading slashes
-		$url = Register::normalizeRepositoryUrl($url);
-
-		// Ensure this is a bare URL (without query and fragment)
-		if (\Apparat\Object\Framework\isAbsoluteBareUrl($apparatBaseUrl.$url)) {
-			return $url;
-		}
-
-		return false;
 	}
 }

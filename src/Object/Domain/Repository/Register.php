@@ -68,7 +68,17 @@ class Register
 	public static function register($url, RepositoryInterface $repository)
 	{
 		// Repository registration
-		self::$_registry[self::normalizeRepositoryUrl($url)] = $repository;
+		$repositoryUrl = self::normalizeRepositoryUrl($url);
+
+		if (!strlen($repositoryUrl)) {
+			try {
+				throw  new \Exception;
+			} catch(\Exception $e) {
+				echo $e->getTraceAsString();
+			}
+		}
+
+		self::$_registry[$repositoryUrl] = $repository;
 	}
 
 	/**
@@ -125,16 +135,29 @@ class Register
 			// Else: If it's an object URL
 		} elseif ($url instanceof ObjectUrl) {
 			$url = $url->getRepositoryUrl();
+
+			// Else: If it's an empty URL
+		} elseif ($url === null) {
+			return '';
 		}
 
 		// If the URL is a string
-		if (is_string($url) || ($url === null)) {
-			return ltrim($url, '/');
+		if (is_string($url)) {
 
-			// Else: The URL is invalid
-		} else {
-			throw new InvalidArgumentException(sprintf('Invalid repository URL "%s"', $url),
-				InvalidArgumentException::INVALID_REPOSITORY_URL);
+			// Strip the leading apparat base URL
+			$apparatBaseUrl = getenv('APPARAT_BASE_URL');
+			if (strpos($url, $apparatBaseUrl) === 0) {
+				$url = strval(substr($url, strlen($apparatBaseUrl)));
+			}
+
+			// Ensure this is a bare URL (without query and fragment)
+			if (\Apparat\Object\Domain\isAbsoluteBareUrl($apparatBaseUrl.$url)) {
+				return ltrim($url, '/');
+			}
 		}
+
+		// The URL is invalid, throw an error
+		throw new InvalidArgumentException(sprintf('Invalid repository URL "%s"', $url),
+			InvalidArgumentException::INVALID_REPOSITORY_URL);
 	}
 }

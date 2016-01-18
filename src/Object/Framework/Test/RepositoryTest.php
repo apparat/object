@@ -168,7 +168,7 @@ class RepositoryTest extends AbstractTest
 	 * @expectedExceptionCode 1451776352
 	 */
 	public static function testInvalidSchemaBareUrl() {
-		\Apparat\Object\Framework\isAbsoluteBareUrl('ftp://example.com');
+		\Apparat\Object\Domain\isAbsoluteBareUrl('ftp://example.com');
 	}
 
 	/**
@@ -178,7 +178,7 @@ class RepositoryTest extends AbstractTest
 	 * @expectedExceptionCode 1451776509
 	 */
 	public static function testInvalidQueryBareUrl() {
-		\Apparat\Object\Framework\isAbsoluteBareUrl('http://example.com/?a=1');
+		\Apparat\Object\Domain\isAbsoluteBareUrl('http://example.com/?a=1');
 	}
 
 	/**
@@ -188,7 +188,7 @@ class RepositoryTest extends AbstractTest
 	 * @expectedExceptionCode 1451776570
 	 */
 	public static function testInvalidFragmentBareUrl() {
-		\Apparat\Object\Framework\isAbsoluteBareUrl('http://example.com/#1');
+		\Apparat\Object\Domain\isAbsoluteBareUrl('http://example.com/#1');
 	}
 
 	/**
@@ -225,10 +225,6 @@ class RepositoryTest extends AbstractTest
 	 */
 	public function testInstantiateUnknownRepositoryUrl()
 	{
-		RepositoryFactory::register(getenv('APPARAT_BASE_URL'), [
-			'type' => FileAdapterStrategy::TYPE,
-			'root' => __DIR__,
-		]);
 		RepositoryFactory::instance('unknown');
 	}
 

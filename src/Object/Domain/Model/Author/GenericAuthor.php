@@ -46,85 +46,87 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 class GenericAuthor implements AuthorInterface
 {
-	/**
-	 * Name
-	 *
-	 * @var string
-	 */
-	private $_name;
-	/**
-	 * Email address
-	 *
-	 * @var string
-	 */
-	private $_email;
-	/**
-	 * URL
-	 *
-	 * @var string
-	 */
-	private $_url;
+    /**
+     * Name
+     *
+     * @var string
+     */
+    private $_name;
+    /**
+     * Email address
+     *
+     * @var string
+     */
+    private $_email;
+    /**
+     * URL
+     *
+     * @var string
+     */
+    private $_url;
 
-	/**
-	 * Generic author constructor
-	 *
-	 * @param string $name Name
-	 * @param string $email Email address
-	 * @param string $url URL
-	 */
-	public function __construct($name, $email = null, $url = null)
-	{
-		$this->_name = $name;
-		$this->_email = $email;
-		$this->_url = $url;
-	}
+    /**
+     * Generic author constructor
+     *
+     * @param string $name Name
+     * @param string $email Email address
+     * @param string $url URL
+     */
+    public function __construct($name, $email = null, $url = null)
+    {
+        $this->_name = $name;
+        $this->_email = $email;
+        $this->_url = $url;
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		$parts = [$this->_name];
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     * @throws InvalidArgumentException If the generic author is invalid
+     */
+    public static function unserialize($str)
+    {
+        // If the author serialization is invalid
+        if (!preg_match("%^([^\<]+)(?:\s\<([^\>]+)\>)?(?:\s\(([^\)]+)\))?$%", $str, $author)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid generic author "%s"', $str),
+                InvalidArgumentException::INVALID_GENERIC_AUTHOR
+            );
+        }
 
-		if (strlen($this->_email)) {
-			$parts[] = '<'.$this->_email.'>';
-		}
+        $author = array_pad($author, 4, null);
+        return new static($author[1], $author[2], $author[3]);
+    }
 
-		if (strlen($this->_url)) {
-			$parts[] = '('.$this->_url.')';
-		}
+    /**
+     * Return a signature uniquely representing this author
+     *
+     * @return string Author signature
+     */
+    public function getSignature()
+    {
+        return sha1($this->serialize());
+    }
 
-		return implode(' ', $parts);
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        $parts = [$this->_name];
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return SerializablePropertyInterface Property
-	 * @throws InvalidArgumentException If the generic author is invalid
-	 */
-	public static function unserialize($str)
-	{
-		// If the author serialization is invalid
-		if (!preg_match("%^([^\<]+)(?:\s\<([^\>]+)\>)?(?:\s\(([^\)]+)\))?$%", $str, $author)) {
-			throw new InvalidArgumentException(sprintf('Invalid generic author "%s"', $str),
-				InvalidArgumentException::INVALID_GENERIC_AUTHOR);
-		}
+        if (strlen($this->_email)) {
+            $parts[] = '<'.$this->_email.'>';
+        }
 
-		$author = array_pad($author, 4, null);
-		return new static($author[1], $author[2], $author[3]);
-	}
+        if (strlen($this->_url)) {
+            $parts[] = '('.$this->_url.')';
+        }
 
-	/**
-	 * Return a signature uniquely representing this author
-	 *
-	 * @return string Author signature
-	 */
-	public function getSignature()
-	{
-		return sha1($this->serialize());
-	}
+        return implode(' ', $parts);
+    }
 }

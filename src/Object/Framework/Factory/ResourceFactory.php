@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Framework\Factory;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Framework\Model\Object\Resource;
 
 /**
@@ -45,17 +45,17 @@ use Apparat\Object\Framework\Model\Object\Resource;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Framework
  */
-class ResourceFactory extends \Apparat\Resource\Framework\Api\Resource
+class ResourceFactory extends \Apparat\Resource\Ports\Resource
 {
-	/**
-	 * Create and return a FrontMark resource instance
-	 *
-	 * @param string $src Stream-wrapped source
-	 * @param array $parameters Reader parameters
-	 * @return ResourceInterface Object resource
-	 */
-	public static function create($src, ...$parameters)
-	{
-		return self::_from($src, Resource::class, ...$parameters);
-	}
+    /**
+     * Create and return a FrontMark resource instance
+     *
+     * @param string $src Stream-wrapped source
+     * @param array $parameters Reader parameters
+     * @return ResourceInterface Object resource
+     */
+    public static function create($src, ...$parameters)
+    {
+        return self::fromSource($src, Resource::class, ...$parameters);
+    }
 }

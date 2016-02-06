@@ -47,48 +47,52 @@ use Apparat\Object\Domain\Repository\InvalidArgumentException;
  */
 abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 {
-	/**
-	 * Configuration
-	 *
-	 * Example
-	 *
-	 * @var array
-	 */
-	protected $_config = null;
+    /**
+     * Configuration
+     *
+     * Example
+     *
+     * @var array
+     */
+    protected $_config = null;
 
-	/**
-	 * Adapter strategy type
-	 *
-	 * @var string
-	 */
-	const TYPE = 'abstract';
+    /**
+     * Adapter strategy type
+     *
+     * @var string
+     */
+    const TYPE = 'abstract';
 
-	/**
-	 * Adapter strategy constructor
-	 *
-	 * @param array $config Adapter strategy configuration
-	 * @param array $signatureConfigKeys Signature relevant configuration properties
-	 */
-	public function __construct(array $config, array $signatureConfigKeys)
-	{
-		$this->_config = $config;
+    /**
+     * Adapter strategy constructor
+     *
+     * @param array $config Adapter strategy configuration
+     * @param array $signatureConfigKeys Signature relevant configuration properties
+     */
+    public function __construct(array $config, array $signatureConfigKeys)
+    {
+        $this->_config = $config;
 
-		// Build the signature
-		$signatureConfig = array_intersect_key($this->_config, array_flip($signatureConfigKeys));
-		$signatureConfig['type'] = static::TYPE;
-		if (count($signatureConfig) < 2) {
-			throw new InvalidArgumentException(sprintf('Invalid adapter strategy signature configuration "%s"',
-				implode(', ', $signatureConfigKeys)), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE);
-		}
-	}
+        // Build the signature
+        $signatureConfig = array_intersect_key($this->_config, array_flip($signatureConfigKeys));
+        $signatureConfig['type'] = static::TYPE;
+        if (count($signatureConfig) < 2) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid adapter strategy signature configuration "%s"',
+                    implode(', ', $signatureConfigKeys)
+                ), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE
+            );
+        }
+    }
 
-	/**
-	 * Return the adapter strategy type
-	 *
-	 * @return string Adapter strategy type
-	 */
-	public function getType()
-	{
-		return static::TYPE;
-	}
+    /**
+     * Return the adapter strategy type
+     *
+     * @return string Adapter strategy type
+     */
+    public function getType()
+    {
+        return static::TYPE;
+    }
 }

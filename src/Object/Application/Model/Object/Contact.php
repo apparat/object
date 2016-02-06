@@ -47,16 +47,16 @@ use Apparat\Object\Domain\Model\Object\Type;
  */
 class Contact extends AbstractObject
 {
-	/**
-	 * Domain property collection class
-	 *
-	 * @var string
-	 */
-	protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
-	/**
-	 * Object type
-	 *
-	 * @var string
-	 */
-	const TYPE = Type::CONTACT;
+    /**
+     * Domain property collection class
+     *
+     * @var string
+     */
+    protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
+    /**
+     * Object type
+     *
+     * @var string
+     */
+    const TYPE = Type::CONTACT;
 }

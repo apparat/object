@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Application\Repository;
 
-use Apparat\Object\Application\Model\Object\ResourceInterface;
+use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * Repository adapter strategy interface
@@ -46,11 +46,11 @@ use Apparat\Object\Application\Model\Object\ResourceInterface;
  */
 interface AdapterStrategyInterface extends \Apparat\Object\Domain\Repository\AdapterStrategyInterface
 {
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath);
+    /**
+     * Find and return an object resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return ResourceInterface Object resource
+     */
+    public function getObjectResource($resourcePath);
 }

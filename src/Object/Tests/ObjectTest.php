@@ -54,110 +54,112 @@ use Apparat\Object\Framework\Repository\FileAdapterStrategy;
  */
 class ObjectTest extends AbstractTest
 {
-	/**
-	 * Test repository
-	 *
-	 * @var Repository
-	 */
-	protected static $_repository = null;
+    /**
+     * Test repository
+     *
+     * @var Repository
+     */
+    protected static $_repository = null;
 
-	/**
-	 * Example object path
-	 *
-	 * @var string
-	 */
-	const OBJECT_PATH = '/2015/12/21/1.article/1';
+    /**
+     * Example object path
+     *
+     * @var string
+     */
+    const OBJECT_PATH = '/2015/12/21/1.article/1';
 
-	/**
-	 * Setup
-	 */
-	public static function setUpBeforeClass()
-	{
-		\Apparat\Object\Framework\Api\Repository::register(getenv('REPOSITORY_URL'), [
-			'type' => FileAdapterStrategy::TYPE,
-			'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-		]);
+    /**
+     * Setup
+     */
+    public static function setUpBeforeClass()
+    {
+        \Apparat\Object\Framework\Api\Repository::register(
+            getenv('REPOSITORY_URL'), [
+            'type' => FileAdapterStrategy::TYPE,
+            'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+        ]
+        );
 
-		self::$_repository = \Apparat\Object\Framework\Api\Repository::instance(getenv('REPOSITORY_URL'));
-	}
+        self::$_repository = \Apparat\Object\Framework\Api\Repository::instance(getenv('REPOSITORY_URL'));
+    }
 
-	/**
-	 * Test undefined object type
-	 *
-	 * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
-	 * @expectedExceptionCode 1450905868
-	 */
-	public function testUndefinedObjectType()
-	{
-		$resource = $this->getMock(ResourceInterface::class);
-		$resource->method('getPropertyData')->willReturn([]);
-		$repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
+    /**
+     * Test undefined object type
+     *
+     * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+     * @expectedExceptionCode 1450905868
+     */
+    public function testUndefinedObjectType()
+    {
+        $resource = $this->getMock(ResourceInterface::class);
+        $resource->method('getPropertyData')->willReturn([]);
+        $repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
 
-		/** @var ResourceInterface $resource */
-		/** @var RepositoryPath $repositoryPath */
-		ObjectFactory::createFromResource($resource, $repositoryPath);
-	}
+        /** @var ResourceInterface $resource */
+        /** @var RepositoryPath $repositoryPath */
+        ObjectFactory::createFromResource($resource, $repositoryPath);
+    }
 
-	/**
-	 * Test invalid object type
-	 *
-	 * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
-	 * @expectedExceptionCode 1449871242
-	 */
-	public function testInvalidObjectType()
-	{
-		$resource = $this->getMock(ResourceInterface::class);
-		$resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-		$articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
+    /**
+     * Test invalid object type
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
+     * @expectedExceptionCode 1449871242
+     */
+    public function testInvalidObjectType()
+    {
+        $resource = $this->getMock(ResourceInterface::class);
+        $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
+        $articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
 
-		/** @var ResourceInterface $resource */
-		ObjectFactory::createFromResource($resource, $articleObjectPath);
-	}
+        /** @var ResourceInterface $resource */
+        ObjectFactory::createFromResource($resource, $articleObjectPath);
+    }
 
-	/**
-	 * Load an article object and test its meta properties
-	 */
-	public function testLoadArticleObjectMetaProperties()
-	{
-		$articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
-		$articleObject = self::$_repository->loadObject($articleObjectPath);
-		$this->assertInstanceOf(Article::class, $articleObject);
-		$this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
-		$this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
-	}
+    /**
+     * Load an article object and test its meta properties
+     */
+    public function testLoadArticleObjectMetaProperties()
+    {
+        $articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
+        $articleObject = self::$_repository->loadObject($articleObjectPath);
+        $this->assertInstanceOf(Article::class, $articleObject);
+        $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
+        $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
+    }
 
-	/**
-	 * Test the object facade with an absolute object URL
-	 */
-	public function testObjectFacadeAbsolute()
-	{
-		$object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
-		$this->assertInstanceOf(Article::class, $object);
-	}
+    /**
+     * Test the object facade with an absolute object URL
+     */
+    public function testObjectFacadeAbsolute()
+    {
+        $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $this->assertInstanceOf(Article::class, $object);
+    }
 
-	/**
-	 * Test the object facade with a relative object URL
-	 */
-	public function testObjectFacadeRelative()
-	{
-		$object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-		$this->assertInstanceOf(Article::class, $object);
-		foreach ($object->getAuthors() as $author) {
-			if ($author instanceof ApparatAuthor) {
+    /**
+     * Test the object facade with a relative object URL
+     */
+    public function testObjectFacadeRelative()
+    {
+        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $this->assertInstanceOf(Article::class, $object);
+        foreach ($object->getAuthors() as $author) {
+            if ($author instanceof ApparatAuthor) {
 //				echo $author->getId()->getId();
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/**
-	 * Test the object facade with an invalid relative object URL
-	 *
-	 * @expectedException \Apparat\Resource\Framework\Io\File\InvalidArgumentException
-	 * @expectedExceptionCode 1447616824
-	 */
-	public function testObjectFacadeRelativeInvalid()
-	{
-		$object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
-		$this->assertInstanceOf(Article::class, $object);
-	}
+    /**
+     * Test the object facade with an invalid relative object URL
+     *
+     * @expectedException \Apparat\Resource\Infrastructure\Io\File\InvalidArgumentException
+     * @expectedExceptionCode 1447616824
+     */
+    public function testObjectFacadeRelativeInvalid()
+    {
+        $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
+        $this->assertInstanceOf(Article::class, $object);
+    }
 }

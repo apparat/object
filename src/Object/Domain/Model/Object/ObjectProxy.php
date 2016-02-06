@@ -50,190 +50,192 @@ use Apparat\Object\Domain\Repository\Service;
  */
 class ObjectProxy implements ObjectInterface
 {
-	/**
-	 * Apparat object URL
-	 *
-	 * @var ApparatUrl
-	 */
-	protected $_url = null;
-	/**
-	 * Object
-	 *
-	 * @var ObjectInterface
-	 */
-	protected $_object = null;
+    /**
+     * Apparat object URL
+     *
+     * @var ApparatUrl
+     */
+    protected $_url = null;
+    /**
+     * Object
+     *
+     * @var ObjectInterface
+     */
+    protected $_object = null;
 
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * PUBLIC METHODS
+     *******************************************************************************/
 
-	/**
-	 * Object proxy constructor
-	 *
-	 * @param ApparatUrl $url Apparat object URL
-	 */
-	public function __construct(ApparatUrl $url)
-	{
-		$this->_url = $url;
-	}
+    /**
+     * Object proxy constructor
+     *
+     * @param ApparatUrl $url Apparat object URL
+     */
+    public function __construct(ApparatUrl $url)
+    {
+        $this->_url = $url;
+    }
 
-	/**
-	 * Return the object repository path
-	 *
-	 * @return PathInterface Object repository path
-	 */
-	public function getRepositoryPath()
-	{
-		// If the object has already been instatiated
-		if ($this->_object instanceof ObjectInterface) {
-			return $this->_object->getRepositoryPath();
+    /**
+     * Return the object repository path
+     *
+     * @return PathInterface Object repository path
+     */
+    public function getRepositoryPath()
+    {
+        // If the object has already been instatiated
+        if ($this->_object instanceof ObjectInterface) {
+            return $this->_object->getRepositoryPath();
 
-			// Else
-		} else {
-			return $this->_url->getLocalPath();
-		}
-	}
+            // Else
+        } else {
+            return $this->_url->getLocalPath();
+        }
+    }
 
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId()
-	{
-		return $this->_object()->getId();
-	}
+    /**
+     * Return the object ID
+     *
+     * @return Id Object ID
+     */
+    public function getId()
+    {
+        return $this->_object()->getId();
+    }
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType()
-	{
-		return $this->_object()->getType();
-	}
+    /**
+     * Return the object type
+     *
+     * @return Type Object type
+     */
+    public function getType()
+    {
+        return $this->_object()->getType();
+    }
 
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision()
-	{
-		return $this->_object()->getRevision();
-	}
+    /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision()
+    {
+        return $this->_object()->getRevision();
+    }
 
-	/**
-	 * Return the creation date & time
-	 *
-	 * @return \DateTimeImmutable Creation date & time
-	 */
-	public function getCreated()
-	{
-		return $this->_object()->getCreated();
-	}
+    /**
+     * Return the creation date & time
+     *
+     * @return \DateTimeImmutable Creation date & time
+     */
+    public function getCreated()
+    {
+        return $this->_object()->getCreated();
+    }
 
-	/**
-	 * Return the publication date & time
-	 *
-	 * @return \DateTimeImmutable Publication date & time
-	 */
-	public function getPublished()
-	{
-		return $this->_object()->getPublished();
-	}
+    /**
+     * Return the publication date & time
+     *
+     * @return \DateTimeImmutable Publication date & time
+     */
+    public function getPublished()
+    {
+        return $this->_object()->getPublished();
+    }
 
-	/**
-	 * Return all object keywords
-	 *
-	 * @return array Object keywords
-	 */
-	public function getKeywords()
-	{
-		return $this->_object()->getKeywords();
-	}
+    /**
+     * Return all object keywords
+     *
+     * @return array Object keywords
+     */
+    public function getKeywords()
+    {
+        return $this->_object()->getKeywords();
+    }
 
-	/**
-	 * Return all object categories
-	 *
-	 * @return array Object categories
-	 */
-	public function getCategories()
-	{
-		return $this->_object()->getCategories();
-	}
+    /**
+     * Return all object categories
+     *
+     * @return array Object categories
+     */
+    public function getCategories()
+    {
+        return $this->_object()->getCategories();
+    }
 
-	/**
-	 * Return all object authors
-	 *
-	 * @return AuthorInterface[] Authors
-	 */
-	public function getAuthors()
-	{
-		return $this->_object()->getAuthors();
-	}
+    /**
+     * Return all object authors
+     *
+     * @return AuthorInterface[] Authors
+     */
+    public function getAuthors()
+    {
+        return $this->_object()->getAuthors();
+    }
 
-	/**
-	 * Add an object author
-	 *
-	 * @param AuthorInterface $author Author
-	 * @return ObjectInterface Self reference
-	 */
-	public function addAuthor(AuthorInterface $author)
-	{
-		return $this->_object()->addAuthor($author);
-	}
+    /**
+     * Add an object author
+     *
+     * @param AuthorInterface $author Author
+     * @return ObjectInterface Self reference
+     */
+    public function addAuthor(AuthorInterface $author)
+    {
+        return $this->_object()->addAuthor($author);
+    }
 
-	/**
-	 * Return the absolute object URL
-	 *
-	 * @return string
-	 */
-	public function getAbsoluteUrl()
-	{
-		return strval($this->_url);
-	}
+    /**
+     * Return the absolute object URL
+     *
+     * @return string
+     */
+    public function getAbsoluteUrl()
+    {
+        return strval($this->_url);
+    }
 
-	/*******************************************************************************
-	 * MAGIG METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * MAGIG METHODS
+     *******************************************************************************/
 
-	/**
-	 * Generic caller
-	 *
-	 * @param string $name Method name
-	 * @param array $arguments Method arguments
-	 */
-	public function __call($name, $arguments)
-	{
-		$object = $this->_object();
-		if (is_callable(array($object, $name))) {
-			return $object->$name(...$arguments);
-		}
+    /**
+     * Generic caller
+     *
+     * @param string $name Method name
+     * @param array $arguments Method arguments
+     */
+    public function __call($name, $arguments)
+    {
+        $object = $this->_object();
+        if (is_callable(array($object, $name))) {
+            return $object->$name(...$arguments);
+        }
 
-		throw new InvalidArgumentException(sprintf('Invalid object proxy method "%s"', $name),
-			InvalidArgumentException::INVALID_OBJECT_PROXY_METHOD);
-	}
+        throw new InvalidArgumentException(
+            sprintf('Invalid object proxy method "%s"', $name),
+            InvalidArgumentException::INVALID_OBJECT_PROXY_METHOD
+        );
+    }
 
-	/*******************************************************************************
-	 * PRIVATE METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
 
-	/**
-	 * Return the enclosed remote object
-	 *
-	 * @return ObjectInterface Remote object
-	 */
-	protected function _object()
-	{
-		// Lazy-load the remote object if necessary
-		if (!$this->_object instanceof ObjectInterface) {
+    /**
+     * Return the enclosed remote object
+     *
+     * @return ObjectInterface Remote object
+     */
+    protected function _object()
+    {
+        // Lazy-load the remote object if necessary
+        if (!$this->_object instanceof ObjectInterface) {
 
-			// Instantiate the local object repository, load and return the object
-			$this->_object = Service::get($this->_url)->loadObject($this->_url->getLocalPath());
-		}
+            // Instantiate the local object repository, load and return the object
+            $this->_object = Service::get($this->_url)->loadObject($this->_url->getLocalPath());
+        }
 
-		return $this->_object;
-	}
+        return $this->_object;
+    }
 }

@@ -44,33 +44,33 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 interface ResourceInterface
 {
-	/**
-	 * Return the property data
-	 *
-	 * @return array Property data
-	 */
-	public function getPropertyData();
+    /**
+     * Return the property data
+     *
+     * @return array Property data
+     */
+    public function getPropertyData();
 
-	/**
-	 * Set the property data
-	 *
-	 * @param array $data Property data
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPropertyData(array $data);
+    /**
+     * Set the property data
+     *
+     * @param array $data Property data
+     * @return ResourceInterface Object resource
+     */
+    public function setPropertyData(array $data);
 
-	/**
-	 * Return the object payload
-	 *
-	 * @return string Object payload
-	 */
-	public function getPayload();
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload();
 
-	/**
-	 * Set the object payload
-	 *
-	 * @param string $payload Object payload
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPayload($payload);
+    /**
+     * Set the object payload
+     *
+     * @param string $payload Object payload
+     * @return ResourceInterface Object resource
+     */
+    public function setPayload($payload);
 }

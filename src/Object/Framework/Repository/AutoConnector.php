@@ -50,48 +50,48 @@ use Apparat\Object\Framework\Api\Repository;
 class AutoConnector implements AutoConnectorInterface
 {
 
-	/**
-	 * Auto-connect a repository with by URL default settings
-	 *
-	 * @param string $url Repository URL
-	 * @return boolean Success
-	 */
-	public function connect($url)
-	{
-		echo "Auto-connecting: $url\n";
-		$config = null;
+    /**
+     * Auto-connect a repository with by URL default settings
+     *
+     * @param string $url Repository URL
+     * @return boolean Success
+     */
+    public function connect($url)
+    {
+        echo "Auto-connecting: $url\n";
+        $config = null;
 
-		// If it's an absolute URL
-		$url = new Url($url);
-		if ($url->isAbsolute()) {
+        // If it's an absolute URL
+        $url = new Url($url);
+        if ($url->isAbsolute()) {
 
 
-			// Else: Relative / local URL -> Instantiate as file repository
-		} else {
+            // Else: Relative / local URL -> Instantiate as file repository
+        } else {
 
-			// If this is run via CLI
-			if (PHP_SAPI == 'cli') {
-				$documentRoot = ini_get('doc_root') ?: getcwd();
+            // If this is run via CLI
+            if (PHP_SAPI == 'cli') {
+                $documentRoot = ini_get('doc_root') ?: getcwd();
 
-				// Else: Use the server's document root
-			} else {
-				$documentRoot = empty($_SERVER['DOCUMENT_ROOT']) ? ini_get('doc_root') : $_SERVER['DOCUMENT_ROOT'];
-			}
+                // Else: Use the server's document root
+            } else {
+                $documentRoot = empty($_SERVER['DOCUMENT_ROOT']) ? ini_get('doc_root') : $_SERVER['DOCUMENT_ROOT'];
+            }
 
-			// If the is a document root: Create a file repository configuration
-			if (strlen($documentRoot)) {
-				$config = [
-					'type' => FileAdapterStrategy::TYPE,
-					'root' => rtrim($documentRoot, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$url,
-				];
-			}
-		}
+            // If the is a document root: Create a file repository configuration
+            if (strlen($documentRoot)) {
+                $config = [
+                    'type' => FileAdapterStrategy::TYPE,
+                    'root' => rtrim($documentRoot, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$url,
+                ];
+            }
+        }
 
-		// If a repository configuration has been created
-		if ($config !== null) {
-			return Repository::register($url, $config) instanceof \Apparat\Object\Domain\Repository\Repository;
-		}
+        // If a repository configuration has been created
+        if ($config !== null) {
+            return Repository::register($url, $config) instanceof \Apparat\Object\Domain\Repository\Repository;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

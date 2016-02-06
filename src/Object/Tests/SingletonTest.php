@@ -47,10 +47,10 @@ namespace Apparat\Object\Tests;
  */
 function exceptionErrorHandler($severity, $message, $file, $line)
 {
-	if (!(error_reporting() & $severity)) {
-		return;
-	}
-	throw new \ErrorException($message, 0, $severity, $file, $line);
+    if (!(error_reporting() & $severity)) {
+        return;
+    }
+    throw new \ErrorException($message, 0, $severity, $file, $line);
 }
 
 /**
@@ -60,10 +60,10 @@ function exceptionErrorHandler($severity, $message, $file, $line)
  */
 function fatalErrorShutdownHandler()
 {
-	$last_error = error_get_last();
-	if ($last_error['type'] === E_ERROR) {
-		exceptionErrorHandler(E_ERROR, $last_error['message'], $last_error['file'], $last_error['line']);
-	}
+    $last_error = error_get_last();
+    if ($last_error['type'] === E_ERROR) {
+        exceptionErrorHandler(E_ERROR, $last_error['message'], $last_error['file'], $last_error['line']);
+    }
 }
 
 /**
@@ -74,35 +74,35 @@ function fatalErrorShutdownHandler()
  */
 class SingletonTest extends AbstractTest
 {
-	/**'
-	 * Setup
-	 */
-	public static function setUpBeforeClass()
-	{
-		set_error_handler('Apparat\Object\Tests\exceptionErrorHandler');
-		register_shutdown_function('Apparat\Object\Tests\fatalErrorShutdownHandler');
-		ini_set('display_errors', 'off');
-		error_reporting(E_ALL);
-	}
+    /**'
+     * Setup
+     */
+    public static function setUpBeforeClass()
+    {
+        set_error_handler('Apparat\Object\Tests\exceptionErrorHandler');
+        register_shutdown_function('Apparat\Object\Tests\fatalErrorShutdownHandler');
+        ini_set('display_errors', 'off');
+        error_reporting(E_ALL);
+    }
 
-	/**
-	 * Teardown
-	 */
-	public static function tearDownAfterClass()
-	{
-		set_error_handler(null);
-	}
+    /**
+     * Teardown
+     */
+    public static function tearDownAfterClass()
+    {
+        set_error_handler(null);
+    }
 
-	/**
-	 * Test illegal cloning of a singleton
-	 */
-	public function testSingletonClone()
-	{
+    /**
+     * Test illegal cloning of a singleton
+     */
+    public function testSingletonClone()
+    {
 //		$mock = $this->getMockForTrait('Apparat\\Object\\Domain\\Contract\\SingletonTrait');
-		try {
+        try {
 //			clone $mock;
-		} catch (\ErrorException $e) {
+        } catch (\ErrorException $e) {
 
-		}
-	}
+        }
+    }
 }

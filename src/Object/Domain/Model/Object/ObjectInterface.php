@@ -46,93 +46,93 @@ use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
  */
 interface ObjectInterface
 {
-	/**
-	 * Object constructor
-	 *
-	 * The constructor is not part of the interface as the object proxy class also implements it
-	 * without having the same constructor signature
-	 *
-	 * @param RepositoryPath $path Object repository path
-	 * @param array $propertyData Property data
-	 * @param string $payload Object payload
-	 */
+    /**
+     * Object constructor
+     *
+     * The constructor is not part of the interface as the object proxy class also implements it
+     * without having the same constructor signature
+     *
+     * @param RepositoryPath $path Object repository path
+     * @param array $propertyData Property data
+     * @param string $payload Object payload
+     */
 //	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '');
 
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId();
+    /**
+     * Return the object ID
+     *
+     * @return Id Object ID
+     */
+    public function getId();
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType();
+    /**
+     * Return the object type
+     *
+     * @return Type Object type
+     */
+    public function getType();
 
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision();
+    /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision();
 
-	/**
-	 * Return the creation date & time
-	 *
-	 * @return \DateTimeImmutable Creation date & time
-	 */
-	public function getCreated();
+    /**
+     * Return the creation date & time
+     *
+     * @return \DateTimeImmutable Creation date & time
+     */
+    public function getCreated();
 
-	/**
-	 * Return the publication date & time
-	 *
-	 * @return \DateTimeImmutable Publication date & time
-	 */
-	public function getPublished();
+    /**
+     * Return the publication date & time
+     *
+     * @return \DateTimeImmutable Publication date & time
+     */
+    public function getPublished();
 
-	/**
-	 * Return all object keywords
-	 *
-	 * @return array Object keywords
-	 */
-	public function getKeywords();
+    /**
+     * Return all object keywords
+     *
+     * @return array Object keywords
+     */
+    public function getKeywords();
 
-	/**
-	 * Return all object categories
-	 *
-	 * @return array Object categories
-	 */
-	public function getCategories();
+    /**
+     * Return all object categories
+     *
+     * @return array Object categories
+     */
+    public function getCategories();
 
-	/**
-	 * Return all object authors
-	 *
-	 * @return AuthorInterface[] Authors
-	 */
-	public function getAuthors();
+    /**
+     * Return all object authors
+     *
+     * @return AuthorInterface[] Authors
+     */
+    public function getAuthors();
 
-	/**
-	 * Add an object author
-	 *
-	 * @param AuthorInterface $author Author
-	 * @return ObjectInterface Self reference
-	 */
-	public function addAuthor(AuthorInterface $author);
+    /**
+     * Add an object author
+     *
+     * @param AuthorInterface $author Author
+     * @return ObjectInterface Self reference
+     */
+    public function addAuthor(AuthorInterface $author);
 
-	/**
-	 * Return the object repository path
-	 *
-	 * @return RepositoryPathInterface Object repository path
-	 */
-	public function getRepositoryPath();
+    /**
+     * Return the object repository path
+     *
+     * @return RepositoryPathInterface Object repository path
+     */
+    public function getRepositoryPath();
 
-	/**
-	 * Return the absolute object URL
-	 *
-	 * @return string
-	 */
-	public function getAbsoluteUrl();
+    /**
+     * Return the absolute object URL
+     *
+     * @return string
+     */
+    public function getAbsoluteUrl();
 }

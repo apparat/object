@@ -47,19 +47,19 @@ use Apparat\Object\Domain\Model\Path\ObjectUrl;
  */
 class Object
 {
-	/**
-	 * Instantiate and return an object
-	 *
-	 * @param string $url Object URL (relative or absolute including the apparat base URL)
-	 * @return ObjectInterface Object
-	 * @api
-	 */
-	public static function instance($url)
-	{
-		// Instantiate the object URL
-		$objectUrl = new ObjectUrl($url, true);
+    /**
+     * Instantiate and return an object
+     *
+     * @param string $url Object URL (relative or absolute including the apparat base URL)
+     * @return ObjectInterface Object
+     * @api
+     */
+    public static function instance($url)
+    {
+        // Instantiate the object URL
+        $objectUrl = new ObjectUrl($url, true);
 
-		// Instantiate the local object repository, load and return the object
-		return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
-	}
+        // Instantiate the local object repository, load and return the object
+        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
+    }
 }

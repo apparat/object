@@ -46,31 +46,31 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  */
 abstract class AbstractProperties implements PropertiesInterface
 {
-	/**
-	 * Owner object
-	 *
-	 * @var ObjectInterface
-	 */
-	protected $_object = null;
+    /**
+     * Owner object
+     *
+     * @var ObjectInterface
+     */
+    protected $_object = null;
 
-	/**
-	 * Meta properties constructor
-	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
-	 */
-	public function __construct(array $data, ObjectInterface $object)
-	{
-		$this->_object = $object;
-	}
+    /**
+     * Meta properties constructor
+     *
+     * @param array $data Property data
+     * @param ObjectInterface $object Owner object
+     */
+    public function __construct(array $data, ObjectInterface $object)
+    {
+        $this->_object = $object;
+    }
 
-	/**
-	 * Return the owner object
-	 *
-	 * @return ObjectInterface Owner object
-	 */
-	public function getObject()
-	{
-		return $this->_object;
-	}
+    /**
+     * Return the owner object
+     *
+     * @return ObjectInterface Owner object
+     */
+    public function getObject()
+    {
+        return $this->_object;
+    }
 }

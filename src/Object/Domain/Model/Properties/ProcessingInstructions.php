@@ -44,10 +44,10 @@ namespace Apparat\Object\Domain\Model\Properties;
  */
 class ProcessingInstructions extends AbstractGenericProperties
 {
-	/**
-	 * Collection name
-	 *
-	 * @var string
-	 */
-	const COLLECTION = 'procinst';
+    /**
+     * Collection name
+     *
+     * @var string
+     */
+    const COLLECTION = 'procinst';
 }

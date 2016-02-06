@@ -50,38 +50,42 @@ use Apparat\Object\Domain\Model\Properties\SystemProperties;
  */
 class ObjectFactory
 {
-	/**
-	 * Create an object
-	 *
-	 * @param ResourceInterface $objectResource
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
-	 * @throws InvalidArgumentException If the object type is undefined
-	 * @throws InvalidArgumentException If the object type is invalid
-	 */
-	public static function createFromResource(ResourceInterface $objectResource, RepositoryPath $path)
-	{
-		$propertyData = $objectResource->getPropertyData();
+    /**
+     * Create an object
+     *
+     * @param ResourceInterface $objectResource
+     * @param RepositoryPath $path Repository object path
+     * @return ObjectInterface Object
+     * @throws InvalidArgumentException If the object type is undefined
+     * @throws InvalidArgumentException If the object type is invalid
+     */
+    public static function createFromResource(ResourceInterface $objectResource, RepositoryPath $path)
+    {
+        $propertyData = $objectResource->getPropertyData();
 
-		// If the object type is undefined
-		if (
-			!array_key_exists(SystemProperties::COLLECTION, $propertyData) ||
-			!is_array($propertyData[SystemProperties::COLLECTION]) ||
-			empty($propertyData[SystemProperties::COLLECTION]['type'])
-		) {
-			throw new InvalidArgumentException('Undefined object type',
-				InvalidArgumentException::UNDEFINED_OBJECT_TYPE);
-		}
+        // If the object type is undefined
+        if (
+            !array_key_exists(SystemProperties::COLLECTION, $propertyData) ||
+            !is_array($propertyData[SystemProperties::COLLECTION]) ||
+            empty($propertyData[SystemProperties::COLLECTION]['type'])
+        ) {
+            throw new InvalidArgumentException(
+                'Undefined object type',
+                InvalidArgumentException::UNDEFINED_OBJECT_TYPE
+            );
+        }
 
-		// If the object type is invalid
-		$objectType = $path->getType()->getType();
-		$objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
-		if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
-			throw new InvalidArgumentException(sprintf('Invalid object type "%s"', $objectType),
-				InvalidArgumentException::INVALID_OBJECT_TYPE);
-		}
+        // If the object type is invalid
+        $objectType = $path->getType()->getType();
+        $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
+        if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object type "%s"', $objectType),
+                InvalidArgumentException::INVALID_OBJECT_TYPE
+            );
+        }
 
-		// Instantiate the object
-		return new $objectClass($path, $propertyData, $objectResource->getPayload());
-	}
+        // Instantiate the object
+        return new $objectClass($path, $propertyData, $objectResource->getPayload());
+    }
 }

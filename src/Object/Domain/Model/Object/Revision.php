@@ -46,97 +46,102 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 class Revision implements SerializablePropertyInterface
 {
-	/**
-	 * Object revision number
-	 *
-	 * @var int
-	 */
-	protected $_revision = null;
-	/**
-	 * Current revision
-	 *
-	 * @var null
-	 */
-	const CURRENT = null;
-	/**
-	 * Draft revision
-	 *
-	 * @var string
-	 */
-	const DRAFT = 0;
+    /**
+     * Current revision
+     *
+     * @var null
+     */
+    const CURRENT = null;
+    /**
+     * Draft revision
+     *
+     * @var string
+     */
+    const DRAFT = 0;
+    /**
+     * Object revision number
+     *
+     * @var int
+     */
+    protected $_revision = null;
 
-	/**
-	 * Revision constructor
-	 *
-	 * @param int $revision Object revision number
-	 */
-	public function __construct($revision)
-	{
-		// If the revision number is invalid
-		if (!self::isValidRevision($revision)) {
-			throw new InvalidArgumentException(sprintf('Invalid object revision number "%s"', $revision),
-				InvalidArgumentException::INVALID_OBJECT_REVISION);
-		}
+    /**
+     * Revision constructor
+     *
+     * @param int $revision Object revision number
+     */
+    public function __construct($revision)
+    {
+        // If the revision number is invalid
+        if (!self::isValidRevision($revision)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object revision number "%s"', $revision),
+                InvalidArgumentException::INVALID_OBJECT_REVISION
+            );
+        }
 
-		$this->_revision = $revision;
-	}
+        $this->_revision = $revision;
+    }
 
-	/**
-	 * Return the object revision number
-	 *
-	 * @return int Object revision number
-	 */
-	public function getRevision()
-	{
-		return $this->_revision;
-	}
+    /**
+     * Test whether a revision number is valid
+     *
+     * @param int|NULL $revision Revision number
+     * @return bool Is valid revision
+     */
+    public static function isValidRevision($revision)
+    {
+        return ($revision === self::CURRENT) || (is_int($revision) && ($revision >= self::DRAFT));
+    }
 
-	/**
-	 * Test wheter this is the draft revision
-	 *
-	 * @return bool Is draft revision
-	 */
-	public function isDraft() {
-		return $this->_revision === self::DRAFT;
-	}
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return Revision Revision property
+     */
+    public static function unserialize($str)
+    {
+        return new static(intval($str));
+    }
 
-	/**
-	 * Test wheter this is the current revision
-	 *
-	 * @return bool Is current revision
-	 */
-	public function isCurrent() {
-		return $this->_revision === self::CURRENT;
-	}
+    /**
+     * Test wheter this is the draft revision
+     *
+     * @return bool Is draft revision
+     */
+    public function isDraft()
+    {
+        return $this->_revision === self::DRAFT;
+    }
 
-	/**
-	 * Test whether a revision number is valid
-	 *
-	 * @param int|NULL $revision Revision number
-	 * @return bool Is valid revision
-	 */
-	public static function isValidRevision($revision) {
-		return ($revision === self::CURRENT) || (is_int($revision) && ($revision >= self::DRAFT));
-	}
+    /**
+     * Test wheter this is the current revision
+     *
+     * @return bool Is current revision
+     */
+    public function isCurrent()
+    {
+        return $this->_revision === self::CURRENT;
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		return $this->getRevision();
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        return $this->getRevision();
+    }
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return Revision Revision property
-	 */
-	public static function unserialize($str)
-	{
-		return new static(intval($str));
-	}
+    /**
+     * Return the object revision number
+     *
+     * @return int Object revision number
+     */
+    public function getRevision()
+    {
+        return $this->_revision;
+    }
 }

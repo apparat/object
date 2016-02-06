@@ -44,21 +44,21 @@ namespace Apparat\Object\Domain\Common;
  */
 trait SingletonTrait
 {
-	/**
-	 * Private clone method to prevent cloning of the instance of the singleton instance.
-	 *
-	 * @return void
-	 */
-	private function __clone()
-	{
-	}
+    /**
+     * Private clone method to prevent cloning of the instance of the singleton instance.
+     *
+     * @return void
+     */
+    private function __clone()
+    {
+    }
 
-	/**
-	 * Private unserialize method to prevent unserializing of the singleton instance.
-	 *
-	 * @return void
-	 */
-	private function __wakeup()
-	{
-	}
+    /**
+     * Private unserialize method to prevent unserializing of the singleton instance.
+     *
+     * @return void
+     */
+    private function __wakeup()
+    {
+    }
 }

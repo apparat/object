@@ -48,124 +48,124 @@ use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
  */
 class SelectorTest extends AbstractTest
 {
-	/**
-	 * Example selector
-	 *
-	 * @var string
-	 */
-	const SELECTOR = '/2015/10/01/36704.event/36704-1';
+    /**
+     * Example selector
+     *
+     * @var string
+     */
+    const SELECTOR = '/2015/10/01/36704.event/36704-1';
 
-	/**
-	 * Test a valid full-fledged selector
-	 */
-	public function testFactoryValidSelector()
-	{
-		$selector = SelectorFactory::createFromString(self::SELECTOR);
-		$this->assertInstanceOf(RepositorySelector::class, $selector);
-		$this->assertEquals(2015, $selector->getYear());
-		$this->assertEquals(10, $selector->getMonth());
-		$this->assertEquals(1, $selector->getDay());
-		$this->assertEquals(null, $selector->getHour());
-		$this->assertEquals(null, $selector->getMinute());
-		$this->assertEquals(null, $selector->getSecond());
-		$this->assertEquals(36704, $selector->getId());
-		$this->assertEquals('event', $selector->getType());
-		$this->assertEquals(1, $selector->getRevision());
-	}
+    /**
+     * Test a valid full-fledged selector
+     */
+    public function testFactoryValidSelector()
+    {
+        $selector = SelectorFactory::createFromString(self::SELECTOR);
+        $this->assertInstanceOf(RepositorySelector::class, $selector);
+        $this->assertEquals(2015, $selector->getYear());
+        $this->assertEquals(10, $selector->getMonth());
+        $this->assertEquals(1, $selector->getDay());
+        $this->assertEquals(null, $selector->getHour());
+        $this->assertEquals(null, $selector->getMinute());
+        $this->assertEquals(null, $selector->getSecond());
+        $this->assertEquals(36704, $selector->getId());
+        $this->assertEquals('event', $selector->getType());
+        $this->assertEquals(1, $selector->getRevision());
+    }
 
-	/**
-	 * Test a valid full-fledged selector with wildcards
-	 */
-	public function testFactoryValidSelectorWildcards()
-	{
-		$datePrecision = getenv('OBJECT_DATE_PRECISION');
-		putenv('OBJECT_DATE_PRECISION=6');
-		$selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*');
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getHour());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getMinute());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getSecond());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
-		$this->assertEquals(Revision::CURRENT, $selector->getRevision());
-		putenv('OBJECT_DATE_PRECISION='.$datePrecision);
-	}
+    /**
+     * Test a valid full-fledged selector with wildcards
+     */
+    public function testFactoryValidSelectorWildcards()
+    {
+        $datePrecision = getenv('OBJECT_DATE_PRECISION');
+        putenv('OBJECT_DATE_PRECISION=6');
+        $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*');
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getHour());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMinute());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getSecond());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
+        $this->assertEquals(Revision::CURRENT, $selector->getRevision());
+        putenv('OBJECT_DATE_PRECISION='.$datePrecision);
+    }
 
-	/**
-	 * Test minimal selector
-	 */
-	public function testFactoryMinimalSelector()
-	{
-		$selector = SelectorFactory::createFromString('/*');
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
-		$this->assertEquals(null, $selector->getHour());
-		$this->assertEquals(null, $selector->getMinute());
-		$this->assertEquals(null, $selector->getSecond());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
-		$this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
-		$this->assertEquals(Revision::CURRENT, $selector->getRevision());
-	}
+    /**
+     * Test minimal selector
+     */
+    public function testFactoryMinimalSelector()
+    {
+        $selector = SelectorFactory::createFromString('/*');
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
+        $this->assertEquals(null, $selector->getHour());
+        $this->assertEquals(null, $selector->getMinute());
+        $this->assertEquals(null, $selector->getSecond());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
+        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
+        $this->assertEquals(Revision::CURRENT, $selector->getRevision());
+    }
 
-	/**
-	 * Test an invalid selector
-	 *
-	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449961609
-	 */
-	public function testFactoryInvaldiSelector()
-	{
-		SelectorFactory::createFromString('invalid');
-	}
+    /**
+     * Test an invalid selector
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449961609
+     */
+    public function testFactoryInvaldiSelector()
+    {
+        SelectorFactory::createFromString('invalid');
+    }
 
-	/**
-	 * Test an invalid date component
-	 *
-	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449999646
-	 * @expectedExceptionMessageRegExp %year%
-	 */
-	public function testInvalidDateComponent()
-	{
-		new RepositorySelector('invalid');
-	}
+    /**
+     * Test an invalid date component
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %year%
+     */
+    public function testInvalidDateComponent()
+    {
+        new RepositorySelector('invalid');
+    }
 
-	/**
-	 * Test an invalid ID component
-	 *
-	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449999646
-	 * @expectedExceptionMessageRegExp %id%
-	 */
-	public function testInvalidIdComponent()
-	{
-		new RepositorySelector(2015, 1, 1, null, null, null, 'invalid');
-	}
+    /**
+     * Test an invalid ID component
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %id%
+     */
+    public function testInvalidIdComponent()
+    {
+        new RepositorySelector(2015, 1, 1, null, null, null, 'invalid');
+    }
 
-	/**
-	 * Test an invalid type component
-	 *
-	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449999646
-	 * @expectedExceptionMessageRegExp %type%
-	 */
-	public function testInvalidTypeComponent()
-	{
-		new RepositorySelector(2015, 1, 1, null, null, null, 1, 'invalid');
-	}
+    /**
+     * Test an invalid type component
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %type%
+     */
+    public function testInvalidTypeComponent()
+    {
+        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'invalid');
+    }
 
-	/**
-	 * Test an invalid revision component
-	 *
-	 * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
-	 * @expectedExceptionCode 1449999646
-	 * @expectedExceptionMessageRegExp %revision%
-	 */
-	public function testInvalidRevisionComponent()
-	{
-		new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', 'invalid');
-	}
+    /**
+     * Test an invalid revision component
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %revision%
+     */
+    public function testInvalidRevisionComponent()
+    {
+        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', 'invalid');
+    }
 }

@@ -47,214 +47,217 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 class Type implements SerializablePropertyInterface
 {
-	/**
-	 * Object type
-	 *
-	 * @var string
-	 */
-	protected $_type = null;
-	/**
-	 * Article
-	 *
-	 * @var string
-	 */
-	const ARTICLE = 'article';
-	/**
-	 * Audio
-	 *
-	 * @var string
-	 */
-	const AUDIO = 'audio';
-	/**
-	 * Bookmark
-	 *
-	 * @var string
-	 */
-	const BOOKMARK = 'bookmark';
-	/**
-	 * Checkin
-	 *
-	 * @var string
-	 */
-	const CHECKIN = 'checkin';
-	/**
-	 * Cite
-	 *
-	 * @var string
-	 */
-	const CITE = 'cite';
-	/**
-	 * Code
-	 *
-	 * @var string
-	 */
-	const CODE = 'code';
-	/**
-	 * Contact
-	 *
-	 * @var string
-	 */
-	const CONTACT = 'contact';
-	/**
-	 * Event
-	 *
-	 * @var string
-	 */
-	const EVENT = 'event';
-	/**
-	 * Favourite
-	 *
-	 * @var string
-	 */
-	const FAVOURITE = 'favourite';
-	/**
-	 * Geo
-	 *
-	 * @var string
-	 */
-	const GEO = 'geo';
-	/**
-	 * Image
-	 *
-	 * @var string
-	 */
-	const IMAGE = 'image';
-	/**
-	 * Item
-	 *
-	 * @var string
-	 */
-	const ITEM = 'item';
-	/**
-	 * Like
-	 *
-	 * @var string
-	 */
-	const LIKE = 'like';
-	/**
-	 * Note
-	 *
-	 * @var string
-	 */
-	const NOTE = 'note';
-	/**
-	 * Project
-	 *
-	 * @var string
-	 */
-	const PROJECT = 'project';
-	/**
-	 * Reply
-	 *
-	 * @var string
-	 */
-	const REPLY = 'reply';
-	/**
-	 * Review
-	 *
-	 * @var string
-	 */
-	const REVIEW = 'review';
-	/**
-	 * Rsvp
-	 *
-	 * @var string
-	 */
-	const RSVP = 'rsvp';
-	/**
-	 * Venue
-	 *
-	 * @var string
-	 */
-	const VENUE = 'venue';
-	/**
-	 * Video
-	 *
-	 * @var string
-	 */
-	const VIDEO = 'video';
-	/**
-	 * Type list
-	 *
-	 * @var array
-	 */
-	protected static $_types = [
-		self::ARTICLE => true,
-		self::AUDIO => true,
-		self::BOOKMARK => true,
-		self::CHECKIN => true,
-		self::CITE => true,
-		self::CODE => true,
-		self::CONTACT => true,
-		self::EVENT => true,
-		self::FAVOURITE => true,
-		self::GEO => true,
-		self::IMAGE => true,
-		self::ITEM => true,
-		self::LIKE => true,
-		self::NOTE => true,
-		self::PROJECT => true,
-		self::REPLY => true,
-		self::REVIEW => true,
-		self::RSVP => true,
-		self::VENUE => true,
-		self::VIDEO => true,
-	];
+    /**
+     * Article
+     *
+     * @var string
+     */
+    const ARTICLE = 'article';
+    /**
+     * Audio
+     *
+     * @var string
+     */
+    const AUDIO = 'audio';
+    /**
+     * Bookmark
+     *
+     * @var string
+     */
+    const BOOKMARK = 'bookmark';
+    /**
+     * Checkin
+     *
+     * @var string
+     */
+    const CHECKIN = 'checkin';
+    /**
+     * Cite
+     *
+     * @var string
+     */
+    const CITE = 'cite';
+    /**
+     * Code
+     *
+     * @var string
+     */
+    const CODE = 'code';
+    /**
+     * Contact
+     *
+     * @var string
+     */
+    const CONTACT = 'contact';
+    /**
+     * Event
+     *
+     * @var string
+     */
+    const EVENT = 'event';
+    /**
+     * Favourite
+     *
+     * @var string
+     */
+    const FAVOURITE = 'favourite';
+    /**
+     * Geo
+     *
+     * @var string
+     */
+    const GEO = 'geo';
+    /**
+     * Image
+     *
+     * @var string
+     */
+    const IMAGE = 'image';
+    /**
+     * Item
+     *
+     * @var string
+     */
+    const ITEM = 'item';
+    /**
+     * Like
+     *
+     * @var string
+     */
+    const LIKE = 'like';
+    /**
+     * Note
+     *
+     * @var string
+     */
+    const NOTE = 'note';
+    /**
+     * Project
+     *
+     * @var string
+     */
+    const PROJECT = 'project';
+    /**
+     * Reply
+     *
+     * @var string
+     */
+    const REPLY = 'reply';
+    /**
+     * Review
+     *
+     * @var string
+     */
+    const REVIEW = 'review';
+    /**
+     * Rsvp
+     *
+     * @var string
+     */
+    const RSVP = 'rsvp';
+    /**
+     * Venue
+     *
+     * @var string
+     */
+    const VENUE = 'venue';
+    /**
+     * Video
+     *
+     * @var string
+     */
+    const VIDEO = 'video';
+    /**
+     * Type list
+     *
+     * @var array
+     */
+    protected static $_types = [
+        self::ARTICLE => true,
+        self::AUDIO => true,
+        self::BOOKMARK => true,
+        self::CHECKIN => true,
+        self::CITE => true,
+        self::CODE => true,
+        self::CONTACT => true,
+        self::EVENT => true,
+        self::FAVOURITE => true,
+        self::GEO => true,
+        self::IMAGE => true,
+        self::ITEM => true,
+        self::LIKE => true,
+        self::NOTE => true,
+        self::PROJECT => true,
+        self::REPLY => true,
+        self::REVIEW => true,
+        self::RSVP => true,
+        self::VENUE => true,
+        self::VIDEO => true,
+    ];
+    /**
+     * Object type
+     *
+     * @var string
+     */
+    protected $_type = null;
 
-	/**
-	 * Type constructor
-	 *
-	 * @param string $type Object type
-	 */
-	public function __construct($type)
-	{
-		if (!$type || !self::isValidType($type)) {
-			throw new InvalidArgumentException(sprintf('Invalid object type "%s"', $type),
-				InvalidArgumentException::INVALID_OBJECT_TYPE);
-		}
+    /**
+     * Type constructor
+     *
+     * @param string $type Object type
+     */
+    public function __construct($type)
+    {
+        if (!$type || !self::isValidType($type)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object type "%s"', $type),
+                InvalidArgumentException::INVALID_OBJECT_TYPE
+            );
+        }
 
-		$this->_type = $type;
-	}
+        $this->_type = $type;
+    }
 
-	/**
-	 * Return the object type
-	 *
-	 * @return string Object type
-	 */
-	public function getType()
-	{
-		return $this->_type;
-	}
+    /**
+     * Test if a type string is valid
+     *
+     * @param string $type Type string
+     * @return bool Valid type
+     */
+    public static function isValidType($type)
+    {
+        $type = trim($type);
+        return strlen($type) && array_key_exists($type, self::$_types);
+    }
 
-	/**
-	 * Test if a type string is valid
-	 *
-	 * @param string $type Type string
-	 * @return bool Valid type
-	 */
-	public static function isValidType($type) {
-		$type = trim($type);
-		return strlen($type) && array_key_exists($type, self::$_types);
-	}
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return Type Type property
+     */
+    public static function unserialize($str)
+    {
+        return new static($str);
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		return $this->getType();
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        return $this->getType();
+    }
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return Type Type property
-	 */
-	public static function unserialize($str)
-	{
-		return new static($str);
-	}
+    /**
+     * Return the object type
+     *
+     * @return string Object type
+     */
+    public function getType()
+    {
+        return $this->_type;
+    }
 }

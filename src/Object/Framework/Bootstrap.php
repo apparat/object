@@ -43,7 +43,7 @@ use Apparat\Object\Framework\Repository\AutoConnector;
 
 $dotenv = new \Dotenv\Dotenv(dirname(dirname(dirname(__DIR__))));
 if (getenv('APP_ENV') === 'development') {
-	$dotenv->load();
+    $dotenv->load();
 }
 
 // Validate the required environment variables

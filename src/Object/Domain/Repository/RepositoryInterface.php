@@ -45,49 +45,49 @@ use Apparat\Object\Domain\Model\Path\PathInterface;
  */
 interface RepositoryInterface extends SearchableRepositoryInterface
 {
-	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(ObjectInterface $object);
+    /**
+     * Add an object to the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return boolean Success
+     */
+    public function addObject(ObjectInterface $object);
 
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object);
+    /**
+     * Delete and object from the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return boolean Success
+     */
+    public function deleteObject(ObjectInterface $object);
 
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object);
+    /**
+     * Update an object in the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return bool Success
+     */
+    public function updateObject(ObjectInterface $object);
 
-	/**
-	 * Load an object from this repository
-	 *
-	 * @param PathInterface $path Object path
-	 * @return ObjectInterface Object
-	 */
-	public function loadObject(PathInterface $path);
+    /**
+     * Load an object from this repository
+     *
+     * @param PathInterface $path Object path
+     * @return ObjectInterface Object
+     */
+    public function loadObject(PathInterface $path);
 
-	/**
-	 * Return the repository's adapter strategy
-	 *
-	 * @return AdapterStrategyInterface Adapter strategy
-	 */
-	public function getAdapterStrategy();
+    /**
+     * Return the repository's adapter strategy
+     *
+     * @return AdapterStrategyInterface Adapter strategy
+     */
+    public function getAdapterStrategy();
 
-	/**
-	 * Return the repository URL (relative to Apparat base URL)
-	 *
-	 * @return string Repository URL
-	 */
-	public function getUrl();
+    /**
+     * Return the repository URL (relative to Apparat base URL)
+     *
+     * @return string Repository URL
+     */
+    public function getUrl();
 }

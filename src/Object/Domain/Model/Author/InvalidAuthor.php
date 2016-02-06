@@ -47,68 +47,68 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 class InvalidAuthor implements AuthorInterface
 {
-	/**
-	 * String value
-	 *
-	 * @var string
-	 */
-	protected $_value = '';
-	/**
-	 * Underlying exception
-	 *
-	 * @var \Exception
-	 */
-	protected $_exception = null;
+    /**
+     * String value
+     *
+     * @var string
+     */
+    protected $_value = '';
+    /**
+     * Underlying exception
+     *
+     * @var \Exception
+     */
+    protected $_exception = null;
 
-	/**
-	 * Invalid author constructor
-	 *
-	 * @param string $value Value
-	 */
-	public function __construct($value, \Exception $exception = null)
-	{
-		$this->_value = $value;
-		$this->_exception = $exception;
-	}
+    /**
+     * Invalid author constructor
+     *
+     * @param string $value Value
+     */
+    public function __construct($value, \Exception $exception = null)
+    {
+        $this->_value = $value;
+        $this->_exception = $exception;
+    }
 
-	/**
-	 * Return the underying exception
-	 *
-	 * @return \Exception Underlying exception
-	 */
-	public function getException()
-	{
-		return $this->_exception;
-	}
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     */
+    public static function unserialize($str)
+    {
+        return new static($str);
+    }
 
-	/**
-	 * Return a signature uniquely representing this author
-	 *
-	 * @return string Author signature
-	 */
-	public function getSignature()
-	{
-		return sha1($this->serialize());
-	}
+    /**
+     * Return the underying exception
+     *
+     * @return \Exception Underlying exception
+     */
+    public function getException()
+    {
+        return $this->_exception;
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		return $this->_value;
-	}
+    /**
+     * Return a signature uniquely representing this author
+     *
+     * @return string Author signature
+     */
+    public function getSignature()
+    {
+        return sha1($this->serialize());
+    }
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return SerializablePropertyInterface Property
-	 */
-	public static function unserialize($str)
-	{
-		return new static($str);
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        return $this->_value;
+    }
 }

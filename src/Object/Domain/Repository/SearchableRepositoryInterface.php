@@ -46,11 +46,11 @@ use Apparat\Object\Domain\Model\Object\Collection;
  */
 interface SearchableRepositoryInterface
 {
-	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
-	 */
-	public function findObjects(SelectorInterface $selector);
+    /**
+     * Find objects by selector
+     *
+     * @param SelectorInterface $selector Object selector
+     * @return Collection Object collection
+     */
+    public function findObjects(SelectorInterface $selector);
 }

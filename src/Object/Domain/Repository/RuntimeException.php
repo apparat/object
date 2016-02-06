@@ -44,10 +44,10 @@ namespace Apparat\Object\Domain\Repository;
  */
 class RuntimeException extends \RuntimeException
 {
-	/**
-	 * The repository service is not configured
-	 *
-	 * @var int
-	 */
-	const SERVICE_NOT_CONFIGURED = 1453111671;
+    /**
+     * The repository service is not configured
+     *
+     * @var int
+     */
+    const SERVICE_NOT_CONFIGURED = 1453111671;
 }

@@ -44,16 +44,16 @@ namespace Apparat\Object\Domain\Model\Path;
  */
 class ApparatInvalidArgumentException extends InvalidArgumentException
 {
-	/**
-	 * Invalid Apparat URL
-	 *
-	 * @var int
-	 */
-	const INVALID_ABSOLUTE_APPARAT_URL = 1451435429;
-	/**
-	 * Unknown local repository URL
-	 *
-	 * @var int
-	 */
-	const UNKNOWN_LOCAL_REPOSITORY_URL = 1452695654;
+    /**
+     * Invalid Apparat URL
+     *
+     * @var int
+     */
+    const INVALID_ABSOLUTE_APPARAT_URL = 1451435429;
+    /**
+     * Unknown local repository URL
+     *
+     * @var int
+     */
+    const UNKNOWN_LOCAL_REPOSITORY_URL = 1452695654;
 }

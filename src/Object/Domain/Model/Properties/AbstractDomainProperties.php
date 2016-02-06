@@ -44,10 +44,10 @@ namespace Apparat\Object\Domain\Model\Properties;
  */
 abstract class AbstractDomainProperties extends AbstractGenericProperties
 {
-	/**
-	 * Collection name
-	 *
-	 * @var string
-	 */
-	const COLLECTION = 'domain';
+    /**
+     * Collection name
+     *
+     * @var string
+     */
+    const COLLECTION = 'domain';
 }

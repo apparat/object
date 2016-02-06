@@ -46,60 +46,64 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  */
 abstract class AbstractGenericProperties extends AbstractProperties implements GenericPropertiesInterface
 {
-	/**
-	 * Property data
-	 *
-	 * @var array
-	 */
-	protected $_data = [];
+    /**
+     * Property data
+     *
+     * @var array
+     */
+    protected $_data = [];
 
-	/**
-	 * Property collection constructor
-	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
-	 */
-	public function __construct(array $data, ObjectInterface $object)
-	{
-		parent::__construct($data, $object);
+    /**
+     * Property collection constructor
+     *
+     * @param array $data Property data
+     * @param ObjectInterface $object Owner object
+     */
+    public function __construct(array $data, ObjectInterface $object)
+    {
+        parent::__construct($data, $object);
 
-		$this->_data = $data;
-	}
+        $this->_data = $data;
+    }
 
-	/**
-	 * Get a particular property value
-	 *
-	 * Multi-level properties might be traversed by property name paths separated with colons (":").
-	 *
-	 * @param string $property Property name
-	 * @return mixed Property value
-	 * @throws InvalidArgumentException If the property name is empty
-	 */
-	public function getProperty($property)
-	{
-		$propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
+    /**
+     * Get a particular property value
+     *
+     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     *
+     * @param string $property Property name
+     * @return mixed Property value
+     * @throws InvalidArgumentException If the property name is empty
+     */
+    public function getProperty($property)
+    {
+        $propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
 
-		// If the property traversal path is empty
-		if (!count($propertyPath)) {
-			throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
-		}
+        // If the property traversal path is empty
+        if (!count($propertyPath)) {
+            throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
+        }
 
-		// Traverse the property tree
-		$propertyPathTraversed = [];
-		$data =& $this->_data;
-		foreach ($propertyPath as $property) {
-			$propertyPathTraversed[] = $property;
+        // Traverse the property tree
+        $propertyPathTraversed = [];
+        $data =& $this->_data;
+        foreach ($propertyPath as $property) {
+            $propertyPathTraversed[] = $property;
 
-			// If the property name step is invalid
-			if (!array_key_exists($property, $data)) {
-				throw new InvalidArgumentException(sprintf('Invalid property name "%s"',
-					implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathTraversed)),
-					InvalidArgumentException::INVALID_PROPERTY_NAME);
-			}
+            // If the property name step is invalid
+            if (!array_key_exists($property, $data)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Invalid property name "%s"',
+                        implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathTraversed)
+                    ),
+                    InvalidArgumentException::INVALID_PROPERTY_NAME
+                );
+            }
 
-			$data =& $data[$property];
-		}
+            $data =& $data[$property];
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 }

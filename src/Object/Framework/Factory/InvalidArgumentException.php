@@ -44,16 +44,16 @@ namespace Apparat\Object\Framework\Factory;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Empty adapter strategy configuration
-	 *
-	 * @var int
-	 */
-	const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
-	/**
-	 * Invalid adapter strategy type
-	 *
-	 * @var int
-	 */
-	const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
+    /**
+     * Empty adapter strategy configuration
+     *
+     * @var int
+     */
+    const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
+    /**
+     * Invalid adapter strategy type
+     *
+     * @var int
+     */
+    const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
 }

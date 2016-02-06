@@ -44,11 +44,11 @@ namespace Apparat\Object\Domain\Repository;
  */
 interface AutoConnectorInterface
 {
-	/**
-	 * Auto-connect a repository with by URL default settings
-	 *
-	 * @param string $url Repository URL
-	 * @return boolean Success
-	 */
-	public function connect($url);
+    /**
+     * Auto-connect a repository with by URL default settings
+     *
+     * @param string $url Repository URL
+     * @return boolean Success
+     */
+    public function connect($url);
 }

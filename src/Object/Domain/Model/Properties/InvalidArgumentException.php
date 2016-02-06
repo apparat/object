@@ -44,50 +44,50 @@ namespace Apparat\Object\Domain\Model\Properties;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Empty property name
-	 *
-	 * @var int
-	 */
-	const EMPTY_PROPERTY_NAME = 1450817720;
+    /**
+     * Empty property name
+     *
+     * @var int
+     */
+    const EMPTY_PROPERTY_NAME = 1450817720;
 
-	/**
-	 * Invalid property name
-	 *
-	 * @var int
-	 */
-	const INVALID_PROPERTY_NAME = 1450818168;
+    /**
+     * Invalid property name
+     *
+     * @var int
+     */
+    const INVALID_PROPERTY_NAME = 1450818168;
 
-	/**
-	 * Empty property collection name
-	 *
-	 * @var int
-	 */
-	const EMPTY_COLLECTION_NAME = 1450821755;
+    /**
+     * Empty property collection name
+     *
+     * @var int
+     */
+    const EMPTY_COLLECTION_NAME = 1450821755;
 
-	/**
-	 * Invalid property collection name
-	 *
-	 * @var int
-	 */
-	const INVALID_COLLECTION_NAME = 1450821628;
+    /**
+     * Invalid property collection name
+     *
+     * @var int
+     */
+    const INVALID_COLLECTION_NAME = 1450821628;
 
-	/**
-	 * Invalid object type
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_TYPE = 1450824343;
-	/**
-	 * Invalid object author
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_AUTHOR = 1451425516;
-	/**
-	 * Invalid domain property collection class
-	 *
-	 * @var int
-	 */
-	const INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS = 1452288429;
+    /**
+     * Invalid object type
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_TYPE = 1450824343;
+    /**
+     * Invalid object author
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_AUTHOR = 1451425516;
+    /**
+     * Invalid domain property collection class
+     *
+     * @var int
+     */
+    const INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS = 1452288429;
 }

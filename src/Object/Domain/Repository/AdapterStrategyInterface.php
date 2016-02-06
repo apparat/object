@@ -46,27 +46,27 @@ use Apparat\Object\Domain\Model\Object\ResourceInterface;
  */
 interface AdapterStrategyInterface
 {
-	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
-	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+    /**
+     * Find objects by selector
+     *
+     * @param SelectorInterface $selector Object selector
+     * @param RepositoryInterface $repository Object repository
+     * @return array[PathInterface] Object paths
+     */
+    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
 
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath);
+    /**
+     * Find and return an object resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return ResourceInterface Object resource
+     */
+    public function getObjectResource($resourcePath);
 
-	/**
-	 * Return the adapter strategy type
-	 *
-	 * @return string Adapter strategy type
-	 */
-	public function getType();
+    /**
+     * Return the adapter strategy type
+     *
+     * @return string Adapter strategy type
+     */
+    public function getType();
 }

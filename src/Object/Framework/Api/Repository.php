@@ -36,9 +36,7 @@
 
 namespace Apparat\Object\Framework\Api;
 
-use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
 use Apparat\Object\Framework\Repository\InvalidArgumentException;
 
 /**
@@ -50,55 +48,55 @@ use Apparat\Object\Framework\Repository\InvalidArgumentException;
 class Repository
 {
 
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * PUBLIC METHODS
+     *******************************************************************************/
 
-	/**
-	 * Register a repository
-	 *
-	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
-	 * @param array $config Repository configuration
-	 * @return Repository Repositoy instance
-	 * @throws InvalidArgumentException If the repository URL is invalid
-	 * @throws InvalidArgumentException If the repository configuration is empty
-	 * @api
-	 */
-	public static function register($url, array $config)
-	{
-		// Normalize to local repository URL
-		try {
-			$url = Service::normalizeRepositoryUrl($url);
-		} catch (\RuntimeException $e) {
-			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
-		}
+    /**
+     * Register a repository
+     *
+     * @param string $url Repository URL (relative or absolute including the apparat base URL)
+     * @param array $config Repository configuration
+     * @return Repository Repositoy instance
+     * @throws InvalidArgumentException If the repository URL is invalid
+     * @throws InvalidArgumentException If the repository configuration is empty
+     * @api
+     */
+    public static function register($url, array $config)
+    {
+        // Normalize to local repository URL
+        try {
+            $url = Service::normalizeRepositoryUrl($url);
+        } catch (\RuntimeException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
+        }
 
-		// Instantiate the object repository
-		$repository = new \Apparat\Object\Domain\Repository\Repository($url, $config);
+        // Instantiate the object repository
+        $repository = new \Apparat\Object\Domain\Repository\Repository($url, $config);
 
-		// Register the repository
-		Service::register($url, $repository);
+        // Register the repository
+        Service::register($url, $repository);
 
-		// Return the registered repository instance
-		return $repository;
-	}
+        // Return the registered repository instance
+        return $repository;
+    }
 
-	/**
-	 * Instantiate and return an object repository
-	 *
-	 * @param string $url Repository URL (relative or absolute including the apparat base URL)
-	 * @return \Apparat\Object\Domain\Repository\Repository Object repository
-	 * @throws InvalidArgumentException If the repository URL is invalid
-	 * @throws InvalidArgumentException If the repository URL is unknown
-	 * @api
-	 */
-	public static function instance($url)
-	{
-		// Normalize to return a repository instance matching this URL
-		try {
-			return Service::get($url);
-		} catch (\RuntimeException $e) {
-			throw new InvalidArgumentException($e->getMessage(), $e->getCode());
-		}
-	}
+    /**
+     * Instantiate and return an object repository
+     *
+     * @param string $url Repository URL (relative or absolute including the apparat base URL)
+     * @return \Apparat\Object\Domain\Repository\Repository Object repository
+     * @throws InvalidArgumentException If the repository URL is invalid
+     * @throws InvalidArgumentException If the repository URL is unknown
+     * @api
+     */
+    public static function instance($url)
+    {
+        // Normalize to return a repository instance matching this URL
+        try {
+            return Service::get($url);
+        } catch (\RuntimeException $e) {
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
+        }
+    }
 }

@@ -44,16 +44,16 @@ namespace Apparat\Object\Domain\Model\Author;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Invalid generic author
-	 *
-	 * @var int
-	 */
-	const INVALID_GENERIC_AUTHOR = 1451423259;
-	/**
-	 * Invalid author format
-	 *
-	 * @var int
-	 */
-	const INVALID_AUTHOR_FORMAT = 1451426440;
+    /**
+     * Invalid generic author
+     *
+     * @var int
+     */
+    const INVALID_GENERIC_AUTHOR = 1451423259;
+    /**
+     * Invalid author format
+     *
+     * @var int
+     */
+    const INVALID_AUTHOR_FORMAT = 1451426440;
 }

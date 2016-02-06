@@ -42,40 +42,40 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Unkown object ID
-	 *
-	 * @var int
-	 */
-	const UNKNOWN_OBJECT_ID = 1448737190;
-	/**
-	 * Invalid object type
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_TYPE = 1449871242;
-	/**
-	 * Invalid object ID
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_ID = 1449876361;
-	/**
-	 * Invalid object revision number
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_REVISION = 1449871715;
-	/**
-	 * Invalid collection object or path
-	 *
-	 * @var int
-	 */
-	const INVALID_COLLECTION_OBJECT_OR_PATH = 1450131914;
-	/**
-	 * Invalid object proxy method
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_PROXY_METHOD = 1451431111;
+    /**
+     * Unkown object ID
+     *
+     * @var int
+     */
+    const UNKNOWN_OBJECT_ID = 1448737190;
+    /**
+     * Invalid object type
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_TYPE = 1449871242;
+    /**
+     * Invalid object ID
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_ID = 1449876361;
+    /**
+     * Invalid object revision number
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_REVISION = 1449871715;
+    /**
+     * Invalid collection object or path
+     *
+     * @var int
+     */
+    const INVALID_COLLECTION_OBJECT_OR_PATH = 1450131914;
+    /**
+     * Invalid object proxy method
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_PROXY_METHOD = 1451431111;
 }

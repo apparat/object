@@ -48,38 +48,38 @@ use Apparat\Object\Domain\Repository\SelectorInterface;
  */
 class Cluster implements ClusterInterface
 {
-	/**
-	 * Cluster repositories
-	 *
-	 * @var array
-	 */
-	private $_repositories;
+    /**
+     * Cluster repositories
+     *
+     * @var array
+     */
+    private $_repositories;
 
-	/**
-	 * Repository cluster constructor
-	 *
-	 * @param array $repositories Cluster repositories
-	 */
-	public function __construct(array $repositories)
-	{
-		$this->_repositories = $repositories;
-	}
+    /**
+     * Repository cluster constructor
+     *
+     * @param array $repositories Cluster repositories
+     */
+    public function __construct(array $repositories)
+    {
+        $this->_repositories = $repositories;
+    }
 
-	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
-	 */
-	public function findObjects(SelectorInterface $selector)
-	{
-		$collection = new Collection();
+    /**
+     * Find objects by selector
+     *
+     * @param SelectorInterface $selector Object selector
+     * @return Collection Object collection
+     */
+    public function findObjects(SelectorInterface $selector)
+    {
+        $collection = new Collection();
 
-		/** @var RepositoryInterface $repository */
-		foreach ($this->_repositories as $repository) {
-			$collection = $collection->append($repository->findObjects($selector));
-		}
+        /** @var RepositoryInterface $repository */
+        foreach ($this->_repositories as $repository) {
+            $collection = $collection->append($repository->findObjects($selector));
+        }
 
-		return $collection;
-	}
+        return $collection;
+    }
 }

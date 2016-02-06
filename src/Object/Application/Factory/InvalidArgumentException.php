@@ -44,17 +44,17 @@ namespace Apparat\Object\Application\Factory;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Undefined object type
-	 *
-	 * @var int
-	 */
-	const UNDEFINED_OBJECT_TYPE = 1450905868;
+    /**
+     * Undefined object type
+     *
+     * @var int
+     */
+    const UNDEFINED_OBJECT_TYPE = 1450905868;
 
-	/**
-	 * Invalid object type
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_TYPE = 1450824842;
+    /**
+     * Invalid object type
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_TYPE = 1450824842;
 }

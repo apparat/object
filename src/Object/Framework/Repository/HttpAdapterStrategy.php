@@ -49,33 +49,33 @@ use Apparat\Object\Domain\Repository\SelectorInterface;
  */
 class HttpAdapterStrategy extends AbstractAdapterStrategy
 {
-	/**
-	 * Adapter strategy type
-	 *
-	 * @var string
-	 */
-	const TYPE = 'http';
+    /**
+     * Adapter strategy type
+     *
+     * @var string
+     */
+    const TYPE = 'http';
 
-	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
-	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
-	{
-		// TODO: Implement findObjectPaths() method.
-	}
+    /**
+     * Find objects by selector
+     *
+     * @param SelectorInterface $selector Object selector
+     * @param RepositoryInterface $repository Object repository
+     * @return array[PathInterface] Object paths
+     */
+    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+    {
+        // TODO: Implement findObjectPaths() method.
+    }
 
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath)
-	{
-		// TODO: Implement getObjectResource() method.
-	}
+    /**
+     * Find and return an object resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return ResourceInterface Object resource
+     */
+    public function getObjectResource($resourcePath)
+    {
+        // TODO: Implement getObjectResource() method.
+    }
 }

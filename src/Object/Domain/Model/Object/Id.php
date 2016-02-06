@@ -46,57 +46,59 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 class Id implements SerializablePropertyInterface
 {
-	/**
-	 * Object ID
-	 *
-	 * @var int
-	 */
-	protected $_id = null;
+    /**
+     * Object ID
+     *
+     * @var int
+     */
+    protected $_id = null;
 
-	/**
-	 * ID constructor
-	 *
-	 * @param int $id Object ID
-	 */
-	public function __construct($id)
-	{
-		// If the ID is invalid
-		if (!is_int($id) || ($id <= 0)) {
-			throw new InvalidArgumentException(sprintf('Invalid object ID "%s"', $id),
-				InvalidArgumentException::INVALID_OBJECT_ID);
-		}
+    /**
+     * ID constructor
+     *
+     * @param int $id Object ID
+     */
+    public function __construct($id)
+    {
+        // If the ID is invalid
+        if (!is_int($id) || ($id <= 0)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object ID "%s"', $id),
+                InvalidArgumentException::INVALID_OBJECT_ID
+            );
+        }
 
-		$this->_id = $id;
-	}
+        $this->_id = $id;
+    }
 
-	/**
-	 * Return the object ID
-	 *
-	 * @return int Object ID
-	 */
-	public function getId()
-	{
-		return $this->_id;
-	}
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return Id ID property
+     */
+    public static function unserialize($str)
+    {
+        return new static(intval($str));
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		return $this->getId();
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        return $this->getId();
+    }
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return Id ID property
-	 */
-	public static function unserialize($str)
-	{
-		return new static(intval($str));
-	}
+    /**
+     * Return the object ID
+     *
+     * @return int Object ID
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
 }

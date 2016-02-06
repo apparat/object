@@ -42,46 +42,46 @@ namespace Apparat\Object\Domain\Model\Path;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Invalid date precision
-	 *
-	 * @var int
-	 */
-	const INVALID_DATE_PRECISION = 1451514114;
-	/**
-	 * Invalid object URL path
-	 *
-	 * @var int
-	 */
-	const INVALID_OBJECT_URL_PATH = 1449874494;
-	/**
-	 * Invalid URL
-	 *
-	 * @var int
-	 */
-	const INVALID_URL = 1449873819;
-	/**
-	 * Invalid remote object URL
-	 *
-	 * @var int
-	 */
-	const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
-	/**
-	 * Invalid URL scheme
-	 *
-	 * @var int
-	 */
-	const INVALID_URL_SCHEME = 1449924914;
-	/**
-	 * Invalid URL host
-	 *
-	 * @var int
-	 */
-	const INVALID_URL_HOST = 1449925567;
-	/**
-	 * Invalid URL port
-	 *
-	 * @var int
-	 */
-	const INVALID_URL_PORT = 1449925885;
+    /**
+     * Invalid date precision
+     *
+     * @var int
+     */
+    const INVALID_DATE_PRECISION = 1451514114;
+    /**
+     * Invalid object URL path
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_URL_PATH = 1449874494;
+    /**
+     * Invalid URL
+     *
+     * @var int
+     */
+    const INVALID_URL = 1449873819;
+    /**
+     * Invalid remote object URL
+     *
+     * @var int
+     */
+    const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
+    /**
+     * Invalid URL scheme
+     *
+     * @var int
+     */
+    const INVALID_URL_SCHEME = 1449924914;
+    /**
+     * Invalid URL host
+     *
+     * @var int
+     */
+    const INVALID_URL_HOST = 1449925567;
+    /**
+     * Invalid URL port
+     *
+     * @var int
+     */
+    const INVALID_URL_PORT = 1449925885;
 }

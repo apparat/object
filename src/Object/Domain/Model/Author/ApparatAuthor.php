@@ -40,7 +40,6 @@ namespace Apparat\Object\Domain\Model\Author;
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 use Apparat\Object\Domain\Model\Object\ObjectProxy;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Apparat object author
@@ -50,34 +49,34 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 class ApparatAuthor extends ObjectProxy implements AuthorInterface
 {
-	/**
-	 * Return a signature uniquely representing this author
-	 *
-	 * @return string Author signature
-	 */
-	public function getSignature()
-	{
-		return sha1($this->serialize());
-	}
+    /**
+     * Return a signature uniquely representing this author
+     *
+     * @return string Author signature
+     */
+    public function getSignature()
+    {
+        return sha1($this->serialize());
+    }
 
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize()
-	{
-		return $this->getAbsoluteUrl();
-	}
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize()
+    {
+        return $this->getAbsoluteUrl();
+    }
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return SerializablePropertyInterface Property
-	 */
-	public static function unserialize($str)
-	{
-		return new static(new ApparatUrl($str, true));
-	}
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     */
+    public static function unserialize($str)
+    {
+        return new static(new ApparatUrl($str, true));
+    }
 }

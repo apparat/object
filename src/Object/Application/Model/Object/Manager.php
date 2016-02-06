@@ -39,8 +39,8 @@ namespace Apparat\Object\Application\Model\Object;
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
@@ -51,29 +51,31 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 class Manager implements ManagerInterface
 {
-	/**
-	 * Create and return a new object
-	 *
-	 * @param RepositoryInterface $repository Repository
-	 * @param Type $type Object type
-	 * @param array $data Object data
-	 * @return ObjectInterface Object
-	 */
-	public function createObject(RepositoryInterface $repository, Type $type, array $data = [])
-	{
-		// TODO: Implement createObject() method.
-	}
+    /**
+     * Create and return a new object
+     *
+     * @param RepositoryInterface $repository Repository
+     * @param Type $type Object type
+     * @param array $data Object data
+     * @return ObjectInterface Object
+     */
+    public function createObject(RepositoryInterface $repository, Type $type, array $data = [])
+    {
+        // TODO: Implement createObject() method.
+    }
 
-	/**
-	 * Load an object from a repository
-	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
-	 */
-	public function loadObject(RepositoryPath $path)
-	{
-		/** @var \Apparat\Object\Framework\Model\Object\Resource $objectResource */
-		$objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource($path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
-		return ObjectFactory::createFromResource($objectResource, $path);
-	}
+    /**
+     * Load an object from a repository
+     *
+     * @param RepositoryPath $path Repository object path
+     * @return ObjectInterface Object
+     */
+    public function loadObject(RepositoryPath $path)
+    {
+        /** @var \Apparat\Object\Framework\Model\Object\Resource $objectResource */
+        $objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource(
+            $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        );
+        return ObjectFactory::createFromResource($objectResource, $path);
+    }
 }

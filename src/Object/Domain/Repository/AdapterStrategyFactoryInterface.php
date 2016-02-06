@@ -44,11 +44,11 @@ namespace Apparat\Object\Domain\Repository;
  */
 interface AdapterStrategyFactoryInterface
 {
-	/**
-	 * Instantiate and return an adapter strategy
-	 *
-	 * @param array $config Adapter strategy config
-	 * @return AdapterStrategyInterface Repository adapter
-	 */
-	public function createFromConfig(array $config);
+    /**
+     * Instantiate and return an adapter strategy
+     *
+     * @param array $config Adapter strategy config
+     * @return AdapterStrategyInterface Repository adapter
+     */
+    public function createFromConfig(array $config);
 }

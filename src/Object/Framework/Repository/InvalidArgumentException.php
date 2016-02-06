@@ -44,16 +44,16 @@ namespace Apparat\Object\Framework\Repository;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Empty file adapter strategy root
-	 *
-	 * @var int
-	 */
-	const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
-	/**
-	 * Invalid file adapter strategy root
-	 *
-	 * @var int
-	 */
-	const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+    /**
+     * Empty file adapter strategy root
+     *
+     * @var int
+     */
+    const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
+    /**
+     * Invalid file adapter strategy root
+     *
+     * @var int
+     */
+    const INVALID_FILE_STRATEGY_ROOT = 1449957017;
 }

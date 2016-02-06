@@ -44,19 +44,20 @@ namespace Apparat\Object\Application\Utility;
  */
 class ArrayUtility
 {
-	/**
-	 * Sort an array recursively by key
-	 *
-	 * @param array $array Array
-	 * @return array Sorted array
-	 */
-	public static function sortRecursiveByKey(array $array) {
-		ksort($array, SORT_REGULAR);
-		while(list($key, $value) = each($array)) {
-			if (is_array($value)) {
-				$array[$key] = self::sortRecursiveByKey($value);
-			}
-		}
-		return $array;
-	}
+    /**
+     * Sort an array recursively by key
+     *
+     * @param array $array Array
+     * @return array Sorted array
+     */
+    public static function sortRecursiveByKey(array $array)
+    {
+        ksort($array, SORT_REGULAR);
+        while (list($key, $value) = each($array)) {
+            if (is_array($value)) {
+                $array[$key] = self::sortRecursiveByKey($value);
+            }
+        }
+        return $array;
+    }
 }

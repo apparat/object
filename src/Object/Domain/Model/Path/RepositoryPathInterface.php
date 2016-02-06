@@ -46,10 +46,10 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 interface RepositoryPathInterface extends PathInterface
 {
-	/**
-	 * Return the repository this path applies to
-	 *
-	 * @return RepositoryInterface Repository
-	 */
-	public function getRepository();
+    /**
+     * Return the repository this path applies to
+     *
+     * @return RepositoryInterface Repository
+     */
+    public function getRepository();
 }

@@ -44,18 +44,18 @@ namespace Apparat\Object\Domain\Contract;
  */
 interface SerializablePropertyInterface
 {
-	/**
-	 * Serialize the property
-	 *
-	 * @return mixed Property serialization
-	 */
-	public function serialize();
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     */
+    public static function unserialize($str);
 
-	/**
-	 * Unserialize the string representation of this property
-	 *
-	 * @param string $str Serialized property
-	 * @return SerializablePropertyInterface Property
-	 */
-	public static function unserialize($str);
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize();
 }

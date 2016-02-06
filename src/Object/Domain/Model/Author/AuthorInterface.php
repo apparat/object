@@ -46,10 +46,10 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  */
 interface AuthorInterface extends SerializablePropertyInterface
 {
-	/**
-	 * Return a signature uniquely representing this author
-	 *
-	 * @return string Author signature
-	 */
-	public function getSignature();
+    /**
+     * Return a signature uniquely representing this author
+     *
+     * @return string Author signature
+     */
+    public function getSignature();
 }

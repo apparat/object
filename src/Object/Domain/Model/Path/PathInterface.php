@@ -49,70 +49,70 @@ use Apparat\Object\Domain\Model\Object\Type;
 interface PathInterface
 {
 
-	/**
-	 * Create and return the object URL path
-	 *
-	 * @return string Object path
-	 */
-	public function __toString();
+    /**
+     * Create and return the object URL path
+     *
+     * @return string Object path
+     */
+    public function __toString();
 
-	/**
-	 * Return the object's creation date
-	 *
-	 * @return \DateTimeImmutable Object creation date
-	 */
-	public function getCreationDate();
+    /**
+     * Return the object's creation date
+     *
+     * @return \DateTimeImmutable Object creation date
+     */
+    public function getCreationDate();
 
-	/**
-	 * Set the object's creation date
-	 *
-	 * @param \DateTimeImmutable $creationDate
-	 * @return LocalPath New object path
-	 */
-	public function setCreationDate(\DateTimeImmutable $creationDate);
+    /**
+     * Set the object's creation date
+     *
+     * @param \DateTimeImmutable $creationDate
+     * @return LocalPath New object path
+     */
+    public function setCreationDate(\DateTimeImmutable $creationDate);
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType();
+    /**
+     * Return the object type
+     *
+     * @return Type Object type
+     */
+    public function getType();
 
-	/**
-	 * Set the object type
-	 *
-	 * @param Type $type Object type
-	 * @return LocalPath New object path
-	 */
-	public function setType(Type $type);
+    /**
+     * Set the object type
+     *
+     * @param Type $type Object type
+     * @return LocalPath New object path
+     */
+    public function setType(Type $type);
 
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId();
+    /**
+     * Return the object ID
+     *
+     * @return Id Object ID
+     */
+    public function getId();
 
-	/**
-	 * Set the object ID
-	 *
-	 * @param Id $id Object ID
-	 * @return LocalPath New object path
-	 */
-	public function setId(Id $id);
+    /**
+     * Set the object ID
+     *
+     * @param Id $id Object ID
+     * @return LocalPath New object path
+     */
+    public function setId(Id $id);
 
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision();
+    /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision();
 
-	/**
-	 * Set the object revision
-	 *
-	 * @param Revision $revision Object revision
-	 * @return LocalPath New object path
-	 */
-	public function setRevision(Revision $revision);
+    /**
+     * Set the object revision
+     *
+     * @param Revision $revision Object revision
+     * @return LocalPath New object path
+     */
+    public function setRevision(Revision $revision);
 }

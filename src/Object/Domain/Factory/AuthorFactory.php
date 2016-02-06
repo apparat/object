@@ -53,38 +53,40 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 class AuthorFactory
 {
-	/**
-	 * Parse and instantiate an author serialization
-	 *
-	 * @param string $author Author serialization
-	 * @param RepositoryInterface $contextRepository Context repository
-	 * @return AuthorInterface Object author
-	 * @throws InvalidArgumentException If the author format is invalid
-	 */
-	public static function createFromString($author, RepositoryInterface $contextRepository = null)
-	{
-		// Try to instantiate an apparat object based author
-		try {
-			$apparatUrl = new ApparatUrl($author, true, $contextRepository);
-			return new ApparatAuthor($apparatUrl);
+    /**
+     * Parse and instantiate an author serialization
+     *
+     * @param string $author Author serialization
+     * @param RepositoryInterface $contextRepository Context repository
+     * @return AuthorInterface Object author
+     * @throws InvalidArgumentException If the author format is invalid
+     */
+    public static function createFromString($author, RepositoryInterface $contextRepository = null)
+    {
+        // Try to instantiate an apparat object based author
+        try {
+            $apparatUrl = new ApparatUrl($author, true, $contextRepository);
+            return new ApparatAuthor($apparatUrl);
 
-			// If there's an apparat URL problem
-		} catch (ApparatInvalidArgumentException $e) {
-			return new InvalidAuthor($author, $e);
+            // If there's an apparat URL problem
+        } catch (ApparatInvalidArgumentException $e) {
+            return new InvalidAuthor($author, $e);
 
-			// Proceed on other errors
-		} catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
-		}
+            // Proceed on other errors
+        } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
+        }
 
-		// Try to instantiate a generic author
-		try {
-			return GenericAuthor::unserialize($author);
+        // Try to instantiate a generic author
+        try {
+            return GenericAuthor::unserialize($author);
 
-			// Proceed on errors
-		} catch (InvalidArgumentException $e) {
-		}
+            // Proceed on errors
+        } catch (InvalidArgumentException $e) {
+        }
 
-		throw new InvalidArgumentException(sprintf('Invalid author format "%s"', $author),
-			InvalidArgumentException::INVALID_AUTHOR_FORMAT);
-	}
+        throw new InvalidArgumentException(
+            sprintf('Invalid author format "%s"', $author),
+            InvalidArgumentException::INVALID_AUTHOR_FORMAT
+        );
+    }
 }

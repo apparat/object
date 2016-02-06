@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Framework\Factory\ResourceFactory;
-use Apparat\Resource\Framework\Io\File\AbstractFileReaderWriter;
+use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 
 /**
  * File adapter strategy
@@ -53,134 +53,142 @@ use Apparat\Resource\Framework\Io\File\AbstractFileReaderWriter;
  */
 class FileAdapterStrategy extends AbstractAdapterStrategy
 {
-	/**
-	 * Configuration
-	 *
-	 * Example
-	 *
-	 * @var array
-	 */
-	protected $_config = null;
-	/**
-	 * Root directory (without
-	 *
-	 * @var string
-	 */
-	protected $_root = null;
+    /**
+     * Configuration
+     *
+     * Example
+     *
+     * @var array
+     */
+    protected $_config = null;
+    /**
+     * Root directory (without
+     *
+     * @var string
+     */
+    protected $_root = null;
 
-	/**
-	 * Adapter strategy type
-	 *
-	 * @var string
-	 */
-	const TYPE = 'file';
+    /**
+     * Adapter strategy type
+     *
+     * @var string
+     */
+    const TYPE = 'file';
 
-	/**
-	 * Adapter strategy constructor
-	 *
-	 * @param array $config Adapter strategy configuration
-	 * @throws InvalidArgumentException If the root directory configuration is empty
-	 * @throws InvalidArgumentException If the root directory configuration is invalid
-	 */
-	public function __construct(array $config)
-	{
-		parent::__construct($config, ['root']);
+    /**
+     * Adapter strategy constructor
+     *
+     * @param array $config Adapter strategy configuration
+     * @throws InvalidArgumentException If the root directory configuration is empty
+     * @throws InvalidArgumentException If the root directory configuration is invalid
+     */
+    public function __construct(array $config)
+    {
+        parent::__construct($config, ['root']);
 
-		// If the root directory configuration is empty
-		if (empty($this->_config['root'])) {
-			throw new InvalidArgumentException('Empty file adapter strategy root',
-				InvalidArgumentException::EMTPY_FILE_STRATEGY_ROOT);
-		}
+        // If the root directory configuration is empty
+        if (empty($this->_config['root'])) {
+            throw new InvalidArgumentException(
+                'Empty file adapter strategy root',
+                InvalidArgumentException::EMTPY_FILE_STRATEGY_ROOT
+            );
+        }
 
-		// If the root directory configuration is invalid
-		$this->_root = realpath($this->_config['root']);
-		if (empty($this->_root) || !@is_dir($this->_root)) {
-			throw new InvalidArgumentException(sprintf('Invalid file adapter strategy root "%s"',
-				$this->_config['root']),
-				InvalidArgumentException::INVALID_FILE_STRATEGY_ROOT);
-		}
-	}
+        // If the root directory configuration is invalid
+        $this->_root = realpath($this->_config['root']);
+        if (empty($this->_root) || !@is_dir($this->_root)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid file adapter strategy root "%s"',
+                    $this->_config['root']
+                ),
+                InvalidArgumentException::INVALID_FILE_STRATEGY_ROOT
+            );
+        }
+    }
 
-	/**
-	 * Return the adapter strategy type
-	 *
-	 * @return string Adapter strategy type
-	 */
-	public function getType()
-	{
-		return self::TYPE;
-	}
+    /**
+     * Return the adapter strategy type
+     *
+     * @return string Adapter strategy type
+     */
+    public function getType()
+    {
+        return self::TYPE;
+    }
 
-	/**
-	 * Find objects by selector
-	 *
-	 * @param Selector|SelectorInterface $selector Object selector
-	 * @param RepositoryInterface $repository Object repository
-	 * @return array[PathInterface] Object paths
-	 */
-	public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
-	{
-		chdir($this->_root);
+    /**
+     * Find objects by selector
+     *
+     * @param Selector|SelectorInterface $selector Object selector
+     * @param RepositoryInterface $repository Object repository
+     * @return array[PathInterface] Object paths
+     */
+    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+    {
+        chdir($this->_root);
 
-		// Build a glob string from the selector
-		$glob = '';
-		$globFlags = GLOB_ONLYDIR | GLOB_NOSORT;
+        // Build a glob string from the selector
+        $glob = '';
+        $globFlags = GLOB_ONLYDIR | GLOB_NOSORT;
 
-		$year = $selector->getYear();
-		if ($year !== null) {
-			$glob .= '/'.$year;
-		}
+        $year = $selector->getYear();
+        if ($year !== null) {
+            $glob .= '/'.$year;
+        }
 
-		$month = $selector->getMonth();
-		if ($month !== null) {
-			$glob .= '/'.$month;
-		}
+        $month = $selector->getMonth();
+        if ($month !== null) {
+            $glob .= '/'.$month;
+        }
 
-		$day = $selector->getDay();
-		if ($day !== null) {
-			$glob .= '/'.$day;
-		}
+        $day = $selector->getDay();
+        if ($day !== null) {
+            $glob .= '/'.$day;
+        }
 
-		$hour = $selector->getHour();
-		if ($hour !== null) {
-			$glob .= '/'.$hour;
-		}
+        $hour = $selector->getHour();
+        if ($hour !== null) {
+            $glob .= '/'.$hour;
+        }
 
-		$minute = $selector->getMinute();
-		if ($minute !== null) {
-			$glob .= '/'.$minute;
-		}
+        $minute = $selector->getMinute();
+        if ($minute !== null) {
+            $glob .= '/'.$minute;
+        }
 
-		$second = $selector->getSecond();
-		if ($second !== null) {
-			$glob .= '/'.$second;
-		}
+        $second = $selector->getSecond();
+        if ($second !== null) {
+            $glob .= '/'.$second;
+        }
 
-		$id = $selector->getId();
-		$type = $selector->getType();
-		if (($id !== null) || ($type !== null)) {
-			$glob .= '/'.($id ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
+        $id = $selector->getId();
+        $type = $selector->getType();
+        if (($id !== null) || ($type !== null)) {
+            $glob .= '/'.($id ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
 
-			$revision = $selector->getRevision();
-			if ($revision !== null) {
-				$glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision;
-				$globFlags &= ~GLOB_ONLYDIR;
-			}
-		}
+            $revision = $selector->getRevision();
+            if ($revision !== null) {
+                $glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision;
+                $globFlags &= ~GLOB_ONLYDIR;
+            }
+        }
 
-		return array_map(function ($objectPath) use ($repository) {
-			return new RepositoryPath($repository, '/'.$objectPath);
-		}, glob(ltrim($glob, '/'), $globFlags));
-	}
+        return array_map(
+            function ($objectPath) use ($repository) {
+                return new RepositoryPath($repository, '/'.$objectPath);
+            }, glob(ltrim($glob, '/'), $globFlags)
+        );
+    }
 
-	/**
-	 * Find and return an object resource
-	 *
-	 * @param string $resourcePath Repository relative resource path
-	 * @return ResourceInterface Object resource
-	 */
-	public function getObjectResource($resourcePath)
-	{
-		return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->_root.$resourcePath);
-	}
+    /**
+     * Find and return an object resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return ResourceInterface Object resource
+     */
+    public function getObjectResource($resourcePath)
+    {
+        return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->_root.$resourcePath);
+    }
 }

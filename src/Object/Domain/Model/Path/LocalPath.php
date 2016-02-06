@@ -48,226 +48,240 @@ use Apparat\Object\Domain\Model\Object\Type;
  */
 class LocalPath implements PathInterface
 {
-	/**
-	 * Creation date
-	 *
-	 * @var \DateTimeImmutable
-	 */
-	protected $_creationDate = null;
-	/**
-	 * Object ID
-	 *
-	 * @var int
-	 */
-	protected $_id = null;
-	/**
-	 * Object type
-	 *
-	 * @var Type
-	 */
-	protected $_type = null;
-	/**
-	 * Object revision
-	 *
-	 * @var Revision
-	 */
-	protected $_revision = null;
-	/**
-	 * Date PCRE pattern
-	 *
-	 * @var array
-	 */
-	protected static $_datePattern = [
-		'Y' => '(?P<year>\d{4})',
-		'm' => '(?P<month>\d{2})',
-		'd' => '(?P<day>\d{2})',
-		'H' => '(?P<hour>\d{2})',
-		'i' => '(?P<minute>\d{2})',
-		's' => '(?P<second>\d{2})',
-	];
+    /**
+     * Creation date
+     *
+     * @var \DateTimeImmutable
+     */
+    protected $_creationDate = null;
+    /**
+     * Object ID
+     *
+     * @var int
+     */
+    protected $_id = null;
+    /**
+     * Object type
+     *
+     * @var Type
+     */
+    protected $_type = null;
+    /**
+     * Object revision
+     *
+     * @var Revision
+     */
+    protected $_revision = null;
+    /**
+     * Date PCRE pattern
+     *
+     * @var array
+     */
+    protected static $_datePattern = [
+        'Y' => '(?P<year>\d{4})',
+        'm' => '(?P<month>\d{2})',
+        'd' => '(?P<day>\d{2})',
+        'H' => '(?P<hour>\d{2})',
+        'i' => '(?P<minute>\d{2})',
+        's' => '(?P<second>\d{2})',
+    ];
 
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * PUBLIC METHODS
+     *******************************************************************************/
 
-	/**
-	 * Object URL constructor
-	 *
-	 * @param string $path Object path
-	 * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object URLs)]
-	 * @param string $leader Leading base path
-	 * @throws InvalidArgumentException If the date precision is invalid
-	 * @throws InvalidArgumentException If the object URL path is invalid
-	 */
-	public function __construct($path, $datePrecision = null, &$leader = '')
-	{
-		// If the local default date precision should be used
-		if ($datePrecision === null) {
-			$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-		}
+    /**
+     * Object URL constructor
+     *
+     * @param string $path Object path
+     * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object URLs)]
+     * @param string $leader Leading base path
+     * @throws InvalidArgumentException If the date precision is invalid
+     * @throws InvalidArgumentException If the object URL path is invalid
+     */
+    public function __construct($path, $datePrecision = null, &$leader = '')
+    {
+        // If the local default date precision should be used
+        if ($datePrecision === null) {
+            $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
+        }
 
-		// If a valid integer date precision is given
-		if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-			$pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode('/',
-					array_slice(self::$_datePattern, 0, $datePrecision)).($datePrecision ? '/' : '');
+        // If a valid integer date precision is given
+        if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
+            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode(
+                    '/',
+                    array_slice(self::$_datePattern, 0, $datePrecision)
+                ).($datePrecision ? '/' : '');
 
-			// Else if the date precision may be arbitrary
-		} elseif ($datePrecision === true) {
-			$pathPattern = '%(?:/'.implode('(?:/', self::$_datePattern);
-			$pathPattern .= str_repeat(')?', count(self::$_datePattern));
-			$pathPattern .= '/';
+            // Else if the date precision may be arbitrary
+        } elseif ($datePrecision === true) {
+            $pathPattern = '%(?:/'.implode('(?:/', self::$_datePattern);
+            $pathPattern .= str_repeat(')?', count(self::$_datePattern));
+            $pathPattern .= '/';
 
-			// Else: Error
-		} else {
-			throw new InvalidArgumentException(sprintf('Invalid date precision "%s" (%s)', strval($datePrecision),
-				gettype($datePrecision)), InvalidArgumentException::INVALID_DATE_PRECISION);
-		}
+            // Else: Error
+        } else {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid date precision "%s" (%s)', strval($datePrecision),
+                    gettype($datePrecision)
+                ), InvalidArgumentException::INVALID_DATE_PRECISION
+            );
+        }
 
-		$pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+        $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
-		if (empty($path) || !preg_match($pathPattern, $path, $pathParts)) {
-			throw new InvalidArgumentException(sprintf('Invalid object URL path "%s"',
-				empty($path) ? '(empty)' : $path),
-				InvalidArgumentException::INVALID_OBJECT_URL_PATH);
-		}
+        if (empty($path) || !preg_match($pathPattern, $path, $pathParts)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid object URL path "%s"',
+                    empty($path) ? '(empty)' : $path
+                ),
+                InvalidArgumentException::INVALID_OBJECT_URL_PATH
+            );
+        }
 
-		// If date components are used
-		if ($datePrecision) {
-			$year = $pathParts['year'];
-			$month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
-			$day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
-			$hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
-			$minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
-			$second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
-			$this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
-		}
+        // If date components are used
+        if ($datePrecision) {
+            $year = $pathParts['year'];
+            $month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
+            $day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
+            $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
+            $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
+            $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
+            $this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
+        }
 
-		// Determine the leader
-		$leader = ($datePrecision === true) ? substr($path, 0, strlen($path) - strlen($pathParts[0])) : $pathParts['leader'];
+        // Determine the leader
+        $leader = ($datePrecision === true) ? substr(
+            $path, 0, strlen($path) - strlen($pathParts[0])
+        ) : $pathParts['leader'];
 
-		// Set the ID
-		$this->_id = new Id(intval($pathParts['id']));
+        // Set the ID
+        $this->_id = new Id(intval($pathParts['id']));
 
-		// Set the type
-		$this->_type = new Type($pathParts['type']);
+        // Set the type
+        $this->_type = new Type($pathParts['type']);
 
-		// Set the revision
-		$this->_revision = new Revision(empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']));
-	}
+        // Set the revision
+        $this->_revision = new Revision(
+            empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])
+        );
+    }
 
-	/**
-	 * Create and return the object URL path
-	 *
-	 * @return string Object path
-	 */
-	public function __toString()
-	{
-		$path = [];
-		$datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
+    /**
+     * Create and return the object URL path
+     *
+     * @return string Object path
+     */
+    public function __toString()
+    {
+        $path = [];
+        $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
-		// Add the creation date
-		foreach (array_slice(array_keys(self::$_datePattern), 0, $datePrecision) as $dateFormat) {
-			$path[] = $this->_creationDate->format($dateFormat);
-		}
+        // Add the creation date
+        foreach (array_slice(array_keys(self::$_datePattern), 0, $datePrecision) as $dateFormat) {
+            $path[] = $this->_creationDate->format($dateFormat);
+        }
 
-		// Add the object ID and type
-		$path[] = $this->_id->getId().'.'.$this->_type->getType();
+        // Add the object ID and type
+        $path[] = $this->_id->getId().'.'.$this->_type->getType();
 
-		// Add the ID and revision
-		$path[] = rtrim($this->_id->getId().'-'.$this->_revision->getRevision(), '-');
+        // Add the ID and revision
+        $path[] = rtrim($this->_id->getId().'-'.$this->_revision->getRevision(), '-');
 
-		return '/'.implode('/', $path);
-	}
+        return '/'.implode('/', $path);
+    }
 
-	/**
-	 * Return the object's creation date
-	 *
-	 * @return \DateTimeImmutable Object creation date
-	 */
-	public function getCreationDate()
-	{
-		return $this->_creationDate;
-	}
+    /**
+     * Return the object's creation date
+     *
+     * @return \DateTimeImmutable Object creation date
+     */
+    public function getCreationDate()
+    {
+        return $this->_creationDate;
+    }
 
-	/**
-	 * Set the object's creation date
-	 *
-	 * @param \DateTimeImmutable $creationDate
-	 * @return LocalPath New object path
-	 */
-	public function setCreationDate(\DateTimeImmutable $creationDate)
-	{
-		$path = clone $this;
-		$path->_creationDate = $creationDate;
-		return $path;
-	}
+    /**
+     * Set the object's creation date
+     *
+     * @param \DateTimeImmutable $creationDate
+     * @return LocalPath New object path
+     */
+    public function setCreationDate(\DateTimeImmutable $creationDate)
+    {
+        $path = clone $this;
+        $path->_creationDate = $creationDate;
+        return $path;
+    }
 
-	/**
-	 * Return the object type
-	 *
-	 * @return Type Object type
-	 */
-	public function getType()
-	{
-		return $this->_type;
-	}
+    /**
+     * Return the object type
+     *
+     * @return Type Object type
+     */
+    public function getType()
+    {
+        return $this->_type;
+    }
 
-	/**
-	 * Set the object type
-	 *
-	 * @param Type $type Object type
-	 * @return LocalPath New object path
-	 */
-	public function setType(Type $type)
-	{
-		$path = clone $this;
-		$path->_type = $type;
-		return $path;
-	}
+    /**
+     * Set the object type
+     *
+     * @param Type $type Object type
+     * @return LocalPath New object path
+     */
+    public function setType(Type $type)
+    {
+        $path = clone $this;
+        $path->_type = $type;
+        return $path;
+    }
 
-	/**
-	 * Return the object ID
-	 *
-	 * @return Id Object ID
-	 */
-	public function getId()
-	{
-		return $this->_id;
-	}
+    /**
+     * Return the object ID
+     *
+     * @return Id Object ID
+     */
+    public function getId()
+    {
+        return $this->_id;
+    }
 
-	/**
-	 * Set the object ID
-	 *
-	 * @param Id $id Object ID
-	 * @return LocalPath New object path
-	 */
-	public function setId(Id $id)
-	{
-		$path = clone $this;
-		$path->_id = $id;
-		return $path;
-	}
+    /**
+     * Set the object ID
+     *
+     * @param Id $id Object ID
+     * @return LocalPath New object path
+     */
+    public function setId(Id $id)
+    {
+        $path = clone $this;
+        $path->_id = $id;
+        return $path;
+    }
 
-	/**
-	 * Return the object revision
-	 *
-	 * @return Revision Object revision
-	 */
-	public function getRevision()
-	{
-		return $this->_revision;
-	}
+    /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision()
+    {
+        return $this->_revision;
+    }
 
-	/**
-	 * Set the object revision
-	 *
-	 * @param Revision $revision Object revision
-	 * @return LocalPath New object path
-	 */
-	public function setRevision(Revision $revision)
-	{
-		$path = clone $this;
-		$path->_revision = $revision;
-		return $path;
-	}
+    /**
+     * Set the object revision
+     *
+     * @param Revision $revision Object revision
+     * @return LocalPath New object path
+     */
+    public function setRevision(Revision $revision)
+    {
+        $path = clone $this;
+        $path->_revision = $revision;
+        return $path;
+    }
 }

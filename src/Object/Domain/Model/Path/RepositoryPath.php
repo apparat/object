@@ -46,54 +46,54 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 class RepositoryPath extends LocalPath implements RepositoryPathInterface
 {
-	/**
-	 * Repository
-	 *
-	 * @var RepositoryInterface
-	 */
-	protected $_repository;
+    /**
+     * Repository
+     *
+     * @var RepositoryInterface
+     */
+    protected $_repository;
 
-	/**
-	 * Repository path constructor
-	 *
-	 * @param RepositoryInterface $repository Object repository this path applies to
-	 * @param string|PathInterface $path Object path
-	 */
-	public function __construct(RepositoryInterface $repository, $path)
-	{
-		// If an instantiated path (local path, respository path, object URL) is given
-		if ($path instanceof PathInterface) {
-			$this->_creationDate = $path->getCreationDate();
-			$this->_id = $path->getId();
-			$this->_type = $path->getType();
-			$this->_revision = $path->getRevision();
+    /**
+     * Repository path constructor
+     *
+     * @param RepositoryInterface $repository Object repository this path applies to
+     * @param string|PathInterface $path Object path
+     */
+    public function __construct(RepositoryInterface $repository, $path)
+    {
+        // If an instantiated path (local path, respository path, object URL) is given
+        if ($path instanceof PathInterface) {
+            $this->_creationDate = $path->getCreationDate();
+            $this->_id = $path->getId();
+            $this->_type = $path->getType();
+            $this->_revision = $path->getRevision();
 
-			// Else: Parse as string
-		} else {
-			parent::__construct($path);
-		}
+            // Else: Parse as string
+        } else {
+            parent::__construct($path);
+        }
 
-		$this->_repository = $repository;
-	}
+        $this->_repository = $repository;
+    }
 
-	/**
-	 * Return the repository this path applies to
-	 *
-	 * @return RepositoryInterface Repository
-	 */
-	public function getRepository()
-	{
-		return $this->_repository;
-	}
+    /**
+     * Return the repository this path applies to
+     *
+     * @return RepositoryInterface Repository
+     */
+    public function getRepository()
+    {
+        return $this->_repository;
+    }
 
-	/**
-	 * Return the repository relative object path with a file extension
-	 *
-	 * @param string $extension File extension
-	 * @return string Repository relative object path with extension
-	 */
-	public function withExtension($extension)
-	{
-		return $this.'.'.strtolower($extension);
-	}
+    /**
+     * Return the repository relative object path with a file extension
+     *
+     * @param string $extension File extension
+     * @return string Repository relative object path with extension
+     */
+    public function withExtension($extension)
+    {
+        return $this.'.'.strtolower($extension);
+    }
 }

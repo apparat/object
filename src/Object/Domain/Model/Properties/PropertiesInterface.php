@@ -46,18 +46,18 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  */
 interface PropertiesInterface
 {
-	/**
-	 * Property traversal separator
-	 *
-	 * @var string
-	 */
-	const PROPERTY_TRAVERSAL_SEPARATOR = ':';
+    /**
+     * Property traversal separator
+     *
+     * @var string
+     */
+    const PROPERTY_TRAVERSAL_SEPARATOR = ':';
 
-	/**
-	 * Properties constructor
-	 *
-	 * @param array $data Property data
-	 * @param ObjectInterface $object Owner object
-	 */
-	public function __construct(array $data, ObjectInterface $object);
+    /**
+     * Properties constructor
+     *
+     * @param array $data Property data
+     * @param ObjectInterface $object Owner object
+     */
+    public function __construct(array $data, ObjectInterface $object);
 }

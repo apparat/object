@@ -37,7 +37,7 @@
 namespace Apparat\Object\Framework\Model\Object;
 
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Resource\Framework\Model\Resource\FrontMarkResource;
+use Apparat\Resource\Infrastructure\Model\Resource\FrontMarkResource;
 
 /**
  * Object resource
@@ -47,47 +47,47 @@ use Apparat\Resource\Framework\Model\Resource\FrontMarkResource;
  */
 class Resource extends FrontMarkResource implements ResourceInterface
 {
-	/**
-	 * Return the property data
-	 *
-	 * @return array Property data
-	 */
-	public function getPropertyData()
-	{
-		return $this->getData();
-	}
+    /**
+     * Return the property data
+     *
+     * @return array Property data
+     */
+    public function getPropertyData()
+    {
+        return $this->getData();
+    }
 
-	/**
-	 * Set the property data
-	 *
-	 * @param array $data Property data
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPropertyData(array $data)
-	{
-		$this->setData($data);
-		return $this;
-	}
+    /**
+     * Set the property data
+     *
+     * @param array $data Property data
+     * @return ResourceInterface Object resource
+     */
+    public function setPropertyData(array $data)
+    {
+        $this->setData($data);
+        return $this;
+    }
 
-	/**
-	 * Return the object payload
-	 *
-	 * @return string Object payload
-	 */
-	public function getPayload()
-	{
-		return $this->get();
-	}
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload()
+    {
+        return $this->get();
+    }
 
-	/**
-	 * Set the object payload
-	 *
-	 * @param string $payload Object payload
-	 * @return ResourceInterface Object resource
-	 */
-	public function setPayload($payload)
-	{
-		$this->set($payload);
-		return $this;
-	}
+    /**
+     * Set the object payload
+     *
+     * @param string $payload Object payload
+     * @return ResourceInterface Object resource
+     */
+    public function setPayload($payload)
+    {
+        $this->set($payload);
+        return $this;
+    }
 }

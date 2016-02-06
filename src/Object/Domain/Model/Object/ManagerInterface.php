@@ -47,21 +47,21 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  */
 interface ManagerInterface
 {
-	/**
-	 * Create and return a new object
-	 *
-	 * @param RepositoryInterface $repository Repository
-	 * @param Type $type Object type
-	 * @param array $data Object data
-	 * @return ObjectInterface Object
-	 */
-	public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
+    /**
+     * Create and return a new object
+     *
+     * @param RepositoryInterface $repository Repository
+     * @param Type $type Object type
+     * @param array $data Object data
+     * @return ObjectInterface Object
+     */
+    public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
 
-	/**
-	 * Load an object from a repository
-	 *
-	 * @param RepositoryPath $path Repository object path
-	 * @return ObjectInterface Object
-	 */
-	public function loadObject(RepositoryPath $path);
+    /**
+     * Load an object from a repository
+     *
+     * @param RepositoryPath $path Repository object path
+     * @return ObjectInterface Object
+     */
+    public function loadObject(RepositoryPath $path);
 }

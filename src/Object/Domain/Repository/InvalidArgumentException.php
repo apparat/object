@@ -44,70 +44,70 @@ namespace Apparat\Object\Domain\Repository;
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
-	/**
-	 * Invalid argument name
-	 *
-	 * @var string
-	 */
-	protected $_argumentName = null;
-	/**
-	 * Invalid repository selector
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR = 1449961609;
-	/**
-	 * Invalid repository selector component
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_SELECTOR_COMPONENT = 1449999646;
-	/**
-	 * Invalid adapter strategy signature configuration
-	 *
-	 * @var int
-	 */
-	const INVALID_ADAPTER_STRATEGY_SIGNATURE = 1450136346;
-	/**
-	 * Invalid apparat base URL
-	 *
-	 * @var string
-	 */
-	const INVALID_APPARAT_BASE_URL = 1451162015;
-	/**
-	 * Unknown repository URL
-	 *
-	 * @var int
-	 */
-	const UNKNOWN_REPOSITORY_URL = 1451771889;
-	/**
-	 * Invalid repository URL
-	 *
-	 * @var int
-	 */
-	const INVALID_REPOSITORY_URL = 1453097878;
+    /**
+     * Invalid repository selector
+     *
+     * @var int
+     */
+    const INVALID_REPOSITORY_SELECTOR = 1449961609;
+    /**
+     * Invalid repository selector component
+     *
+     * @var int
+     */
+    const INVALID_REPOSITORY_SELECTOR_COMPONENT = 1449999646;
+    /**
+     * Invalid adapter strategy signature configuration
+     *
+     * @var int
+     */
+    const INVALID_ADAPTER_STRATEGY_SIGNATURE = 1450136346;
+    /**
+     * Invalid apparat base URL
+     *
+     * @var string
+     */
+    const INVALID_APPARAT_BASE_URL = 1451162015;
+    /**
+     * Unknown repository URL
+     *
+     * @var int
+     */
+    const UNKNOWN_REPOSITORY_URL = 1451771889;
+    /**
+     * Invalid repository URL
+     *
+     * @var int
+     */
+    const INVALID_REPOSITORY_URL = 1453097878;
+    /**
+     * Invalid argument name
+     *
+     * @var string
+     */
+    protected $_argumentName = null;
 
-	/**
-	 * Exception constructor
-	 *
-	 * @param string $message Exception message
-	 * @param string $code Exception code
-	 * @param \Exception|null $previous Previous exception
-	 * @param null $argumentName Invalid argument name
-	 */
-	public function __construct($message = '', $code = '', \Exception $previous = null, $argumentName = null)
-	{
-		parent::__construct($message, $code, $previous);
-		$this->_argumentName = $argumentName;
-	}
+    /**
+     * Exception constructor
+     *
+     * @param string $message Exception message
+     * @param string $code Exception code
+     * @param \Exception|null $previous Previous exception
+     * @param null $argumentName Invalid argument name
+     */
+    public function __construct($message = '', $code = '', \Exception $previous = null, $argumentName = null)
+    {
+        parent::__construct($message, $code, $previous);
+        $this->_argumentName = $argumentName;
+    }
 
-	/**
-	 * Return the invalid argument name
-	 *
-	 * @return string
-	 */
-	public function getArgumentName()
-	{
-		return $this->_argumentName;
-	}
+    /**
+     * Return the invalid argument name
+     *
+     * @return string
+     */
+    public function getArgumentName()
+    {
+        return $this->_argumentName;
+    }
 }

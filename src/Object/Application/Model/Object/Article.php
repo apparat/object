@@ -47,16 +47,16 @@ use Apparat\Object\Domain\Model\Object\Type;
  */
 class Article extends AbstractObject
 {
-	/**
-	 * Domain property collection class
-	 *
-	 * @var string
-	 */
-	protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
-	/**
-	 * Object type
-	 *
-	 * @var string
-	 */
-	const TYPE = Type::ARTICLE;
+    /**
+     * Domain property collection class
+     *
+     * @var string
+     */
+    protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    /**
+     * Object type
+     *
+     * @var string
+     */
+    const TYPE = Type::ARTICLE;
 }

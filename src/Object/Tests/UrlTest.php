@@ -1,7 +1,7 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
@@ -66,7 +66,7 @@ namespace Apparat\Object\Domain\Model\Path\ObjectUrl {
 	}
 }
 
-namespace ApparatTest {
+namespace Apparat\Object\Tests {
 
 	use Apparat\Object\Domain\Model\Object\Id;
 	use Apparat\Object\Domain\Model\Object\Revision;

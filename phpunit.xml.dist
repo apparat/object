@@ -1,7 +1,7 @@
 <phpunit bootstrap="./phpunit.php">
     <testsuites>
         <testsuite>
-            <directory>./src/Object/Framework/Test</directory>
+            <directory>./src/Object/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -17,7 +17,7 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">src/Object/Framework/Test</directory>
+                <directory suffix=".php">src/Object/Tests</directory>
                 <file>src/Object/Domain/Contract/SingletonTrait.php</file>
             </exclude>
         </whitelist>

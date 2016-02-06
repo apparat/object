@@ -1,11 +1,6 @@
 # Apparat Objects
-[![Build Status](https://secure.travis-ci.org/apparat/object.svg)](https://travis-ci.org/apparat/object)
-[![Coverage Status](https://coveralls.io/repos/apparat/object/badge.svg?branch=master&service=github)](https://coveralls.io/github/apparat/object?branch=master)
 
-Apparat object abstraction layer
-
-# Purpose of this module
-
+Purpose of this module
 * Mapping between objects and their resources (e.g. file system)
 	* Instantiate objects from object resources
 	* Create new resources from unpersisted objects
@@ -27,14 +22,33 @@ Apparat object abstraction layer
 	* `apparat://` URL handling
 	* Object ID assignment & incrementation
 
-# Object repositories
+### Object repositories
 
 Objects are stored in object repositories.
 
-# Environment variables
+### Environment variables
 
 Variable                       | Description
 -------------------------------|------------------------------------------------------------
-APPARAT_BASE_URL               | Absolute base URL of the apparat instance (including optional path component)
-OBJECT_DATE_PRECISION          | Precision for creation date encoding in object URLs, ranging from `0` (no dates in URLs) to `6`q ("`Y/m/d/H/i/s`"). Typical would be `3` ("`Y/m/d`").
-OBJECT_RESOURCE_EXTENSION      | File extension for object text resources (e.g. "`md`")
+`APPARAT_BASE_URL`             | Absolute base URL of the apparat instance (including optional path component)
+`OBJECT_DATE_PRECISION`        | Precision for creation date encoding in object URLs, ranging from `0` (no dates in URLs) to `6`q ("`Y/m/d/H/i/s`"). Typical would be `3` ("`Y/m/d`").
+`OBJECT_RESOURCE_EXTENSION`    | File extension for object text resources (e.g. "`md`")
+
+## Installation
+
+This library requires PHP 5.6 or later. I recommend using the latest available version of PHP as a matter of principle. It has no userland dependencies.
+
+## Quality
+
+[![Build Status](https://secure.travis-ci.org/apparat/object.svg)](https://travis-ci.org/apparat/object)
+[![Coverage Status](https://coveralls.io/repos/apparat/object/badge.svg?branch=master&service=github)](https://coveralls.io/github/apparat/object?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/apparat/object/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/apparat/object/?branch=master)
+[![Code Climate](https://codeclimate.com/github/apparat/object/badges/gpa.svg)](https://codeclimate.com/github/apparat/object)
+
+To run the unit tests at the command line, issue `composer install` and then `phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`, and [PHPUnit](http://phpunit.de/manual/) to be available as `phpunit`.
+
+This library attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If you notice compliance oversights, please send a patch via pull request.
+
+[PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
+[PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+[PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md

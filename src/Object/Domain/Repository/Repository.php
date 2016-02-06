@@ -1,7 +1,7 @@
 <?php
 
 /**
- * apparat-resource
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object\Domain
@@ -36,7 +36,6 @@
 namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
@@ -48,121 +47,125 @@ use Apparat\Object\Domain\Model\Path\RepositoryPath;
  */
 class Repository implements RepositoryInterface
 {
-	/**
-	 * Apparat base URL
-	 *
-	 * @var string
-	 */
-	protected $_url = null;
-	/**
-	 * Adapter strategy
-	 *
-	 * @var AdapterStrategyInterface
-	 */
-	protected $_adapterStrategy = null;
-	/**
-	 * Instance specific object cache
-	 *
-	 * @var array
-	 */
-	protected $_objectCache = [];
+    /**
+     * Apparat base URL
+     *
+     * @var string
+     */
+    protected $_url = null;
+    /**
+     * Adapter strategy
+     *
+     * @var AdapterStrategyInterface
+     */
+    protected $_adapterStrategy = null;
+    /**
+     * Instance specific object cache
+     *
+     * @var array
+     */
+    protected $_objectCache = [];
 
-	/*******************************************************************************
-	 * PUBLIC METHODS
-	 *******************************************************************************/
+    /*******************************************************************************
+     * PUBLIC METHODS
+     *******************************************************************************/
 
-	/**
-	 * Repository constructor
-	 *
-	 * @param string $url Apparat base URL
-	 * @param array $config Adapter strategy configuration
-	 */
-	public function __construct(
-		$url,
-		array $config
-	) {
-		$this->_url = rtrim('/'.$url, '/');
-		$this->_adapterStrategy = Service::getAdapterStrategyFactory()->createFromConfig($config);
-	}
+    /**
+     * Repository constructor
+     *
+     * @param string $url Apparat base URL
+     * @param array $config Adapter strategy configuration
+     */
+    public function __construct(
+        $url,
+        array $config
+    ) {
+        $this->_url = rtrim('/'.$url, '/');
+        $this->_adapterStrategy = Service::getAdapterStrategyFactory()->createFromConfig($config);
+    }
 
-	/**
-	 * Find objects by selector
-	 *
-	 * @param SelectorInterface $selector Object selector
-	 * @return Collection Object collection
-	 */
-	public function findObjects(SelectorInterface $selector)
-	{
-		return new Collection($this->_adapterStrategy->findObjectPaths($selector, $this));
-	}
+    /**
+     * Find objects by selector
+     *
+     * @param SelectorInterface $selector Object selector
+     * @return Collection Object collection
+     */
+    public function findObjects(SelectorInterface $selector)
+    {
+        return new Collection($this->_adapterStrategy->findObjectPaths($selector, $this));
+    }
 
-	/**
-	 * Add an object to the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function addObject(ObjectInterface $object)
-	{
-		// TODO: Implement addObject() method.
-	}
+    /**
+     * Add an object to the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return boolean Success
+     */
+    public function addObject(ObjectInterface $object)
+    {
+        // TODO: Implement addObject() method.
+    }
 
-	/**
-	 * Delete and object from the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return boolean Success
-	 */
-	public function deleteObject(ObjectInterface $object)
-	{
-		// TODO: Implement deleteObject() method.
-	}
+    /**
+     * Delete and object from the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return boolean Success
+     */
+    public function deleteObject(ObjectInterface $object)
+    {
+        // TODO: Implement deleteObject() method.
+    }
 
-	/**
-	 * Update an object in the repository
-	 *
-	 * @param ObjectInterface $object Object
-	 * @return bool Success
-	 */
-	public function updateObject(ObjectInterface $object)
-	{
-		// TODO: Implement updateObject() method.
-	}
+    /**
+     * Update an object in the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return bool Success
+     */
+    public function updateObject(ObjectInterface $object)
+    {
+        // TODO: Implement updateObject() method.
+    }
 
-	/**
-	 * Load an object from this repository
-	 *
-	 * @param PathInterface $path Object path
-	 * @return ObjectInterface Object
-	 */
-	public function loadObject(PathInterface $path)
-	{
-		// TODO: Really OK to cache? (Immutability ...)
-		if (empty($this->_objectCache[$path->getId()->getId()])) {
-			$this->_objectCache[$path->getId()->getId()] = Service::getObjectManager()->loadObject(new RepositoryPath($this,
-				$path));
-		}
+    /**
+     * Load an object from this repository
+     *
+     * @param PathInterface $path Object path
+     * @return ObjectInterface Object
+     */
+    public function loadObject(PathInterface $path)
+    {
+        // TODO: Really OK to cache? (Immutability ...)
+        if (empty($this->_objectCache[$path->getId()->getId()])) {
+            $this->_objectCache[$path->getId()->getId()] = Service::getObjectManager()->loadObject(
+                new RepositoryPath(
+                    $this,
+                    $path
+                )
+            );
+        }
 
-		return $this->_objectCache[$path->getId()->getId()];
-	}
+        return $this->_objectCache[$path->getId()->getId()];
+    }
 
-	/**
-	 * Return the repository's adapter strategy
-	 *
-	 * @return AdapterStrategyInterface Adapter strategy
-	 */
-	public function getAdapterStrategy()
-	{
-		return $this->_adapterStrategy;
-	}
+    /**
+     * Return the repository's adapter strategy
+     *
+     * @return AdapterStrategyInterface Adapter strategy
+     */
+    public function getAdapterStrategy()
+    {
+        return $this->_adapterStrategy;
+    }
 
-	/**
-	 * Return the repository URL (relative to Apparat base URL)
-	 *
-	 * @return string Repository URL
-	 */
-	public function getUrl()
-	{
-		return $this->_url;
-	}
+    /**
+     * Return the repository URL (relative to Apparat base URL)
+     *
+     * @return string Repository URL
+     */
+    public function getUrl()
+    {
+        return $this->_url;
+    }
 }

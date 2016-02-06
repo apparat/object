@@ -1,0 +1,28 @@
+engines:
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    checks:
+      Controversial/CamelCasePropertyName:
+        enabled: true
+      Controversial/CamelCaseMethodName:
+        enabled: true
+      CleanCode/StaticAccess:
+        enabled: false
+      Design/TooManyMethods:
+        enabled: true
+        maxmethods: 25
+      Design/TooManyPublicMethods:
+        enabled: true
+        maxmethods: 25
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+      standard: "PSR1,PSR2"
+ratings:
+  paths:
+  - "**.php"
+exclude_paths:
+- .git/**/*

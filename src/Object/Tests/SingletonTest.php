@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace ApparatTest;
+namespace Apparat\Object\Tests;
 
 /**
  * Exception error handler
@@ -79,8 +79,8 @@ class SingletonTest extends AbstractTest
 	 */
 	public static function setUpBeforeClass()
 	{
-		set_error_handler('ApparatTest\exceptionErrorHandler');
-		register_shutdown_function('ApparatTest\fatalErrorShutdownHandler');
+		set_error_handler('Apparat\Object\Tests\exceptionErrorHandler');
+		register_shutdown_function('Apparat\Object\Tests\fatalErrorShutdownHandler');
 		ini_set('display_errors', 'off');
 		error_reporting(E_ALL);
 	}

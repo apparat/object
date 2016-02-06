@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace ApparatTest;
+namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;

@@ -6,7 +6,7 @@ php:
   - hhvm
 
 env:
-- OBJECT_RESOURCE_EXTENSION=md OBJECT_DATE_PRECISION=3 APPARAT_BASE_URL="http://my.apparat.net"
+- APP_ENV=development
 
 matrix:
   allow_failures:

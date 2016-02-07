@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Module;
@@ -145,6 +146,9 @@ class RepositoryTest extends AbstractTest
         }
 
         putenv('OBJECT_DATE_PRECISION=6');
+
+        // Disable repository auto-connecting
+        Service::useAutoConnect(false);
     }
 
     /**
@@ -216,10 +220,11 @@ class RepositoryTest extends AbstractTest
     public function testInstantiateInvalidQueryRepositoryUrl()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => __DIR__,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => __DIR__,
+            ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL').'?a=1');
     }
@@ -227,7 +232,7 @@ class RepositoryTest extends AbstractTest
     /**
      * Test unknown public repository URL instantiation
      *
-     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Repository\InvalidArgumentException
      * @expectedExceptionCode 1451771889
      */
     public function testInstantiateUnknownRepositoryUrl()
@@ -296,9 +301,10 @@ class RepositoryTest extends AbstractTest
     public function testMissingFileStrategyRoot()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+            ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -312,10 +318,11 @@ class RepositoryTest extends AbstractTest
     public function testEmptyFileStrategyRoot()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => '',
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => '',
+            ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -329,10 +336,11 @@ class RepositoryTest extends AbstractTest
     public function testInvalidFileStrategyRoot()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => '__FILE__',
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => '__FILE__',
+            ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -346,10 +354,11 @@ class RepositoryTest extends AbstractTest
     public function testUnknownRepositoryUrlInstance()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => self::$_globBase,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => self::$_globBase,
+            ]
         );
         RepositoryFactory::instance('http://example.com');
     }
@@ -360,10 +369,11 @@ class RepositoryTest extends AbstractTest
     public function testFileRepository()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => self::$_globBase,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => self::$_globBase,
+            ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
         $this->assertInstanceOf(Repository::class, $fileRepository);
@@ -381,10 +391,11 @@ class RepositoryTest extends AbstractTest
     public function testFileRepositoryRevisions()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => self::$_globBase,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => self::$_globBase,
+            ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 
@@ -400,10 +411,11 @@ class RepositoryTest extends AbstractTest
     public function testRepositoryPath()
     {
         RepositoryFactory::register(
-            getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => self::$_globBase,
-                                    ]
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => self::$_globBase,
+            ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
         $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704.event/36704-1');

@@ -76,6 +76,7 @@ class Manager implements ManagerInterface
         $objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
+
         return ObjectFactory::createFromResource($objectResource, $path);
     }
 }

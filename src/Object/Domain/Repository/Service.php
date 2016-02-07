@@ -55,7 +55,7 @@ class Service
      *
      * @var array
      */
-    protected static $_registry = [];
+    protected static $registry = [];
     /**
      * Repository auto-connector service
      *
@@ -79,7 +79,7 @@ class Service
      *
      * @var bool
      */
-    protected static $_autoConnectEnabled = true;
+    protected static $autoConnectEnabled = true;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -99,7 +99,7 @@ class Service
     {
         // Repository registration
         $repositoryUrl = self::normalizeRepositoryUrl($url);
-        self::$_registry[$repositoryUrl] = $repository;
+        self::$registry[$repositoryUrl] = $repository;
     }
 
     /**
@@ -122,7 +122,7 @@ class Service
         $url = self::normalizeRepositoryUrl($url);
 
         // If the repository URL is unknown
-        if (!self::_connected($url)) {
+        if (!self::connected($url)) {
             throw new InvalidArgumentException(
                 sprintf('Unknown repository URL "%s"', $url),
                 InvalidArgumentException::UNKNOWN_REPOSITORY_URL
@@ -130,7 +130,7 @@ class Service
         }
 
         // Return the repository instance
-        return self::$_registry[$url];
+        return self::$registry[$url];
     }
 
     /**
@@ -142,7 +142,7 @@ class Service
     public static function isRegistered($url)
     {
         $url = self::normalizeRepositoryUrl($url);
-        return array_key_exists($url, self::$_registry) || self::_connected($url);
+        return array_key_exists($url, self::$registry) || self::connected($url);
     }
 
     /**
@@ -273,9 +273,9 @@ class Service
     public static function useAutoConnect($autoConnect = null)
     {
         if ($autoConnect !== null) {
-            self::$_autoConnectEnabled = (boolean)$autoConnect;
+            self::$autoConnectEnabled = (boolean)$autoConnect;
         }
-        return self::$_autoConnectEnabled;
+        return self::$autoConnectEnabled;
     }
 
     /*******************************************************************************
@@ -288,14 +288,14 @@ class Service
      * @param string $url Repository URL
      * @return bool Repository is connected
      */
-    protected static function _connected($url)
+    protected static function connected($url)
     {
-        // If the given repository URL is alredy registered: Success
-        if (!empty(self::$_registry[$url])) {
+        // If the given repository URL is already registered: Success
+        if (!empty(self::$registry[$url])) {
             return true;
         }
 
         // If auto-connect is enabled and the service is properly configured: Try to auto-connect the repository
-        return (self::isConfigured() && self::$_autoConnectEnabled && self::$_autoConnector->connect($url));
+        return (self::isConfigured() && self::$autoConnectEnabled && self::$_autoConnector->connect($url));
     }
 }

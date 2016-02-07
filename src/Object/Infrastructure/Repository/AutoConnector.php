@@ -51,19 +51,20 @@ class AutoConnector implements AutoConnectorInterface
 {
 
     /**
-     * Auto-connect a repository with by URL default settings
+     * Auto-connect a repository with URL default settings
      *
      * @param string $url Repository URL
      * @return boolean Success
      */
     public function connect($url)
     {
-        echo "Auto-connecting: $url\n";
+        echo "Auto-connecting: ".var_export($url, true).PHP_EOL;
         $config = null;
 
         // If it's an absolute URL
         $url = new Url($url);
         if ($url->isAbsolute()) {
+            // TODO: Absolute connection
 
 
             // Else: Relative / local URL -> Instantiate as file repository

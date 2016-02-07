@@ -95,7 +95,7 @@ class Repository
         // Normalize to return a repository instance matching this URL
         try {
             return Service::get($url);
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode());
         }
     }

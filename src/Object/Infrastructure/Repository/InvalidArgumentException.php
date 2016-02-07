@@ -42,7 +42,7 @@ namespace Apparat\Object\Infrastructure\Repository;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Infrastructure
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidArgumentException extends \Apparat\Object\Domain\Repository\InvalidArgumentException
 {
     /**
      * Empty file adapter strategy root

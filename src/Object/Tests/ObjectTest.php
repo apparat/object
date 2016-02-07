@@ -60,7 +60,7 @@ class ObjectTest extends AbstractTest
      *
      * @var Repository
      */
-    protected static $_repository = null;
+    protected static $repository = null;
 
     /**
      * Example object path
@@ -81,7 +81,7 @@ class ObjectTest extends AbstractTest
                                     ]
         );
 
-        self::$_repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
+        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
     }
 
     /**
@@ -111,7 +111,7 @@ class ObjectTest extends AbstractTest
     {
         $resource = $this->getMock(ResourceInterface::class);
         $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-        $articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
 
         /** @var ResourceInterface $resource */
         ObjectFactory::createFromResource($resource, $articleObjectPath);
@@ -122,8 +122,9 @@ class ObjectTest extends AbstractTest
      */
     public function testLoadArticleObjectMetaProperties()
     {
-        $articleObjectPath = new RepositoryPath(self::$_repository, self::OBJECT_PATH);
-        $articleObject = self::$_repository->loadObject($articleObjectPath);
+//        Service::useAutoConnect(true);
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+        $articleObject = self::$repository->loadObject($articleObjectPath);
         $this->assertInstanceOf(Article::class, $articleObject);
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());

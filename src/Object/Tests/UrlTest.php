@@ -76,6 +76,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Path\LocalPath;
     use Apparat\Object\Domain\Model\Path\ObjectUrl;
     use Apparat\Object\Domain\Model\Path\Url;
+    use Apparat\Object\Domain\Repository\Service;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Ports\Repository;
 
@@ -123,6 +124,15 @@ namespace Apparat\Object\Tests {
          * @var string
          */
         const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+
+        /**
+         * Setup
+         */
+        public static function setUpBeforeClass()
+        {
+            // Disable repository auto-connection
+            Service::useAutoConnect(false);
+        }
 
         /**
          * Test an URL
@@ -382,8 +392,7 @@ namespace Apparat\Object\Tests {
          */
         public function testUnknownRelativeApparatUrl()
         {
-            $apparatUrl = new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
-            $this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+            new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
         }
 
         /**
@@ -392,10 +401,11 @@ namespace Apparat\Object\Tests {
         public function testRelativeApparatUrl()
         {
             Repository::register(
-                self::REPOSITORY_URL, [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => __DIR__,
-                                    ]
+                self::REPOSITORY_URL,
+                [
+                    'type' => FileAdapterStrategy::TYPE,
+                    'root' => __DIR__,
+                ]
             );
             $apparatUrl = new ApparatUrl(self::URL);
             $this->assertInstanceOf(ApparatUrl::class, $apparatUrl);

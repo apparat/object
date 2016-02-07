@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Model\Author\ApparatAuthor;
@@ -43,8 +44,8 @@ use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Framework\Api\Object;
-use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Ports\Object;
 
 /**
  * Object tests
@@ -73,14 +74,14 @@ class ObjectTest extends AbstractTest
      */
     public static function setUpBeforeClass()
     {
-        \Apparat\Object\Framework\Api\Repository::register(
+        \Apparat\Object\Ports\Repository::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+                                    ]
         );
 
-        self::$_repository = \Apparat\Object\Framework\Api\Repository::instance(getenv('REPOSITORY_URL'));
+        self::$_repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
     }
 
     /**

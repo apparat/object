@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,32 +34,28 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Infrastructure\Factory;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Infrastructure\Model\Object\Resource;
 
 /**
- * Object facade
+ * Object resource factory
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
-class Object
+class ResourceFactory extends \Apparat\Resource\Ports\Resource
 {
     /**
-     * Instantiate and return an object
+     * Create and return a FrontMark resource instance
      *
-     * @param string $url Object URL (relative or absolute including the apparat base URL)
-     * @return ObjectInterface Object
-     * @api
+     * @param string $src Stream-wrapped source
+     * @param array $parameters Reader parameters
+     * @return ResourceInterface Object resource
      */
-    public static function instance($url)
+    public static function create($src, ...$parameters)
     {
-        // Instantiate the object URL
-        $objectUrl = new ObjectUrl($url, true);
-
-        // Instantiate the local object repository, load and return the object
-        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
+        return self::fromSource($src, Resource::class, ...$parameters);
     }
 }

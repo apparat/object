@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -35,6 +35,8 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Tests;
+
+use Apparat\Kernel\Tests\AbstractTest;
 
 /**
  * Exception error handler

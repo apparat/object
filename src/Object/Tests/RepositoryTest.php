@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -36,14 +36,16 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
-use Apparat\Object\Framework\Api\Repository as RepositoryFactory;
-use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
-use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Module;
+use Apparat\Object\Ports\Repository as RepositoryFactory;
 
 /**
  * Repository test
@@ -169,7 +171,7 @@ class RepositoryTest extends AbstractTest
      */
     public static function testInvalidSchemaBareUrl()
     {
-        \Apparat\Object\Domain\isAbsoluteBareUrl('ftp://example.com');
+        Module::isAbsoluteBareUrl('ftp://example.com');
     }
 
     /**
@@ -180,7 +182,7 @@ class RepositoryTest extends AbstractTest
      */
     public static function testInvalidQueryBareUrl()
     {
-        \Apparat\Object\Domain\isAbsoluteBareUrl('http://example.com/?a=1');
+        Module::isAbsoluteBareUrl('http://example.com/?a=1');
     }
 
     /**
@@ -191,13 +193,13 @@ class RepositoryTest extends AbstractTest
      */
     public static function testInvalidFragmentBareUrl()
     {
-        \Apparat\Object\Domain\isAbsoluteBareUrl('http://example.com/#1');
+        Module::isAbsoluteBareUrl('http://example.com/#1');
     }
 
     /**
      * Test invalid query repository URL registration
      *
-     * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Repository\InvalidArgumentException
      * @expectedExceptionCode 1451776509
      */
     public function testRegisterInvalidQueryRepositoryUrl()
@@ -208,16 +210,16 @@ class RepositoryTest extends AbstractTest
     /**
      * Test invalid query repository URL registration
      *
-     * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Repository\InvalidArgumentException
      * @expectedExceptionCode 1451776509
      */
     public function testInstantiateInvalidQueryRepositoryUrl()
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => __DIR__,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => __DIR__,
+                                    ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL').'?a=1');
     }
@@ -236,7 +238,7 @@ class RepositoryTest extends AbstractTest
     /**
      * Test empty repository config
      *
-     * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
      * @expectedExceptionCode 1449956347
      */
     public function testEmptyRepositoryConfig()
@@ -247,7 +249,7 @@ class RepositoryTest extends AbstractTest
     /**
      * Test empty adapter strategy configuration
      *
-     * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
      * @expectedExceptionCode 1449956347
      */
     public function testEmptyAdapterStrategyConfig()
@@ -258,7 +260,7 @@ class RepositoryTest extends AbstractTest
     /**
      * Test invalid adapter strategy type
      *
-     * @expectedException \Apparat\Object\Framework\Factory\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
      * @expectedExceptionCode 1449956471
      */
     public function testInvalidAdapterStrategyType()
@@ -295,8 +297,8 @@ class RepositoryTest extends AbstractTest
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                    ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -304,16 +306,16 @@ class RepositoryTest extends AbstractTest
     /**
      * Test empty file adapter strategy root
      *
-     * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Repository\InvalidArgumentException
      * @expectedExceptionCode 1449956977
      */
     public function testEmptyFileStrategyRoot()
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => '',
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => '',
+                                    ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -321,16 +323,16 @@ class RepositoryTest extends AbstractTest
     /**
      * Test invalid file adapter strategy root
      *
-     * @expectedException \Apparat\Object\Framework\Repository\InvalidArgumentException
+     * @expectedException \Apparat\Object\Infrastructure\Repository\InvalidArgumentException
      * @expectedExceptionCode 1449957017
      */
     public function testInvalidFileStrategyRoot()
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => '__FILE__',
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => '__FILE__',
+                                    ]
         );
         RepositoryFactory::instance(getenv('REPOSITORY_URL'));
     }
@@ -345,9 +347,9 @@ class RepositoryTest extends AbstractTest
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => self::$_globBase,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => self::$_globBase,
+                                    ]
         );
         RepositoryFactory::instance('http://example.com');
     }
@@ -359,9 +361,9 @@ class RepositoryTest extends AbstractTest
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => self::$_globBase,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => self::$_globBase,
+                                    ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
         $this->assertInstanceOf(Repository::class, $fileRepository);
@@ -380,9 +382,9 @@ class RepositoryTest extends AbstractTest
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => self::$_globBase,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => self::$_globBase,
+                                    ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 
@@ -399,9 +401,9 @@ class RepositoryTest extends AbstractTest
     {
         RepositoryFactory::register(
             getenv('REPOSITORY_URL'), [
-            'type' => FileAdapterStrategy::TYPE,
-            'root' => self::$_globBase,
-        ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => self::$_globBase,
+                                    ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
         $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704.event/36704-1');

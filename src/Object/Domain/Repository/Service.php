@@ -40,6 +40,7 @@ use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Module;
 
 /**
  * Repository register
@@ -249,7 +250,7 @@ class Service
             }
 
             // Ensure this is a bare URL (without query and fragment)
-            if (\Apparat\Object\Domain\isAbsoluteBareUrl($apparatBaseUrl.$url)) {
+            if (Module::isAbsoluteBareUrl($apparatBaseUrl.$url)) {
                 return ltrim($url, '/');
             }
         }

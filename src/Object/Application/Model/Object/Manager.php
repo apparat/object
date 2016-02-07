@@ -47,7 +47,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  * Object manager
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
 class Manager implements ManagerInterface
 {
@@ -72,7 +72,7 @@ class Manager implements ManagerInterface
      */
     public function loadObject(RepositoryPath $path)
     {
-        /** @var \Apparat\Object\Framework\Model\Object\Resource $objectResource */
+        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
         $objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );

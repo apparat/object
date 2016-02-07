@@ -5,10 +5,10 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -34,31 +34,6 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain;
+namespace Apparat\Object;
 
-/**
- * Test whether a URL is absolute and doesn't have query parameters and / or a fragment
- *
- * @param string $url URL
- * @return boolean If the URL is absolut and has neither query parameters or a fragment
- * @throws \RuntimeException If the URL is not absolute / valid
- * @throws \RuntimeException If the URL has query parameters
- * @throws \RuntimeException If the URL has a fragment
- */
-function isAbsoluteBareUrl($url)
-{
-    if (!filter_var($url) || !preg_match("%^https?\:\/\/%i", $url)) {
-        throw new \RuntimeException(sprintf('Apparat base URL "%s" must be valid', $url), 1451776352);
-    }
-    if (strlen(parse_url($url, PHP_URL_QUERY))) {
-        throw new \RuntimeException(
-            sprintf('Apparat base URL "%s" must not contain query parameters', $url),
-            1451776509
-        );
-    }
-    if (strlen(parse_url($url, PHP_URL_FRAGMENT))) {
-        throw new \RuntimeException(sprintf('Apparat base URL "%s" must not contain a fragment', $url), 1451776570);
-    }
-
-    return true;
-}
+Module::autorun();

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -68,6 +68,7 @@ namespace Apparat\Object\Domain\Model\Path\ObjectUrl {
 
 namespace Apparat\Object\Tests {
 
+    use Apparat\Kernel\Tests\AbstractTest;
     use Apparat\Object\Domain\Model\Object\Id;
     use Apparat\Object\Domain\Model\Object\Revision;
     use Apparat\Object\Domain\Model\Object\Type;
@@ -75,8 +76,8 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Path\LocalPath;
     use Apparat\Object\Domain\Model\Path\ObjectUrl;
     use Apparat\Object\Domain\Model\Path\Url;
-    use Apparat\Object\Framework\Api\Repository;
-    use Apparat\Object\Framework\Repository\FileAdapterStrategy;
+    use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+    use Apparat\Object\Ports\Repository;
 
     /**
      * Object URL tests
@@ -392,9 +393,9 @@ namespace Apparat\Object\Tests {
         {
             Repository::register(
                 self::REPOSITORY_URL, [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__,
-            ]
+                                        'type' => FileAdapterStrategy::TYPE,
+                                        'root' => __DIR__,
+                                    ]
             );
             $apparatUrl = new ApparatUrl(self::URL);
             $this->assertInstanceOf(ApparatUrl::class, $apparatUrl);

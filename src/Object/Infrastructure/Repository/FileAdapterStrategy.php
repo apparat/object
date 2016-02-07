@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Repository;
+namespace Apparat\Object\Infrastructure\Repository;
 
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
@@ -42,14 +42,14 @@ use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
-use Apparat\Object\Framework\Factory\ResourceFactory;
+use Apparat\Object\Infrastructure\Factory\ResourceFactory;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 
 /**
  * File adapter strategy
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
 class FileAdapterStrategy extends AbstractAdapterStrategy
 {

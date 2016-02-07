@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,28 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Factory;
-
-use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Object\Framework\Model\Object\Resource;
+namespace Apparat\Object\Infrastructure\Factory;
 
 /**
- * Object resource factory
+ * Repository invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
-class ResourceFactory extends \Apparat\Resource\Ports\Resource
+class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Create and return a FrontMark resource instance
+     * Empty adapter strategy configuration
      *
-     * @param string $src Stream-wrapped source
-     * @param array $parameters Reader parameters
-     * @return ResourceInterface Object resource
+     * @var int
      */
-    public static function create($src, ...$parameters)
-    {
-        return self::fromSource($src, Resource::class, ...$parameters);
-    }
+    const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
+    /**
+     * Invalid adapter strategy type
+     *
+     * @var int
+     */
+    const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
 }

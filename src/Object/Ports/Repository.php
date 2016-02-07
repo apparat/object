@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Ports
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,16 +34,16 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Api;
+namespace Apparat\Object\Ports;
 
 use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Framework\Repository\InvalidArgumentException;
+use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
 
 /**
  * Repository facade
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Ports
  */
 class Repository
 {

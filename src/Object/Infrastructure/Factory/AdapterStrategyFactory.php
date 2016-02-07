@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,18 +34,18 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Factory;
+namespace Apparat\Object\Infrastructure\Factory;
 
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
-use Apparat\Object\Framework\Repository\FileAdapterStrategy;
-use Apparat\Object\Framework\Repository\HttpAdapterStrategy;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Infrastructure\Repository\HttpAdapterStrategy;
 
 /**
  * Repository adapter strategy factory
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
 class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
 {

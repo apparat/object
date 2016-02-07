@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Ports
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,33 +34,32 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework;
+namespace Apparat\Object\Ports;
 
-// Instantiate Dotenv
-use Apparat\Object\Application\Model\Object\Manager;
-use Apparat\Object\Framework\Factory\AdapterStrategyFactory;
-use Apparat\Object\Framework\Repository\AutoConnector;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\ObjectUrl;
 
-$dotenv = new \Dotenv\Dotenv(dirname(dirname(dirname(__DIR__))));
-if (getenv('APP_ENV') === 'development') {
-    $dotenv->load();
+/**
+ * Object facade
+ *
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Ports
+ */
+class Object
+{
+    /**
+     * Instantiate and return an object
+     *
+     * @param string $url Object URL (relative or absolute including the apparat base URL)
+     * @return ObjectInterface Object
+     * @api
+     */
+    public static function instance($url)
+    {
+        // Instantiate the object URL
+        $objectUrl = new ObjectUrl($url, true);
+
+        // Instantiate the local object repository, load and return the object
+        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
+    }
 }
-
-// Validate the required environment variables
-$dotenv->required('APPARAT_BASE_URL')->notEmpty();
-$dotenv->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
-$dotenv->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
-
-// In-depth validation of the apparat base URL
-$apparatBaseUrl = getenv('APPARAT_BASE_URL');
-\Apparat\Object\Domain\isAbsoluteBareUrl($apparatBaseUrl);
-
-// Normalize the apparat base URL
-putenv('APPARAT_BASE_URL='.rtrim($apparatBaseUrl, '/').'/');
-
-// Unset global variables
-unset($dotenv);
-unset($apparatBaseUrl);
-
-// Configure the repository service
-\Apparat\Object\Domain\Repository\Service::configure(new AutoConnector(), new AdapterStrategyFactory(), new Manager());

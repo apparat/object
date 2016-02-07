@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,26 +34,48 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Repository;
+namespace Apparat\Object\Infrastructure\Repository;
+
+use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
- * Repository invalid argument exception
+ * HTTP / HTTPS adapter strategy
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class HttpAdapterStrategy extends AbstractAdapterStrategy
 {
     /**
-     * Empty file adapter strategy root
+     * Adapter strategy type
      *
-     * @var int
+     * @var string
      */
-    const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
+    const TYPE = 'http';
+
     /**
-     * Invalid file adapter strategy root
+     * Find objects by selector
      *
-     * @var int
+     * @param SelectorInterface $selector Object selector
+     * @param RepositoryInterface $repository Object repository
+     * @return array[PathInterface] Object paths
      */
-    const INVALID_FILE_STRATEGY_ROOT = 1449957017;
+    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+    {
+        // TODO: Implement findObjectPaths() method.
+    }
+
+    /**
+     * Find and return an object resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return ResourceInterface Object resource
+     */
+    public function getObjectResource($resourcePath)
+    {
+        // TODO: Implement getObjectResource() method.
+    }
 }

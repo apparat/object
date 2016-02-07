@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Framework
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
@@ -34,26 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Framework\Factory;
+namespace Apparat\Object\Infrastructure\Repository;
 
 /**
  * Repository invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Framework
+ * @subpackage Apparat\Object\Infrastructure
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Empty adapter strategy configuration
+     * Empty file adapter strategy root
      *
      * @var int
      */
-    const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
+    const EMTPY_FILE_STRATEGY_ROOT = 1449956977;
     /**
-     * Invalid adapter strategy type
+     * Invalid file adapter strategy root
      *
      * @var int
      */
-    const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
+    const INVALID_FILE_STRATEGY_ROOT = 1449957017;
 }

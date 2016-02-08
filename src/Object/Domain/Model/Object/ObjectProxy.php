@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
@@ -233,7 +234,7 @@ class ObjectProxy implements ObjectInterface
         if (!$this->_object instanceof ObjectInterface) {
 
             // Instantiate the local object repository, load and return the object
-            $this->_object = Service::get($this->_url)->loadObject($this->_url->getLocalPath());
+            $this->_object = Kernel::create(Service::class)->get($this->_url)->loadObject($this->_url->getLocalPath());
         }
 
         return $this->_object;

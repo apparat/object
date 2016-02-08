@@ -39,6 +39,10 @@ namespace Apparat\Object;
 use Apparat\Kernel\Ports\AbstractModule;
 use Apparat\Kernel\Ports\Contract\DependencyInjectionContainerInterface;
 use Apparat\Object\Application\Model\Object\Manager;
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
+use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
+use Apparat\Object\Domain\Repository\AutoConnectorInterface;
+use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
 use Dotenv\Dotenv;
@@ -71,20 +75,22 @@ class Module extends AbstractModule
     public function configureDependencyInjection(DependencyInjectionContainerInterface $diContainer)
     {
         parent::configureDependencyInjection($diContainer);
-    }
-
-    /**
-     * Auto-run
-     *
-     * @return void
-     */
-    public static function autorun()
-    {
-        parent::autorun();
 
         // Configure the repository service
-        // TODO Replace with appropriate DI configuration and remove the autorun() overlay
-        \Apparat\Object\Domain\Repository\Service::configure(new AutoConnector(), new AdapterStrategyFactory(), new Manager());
+        $diContainer->register(Service::class, [
+            'shared' => true,
+            'substitutions' => [
+                AutoConnectorInterface::class => [
+                    'instance' => AutoConnector::class,
+                ],
+                AdapterStrategyFactoryInterface::class => [
+                    'instance' => AdapterStrategyFactory::class,
+                ],
+                ManagerInterface::class => [
+                    'instance' => Manager::class,
+                ],
+            ]
+        ]);
     }
 
     /**

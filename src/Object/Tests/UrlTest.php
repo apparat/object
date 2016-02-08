@@ -68,6 +68,7 @@ namespace Apparat\Object\Domain\Model\Path\ObjectUrl {
 
 namespace Apparat\Object\Tests {
 
+    use Apparat\Kernel\Ports\Kernel;
     use Apparat\Kernel\Tests\AbstractTest;
     use Apparat\Object\Domain\Model\Object\Id;
     use Apparat\Object\Domain\Model\Object\Revision;
@@ -131,7 +132,7 @@ namespace Apparat\Object\Tests {
         public static function setUpBeforeClass()
         {
             // Disable repository auto-connection
-            Service::useAutoConnect(false);
+            Kernel::create(Service::class)->useAutoConnect(false);
         }
 
         /**

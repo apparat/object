@@ -122,7 +122,6 @@ class ObjectTest extends AbstractTest
      */
     public function testLoadArticleObjectMetaProperties()
     {
-//        Service::useAutoConnect(true);
         $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
         $articleObject = self::$repository->loadObject($articleObjectPath);
         $this->assertInstanceOf(Article::class, $articleObject);

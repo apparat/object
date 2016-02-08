@@ -35,6 +35,7 @@
 
 namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
@@ -81,7 +82,7 @@ class Repository implements RepositoryInterface
         array $config
     ) {
         $this->_url = rtrim('/'.$url, '/');
-        $this->_adapterStrategy = Service::getAdapterStrategyFactory()->createFromConfig($config);
+        $this->_adapterStrategy = Kernel::create(Service::class)->getAdapterStrategyFactory()->createFromConfig($config);
     }
 
     /**
@@ -138,7 +139,7 @@ class Repository implements RepositoryInterface
     {
         // TODO: Really OK to cache? (Immutability ...)
         if (empty($this->_objectCache[$path->getId()->getId()])) {
-            $this->_objectCache[$path->getId()->getId()] = Service::getObjectManager()->loadObject(
+            $this->_objectCache[$path->getId()->getId()] = Kernel::create(Service::class)->getObjectManager()->loadObject(
                 new RepositoryPath(
                     $this,
                     $path

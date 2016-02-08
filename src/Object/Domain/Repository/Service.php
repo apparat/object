@@ -55,35 +55,52 @@ class Service
      *
      * @var array
      */
-    protected static $registry = [];
+    protected $registry = [];
     /**
      * Repository auto-connector service
      *
      * @var AutoConnectorInterface
      */
-    protected static $_autoConnector = null;
+    protected $autoConnector = null;
     /**
      * Adapter strategy factory
      *
      * @var AdapterStrategyFactoryInterface
      */
-    protected static $_adapterStrategyFactory = null;
+    protected $adapterStrategyFactory = null;
     /**
      * Object manager
      *
      * @var ManagerInterface
      */
-    protected static $_objectManager = null;
+    protected $objectManager = null;
     /**
      * Auto-connect to repositories
      *
      * @var bool
      */
-    protected static $autoConnectEnabled = true;
+    protected $autoConnectEnabled = true;
 
     /*******************************************************************************
      * PUBLIC METHODS
      *******************************************************************************/
+
+    /**
+     * Repository service constructor
+     *
+     * @param AutoConnectorInterface $autoConnector Auto-connector
+     * @param AdapterStrategyFactoryInterface $adapterStrategyFactory Adapter strategy factory
+     * @param ManagerInterface $objectManager Object manager
+     */
+    public function __construct(
+        AutoConnectorInterface $autoConnector,
+        AdapterStrategyFactoryInterface $adapterStrategyFactory,
+        ManagerInterface $objectManager
+    ) {
+        $this->autoConnector = $autoConnector;
+        $this->adapterStrategyFactory = $adapterStrategyFactory;
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * Pre-register a repository
@@ -95,11 +112,11 @@ class Service
      * @param string|Url $url Repository URL
      * @param RepositoryInterface $repository Repository
      */
-    public static function register($url, RepositoryInterface $repository)
+    public function register($url, RepositoryInterface $repository)
     {
         // Repository registration
         $repositoryUrl = self::normalizeRepositoryUrl($url);
-        self::$registry[$repositoryUrl] = $repository;
+        $this->registry[$repositoryUrl] = $repository;
     }
 
     /**
@@ -114,11 +131,8 @@ class Service
      * @throws InvalidArgumentException If the repository URL is invalid
      * @throws InvalidArgumentException If the repository URL is unknown
      */
-    public static function get($url)
+    public function get($url)
     {
-        // Ensure that the service is properly configured
-        self::isConfigured();
-
         $url = self::normalizeRepositoryUrl($url);
 
         // If the repository URL is unknown
@@ -130,7 +144,7 @@ class Service
         }
 
         // Return the repository instance
-        return self::$registry[$url];
+        return $this->registry[$url];
     }
 
     /**
@@ -139,59 +153,10 @@ class Service
      * @param string $url Repository URL
      * @return bool Repository URL is registered
      */
-    public static function isRegistered($url)
+    public function isRegistered($url)
     {
         $url = self::normalizeRepositoryUrl($url);
-        return array_key_exists($url, self::$registry) || self::connected($url);
-    }
-
-    /**
-     * Configure the repository service
-     *
-     * @param AutoConnectorInterface|null $autoConnector Auto-connector
-     * @param AdapterStrategyFactoryInterface|null $adapterStrategyFactory Adapter strategy factory
-     * @param ManagerInterface|null $objectManager Object manager
-     */
-    public static function configure(
-        AutoConnectorInterface $autoConnector = null,
-        AdapterStrategyFactoryInterface $adapterStrategyFactory = null,
-        ManagerInterface $objectManager = null
-    ) {
-        self::$_autoConnector = $autoConnector;
-        self::$_adapterStrategyFactory = $adapterStrategyFactory;
-        self::$_objectManager = $objectManager;
-    }
-
-    /**
-     * Check whether the service is configured for auto-connecting to repositories
-     *
-     * @return bool Service is configured for auto-connecting
-     * @throws RuntimeException If the service is not properly configured
-     */
-    public static function isConfigured()
-    {
-        if (
-            !(self::$_autoConnector instanceof AutoConnectorInterface) ||
-            !(self::$_adapterStrategyFactory instanceof AdapterStrategyFactoryInterface) ||
-            !(self::$_objectManager instanceof ManagerInterface)
-        ) {
-            throw new RuntimeException(
-                'The repository service is not configured',
-                RuntimeException::SERVICE_NOT_CONFIGURED
-            );
-        }
-
-        return true;
-    }
-
-    /**
-     * Return the auto-connector service
-     *
-     * @return AutoConnectorInterface Auto-connector servie
-     */
-    public static function getAutoConnector()
-    {
-        return self::$_autoConnector;
+        return array_key_exists($url, $this->registry) || self::connected($url);
     }
 
     /**
@@ -199,9 +164,9 @@ class Service
      *
      * @return AdapterStrategyFactoryInterface Adapter strategy factory
      */
-    public static function getAdapterStrategyFactory()
+    public function getAdapterStrategyFactory()
     {
-        return self::$_adapterStrategyFactory;
+        return $this->adapterStrategyFactory;
     }
 
     /**
@@ -209,9 +174,9 @@ class Service
      *
      * @return ManagerInterface Object manager
      */
-    public static function getObjectManager()
+    public function getObjectManager()
     {
-        return self::$_objectManager;
+        return $this->objectManager;
     }
 
     /**
@@ -270,12 +235,12 @@ class Service
      * @param null|boolean $autoConnect Enable / disable auto-connections
      * @return bool Status of repository auto-connection
      */
-    public static function useAutoConnect($autoConnect = null)
+    public function useAutoConnect($autoConnect = null)
     {
         if ($autoConnect !== null) {
-            self::$autoConnectEnabled = (boolean)$autoConnect;
+            $this->autoConnectEnabled = (boolean)$autoConnect;
         }
-        return self::$autoConnectEnabled;
+        return $this->autoConnectEnabled;
     }
 
     /*******************************************************************************
@@ -288,14 +253,14 @@ class Service
      * @param string $url Repository URL
      * @return bool Repository is connected
      */
-    protected static function connected($url)
+    protected function connected($url)
     {
         // If the given repository URL is already registered: Success
-        if (!empty(self::$registry[$url])) {
+        if (!empty($this->registry[$url])) {
             return true;
         }
 
         // If auto-connect is enabled and the service is properly configured: Try to auto-connect the repository
-        return (self::isConfigured() && self::$autoConnectEnabled && self::$_autoConnector->connect($url));
+        return $this->autoConnectEnabled && $this->autoConnector->connect($url);
     }
 }

@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Ports;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
 
@@ -75,7 +76,7 @@ class Repository
         $repository = new \Apparat\Object\Domain\Repository\Repository($url, $config);
 
         // Register the repository
-        Service::register($url, $repository);
+        Kernel::create(Service::class)->register($url, $repository);
 
         // Return the registered repository instance
         return $repository;
@@ -94,7 +95,7 @@ class Repository
     {
         // Normalize to return a repository instance matching this URL
         try {
-            return Service::get($url);
+            return Kernel::create(Service::class)->get($url);
         } catch (\Exception $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode());
         }

@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Service;
 
@@ -105,7 +106,7 @@ class ApparatUrl extends ObjectUrl
             }
 
             // If the the repository involved is unknown and cannot be auto-connected
-            if (!Service::isRegistered($this->getPath())) {
+            if (!Kernel::create(Service::class)->isRegistered($this->getPath())) {
                 throw new ApparatInvalidArgumentException(
                     sprintf('Unknown local repository URL "%s"', $this->getPath()),
                     ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL

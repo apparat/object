@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
@@ -148,7 +149,7 @@ class RepositoryTest extends AbstractTest
         putenv('OBJECT_DATE_PRECISION=6');
 
         // Disable repository auto-connecting
-        Service::useAutoConnect(false);
+        Kernel::create(Service::class)->useAutoConnect(false);
     }
 
     /**

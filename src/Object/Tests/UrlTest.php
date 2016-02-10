@@ -148,6 +148,7 @@ class UrlTest extends AbstractTest
         $pathPrefix = '/prefix/path';
         $url = new ObjectUrl($pathPrefix.self::PATH);
         $this->assertEquals($pathPrefix, $url->getPath());
+        $this->assertEquals(self::PATH, $url->getLocalPath());
     }
 
     /**
@@ -256,6 +257,15 @@ class UrlTest extends AbstractTest
     {
         $url = new ObjectUrl(self::REMOTE_URL, true);
         $this->assertEquals(true, $url->isAbsolute());
+    }
+
+    /**
+     * Test absolute URL
+     */
+    public function testUrlAbsoluteLocal()
+    {
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
+        $this->assertTrue($url->isAbsoluteLocal());
     }
 
     /**

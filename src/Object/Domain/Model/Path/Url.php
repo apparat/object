@@ -389,7 +389,7 @@ class Url
         // Instantiate the apparat base URL
         $apparatBaseUrl = new self(getenv('APPARAT_BASE_URL'));
         $apparatBaseUrlPath = $apparatBaseUrl->getPath();
-        $apparatBaseUrl = $apparatBaseUrl->setScheme('')->setPath('');
+        $apparatBaseUrl = $apparatBaseUrl->setScheme(null)->setPath(null);
 
         // If the URL matches the Apparat base URL (the scheme is disregarded)
         return $this->isAbsolute() && $this->matches($apparatBaseUrl) && !strncmp(

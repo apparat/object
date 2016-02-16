@@ -76,12 +76,21 @@ class ObjectTest extends AbstractTest
     {
         \Apparat\Object\Ports\Repository::register(
             getenv('REPOSITORY_URL'), [
-                                        'type' => FileAdapterStrategy::TYPE,
-                                        'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-                                    ]
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => __DIR__ . DIRECTORY_SEPARATOR . 'Fixture',
+            ]
         );
 
         self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
+    }
+
+    /**
+     * Tears down the fixture
+     */
+    public function tearDown()
+    {
+        TestType::removeInvalidType();
+        parent::tearDown();
     }
 
     /**
@@ -125,8 +134,21 @@ class ObjectTest extends AbstractTest
         $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
         $articleObject = self::$repository->loadObject($articleObjectPath);
         $this->assertInstanceOf(Article::class, $articleObject);
+        $this->assertEquals('Example article object', $articleObject->getDescription());
+        $this->assertEquals('Article objects feature a Markdown payload along with some custom properties', $articleObject->getAbstract());
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
+    }
+
+    /**
+     * Load an article and test an invalid author
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1451425516
+     */
+    public function testLoadArticleObjectInvalidAuthor () {
+        $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/4.article/4');
+        self::$repository->loadObject($articleObjectPath);
     }
 
     /**
@@ -134,7 +156,7 @@ class ObjectTest extends AbstractTest
      */
     public function testObjectFacadeAbsolute()
     {
-        $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $object = Object::instance(getenv('APPARAT_BASE_URL') . getenv('REPOSITORY_URL') . self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $object);
     }
 
@@ -143,7 +165,7 @@ class ObjectTest extends AbstractTest
      */
     public function testObjectFacadeRelative()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $object = Object::instance(getenv('REPOSITORY_URL') . self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $object);
         foreach ($object->getAuthors() as $author) {
             if ($author instanceof ApparatAuthor) {
@@ -160,7 +182,24 @@ class ObjectTest extends AbstractTest
      */
     public function testObjectFacadeRelativeInvalid()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
+        $object = Object::instance(getenv('REPOSITORY_URL') . '/2015/12/21/2.article/2');
         $this->assertInstanceOf(Article::class, $object);
+    }
+
+    /**
+     * Test with a missing object type class
+     *
+     * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+     * @expectedExceptionCode 1450824842
+     */
+    public function testInvalidObjectTypeClass() {
+        TestType::addInvalidType();
+
+        $resource = $this->getMock(ResourceInterface::class);
+        $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
+        $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5.invalid/5');
+
+        /** @var ResourceInterface $resource */
+        ObjectFactory::createFromResource($resource, $articleObjectPath);
     }
 }

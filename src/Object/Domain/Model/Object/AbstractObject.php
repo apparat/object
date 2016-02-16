@@ -208,6 +208,27 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object description
+     *
+     * @return string Object description
+     */
+    public function getDescription()
+    {
+        return $this->_metaProperties->getDescription();
+    }
+
+    /**
+     * Return the object abstract
+     *
+     * @return string Object abstract
+     */
+    public function getAbstract()
+    {
+        return $this->_metaProperties->getAbstract();
+    }
+
+
+    /**
      * Return all object keywords
      *
      * @return array Object keywords

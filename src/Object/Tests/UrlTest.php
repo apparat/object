@@ -82,11 +82,17 @@ class UrlTest extends AbstractTest
      */
     const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
     /**
-     * Example URL
+     * Example remote repository URL
      *
      * @var string
      */
-    const REMOTE_URL = 'http://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+    const REMOTE_REPOSITORY_URL = 'http://apparat:tools@apparat.tools:80';
+    /**
+     * Example remote URL
+     *
+     * @var string
+     */
+    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
     /**
      * Example apparat URL
      *
@@ -257,6 +263,7 @@ class UrlTest extends AbstractTest
     {
         $url = new ObjectUrl(self::REMOTE_URL, true);
         $this->assertEquals(true, $url->isAbsolute());
+        $this->assertEquals(self::REMOTE_REPOSITORY_URL, $url->getRepositoryUrl());
     }
 
     /**

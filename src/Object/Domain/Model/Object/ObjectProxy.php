@@ -39,7 +39,6 @@ namespace Apparat\Object\Domain\Model\Object;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Repository\Service;
 
@@ -106,6 +105,23 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the enclosed remote object
+     *
+     * @return ObjectInterface Remote object
+     */
+    protected function _object()
+    {
+        // Lazy-load the remote object if necessary
+        if (!$this->_object instanceof ObjectInterface) {
+
+            // Instantiate the local object repository, load and return the object
+            $this->_object = Kernel::create(Service::class)->get($this->_url)->loadObject($this->_url->getLocalPath());
+        }
+
+        return $this->_object;
+    }
+
+    /**
      * Return the object type
      *
      * @return Type Object type
@@ -143,6 +159,26 @@ class ObjectProxy implements ObjectInterface
     public function getPublished()
     {
         return $this->_object()->getPublished();
+    }
+
+    /**
+     * Return the object description
+     *
+     * @return string Object description
+     */
+    public function getDescription()
+    {
+        return $this->_object()->getDescription();
+    }
+
+    /**
+     * Return the object abstract
+     *
+     * @return string Object abstract
+     */
+    public function getAbstract()
+    {
+        return $this->_object()->getAbstract();
     }
 
     /**
@@ -186,6 +222,10 @@ class ObjectProxy implements ObjectInterface
         return $this->_object()->addAuthor($author);
     }
 
+    /*******************************************************************************
+     * MAGIG METHODS
+     *******************************************************************************/
+
     /**
      * Return the absolute object URL
      *
@@ -197,7 +237,7 @@ class ObjectProxy implements ObjectInterface
     }
 
     /*******************************************************************************
-     * MAGIG METHODS
+     * PRIVATE METHODS
      *******************************************************************************/
 
     /**
@@ -217,26 +257,5 @@ class ObjectProxy implements ObjectInterface
             sprintf('Invalid object proxy method "%s"', $name),
             InvalidArgumentException::INVALID_OBJECT_PROXY_METHOD
         );
-    }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
-    /**
-     * Return the enclosed remote object
-     *
-     * @return ObjectInterface Remote object
-     */
-    protected function _object()
-    {
-        // Lazy-load the remote object if necessary
-        if (!$this->_object instanceof ObjectInterface) {
-
-            // Instantiate the local object repository, load and return the object
-            $this->_object = Kernel::create(Service::class)->get($this->_url)->loadObject($this->_url->getLocalPath());
-        }
-
-        return $this->_object;
     }
 }

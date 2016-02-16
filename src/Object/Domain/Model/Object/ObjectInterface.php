@@ -94,6 +94,20 @@ interface ObjectInterface
     public function getPublished();
 
     /**
+     * Return the object description
+     *
+     @return string Object description
+     */
+    public function getDescription();
+
+    /**
+     * Return the object abstract
+     *
+     @return string Object abstract
+     */
+    public function getAbstract();
+
+    /**
      * Return all object keywords
      *
      * @return array Object keywords

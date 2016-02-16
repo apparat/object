@@ -108,16 +108,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
-     * Return the adapter strategy type
-     *
-     * @return string Adapter strategy type
-     */
-    public function getType()
-    {
-        return self::TYPE;
-    }
-
-    /**
      * Find objects by selector
      *
      * @param Selector|SelectorInterface $selector Object selector

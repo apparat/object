@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;

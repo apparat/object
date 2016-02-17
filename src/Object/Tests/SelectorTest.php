@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;

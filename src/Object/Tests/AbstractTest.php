@@ -4,8 +4,8 @@
  * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Tests
+ * @package     Apparat\Kernel
+ * @subpackage  Apparat\Kernel\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -36,22 +36,22 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Resource\Module;
+use Apparat\Kernel\Tests\Kernel;
+use Apparat\Object\Domain\Repository\Service;
 
 /**
- * Module tests
+ * Abstract object tests
  *
  * @package Apparat\Kernel
- * @subpackage Apparat\Kernel\Tests
+ * @subpackage Apparat\Object\Tests
  */
-class ModuleTest extends AbstractTest
+abstract class AbstractTest extends \Apparat\Kernel\Tests\AbstractTest
 {
     /**
-     * Test the module's auto-run feature
+     * Test disabling of repository auto-connection
      */
-    public function testModuleAutorun()
+    public function testUseAutoconnect()
     {
-        include dirname(__DIR__).DIRECTORY_SEPARATOR.'Autorun.php';
-        $this->assertEquals(Module::NAME, (new Module())->getName());
+        $this->assertFalse(Kernel::create(Service::class)->useAutoConnect(false));
     }
 }

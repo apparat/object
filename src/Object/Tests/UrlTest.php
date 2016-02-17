@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
@@ -99,14 +97,6 @@ class UrlTest extends AbstractTest
      * @var string
      */
     const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80' . self::PATH . self::QUERY_FRAGMENT;
-
-    /**
-     * Test disabling of repository auto-connection
-     */
-    public function testUseAutoconnect()
-    {
-        $this->assertFalse(Kernel::create(Service::class)->useAutoConnect(false));
-    }
 
     /**
      * Test an URL
@@ -425,7 +415,16 @@ class UrlTest extends AbstractTest
      * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
      * @expectedExceptionCode 1453097878
      */
-    public function testInvalidRepositoryUrlNormalization() {
+    public function testInvalidRepositoryUrlNormalization()
+    {
         Service::normalizeRepositoryUrl(new Url(self::REMOTE_REPOSITORY_URL));
+    }
+
+    /**
+     * Test the normalization of a local string repository URL
+     */
+    public function testLocalStringUrlNormalization()
+    {
+        $this->assertEquals(self::REPOSITORY_URL . self::PATH, Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL') . self::REPOSITORY_URL . self::PATH));
     }
 }

@@ -39,7 +39,6 @@ namespace Apparat\Object\Domain\Repository;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
-use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Module;
 
 /**
@@ -96,7 +95,8 @@ class Service
         AutoConnectorInterface $autoConnector,
         AdapterStrategyFactoryInterface $adapterStrategyFactory,
         ManagerInterface $objectManager
-    ) {
+    )
+    {
         $this->autoConnector = $autoConnector;
         $this->adapterStrategyFactory = $adapterStrategyFactory;
         $this->objectManager = $objectManager;
@@ -109,7 +109,7 @@ class Service
      * directory or basic authentication credentials.
      * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
      *
-     * @param string|Url $url Repository URL
+     * @param string|ObjectUrl $url Repository URL
      * @param RepositoryInterface $repository Repository
      */
     public function register($url, RepositoryInterface $repository)
@@ -117,66 +117,6 @@ class Service
         // Repository registration
         $repositoryUrl = ltrim(self::normalizeRepositoryUrl($url), '/');
         $this->registry[$repositoryUrl] = $repository;
-    }
-
-    /**
-     * Return an object repository by URL
-     *
-     * If a repository URL hasn't been pre-registered, the method tries to perform an adhoc registration
-     * based on the URL given.
-     * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
-     *
-     * @param string|Url $url Repository URL
-     * @return \Apparat\Object\Domain\Repository\Repository Object repository
-     * @throws InvalidArgumentException If the repository URL is invalid
-     * @throws InvalidArgumentException If the repository URL is unknown
-     */
-    public function get($url)
-    {
-        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
-
-        // If the repository URL is unknown
-        if (!self::connected($url)) {
-            throw new InvalidArgumentException(
-                sprintf('Unknown repository URL "%s"', $url),
-                InvalidArgumentException::UNKNOWN_REPOSITORY_URL
-            );
-        }
-
-        // Return the repository instance
-        return $this->registry[$url];
-    }
-
-    /**
-     * Test whether a repository URL is registered
-     *
-     * @param string $url Repository URL
-     * @return bool Repository URL is registered
-     */
-    public function isRegistered($url)
-    {
-        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
-        return array_key_exists($url, $this->registry) || self::connected($url);
-    }
-
-    /**
-     * Return the adapter strategy factory
-     *
-     * @return AdapterStrategyFactoryInterface Adapter strategy factory
-     */
-    public function getAdapterStrategyFactory()
-    {
-        return $this->adapterStrategyFactory;
-    }
-
-    /**
-     * Return the object manager
-     *
-     * @return ManagerInterface Object manager
-     */
-    public function getObjectManager()
-    {
-        return $this->objectManager;
     }
 
     /**
@@ -211,8 +151,7 @@ class Service
             }
 
             // Ensure this is a bare URL (without query and fragment)
-            if (Module::isAbsoluteBareUrl($apparatBaseUrl.$url)) {
-//                return ltrim($url, '/');
+            if (Module::isAbsoluteBareUrl($apparatBaseUrl . $url)) {
                 return $url;
             }
         }
@@ -225,24 +164,32 @@ class Service
     }
 
     /**
-     * Enable repository auto-connections
+     * Return an object repository by URL
      *
-     * If the method is called without any arguments it will just return the current auto-connection state.
+     * If a repository URL hasn't been pre-registered, the method tries to perform an adhoc registration
+     * based on the URL given.
+     * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
      *
-     * @param null|boolean $autoConnect Enable / disable auto-connections
-     * @return bool Status of repository auto-connection
+     * @param string|ObjectUrl $url Repository URL
+     * @return \Apparat\Object\Domain\Repository\Repository Object repository
+     * @throws InvalidArgumentException If the repository URL is invalid
+     * @throws InvalidArgumentException If the repository URL is unknown
      */
-    public function useAutoConnect($autoConnect = null)
+    public function get($url)
     {
-        if ($autoConnect !== null) {
-            $this->autoConnectEnabled = (boolean)$autoConnect;
-        }
-        return $this->autoConnectEnabled;
-    }
+        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
 
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
+        // If the repository URL is unknown
+        if (!self::connected($url)) {
+            throw new InvalidArgumentException(
+                sprintf('Unknown repository URL "%s"', $url),
+                InvalidArgumentException::UNKNOWN_REPOSITORY_URL
+            );
+        }
+
+        // Return the repository instance
+        return $this->registry[$url];
+    }
 
     /**
      * Test whether a repository URL registered or can be auto-connected
@@ -259,5 +206,57 @@ class Service
 
         // If auto-connect is enabled and the service is properly configured: Try to auto-connect the repository
         return $this->autoConnectEnabled && $this->autoConnector->connect($url);
+    }
+
+    /**
+     * Test whether a repository URL is registered
+     *
+     * @param string|ObjectUrl $url Repository URL
+     * @return bool Repository URL is registered
+     */
+    public function isRegistered($url)
+    {
+        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
+        return array_key_exists($url, $this->registry) || self::connected($url);
+    }
+
+    /**
+     * Return the adapter strategy factory
+     *
+     * @return AdapterStrategyFactoryInterface Adapter strategy factory
+     */
+    public function getAdapterStrategyFactory()
+    {
+        return $this->adapterStrategyFactory;
+    }
+
+    /**
+     * Return the object manager
+     *
+     * @return ManagerInterface Object manager
+     */
+    public function getObjectManager()
+    {
+        return $this->objectManager;
+    }
+
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
+
+    /**
+     * Enable repository auto-connections
+     *
+     * If the method is called without any arguments it will just return the current auto-connection state.
+     *
+     * @param null|boolean $autoConnect Enable / disable auto-connections
+     * @return bool Status of repository auto-connection
+     */
+    public function useAutoConnect($autoConnect = null)
+    {
+        if ($autoConnect !== null) {
+            $this->autoConnectEnabled = (boolean)$autoConnect;
+        }
+        return $this->autoConnectEnabled;
     }
 }

@@ -36,14 +36,11 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
-use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Module;
@@ -196,14 +193,6 @@ class RepositoryTest extends AbstractTest
     public static function testInvalidFragmentBareUrl()
     {
         Module::isAbsoluteBareUrl('http://example.com/#1');
-    }
-
-    /**
-     * Test disabling of repository auto-connection
-     */
-    public function testUseAutoconnect()
-    {
-        $this->assertFalse(Kernel::create(Service::class)->useAutoConnect(false));
     }
 
     /**

@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Tests\AbstractTest;
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Model\Author\ApparatAuthor;
@@ -137,18 +136,6 @@ class ObjectTest extends AbstractTest
         $this->assertEquals('Article objects feature a Markdown payload along with some custom properties', $articleObject->getAbstract());
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
-    }
-
-    /**
-     * Load an article and test an invalid author
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1451425516
-     */
-    public function testLoadArticleObjectInvalidAuthor()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/4.article/4');
-        self::$repository->loadObject($articleObjectPath);
     }
 
     /**

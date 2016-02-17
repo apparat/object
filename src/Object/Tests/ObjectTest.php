@@ -56,18 +56,17 @@ use Apparat\Object\Ports\Object;
 class ObjectTest extends AbstractTest
 {
     /**
-     * Test repository
-     *
-     * @var Repository
-     */
-    protected static $repository = null;
-
-    /**
      * Example object path
      *
      * @var string
      */
     const OBJECT_PATH = '/2015/12/21/1.article/1';
+    /**
+     * Test repository
+     *
+     * @var Repository
+     */
+    protected static $repository = null;
 
     /**
      * Setup
@@ -146,7 +145,8 @@ class ObjectTest extends AbstractTest
      * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
      * @expectedExceptionCode 1451425516
      */
-    public function testLoadArticleObjectInvalidAuthor () {
+    public function testLoadArticleObjectInvalidAuthor()
+    {
         $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/4.article/4');
         self::$repository->loadObject($articleObjectPath);
     }
@@ -192,7 +192,8 @@ class ObjectTest extends AbstractTest
      * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
      * @expectedExceptionCode 1450824842
      */
-    public function testInvalidObjectTypeClass() {
+    public function testInvalidObjectTypeClass()
+    {
         TestType::addInvalidType();
 
         $resource = $this->getMock(ResourceInterface::class);

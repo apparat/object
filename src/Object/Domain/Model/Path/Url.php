@@ -170,7 +170,7 @@ class Url
         if (isset($override['path'])) {
             $path = $override['path'];
         } else {
-            $path = $this->_urlParts['path'];
+            $path = empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'];
         }
         $override['path'] = $path;
 

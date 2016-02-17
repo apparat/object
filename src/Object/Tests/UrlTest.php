@@ -80,7 +80,7 @@ class UrlTest extends AbstractTest
      *
      * @var string
      */
-    const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const URL = self::REPOSITORY_URL . self::PATH . self::QUERY_FRAGMENT;
     /**
      * Example remote repository URL
      *
@@ -92,21 +92,20 @@ class UrlTest extends AbstractTest
      *
      * @var string
      */
-    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const REMOTE_URL = self::REMOTE_REPOSITORY_URL . self::PATH . self::QUERY_FRAGMENT;
     /**
      * Example apparat URL
      *
      * @var string
      */
-    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80' . self::PATH . self::QUERY_FRAGMENT;
 
     /**
-     * Setup
+     * Test disabling of repository auto-connection
      */
-    public static function setUpBeforeClass()
+    public function testUseAutoconnect()
     {
-        // Disable repository auto-connection
-        Kernel::create(Service::class)->useAutoConnect(false);
+        $this->assertFalse(Kernel::create(Service::class)->useAutoConnect(false));
     }
 
     /**
@@ -144,6 +143,7 @@ class UrlTest extends AbstractTest
         $this->assertEquals(new Type('event'), $url->getType());
         $this->assertInstanceOf(Revision::class, $url->getRevision());
         $this->assertEquals(new Revision(1), $url->getRevision());
+        $this->assertEquals(self::REMOTE_REPOSITORY_URL, Service::normalizeRepositoryUrl($url));
     }
 
     /**
@@ -152,7 +152,7 @@ class UrlTest extends AbstractTest
     public function testLeadedLocalUrl()
     {
         $pathPrefix = '/prefix/path';
-        $url = new ObjectUrl($pathPrefix.self::PATH);
+        $url = new ObjectUrl($pathPrefix . self::PATH);
         $this->assertEquals($pathPrefix, $url->getPath());
         $this->assertEquals(self::PATH, $url->getLocalPath());
     }
@@ -271,16 +271,16 @@ class UrlTest extends AbstractTest
      */
     public function testUrlAbsoluteLocal()
     {
-        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/') . self::REPOSITORY_URL . self::PATH, true);
         $this->assertTrue($url->isAbsoluteLocal());
     }
 
     /**
      * Test relative URL
      */
-    public function testUrlReative()
+    public function testUrlRelative()
     {
-        $url = new ObjectUrl(self::PATH.self::QUERY_FRAGMENT);
+        $url = new ObjectUrl(self::PATH . self::QUERY_FRAGMENT);
         $this->assertEquals(false, $url->isAbsolute());
     }
 
@@ -368,6 +368,7 @@ class UrlTest extends AbstractTest
     {
         $apparatUrl = new ApparatUrl(self::APPARAT_URL, true);
         $this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+        $this->assertEquals('https://apparat:tools@apparat.tools:80', Service::normalizeRepositoryUrl($apparatUrl));
     }
 
     /**
@@ -378,7 +379,7 @@ class UrlTest extends AbstractTest
      */
     public function testUnknownRelativeApparatUrl()
     {
-        new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
+        new ApparatUrl(self::PATH . self::QUERY_FRAGMENT);
     }
 
     /**
@@ -395,6 +396,7 @@ class UrlTest extends AbstractTest
         );
         $apparatUrl = new ApparatUrl(self::URL);
         $this->assertInstanceOf(ApparatUrl::class, $apparatUrl);
+        $this->assertEquals(self::REPOSITORY_URL, Service::normalizeRepositoryUrl($apparatUrl));
     }
 
     /**
@@ -415,5 +417,15 @@ class UrlTest extends AbstractTest
     {
         $path = new LocalPath(self::PATH, true);
         $this->assertInstanceOf(LocalPath::class, $path);
+    }
+
+    /**
+     * Test the normalization of an invalid repository URL
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1453097878
+     */
+    public function testInvalidRepositoryUrlNormalization() {
+        Service::normalizeRepositoryUrl(new Url(self::REMOTE_REPOSITORY_URL));
     }
 }

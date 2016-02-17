@@ -115,7 +115,7 @@ class Service
     public function register($url, RepositoryInterface $repository)
     {
         // Repository registration
-        $repositoryUrl = self::normalizeRepositoryUrl($url);
+        $repositoryUrl = ltrim(self::normalizeRepositoryUrl($url), '/');
         $this->registry[$repositoryUrl] = $repository;
     }
 
@@ -133,7 +133,7 @@ class Service
      */
     public function get($url)
     {
-        $url = self::normalizeRepositoryUrl($url);
+        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
 
         // If the repository URL is unknown
         if (!self::connected($url)) {
@@ -155,7 +155,7 @@ class Service
      */
     public function isRegistered($url)
     {
-        $url = self::normalizeRepositoryUrl($url);
+        $url = ltrim(self::normalizeRepositoryUrl($url), '/');
         return array_key_exists($url, $this->registry) || self::connected($url);
     }
 
@@ -182,7 +182,7 @@ class Service
     /**
      * Normalize a repository URL
      *
-     * @param string|Url $url Repository URL
+     * @param string|ObjectUrl $url Repository URL
      * @return string Normalized repository URL
      * @throws InvalidArgumentException If the repository URL is invalid
      */
@@ -195,10 +195,6 @@ class Service
             // Else: If it's an object URL
         } elseif ($url instanceof ObjectUrl) {
             $url = $url->getRepositoryUrl();
-
-            // Else: If it's a simple URL
-        } elseif ($url instanceof Url) {
-            $url = $url->getPath();
 
             // Else: If it's an empty URL
         } elseif ($url === null) {
@@ -216,7 +212,8 @@ class Service
 
             // Ensure this is a bare URL (without query and fragment)
             if (Module::isAbsoluteBareUrl($apparatBaseUrl.$url)) {
-                return ltrim($url, '/');
+//                return ltrim($url, '/');
+                return $url;
             }
         }
 

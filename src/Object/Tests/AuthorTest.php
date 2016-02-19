@@ -39,6 +39,8 @@ namespace Apparat\Object\Tests;
 use Apparat\Object\Domain\Factory\AuthorFactory;
 use Apparat\Object\Domain\Model\Author\ApparatAuthor;
 use Apparat\Object\Domain\Model\Author\GenericAuthor;
+use Apparat\Object\Domain\Model\Author\InvalidAuthor;
+use Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
@@ -116,5 +118,27 @@ class AuthorTest extends AbstractTest
     public function testGenericAuthorSerialization() {
         $genericAuthor = GenericAuthor::unserialize(self::GENERIC_AUTHOR);
         $this->assertEquals(self::GENERIC_AUTHOR, $genericAuthor->serialize());
+    }
+
+    /**
+     * Test invalid author
+     */
+    public function testInvalidAuthor() {
+        /** @var InvalidAuthor $invalidAuthor */
+        $invalidAuthor = AuthorFactory::createFromString('ftp://apparat.tools/2015/10/01/36704.event/36704-1');
+        $this->assertInstanceOf(InvalidAuthor::class, $invalidAuthor);
+        $exception = $invalidAuthor->getException();
+        $this->assertInstanceOf(ApparatInvalidArgumentException::class, $exception);
+        $this->assertEquals(ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL, $exception->getCode());
+    }
+
+    /**
+     * Test invalid author unserialization
+     */
+    public function testInvalidAuthorUnserialization() {
+        /** @var InvalidAuthor $invalidAuthor */
+        $invalidAuthor = InvalidAuthor::unserialize('ftp://apparat.tools/2015/10/01/36704.event/36704-1');
+        $this->assertInstanceOf(InvalidAuthor::class, $invalidAuthor);
+        $this->assertEquals(null, $invalidAuthor->getException());
     }
 }

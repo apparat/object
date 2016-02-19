@@ -95,8 +95,7 @@ class Service
         AutoConnectorInterface $autoConnector,
         AdapterStrategyFactoryInterface $adapterStrategyFactory,
         ManagerInterface $objectManager
-    )
-    {
+    ) {
         $this->autoConnector = $autoConnector;
         $this->adapterStrategyFactory = $adapterStrategyFactory;
         $this->objectManager = $objectManager;

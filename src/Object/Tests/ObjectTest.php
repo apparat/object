@@ -38,8 +38,13 @@ namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Factory\AuthorFactory;
 use Apparat\Object\Domain\Model\Author\ApparatAuthor;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Repository\Repository;
@@ -80,6 +85,8 @@ class ObjectTest extends AbstractTest
         );
 
         self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
+
+        \date_default_timezone_set('UTC');
     }
 
     /**
@@ -125,6 +132,31 @@ class ObjectTest extends AbstractTest
     }
 
     /**
+     * Load an article object and test basic properties
+     */
+    public function testLoadArticleObject()
+    {
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+        $articleObject = self::$repository->loadObject($articleObjectPath);
+        $this->assertEquals(getenv('APPARAT_BASE_URL') . getenv('REPOSITORY_URL') . self::OBJECT_PATH, $articleObject->getAbsoluteUrl());
+    }
+
+    /**
+     * Load an article object and test its system properties
+     */
+    public function testLoadArticleObjectSystemProperties()
+    {
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+        $articleObject = self::$repository->loadObject($articleObjectPath);
+        $this->assertInstanceOf(Article::class, $articleObject);
+        $this->assertEquals(new Id(1), $articleObject->getId());
+        $this->assertEquals(new Type(Type::ARTICLE), $articleObject->getType());
+        $this->assertEquals(new Revision(1), $articleObject->getRevision());
+        $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
+        $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
+    }
+
+    /**
      * Load an article object and test its meta properties
      */
     public function testLoadArticleObjectMetaProperties()
@@ -136,6 +168,10 @@ class ObjectTest extends AbstractTest
         $this->assertEquals('Article objects feature a Markdown payload along with some custom properties', $articleObject->getAbstract());
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
+
+        $authorCount = count($articleObject->getAuthors());
+        $articleObject->addAuthor(AuthorFactory::createFromString(AuthorTest::GENERIC_AUTHOR));
+        $this->assertEquals($authorCount + 1, count($articleObject->getAuthors()));
     }
 
     /**
@@ -189,5 +225,18 @@ class ObjectTest extends AbstractTest
 
         /** @var ResourceInterface $resource */
         ObjectFactory::createFromResource($resource, $articleObjectPath);
+    }
+
+    /**
+     * Test instantiation of object with invalid domain properties collection
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1452288429
+     */
+    public function testInvalidDomainPropertyCollectionClass()
+    {
+        $this->getMockBuilder(AbstractObject::class)
+            ->setConstructorArgs([new RepositoryPath(self::$repository, self::OBJECT_PATH)])
+            ->getMock();
     }
 }

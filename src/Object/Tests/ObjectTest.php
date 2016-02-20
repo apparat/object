@@ -175,6 +175,34 @@ class ObjectTest extends AbstractTest
     }
 
     /**
+     * Load an article object and test its domain properties
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1450818168
+     */
+    public function testLoadArticleObjectDomainProperties()
+    {
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+        $articleObject = self::$repository->loadObject($articleObjectPath);
+        $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
+        $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
+        $articleObject->getDomainProperty('group:invalid');
+    }
+
+    /**
+     * Load an article object and test an empty domain property name
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1450817720
+     */
+    public function testLoadArticleObjectDomainEmptyProperty()
+    {
+        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+        $articleObject = self::$repository->loadObject($articleObjectPath);
+        $articleObject->getDomainProperty('');
+    }
+
+    /**
      * Test the object facade with an absolute object URL
      */
     public function testObjectFacadeAbsolute()

@@ -222,6 +222,19 @@ class ObjectProxy implements ObjectInterface
         return $this->_object()->addAuthor($author);
     }
 
+    /**
+     * Get a particular property value
+     *
+     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     *
+     * @param string $property Property name
+     * @return mixed Property value
+     */
+    public function getDomainProperty($property)
+    {
+        return $this->_object()->getDomainProperty($property);
+    }
+
     /*******************************************************************************
      * MAGIG METHODS
      *******************************************************************************/

@@ -291,4 +291,17 @@ abstract class AbstractObject implements ObjectInterface
     {
         return getenv('APPARAT_BASE_URL').ltrim($this->_path->getRepository()->getUrl(), '/').strval($this->_path);
     }
+
+    /**
+     * Get a particular property value
+     *
+     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     *
+     * @param string $property Property name
+     * @return mixed Property value
+     */
+    public function getDomainProperty($property)
+    {
+        return $this->_domainProperties->getProperty($property);
+    }
 }

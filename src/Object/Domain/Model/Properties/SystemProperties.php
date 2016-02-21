@@ -54,42 +54,42 @@ class SystemProperties extends AbstractProperties
      *
      * @var Id
      */
-    protected $_id = 0;
+    protected $id = 0;
 
     /**
      * Object type
      *
      * @var Type
      */
-    protected $_type = null;
+    protected $type = null;
 
     /**
      * Object revision
      *
      * @var Revision
      */
-    protected $_revision = null;
+    protected $revision = null;
 
     /**
      * Creation date
      *
      * @var \DateTimeImmutable
      */
-    protected $_created = null;
+    protected $created = null;
 
     /**
      * Publication date
      *
      * @var \DateTimeImmutable
      */
-    protected $_published = null;
+    protected $published = null;
 
     /**
      * Object hash
      *
      * @var string
      */
-    protected $_hash = null;
+    protected $hash = null;
 
     /**
      * Collection name
@@ -97,6 +97,42 @@ class SystemProperties extends AbstractProperties
      * @var string
      */
     const COLLECTION = 'system';
+    /**
+     * ID property
+     *
+     * @var string
+     */
+    const PROPERTY_ID = 'id';
+    /**
+     * Type property
+     *
+     * @var string
+     */
+    const PROPERTY_TYPE = 'type';
+    /**
+     * Revision property
+     *
+     * @var string
+     */
+    const PROPERTY_REVISION = 'revision';
+    /**
+     * Created property
+     *
+     * @var string
+     */
+    const PROPERTY_CREATED = 'created';
+    /**
+     * Published property
+     *
+     * @var string
+     */
+    const PROPERTY_PUBLISHED = 'published';
+    /**
+     * Hash property
+     *
+     * @var string
+     */
+    const PROPERTY_HASH = 'hash';
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -113,33 +149,33 @@ class SystemProperties extends AbstractProperties
         parent::__construct($data, $object);
 
         // Initialize the object ID
-        if (array_key_exists('id', $data)) {
-            $this->_setId(Id::unserialize($data['id']));
+        if (array_key_exists(self::PROPERTY_ID, $data)) {
+            $this->setId(Id::unserialize($data[self::PROPERTY_ID]));
         }
 
         // Initialize the object type
-        if (array_key_exists('type', $data)) {
-            $this->_setType(Type::unserialize($data['type']));
+        if (array_key_exists(self::PROPERTY_TYPE, $data)) {
+            $this->setType(Type::unserialize($data[self::PROPERTY_TYPE]));
         }
 
         // Initialize the object revision
-        if (array_key_exists('revision', $data)) {
-            $this->_setRevision(Revision::unserialize($data['revision']));
+        if (array_key_exists(self::PROPERTY_REVISION, $data)) {
+            $this->setRevision(Revision::unserialize($data[self::PROPERTY_REVISION]));
         }
 
         // Initialize the object creation date
-        if (array_key_exists('created', $data)) {
-            $this->_setCreated(new \DateTimeImmutable('@'.$data['created']));
+        if (array_key_exists(self::PROPERTY_CREATED, $data)) {
+            $this->setCreated(new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]));
         }
 
         // Initialize the object publication date
-        if (array_key_exists('published', $data)) {
-            $this->_setPublished(new \DateTimeImmutable('@'.$data['published']));
+        if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
+            $this->setPublished(new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]));
         }
 
         // Initialize the object hash
-        if (array_key_exists('hash', $data)) {
-            $this->_setHash($data['hash']);
+        if (array_key_exists(self::PROPERTY_HASH, $data)) {
+            $this->setHash($data[self::PROPERTY_HASH]);
         }
     }
 
@@ -150,7 +186,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -160,7 +196,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -170,7 +206,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getRevision()
     {
-        return $this->_revision;
+        return $this->revision;
     }
 
     /**
@@ -180,7 +216,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getCreated()
     {
-        return $this->_created;
+        return $this->created;
     }
 
     /**
@@ -190,7 +226,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getPublished()
     {
-        return $this->_published;
+        return $this->published;
     }
 
     /**
@@ -200,7 +236,24 @@ class SystemProperties extends AbstractProperties
      */
     public function getHash()
     {
-        return $this->_hash;
+        return $this->hash;
+    }
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return [
+            self::PROPERTY_ID => $this->id->getId(),
+            self::PROPERTY_TYPE => $this->type->getType(),
+            self::PROPERTY_REVISION => $this->revision->getRevision(),
+            self::PROPERTY_CREATED => $this->created->format('c'),
+            self::PROPERTY_PUBLISHED => $this->published->format('c'),
+            self::PROPERTY_HASH => $this->hash,
+        ];
     }
 
     /*******************************************************************************
@@ -212,9 +265,9 @@ class SystemProperties extends AbstractProperties
      *
      * @param Id $id
      */
-    protected function _setId(Id $id)
+    protected function setId(Id $id)
     {
-        $this->_id = $id;
+        $this->id = $id;
     }
 
     /**
@@ -222,9 +275,9 @@ class SystemProperties extends AbstractProperties
      *
      * @param Type $type Object type
      */
-    protected function _setType(Type $type)
+    protected function setType(Type $type)
     {
-        $this->_type = $type;
+        $this->type = $type;
     }
 
     /**
@@ -232,9 +285,9 @@ class SystemProperties extends AbstractProperties
      *
      * @param Revision $revision Object revision
      */
-    protected function _setRevision(Revision $revision)
+    protected function setRevision(Revision $revision)
     {
-        $this->_revision = $revision;
+        $this->revision = $revision;
     }
 
     /**
@@ -242,9 +295,9 @@ class SystemProperties extends AbstractProperties
      *
      * @param \DateTimeImmutable $published Publication date & time
      */
-    protected function _setPublished(\DateTimeImmutable $published)
+    protected function setPublished(\DateTimeImmutable $published)
     {
-        $this->_published = $published;
+        $this->published = $published;
     }
 
     /**
@@ -252,9 +305,9 @@ class SystemProperties extends AbstractProperties
      *
      * @param \DateTimeImmutable $published Creation date & time
      */
-    protected function _setCreated(\DateTimeImmutable $created)
+    protected function setCreated(\DateTimeImmutable $created)
     {
-        $this->_created = $created;
+        $this->created = $created;
     }
 
     /**
@@ -262,8 +315,8 @@ class SystemProperties extends AbstractProperties
      *
      * @param string $hash Object hash
      */
-    protected function _setHash($hash)
+    protected function setHash($hash)
     {
-        $this->_hash = $hash;
+        $this->hash = $hash;
     }
 }

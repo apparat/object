@@ -49,46 +49,71 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 class MetaProperties extends AbstractProperties
 {
     /**
+     * Collection name
+     *
+     * @var string
+     */
+    const COLLECTION = 'meta';
+    /**
+     * Description property
+     *
+     * @var string
+     */
+    const PROPERTY_DESCRIPTION = 'description';
+    /**
+     * Abstract property
+     *
+     * @var string
+     */
+    const PROPERTY_ABSTRACT = 'abstract';
+    /**
+     * Keywords property
+     *
+     * @var string
+     */
+    const PROPERTY_KEYWORDS = 'keywords';
+    /**
+     * Categories property
+     *
+     * @var string
+     */
+    const PROPERTY_CATEGORIES = 'categories';
+    /**
+     * Authors property
+     *
+     * @var string
+     */
+    const PROPERTY_AUTHORS = 'authors';
+    /**
      * Object description
      *
      * @var string
      */
-    protected $_description = '';
-
+    protected $description = '';
     /**
      * Object abstract
      *
      * @var string
      */
-    protected $_abstract = '';
-
+    protected $abstract = '';
     /**
      * Object keywords
      *
      * @var array
      */
-    protected $_keywords = [];
-
+    protected $keywords = [];
     /**
      * Object categories
      *
      * @var array
      */
-    protected $_categories = [];
-
+    protected $categories = [];
     /**
      * Object authors
      *
      * @var AuthorInterface[]
      */
     protected $_authors = [];
-
-    /**
-     * Collection name
-     *
-     * @var string
-     */
-    const COLLECTION = 'meta';
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -105,28 +130,28 @@ class MetaProperties extends AbstractProperties
         parent::__construct($data, $object);
 
         // Initialize the description
-        if (array_key_exists('description', $data)) {
-            $this->setDescription($data['description']);
+        if (array_key_exists(self::PROPERTY_DESCRIPTION, $data)) {
+            $this->setDescription($data[self::PROPERTY_DESCRIPTION]);
         }
 
         // Initialize the abstract
-        if (array_key_exists('abstract', $data)) {
-            $this->setAbstract($data['abstract']);
+        if (array_key_exists(self::PROPERTY_ABSTRACT, $data)) {
+            $this->setAbstract($data[self::PROPERTY_ABSTRACT]);
         }
 
         // Initialize the keywords
-        if (array_key_exists('keywords', $data)) {
-            $this->setKeywords((array)$data['keywords']);
+        if (array_key_exists(self::PROPERTY_KEYWORDS, $data)) {
+            $this->setKeywords((array)$data[self::PROPERTY_KEYWORDS]);
         }
 
         // Initialize the categories
-        if (array_key_exists('categories', $data)) {
-            $this->setCategories((array)$data['categories']);
+        if (array_key_exists(self::PROPERTY_CATEGORIES, $data)) {
+            $this->setCategories((array)$data[self::PROPERTY_CATEGORIES]);
         }
 
         // Initialize the authors
-        if (array_key_exists('authors', $data)) {
-            $this->setAuthors($data['authors']);
+        if (array_key_exists(self::PROPERTY_AUTHORS, $data)) {
+            $this->setAuthors($data[self::PROPERTY_AUTHORS]);
         }
     }
 
@@ -137,7 +162,7 @@ class MetaProperties extends AbstractProperties
      */
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -148,7 +173,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setDescription($description)
     {
-        $this->_description = $description;
+        $this->description = $description;
         return $this;
     }
 
@@ -159,7 +184,7 @@ class MetaProperties extends AbstractProperties
      */
     public function getAbstract()
     {
-        return $this->_abstract;
+        return $this->abstract;
     }
 
     /**
@@ -170,7 +195,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setAbstract($abstract)
     {
-        $this->_abstract = $abstract;
+        $this->abstract = $abstract;
         return $this;
     }
 
@@ -181,7 +206,7 @@ class MetaProperties extends AbstractProperties
      */
     public function getKeywords()
     {
-        return $this->_keywords;
+        return $this->keywords;
     }
 
     /**
@@ -192,8 +217,8 @@ class MetaProperties extends AbstractProperties
      */
     public function setKeywords(array $keywords)
     {
-        $this->_keywords = array_unique($keywords);
-        sort($this->_keywords, SORT_NATURAL);
+        $this->keywords = array_unique($keywords);
+        sort($this->keywords, SORT_NATURAL);
         return $this;
     }
 
@@ -204,7 +229,7 @@ class MetaProperties extends AbstractProperties
      */
     public function getCategories()
     {
-        return $this->_categories;
+        return $this->categories;
     }
 
     /**
@@ -215,8 +240,8 @@ class MetaProperties extends AbstractProperties
      */
     public function setCategories(array $categories)
     {
-        $this->_categories = array_unique($categories);
-        sort($this->_categories, SORT_NATURAL);
+        $this->categories = array_unique($categories);
+        sort($this->categories, SORT_NATURAL);
         return $this;
     }
 
@@ -265,5 +290,26 @@ class MetaProperties extends AbstractProperties
 
         $this->_authors = array_values($newAuthors);
         return $this;
+    }
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return [
+            self::PROPERTY_DESCRIPTION => $this->description,
+            self::PROPERTY_ABSTRACT => $this->abstract,
+            self::PROPERTY_KEYWORDS => $this->keywords,
+            self::PROPERTY_CATEGORIES => $this->categories,
+            self::PROPERTY_AUTHORS => array_map(
+                function (AuthorInterface $author) {
+                    return $author->serialize();
+                },
+                $this->_authors
+            )
+        ];
     }
 }

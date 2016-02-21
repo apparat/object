@@ -60,4 +60,11 @@ interface PropertiesInterface
      * @param ObjectInterface $object Owner object
      */
     public function __construct(array $data, ObjectInterface $object);
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray();
 }

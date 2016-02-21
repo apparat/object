@@ -16,6 +16,7 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source --dev
   - echo 'APP_LOG=null' > .env
+  - echo 'APPARAT_ENCRYPTION_KEY="14ed57fa098ebbb0f7b26c262fa45b45"' >> .env
   - echo 'APPARAT_BASE_URL="http://apparat/blog"' >> .env
   - echo 'OBJECT_RESOURCE_EXTENSION=md' >> .env
   - echo 'OBJECT_DATE_PRECISION=3' >> .env

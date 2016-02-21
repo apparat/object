@@ -84,7 +84,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getRepositoryPath()
     {
-        // If the object has already been instatiated
+        // If the object has already been instantiated
         if ($this->_object instanceof ObjectInterface) {
             return $this->_object->getRepositoryPath();
 
@@ -92,6 +92,26 @@ class ObjectProxy implements ObjectInterface
         } else {
             return $this->_url->getLocalPath();
         }
+    }
+
+    /**
+     * Return the object property data
+     *
+     * @return array Object property data
+     */
+    public function getPropertyData()
+    {
+        return $this->_object()->getPropertyData();
+    }
+
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload()
+    {
+        return $this->_object()->getPayload();
     }
 
     /**
@@ -159,6 +179,16 @@ class ObjectProxy implements ObjectInterface
     public function getPublished()
     {
         return $this->_object()->getPublished();
+    }
+
+    /**
+     * Return the object hash
+     *
+     * @return string Object hash
+     */
+    public function getHash()
+    {
+        return $this->_object()->getHash();
     }
 
     /**

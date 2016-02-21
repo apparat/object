@@ -87,6 +87,13 @@ interface ObjectInterface
     public function getCreated();
 
     /**
+     * Return the object hash
+     *
+     * @return string Object hash
+     */
+    public function getHash();
+
+    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable Publication date & time
@@ -142,6 +149,20 @@ interface ObjectInterface
      * @return RepositoryPathInterface Object repository path
      */
     public function getRepositoryPath();
+
+    /**
+     * Return the object property data
+     *
+     * @return array Object property data
+     */
+    public function getPropertyData();
+
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload();
 
     /**
      * Return the absolute object URL

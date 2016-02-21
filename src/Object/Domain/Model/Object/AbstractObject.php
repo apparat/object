@@ -72,18 +72,6 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected $_domainProperties;
     /**
-     * Object relations
-     *
-     * @var Relations
-     */
-    private $_relations;
-    /**
-     * Processing instructions
-     *
-     * @var ProcessingInstructions
-     */
-    private $_processingInstructions;
-    /**
      * Object payload
      *
      * @var string
@@ -101,6 +89,18 @@ abstract class AbstractObject implements ObjectInterface
      * @var string
      */
     protected $_domainPropertyCollectionClass = null;
+    /**
+     * Object relations
+     *
+     * @var Relations
+     */
+    private $_relations;
+    /**
+     * Processing instructions
+     *
+     * @var ProcessingInstructions
+     */
+    private $_processingInstructions;
 
     /**
      * Object constructor
@@ -208,6 +208,16 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object hash
+     *
+     * @return string Object hash
+     */
+    public function getHash()
+    {
+        return $this->_systemProperties->getHash();
+    }
+
+    /**
      * Return the object description
      *
      * @return string Object description
@@ -283,13 +293,37 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object property data
+     *
+     * @return array Object property data
+     */
+    public function getPropertyData()
+    {
+        $propertyData = [];
+
+        // TODO
+
+        return $propertyData;
+    }
+
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload()
+    {
+        return $this->_payload;
+    }
+
+    /**
      * Return the absolute object URL
      *
      * @return string
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL').ltrim($this->_path->getRepository()->getUrl(), '/').strval($this->_path);
+        return getenv('APPARAT_BASE_URL') . ltrim($this->_path->getRepository()->getUrl(), '/') . strval($this->_path);
     }
 
     /**
@@ -303,5 +337,20 @@ abstract class AbstractObject implements ObjectInterface
     public function getDomainProperty($property)
     {
         return $this->_domainProperties->getProperty($property);
+    }
+
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
+
+    /**
+     * Create and return the object's integrity hash
+     *
+     * @return string Integrity hash
+     */
+    protected function getObjectHash()
+    {
+        $hash = '';
+        return $hash;
     }
 }

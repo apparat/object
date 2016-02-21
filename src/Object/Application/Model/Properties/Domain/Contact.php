@@ -46,5 +46,13 @@ use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
  */
 class Contact extends AbstractDomainProperties
 {
-
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return [];
+    }
 }

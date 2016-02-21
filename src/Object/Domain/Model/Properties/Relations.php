@@ -123,4 +123,14 @@ class Relations extends AbstractProperties
     {
         parent::__construct($data, $object);
     }
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return [];
+    }
 }

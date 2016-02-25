@@ -267,4 +267,16 @@ class ObjectTest extends AbstractTest
             ->setConstructorArgs([new RepositoryPath(self::$repository, self::OBJECT_PATH)])
             ->getMock();
     }
+
+    /**
+     * Test the property data
+     */
+    public function testObjectPropertyData()
+    {
+//        $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
+        $object = Object::instance(getenv('REPOSITORY_URL') . self::OBJECT_PATH);
+        $this->assertTrue(is_array($object->getPropertyData()));
+//        print_r($frontMarkResource->getData());
+//        print_r($object->getPropertyData());
+    }
 }

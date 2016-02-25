@@ -58,19 +58,19 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var SystemProperties
      */
-    protected $_systemProperties;
+    protected $systemProperties;
     /**
      * Meta properties
      *
      * @var MetaProperties
      */
-    protected $_metaProperties;
+    protected $metaProperties;
     /**
      * Domain properties
      *
      * @var AbstractDomainProperties
      */
-    protected $_domainProperties;
+    protected $domainProperties;
     /**
      * Object payload
      *
@@ -94,13 +94,13 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var Relations
      */
-    private $_relations;
+    private $relations;
     /**
      * Processing instructions
      *
      * @var ProcessingInstructions
      */
-    private $_processingInstructions;
+    private $processingInstructions;
 
     /**
      * Object constructor
@@ -130,31 +130,31 @@ abstract class AbstractObject implements ObjectInterface
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array(
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $this->_systemProperties = new SystemProperties($systemPropertyData, $this);
+        $this->systemProperties = new SystemProperties($systemPropertyData, $this);
 
         // Instantiate the meta properties
         $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array(
                 $propertyData[MetaProperties::COLLECTION]
             )) ? [] : $propertyData[MetaProperties::COLLECTION];
-        $this->_metaProperties = new MetaProperties($metaPropertyData, $this);
+        $this->metaProperties = new MetaProperties($metaPropertyData, $this);
 
         // Instantiate the domain properties
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        $this->_domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData, $this);
+        $this->domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData, $this);
 
         // Instantiate the processing instructions
         $processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array(
                 $propertyData[ProcessingInstructions::COLLECTION]
             )) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-        $this->_processingInstructions = new ProcessingInstructions($processingInstructionData, $this);
+        $this->processingInstructions = new ProcessingInstructions($processingInstructionData, $this);
 
         // Instantiate the object relations
         $relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array(
                 $propertyData[Relations::COLLECTION]
             )) ? [] : $propertyData[Relations::COLLECTION];
-        $this->_relations = new Relations($relationData, $this);
+        $this->relations = new Relations($relationData, $this);
     }
 
     /**
@@ -164,7 +164,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getId()
     {
-        return $this->_systemProperties->getId();
+        return $this->systemProperties->getId();
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getType()
     {
-        return $this->_systemProperties->getType();
+        return $this->systemProperties->getType();
     }
 
     /**
@@ -184,7 +184,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getRevision()
     {
-        return $this->_systemProperties->getRevision();
+        return $this->systemProperties->getRevision();
     }
 
     /**
@@ -194,7 +194,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getCreated()
     {
-        return $this->_systemProperties->getCreated();
+        return $this->systemProperties->getCreated();
     }
 
     /**
@@ -204,7 +204,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getPublished()
     {
-        return $this->_systemProperties->getPublished();
+        return $this->systemProperties->getPublished();
     }
 
     /**
@@ -214,7 +214,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getHash()
     {
-        return $this->_systemProperties->getHash();
+        return $this->systemProperties->getHash();
     }
 
     /**
@@ -224,7 +224,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getDescription()
     {
-        return $this->_metaProperties->getDescription();
+        return $this->metaProperties->getDescription();
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbstract()
     {
-        return $this->_metaProperties->getAbstract();
+        return $this->metaProperties->getAbstract();
     }
 
 
@@ -245,7 +245,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getKeywords()
     {
-        return $this->_metaProperties->getKeywords();
+        return $this->metaProperties->getKeywords();
     }
 
     /**
@@ -255,7 +255,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getCategories()
     {
-        return $this->_metaProperties->getCategories();
+        return $this->metaProperties->getCategories();
     }
 
     /**
@@ -265,7 +265,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAuthors()
     {
-        return $this->_metaProperties->getAuthors();
+        return $this->metaProperties->getAuthors();
     }
 
     /**
@@ -276,9 +276,9 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function addAuthor(AuthorInterface $author)
     {
-        $authors = $this->_metaProperties->getAuthors();
+        $authors = $this->metaProperties->getAuthors();
         $authors[] = $author;
-        $this->_metaProperties->setAuthors($authors);
+        $this->metaProperties->setAuthors($authors);
         return $this;
     }
 
@@ -299,9 +299,13 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getPropertyData()
     {
-        $propertyData = [];
-
-        // TODO
+        $propertyData = [
+            SystemProperties::COLLECTION => $this->systemProperties->toArray(),
+            MetaProperties::COLLECTION => $this->metaProperties->toArray(),
+            AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray(),
+            ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray(),
+            Relations::COLLECTION => $this->relations->toArray(),
+        ];
 
         return $propertyData;
     }
@@ -336,7 +340,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getDomainProperty($property)
     {
-        return $this->_domainProperties->getProperty($property);
+        return $this->domainProperties->getProperty($property);
     }
 
     /*******************************************************************************

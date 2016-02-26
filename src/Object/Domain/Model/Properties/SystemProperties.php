@@ -39,58 +39,20 @@ namespace Apparat\Object\Domain\Model\Properties;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\RuntimeException;
 use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * System object properties collection
+ * Object system properties collection
+ *
+ * In general, the system properties are used as read-only collection, with one exception: Draft objects don't have the
+ * `published` property set, so there's a {@link publish()} method for advancing an object's state.
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
 class SystemProperties extends AbstractProperties
 {
-    /**
-     * Object ID
-     *
-     * @var Id
-     */
-    protected $id = 0;
-
-    /**
-     * Object type
-     *
-     * @var Type
-     */
-    protected $type = null;
-
-    /**
-     * Object revision
-     *
-     * @var Revision
-     */
-    protected $revision = null;
-
-    /**
-     * Creation date
-     *
-     * @var \DateTimeImmutable
-     */
-    protected $created = null;
-
-    /**
-     * Publication date
-     *
-     * @var \DateTimeImmutable
-     */
-    protected $published = null;
-
-    /**
-     * Object hash
-     *
-     * @var string
-     */
-    protected $hash = null;
-
     /**
      * Collection name
      *
@@ -133,6 +95,42 @@ class SystemProperties extends AbstractProperties
      * @var string
      */
     const PROPERTY_HASH = 'hash';
+    /**
+     * Object ID
+     *
+     * @var Id
+     */
+    protected $id = null;
+    /**
+     * Object type
+     *
+     * @var Type
+     */
+    protected $type = null;
+    /**
+     * Object revision
+     *
+     * @var Revision
+     */
+    protected $revision = null;
+    /**
+     * Creation date
+     *
+     * @var \DateTimeImmutable
+     */
+    protected $created = null;
+    /**
+     * Publication date
+     *
+     * @var \DateTimeImmutable
+     */
+    protected $published = null;
+    /**
+     * Object hash
+     *
+     * @var string
+     */
+    protected $hash = '';
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -150,32 +148,43 @@ class SystemProperties extends AbstractProperties
 
         // Initialize the object ID
         if (array_key_exists(self::PROPERTY_ID, $data)) {
-            $this->setId(Id::unserialize($data[self::PROPERTY_ID]));
+            $this->id = Id::unserialize($data[self::PROPERTY_ID]);
         }
 
         // Initialize the object type
         if (array_key_exists(self::PROPERTY_TYPE, $data)) {
-            $this->setType(Type::unserialize($data[self::PROPERTY_TYPE]));
+            $this->type = Type::unserialize($data[self::PROPERTY_TYPE]);
         }
 
         // Initialize the object revision
         if (array_key_exists(self::PROPERTY_REVISION, $data)) {
-            $this->setRevision(Revision::unserialize($data[self::PROPERTY_REVISION]));
+            $this->revision = Revision::unserialize($data[self::PROPERTY_REVISION]);
         }
 
         // Initialize the object creation date
         if (array_key_exists(self::PROPERTY_CREATED, $data)) {
-            $this->setCreated(new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]));
+            $this->created = new \DateTimeImmutable('@' . $data[self::PROPERTY_CREATED]);
         }
 
         // Initialize the object publication date
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
-            $this->setPublished(new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]));
+            $this->published = new \DateTimeImmutable('@' . $data[self::PROPERTY_PUBLISHED]);
         }
 
         // Initialize the object hash
         if (array_key_exists(self::PROPERTY_HASH, $data)) {
-            $this->setHash($data[self::PROPERTY_HASH]);
+            $this->hash = $data[self::PROPERTY_HASH];
+        }
+
+        // Test if all mandatory properties are set
+        if (
+            !($this->id instanceof Id) ||
+            !($this->type instanceof Type) ||
+            !($this->revision instanceof Revision) ||
+            !($this->created instanceof \DateTimeImmutable) ||
+            !$this->hasValidHash()
+        ) {
+            throw new InvalidArgumentException('Invalid system properties', InvalidArgumentException::INVALID_SYSTEM_PROPERTIES);
         }
     }
 
@@ -240,20 +249,39 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Indicate that the object now got published
+     *
+     * @return SystemProperties System properties
+     * @throws RuntimeException If the object is already published
+     */
+    public function publish()
+    {
+
+        // If the object is already published
+        if ($this->published instanceof \DateTimeImmutable) {
+            throw new RuntimeException('Cannot republish object previously published at ' . $this->published->format('c'), RuntimeException::CANNOT_REPUBLISH_OBJECT);
+        }
+
+        $systemProperties = clone $this;
+        $systemProperties->published = new \DateTimeImmutable();
+        return $systemProperties;
+    }
+
+    /**
      * Return the property values as array
      *
      * @return array Property values
      */
     public function toArray()
     {
-        return [
+        return array_filter([
             self::PROPERTY_ID => $this->id->getId(),
             self::PROPERTY_TYPE => $this->type->getType(),
             self::PROPERTY_REVISION => $this->revision->getRevision(),
             self::PROPERTY_CREATED => $this->created->format('c'),
             self::PROPERTY_PUBLISHED => $this->published->format('c'),
             self::PROPERTY_HASH => $this->hash,
-        ];
+        ]);
     }
 
     /*******************************************************************************
@@ -261,62 +289,12 @@ class SystemProperties extends AbstractProperties
      *******************************************************************************/
 
     /**
-     * Set the object ID
+     * Test if the object hash is a valid sha1 value
      *
-     * @param Id $id
+     * @return bool The object hash is a valid sha1 value
      */
-    protected function setId(Id $id)
+    protected function hasValidHash()
     {
-        $this->id = $id;
-    }
-
-    /**
-     * Set the object type
-     *
-     * @param Type $type Object type
-     */
-    protected function setType(Type $type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * Set the object revision
-     *
-     * @param Revision $revision Object revision
-     */
-    protected function setRevision(Revision $revision)
-    {
-        $this->revision = $revision;
-    }
-
-    /**
-     * Set the publication date & time
-     *
-     * @param \DateTimeImmutable $published Publication date & time
-     */
-    protected function setPublished(\DateTimeImmutable $published)
-    {
-        $this->published = $published;
-    }
-
-    /**
-     * Set the creation date & time
-     *
-     * @param \DateTimeImmutable $published Creation date & time
-     */
-    protected function setCreated(\DateTimeImmutable $created)
-    {
-        $this->created = $created;
-    }
-
-    /**
-     * Set the object hash
-     *
-     * @param string $hash Object hash
-     */
-    protected function setHash($hash)
-    {
-        $this->hash = $hash;
+        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 }

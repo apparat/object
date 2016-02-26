@@ -42,5 +42,10 @@ namespace Apparat\Object\Domain\Model\Object;
  */
 class RuntimeException extends \RuntimeException
 {
-
+    /**
+     * Cannot republish object
+     *
+     * @var int
+     */
+    const CANNOT_REPUBLISH_OBJECT = 1456520791;
 }

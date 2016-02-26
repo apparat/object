@@ -90,4 +90,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS = 1452288429;
+    /**
+     * Invalid system properties
+     *
+     * @var int
+     */
+    const INVALID_SYSTEM_PROPERTIES = 1456522289;
 }

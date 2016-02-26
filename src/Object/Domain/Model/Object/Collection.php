@@ -7,7 +7,7 @@
  * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -79,7 +79,6 @@ class Collection implements CollectionInterface
     public function __construct(array $objects = [])
     {
         foreach ($objects as $object) {
-
             // If it's an object
             if ($object instanceof ObjectInterface) {
                 $this->_objects[$object->getId()->getId()] = $object;

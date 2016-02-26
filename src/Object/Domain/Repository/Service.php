@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -142,7 +142,6 @@ class Service
 
         // If the URL is a string
         if (is_string($url)) {
-
             // Strip the leading apparat base URL
             $apparatBaseUrl = getenv('APPARAT_BASE_URL');
             if (strpos($url, $apparatBaseUrl) === 0) {

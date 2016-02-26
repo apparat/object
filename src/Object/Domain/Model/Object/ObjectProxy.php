@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -55,13 +55,13 @@ class ObjectProxy implements ObjectInterface
      *
      * @var ApparatUrl
      */
-    protected $_url = null;
+    protected $url = null;
     /**
      * Object
      *
      * @var ObjectInterface
      */
-    protected $_object = null;
+    protected $object = null;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -74,7 +74,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function __construct(ApparatUrl $url)
     {
-        $this->_url = $url;
+        $this->url = $url;
     }
 
     /**
@@ -85,12 +85,12 @@ class ObjectProxy implements ObjectInterface
     public function getRepositoryPath()
     {
         // If the object has already been instantiated
-        if ($this->_object instanceof ObjectInterface) {
-            return $this->_object->getRepositoryPath();
+        if ($this->object instanceof ObjectInterface) {
+            return $this->object->getRepositoryPath();
 
             // Else
         } else {
-            return $this->_url->getLocalPath();
+            return $this->url->getLocalPath();
         }
     }
 
@@ -101,7 +101,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getPropertyData()
     {
-        return $this->_object()->getPropertyData();
+        return $this->object()->getPropertyData();
     }
 
     /**
@@ -111,7 +111,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getPayload()
     {
-        return $this->_object()->getPayload();
+        return $this->object()->getPayload();
     }
 
     /**
@@ -121,7 +121,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getId()
     {
-        return $this->_object()->getId();
+        return $this->object()->getId();
     }
 
     /**
@@ -129,16 +129,15 @@ class ObjectProxy implements ObjectInterface
      *
      * @return ObjectInterface Remote object
      */
-    protected function _object()
+    protected function object()
     {
         // Lazy-load the remote object if necessary
-        if (!$this->_object instanceof ObjectInterface) {
-
+        if (!$this->object instanceof ObjectInterface) {
             // Instantiate the local object repository, load and return the object
-            $this->_object = Kernel::create(Service::class)->get($this->_url)->loadObject($this->_url->getLocalPath());
+            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocalPath());
         }
 
-        return $this->_object;
+        return $this->object;
     }
 
     /**
@@ -148,7 +147,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getType()
     {
-        return $this->_object()->getType();
+        return $this->object()->getType();
     }
 
     /**
@@ -158,7 +157,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getRevision()
     {
-        return $this->_object()->getRevision();
+        return $this->object()->getRevision();
     }
 
     /**
@@ -168,7 +167,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getCreated()
     {
-        return $this->_object()->getCreated();
+        return $this->object()->getCreated();
     }
 
     /**
@@ -178,7 +177,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getPublished()
     {
-        return $this->_object()->getPublished();
+        return $this->object()->getPublished();
     }
 
     /**
@@ -188,7 +187,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getHash()
     {
-        return $this->_object()->getHash();
+        return $this->object()->getHash();
     }
 
     /**
@@ -198,7 +197,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getDescription()
     {
-        return $this->_object()->getDescription();
+        return $this->object()->getDescription();
     }
 
     /**
@@ -208,7 +207,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getAbstract()
     {
-        return $this->_object()->getAbstract();
+        return $this->object()->getAbstract();
     }
 
     /**
@@ -218,7 +217,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getKeywords()
     {
-        return $this->_object()->getKeywords();
+        return $this->object()->getKeywords();
     }
 
     /**
@@ -228,7 +227,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getCategories()
     {
-        return $this->_object()->getCategories();
+        return $this->object()->getCategories();
     }
 
     /**
@@ -238,7 +237,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getAuthors()
     {
-        return $this->_object()->getAuthors();
+        return $this->object()->getAuthors();
     }
 
     /**
@@ -249,7 +248,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function addAuthor(AuthorInterface $author)
     {
-        return $this->_object()->addAuthor($author);
+        return $this->object()->addAuthor($author);
     }
 
     /**
@@ -262,7 +261,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getDomainProperty($property)
     {
-        return $this->_object()->getDomainProperty($property);
+        return $this->object()->getDomainProperty($property);
     }
 
     /*******************************************************************************
@@ -276,7 +275,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return strval($this->_url);
+        return strval($this->url);
     }
 
     /*******************************************************************************
@@ -291,7 +290,7 @@ class ObjectProxy implements ObjectInterface
      */
     public function __call($name, $arguments)
     {
-        $object = $this->_object();
+        $object = $this->object();
         if (is_callable(array($object, $name))) {
             return $object->$name(...$arguments);
         }

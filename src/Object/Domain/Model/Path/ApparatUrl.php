@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -88,7 +88,6 @@ class ApparatUrl extends ObjectUrl
 
         // If it's an absolute URL
         if ($this->isAbsolute()) {
-
             // If the Apparat URL scheme is invalid
             if (!array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
                 throw new ApparatInvalidArgumentException(
@@ -99,7 +98,6 @@ class ApparatUrl extends ObjectUrl
 
             // Else: It's a relative URL
         } else {
-
             // If this URL doesn't have a repository URL and a context repository is given: Inherit its URL
             if (!strlen($this->getPath()) && ($contextRepository instanceof RepositoryInterface)) {
                 $this->_urlParts['path'] = $contextRepository->getUrl();

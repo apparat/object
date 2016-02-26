@@ -7,7 +7,7 @@
  * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -192,7 +192,6 @@ class ObjectUrl extends Url implements PathInterface
 
         // Extended tests if it's an object URL
         if ($url instanceof self) {
-
             // Test the object creation date
             if ($this->getCreationDate() != $url->getCreationDate()) {
                 return false;

@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -268,7 +268,6 @@ class MetaProperties extends AbstractProperties
 
         // Run through and validate all authors
         foreach ($authors as $author) {
-
             // If the author is invalid
             if (is_string($author)) {
                 $author = AuthorFactory::createFromString(

@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -47,6 +47,12 @@ use Apparat\Object\Domain\Model\Object\Type;
  */
 class Selector implements SelectorInterface
 {
+    /**
+     * Wildcard
+     *
+     * @var string
+     */
+    const WILDCARD = '*';
     /**
      * Year component
      *
@@ -101,12 +107,6 @@ class Selector implements SelectorInterface
      * @var int
      */
     private $_revision = null;
-    /**
-     * Wildcard
-     *
-     * @var string
-     */
-    const WILDCARD = '*';
 
     /**
      * Repository selector constructor
@@ -136,22 +136,22 @@ class Selector implements SelectorInterface
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
         // Validate the creation date and ID components
-        foreach (array_slice(
-                     [
-                         'year' => $year,
-                         'month' => $month,
-                         'day' => $day,
-                         'hour' => $hour,
-                         'minute' => $minute,
-                         'second' => $second
-                     ], 0, $datePrecision
-                 ) as $label => $component) {
-
+        foreach (
+            array_slice(
+                [
+                    'year' => $year,
+                    'month' => $month,
+                    'day' => $day,
+                    'hour' => $hour,
+                    'minute' => $minute,
+                    'second' => $second
+                ], 0, $datePrecision
+            ) as $label => $component) {
             // If the component isn't valid
             if (!is_int($component) && ($component !== self::WILDCARD)) {
                 throw new InvalidArgumentException(
                     sprintf(
-                        'Invalid repository selector '.$label.' component "%s"',
+                        'Invalid repository selector ' . $label . ' component "%s"',
                         $component
                     ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, $label
                 );

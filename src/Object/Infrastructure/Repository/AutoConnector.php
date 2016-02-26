@@ -8,7 +8,7 @@
  * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @license     http://opensource.org/licenses/MIT	The MIT License (MIT)
+ * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
 /***********************************************************************************
@@ -66,10 +66,8 @@ class AutoConnector implements AutoConnectorInterface
         if ($url->isAbsolute()) {
             // TODO: Absolute connection
 
-
             // Else: Relative / local URL -> Instantiate as file repository
         } else {
-
             // If this is run via CLI
             if (PHP_SAPI == 'cli') {
                 $documentRoot = ini_get('doc_root') ?: getcwd();

@@ -50,4 +50,14 @@ abstract class AbstractDomainProperties extends AbstractGenericProperties
      * @var string
      */
     const COLLECTION = 'domain';
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return [];
+    }
 }

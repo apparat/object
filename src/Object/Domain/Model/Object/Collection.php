@@ -35,8 +35,6 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\LocalPath;
-use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 
 /**
@@ -110,6 +108,24 @@ class Collection implements CollectionInterface
     }
 
     /**
+     * Load and return an object by ID
+     *
+     * @param int $objectId Object ID
+     * @return ObjectInterface Object
+     */
+    protected function _loadObject($objectId)
+    {
+        // Lazy-load the object once
+        if ($this->_objects[$objectId] instanceof RepositoryPath) {
+            $this->_objects[$objectId] = $this->_objects[$objectId]->getRepository()->loadObject(
+                $this->_objects[$objectId]
+            );
+        }
+
+        return $this->_objects[$objectId];
+    }
+
+    /**
      * Move forward to next object
      *
      * @return void
@@ -176,25 +192,22 @@ class Collection implements CollectionInterface
      *
      * @param int $offset Object ID
      * @param ObjectInterface $value Object
-     * @return void
      * @throws RuntimeException When an object should be set by ID
      */
     public function offsetSet($offset, $value)
     {
-
+        throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
     /**
      * Unset an object by ID
      *
      * @param int $offset Object ID
-     * @return Collection Object collection with the object removed
+     * @throws RuntimeException When an object should be set by ID
      */
     public function offsetUnset($offset)
     {
-        $objects = $this->_objects;
-        unset($objects[$offset]);
-        return new self($objects);
+        throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
     /**
@@ -203,16 +216,8 @@ class Collection implements CollectionInterface
      * @param string|ObjectInterface $object Object or object URL
      * @return Collection Modified object collection
      */
-    public function addObject($object)
+    public function add($object)
     {
-
-        // If the object is not yet an object instance
-        if (!($object instanceof ObjectInterface)) {
-            if (!($object instanceof PathInterface)) {
-                $object = new LocalPath(strval($object));
-            }
-        }
-
         $objects = $this->_objects;
         $objects[] = $object;
         return new self(array_values($objects));
@@ -224,10 +229,10 @@ class Collection implements CollectionInterface
      * @param string|ObjectInterface $object Object or object ID
      * @return Collection Modified object collection
      */
-    public function removeObject($object)
+    public function remove($object)
     {
         if ($object instanceof ObjectInterface) {
-            $object = $object->getId();
+            $object = $object->getId()->getId();
         } else {
             $object = intval($object);
         }
@@ -253,6 +258,10 @@ class Collection implements CollectionInterface
         return count($this->_objects);
     }
 
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
+
     /**
      * Append another collection
      *
@@ -263,27 +272,5 @@ class Collection implements CollectionInterface
     {
         $objects = array_merge($this->_objects, $collection->_objects);
         return new self(array_values($objects));
-    }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
-    /**
-     * Load and return an object by ID
-     *
-     * @param int $objectId Object ID
-     * @return ObjectInterface Object
-     */
-    protected function _loadObject($objectId)
-    {
-        // Lazy-load the object once
-        if ($this->_objects[$objectId] instanceof RepositoryPath) {
-            $this->_objects[$objectId] = $this->_objects[$objectId]->getRepository()->loadObject(
-                $this->_objects[$objectId]
-            );
-        }
-
-        return $this->_objects[$objectId];
     }
 }

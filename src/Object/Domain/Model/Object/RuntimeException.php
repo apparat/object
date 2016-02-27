@@ -48,4 +48,10 @@ class RuntimeException extends \RuntimeException
      * @var int
      */
     const CANNOT_REPUBLISH_OBJECT = 1456520791;
+    /**
+     * Cannot modify collection by index
+     *
+     * @var int
+     */
+    const CANNOT_MODIFY_COLLECTION_BY_INDEX = 1456530074;
 }

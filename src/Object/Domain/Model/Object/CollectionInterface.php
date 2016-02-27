@@ -42,7 +42,21 @@ namespace Apparat\Object\Domain\Model\Object;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface CollectionInterface extends \Countable, \Iterator
+interface CollectionInterface extends \Countable, \Iterator, \ArrayAccess
 {
+    /**
+     * Add an object to the collection
+     *
+     * @param string|ObjectInterface $object Object or object URL
+     * @return CollectionInterface Modified object collection
+     */
+    public function add($object);
 
+    /**
+     * Remove an object out of this collection
+     *
+     * @param string|ObjectInterface $object Object or object ID
+     * @return CollectionInterface Modified object collection
+     */
+    public function remove($object);
 }

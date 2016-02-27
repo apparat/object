@@ -76,19 +76,19 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var string
      */
-    protected $_payload;
+    protected $payload;
     /**
      * Repository path
      *
      * @var RepositoryPathInterface
      */
-    protected $_path;
+    protected $path;
     /**
      * Domain property collection class
      *
      * @var string
      */
-    protected $_domainPropertyCollectionClass = null;
+    protected $domainPropertyCollectionClass = null;
     /**
      * Object relations
      *
@@ -113,18 +113,18 @@ abstract class AbstractObject implements ObjectInterface
     public function __construct(RepositoryPathInterface $path, array $propertyData = [], $payload = '')
     {
         // If the domain property collection class is invalid
-        if (!is_subclass_of($this->_domainPropertyCollectionClass, AbstractDomainProperties::class)) {
+        if (!is_subclass_of($this->domainPropertyCollectionClass, AbstractDomainProperties::class)) {
             throw new PropertyInvalidArgumentException(
                 sprintf(
                     'Invalid domain property collection class "%s"',
-                    $this->_domainPropertyCollectionClass
+                    $this->domainPropertyCollectionClass
                 ),
                 PropertyInvalidArgumentException::INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS
             );
         }
 
-        $this->_payload = $payload;
-        $this->_path = $path;
+        $this->payload = $payload;
+        $this->path = $path;
 
         // Instantiate the system properties
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array(
@@ -142,7 +142,7 @@ abstract class AbstractObject implements ObjectInterface
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        $this->domainProperties = new $this->_domainPropertyCollectionClass($domainPropertyData, $this);
+        $this->domainProperties = new $this->domainPropertyCollectionClass($domainPropertyData, $this);
 
         // Instantiate the processing instructions
         $processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array(
@@ -289,7 +289,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getRepositoryPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -317,7 +317,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getPayload()
     {
-        return $this->_payload;
+        return $this->payload;
     }
 
     /**
@@ -327,7 +327,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL') . ltrim($this->_path->getRepository()->getUrl(), '/') . strval($this->_path);
+        return getenv('APPARAT_BASE_URL') . ltrim($this->path->getRepository()->getUrl(), '/') . strval($this->path);
     }
 
     /**
@@ -341,20 +341,5 @@ abstract class AbstractObject implements ObjectInterface
     public function getDomainProperty($property)
     {
         return $this->domainProperties->getProperty($property);
-    }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
-    /**
-     * Create and return the object's integrity hash
-     *
-     * @return string Integrity hash
-     */
-    protected function getObjectHash()
-    {
-        $hash = '';
-        return $hash;
     }
 }

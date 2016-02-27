@@ -4,8 +4,8 @@
  * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Kernel
- * @subpackage  Apparat\Kernel\Test
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Test
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -61,13 +61,13 @@ class PropertyTest extends AbstractTest
             'type' => 'article',
             'revision' => 1,
             'created' => time(),
-            'published' => time(),
             'hash' => sha1(rand()),
         ];
         /** @var ObjectInterface $object */
         $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
         $systemProperties = new SystemProperties($data, $object);
         $this->assertInstanceOf(SystemProperties::class, $systemProperties);
+        $systemProperties = $systemProperties->publish();
         $systemProperties->publish();
     }
 

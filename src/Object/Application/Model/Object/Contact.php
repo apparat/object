@@ -52,7 +52,7 @@ class Contact extends AbstractObject
      *
      * @var string
      */
-    protected $_domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
+    protected $domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
     /**
      * Object type
      *

@@ -4,8 +4,8 @@
  * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Kernel
- * @subpackage  Apparat\Kernel\<Layer>
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)

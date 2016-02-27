@@ -58,7 +58,7 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return Repository Repositoy instance
+     * @return Repository Repository instance
      * @throws InvalidArgumentException If the repository URL is invalid
      * @throws InvalidArgumentException If the repository configuration is empty
      * @api

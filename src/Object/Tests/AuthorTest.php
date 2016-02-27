@@ -51,7 +51,7 @@ use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
  * @package Apparat\Kernel
  * @subpackage Apparat\Object\Tests
  */
-class AuthorTest extends AbstractTest
+class AuthorTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Test repository

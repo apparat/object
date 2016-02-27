@@ -57,7 +57,7 @@ use Apparat\Object\Ports\Object;
  * @package Apparat\Object
  * @subpackage ApparatTest
  */
-class ObjectTest extends AbstractTest
+class ObjectTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Example object path

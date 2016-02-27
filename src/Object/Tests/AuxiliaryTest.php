@@ -47,7 +47,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage ApparatTest
  */
-class AuxiliaryText extends AbstractTest
+class AuxiliaryText extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Test an invalid ID

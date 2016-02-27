@@ -230,6 +230,7 @@ class ObjectUrl extends Url implements PathInterface
      * Return the repository URL part of this object URL
      *
      * @return string Repository URL
+     * @see https://github.com/apparat/apparat/blob/master/doc/URL-DESIGN.md#repository-url
      */
     public function getRepositoryUrl()
     {

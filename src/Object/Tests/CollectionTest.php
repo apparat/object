@@ -50,7 +50,7 @@ use Apparat\Object\Ports\Repository;
  * @package Apparat\Kernel
  * @subpackage Apparat\Object\Tests
  */
-class CollectionTest extends AbstractTest
+class CollectionTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Test repository

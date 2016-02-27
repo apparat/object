@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
  * @package Apparat\Object
  * @subpackage ApparatTest
  */
-class SelectorTest extends AbstractTest
+class SelectorTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Example selector

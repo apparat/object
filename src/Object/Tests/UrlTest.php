@@ -53,7 +53,7 @@ use Apparat\Object\Ports\Repository;
  * @package Apparat\Object
  * @subpackage ApparatTest
  */
-class UrlTest extends AbstractTest
+class UrlTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Example query fragment

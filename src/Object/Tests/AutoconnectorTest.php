@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Test
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -36,50 +36,44 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Kernel\Ports\Kernel;
+use Apparat\Kernel\Tests\AbstractTest;
+use Apparat\Object\Application\Model\Object\Contact;
+use Apparat\Object\Domain\Repository\Service;
+use Apparat\Object\Ports\Object;
 
 /**
- * Property tests
+ * Autoconnector tests
  *
- * @package Apparat\Kernel
+ * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class PropertyTest extends AbstractDisabledAutoconnectorTest
+class AutoconnectorTest extends AbstractTest
 {
     /**
-     * Test the instantiation of system properties
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Object\RuntimeException
-     * @expectedExceptionCode 1456520791
+     * Setup
      */
-    public function testSystemProperties()
+    public static function setUpBeforeClass()
     {
-        $data = [
-            'id' => 1,
-            'type' => 'article',
-            'revision' => 1,
-            'created' => time(),
-            'hash' => sha1(rand()),
-        ];
-        /** @var ObjectInterface $object */
-        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
-        $systemProperties = new SystemProperties($data, $object);
-        $this->assertInstanceOf(SystemProperties::class, $systemProperties);
-        $systemProperties = $systemProperties->publish();
-        $systemProperties->publish();
+        parent::setUpBeforeClass();
+        Kernel::create(Service::class)->reset()->useAutoConnect(true);
     }
 
     /**
-     * Test the instantiation of invalid system properties
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1456522289
+     * This method is called after the last test of this test class is run.
      */
-    public function testInvalidSystemProperties() {
-        /** @var ObjectInterface $object */
-        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
-        new SystemProperties([], $object);
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+        Kernel::create(Service::class)->reset()->useAutoConnect(false);
+    }
+
+    /**
+     * Test basic autoconnection functionality
+     */
+    public function testAutoconnectRelativeUrl()
+    {
+        $article = Object::instance('/2016/01/08/2.contact/2');
+        $this->assertInstanceOf(Contact::class, $article);
     }
 }

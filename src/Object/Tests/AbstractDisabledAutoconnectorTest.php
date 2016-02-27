@@ -45,8 +45,17 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Kernel
  * @subpackage Apparat\Object\Tests
  */
-abstract class AbstractTest extends \Apparat\Kernel\Tests\AbstractTest
+abstract class AbstractDisabledAutoconnectorTest extends \Apparat\Kernel\Tests\AbstractTest
 {
+    /**
+     * Setup
+     */
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        Kernel::create(Service::class)->reset()->useAutoConnect(false);
+    }
+
     /**
      * Test disabling of repository auto-connection
      */

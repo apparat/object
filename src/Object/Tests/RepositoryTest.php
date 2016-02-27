@@ -52,7 +52,7 @@ use Apparat\Object\Ports\Repository as RepositoryFactory;
  * @package Apparat\Object
  * @subpackage ApparatTest
  */
-class RepositoryTest extends AbstractTest
+class RepositoryTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Temporary glob directory

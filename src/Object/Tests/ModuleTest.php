@@ -44,7 +44,7 @@ use Apparat\Resource\Module;
  * @package Apparat\Kernel
  * @subpackage Apparat\Kernel\Tests
  */
-class ModuleTest extends AbstractTest
+class ModuleTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Test the module's auto-run feature

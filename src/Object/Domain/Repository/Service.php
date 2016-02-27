@@ -102,6 +102,17 @@ class Service
     }
 
     /**
+     * Reset the repository service
+     *
+     * @return Service Self reference
+     */
+    public function reset()
+    {
+        $this->registry = [];
+        return $this;
+    }
+
+    /**
      * Pre-register a repository
      *
      * The purpose of repository pre-registration is to provide custom arguments (like a base
@@ -202,7 +213,7 @@ class Service
             return true;
         }
 
-        // If auto-connect is enabled and the service is properly configured: Try to auto-connect the repository
+        // If auto-connect is enabled: Try to auto-connect the requested repository
         return $this->autoConnectEnabled && $this->autoConnector->connect($url);
     }
 

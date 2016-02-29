@@ -68,6 +68,7 @@ class AutoConnector implements AutoConnectorInterface
 
             // Else: Relative / local URL -> Instantiate as file repository
         } else {
+            echo php_sapi_name();
             // If this is run via CLI
             if (php_sapi_name() == 'cli') {
                 $documentRoot = realpath(getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd()));

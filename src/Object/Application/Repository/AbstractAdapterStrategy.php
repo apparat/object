@@ -54,7 +54,7 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
      *
      * @var array
      */
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * Adapter strategy type
@@ -71,10 +71,10 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
      */
     public function __construct(array $config, array $signatureConfigKeys)
     {
-        $this->_config = $config;
+        $this->config = $config;
 
         // Build the signature
-        $signatureConfig = array_intersect_key($this->_config, array_flip($signatureConfigKeys));
+        $signatureConfig = array_intersect_key($this->config, array_flip($signatureConfigKeys));
         $signatureConfig['type'] = static::TYPE;
         if (count($signatureConfig) < 2) {
             throw new InvalidArgumentException(

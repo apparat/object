@@ -249,7 +249,7 @@ class ObjectUrl extends Url implements PathInterface
                 'query' => '',
                 'fragment' => '',
             ];
-            $repositoryUrl = $this->_getUrl($override);
+            $repositoryUrl = $this->getUrlInternal($override);
         }
 
         return $repositoryUrl;
@@ -265,9 +265,9 @@ class ObjectUrl extends Url implements PathInterface
      * @param array $override Override components
      * @return string Serialized URL
      */
-    protected function _getUrl(array &$override = [])
+    protected function getUrlInternal(array &$override = [])
     {
-        parent::_getUrl($override);
+        parent::getUrlInternal($override);
 
         // Prepare the local object path
         if (isset($override['object'])) {

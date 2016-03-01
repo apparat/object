@@ -113,7 +113,7 @@ class MetaProperties extends AbstractProperties
      *
      * @var AuthorInterface[]
      */
-    protected $_authors = [];
+    protected $authors = [];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -252,7 +252,7 @@ class MetaProperties extends AbstractProperties
      */
     public function getAuthors()
     {
-        return $this->_authors;
+        return $this->authors;
     }
 
     /**
@@ -287,7 +287,7 @@ class MetaProperties extends AbstractProperties
             $newAuthors[$author->getSignature()] = $author;
         }
 
-        $this->_authors = array_values($newAuthors);
+        $this->authors = array_values($newAuthors);
         return $this;
     }
 
@@ -307,7 +307,7 @@ class MetaProperties extends AbstractProperties
                 function (AuthorInterface $author) {
                     return $author->serialize();
                 },
-                $this->_authors
+                $this->authors
             )
         ];
     }

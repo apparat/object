@@ -80,18 +80,18 @@ class Collection implements CollectionInterface
             // If it's an object
             if ($object instanceof ObjectInterface) {
                 $this->objects[$object->getId()->getId()] = $object;
+                continue;
 
                 // Else if it's an object path
             } elseif ($object instanceof RepositoryPath) {
                 $this->objects[$object->getId()->getId()] = $object;
-
-                // Else: Error
-            } else {
-                throw new InvalidArgumentException(
-                    'Invalid collection object or path',
-                    InvalidArgumentException::INVALID_COLLECTION_OBJECT_OR_PATH
-                );
+                continue;
             }
+
+            throw new InvalidArgumentException(
+                'Invalid collection object or path',
+                InvalidArgumentException::INVALID_COLLECTION_OBJECT_OR_PATH
+            );
         }
 
         $this->objectIds = array_keys($this->objects);
@@ -104,7 +104,7 @@ class Collection implements CollectionInterface
      */
     public function current()
     {
-        return $this->_loadObject($this->objectIds[$this->pointer]);
+        return $this->loadObject($this->objectIds[$this->pointer]);
     }
 
     /**
@@ -113,7 +113,7 @@ class Collection implements CollectionInterface
      * @param int $objectId Object ID
      * @return ObjectInterface Object
      */
-    protected function _loadObject($objectId)
+    protected function loadObject($objectId)
     {
         // Lazy-load the object once
         if ($this->objects[$objectId] instanceof RepositoryPath) {
@@ -196,6 +196,8 @@ class Collection implements CollectionInterface
      */
     public function offsetSet($offset, $value)
     {
+        $offset = null;
+        $value = null;
         throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
@@ -207,6 +209,7 @@ class Collection implements CollectionInterface
      */
     public function offsetUnset($offset)
     {
+        $offset = null;
         throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
@@ -231,11 +234,7 @@ class Collection implements CollectionInterface
      */
     public function remove($object)
     {
-        if ($object instanceof ObjectInterface) {
-            $object = $object->getId()->getId();
-        } else {
-            $object = intval($object);
-        }
+        $object = ($object instanceof ObjectInterface) ? $object->getId()->getId() : intval($object);
         if (empty($this->objects[$object])) {
             throw new InvalidArgumentException(
                 sprintf('Unknown object ID "%s"', $object),

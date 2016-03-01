@@ -96,21 +96,21 @@ class ApparatUrl extends ObjectUrl
                 );
             }
 
-            // Else: It's a relative URL
-        } else {
-            // If this URL doesn't have a repository URL and a context repository is given: Inherit its URL
-            if (!strlen($this->getPath()) && ($contextRepository instanceof RepositoryInterface)) {
-                $this->urlParts['path'] = $contextRepository->getUrl();
-            }
-
-            // If the the repository involved is unknown and cannot be auto-connected
-            if (!Kernel::create(Service::class)->isRegistered($this->getPath())) {
-                throw new ApparatInvalidArgumentException(
-                    sprintf('Unknown local repository URL "%s"', $this->getPath()),
-                    ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL
-                );
-            };
+            return;
         }
+
+        // If this URL doesn't have a repository URL and a context repository is given: Inherit its URL
+        if (!strlen($this->getPath()) && ($contextRepository instanceof RepositoryInterface)) {
+            $this->urlParts['path'] = $contextRepository->getUrl();
+        }
+
+        // If the the repository involved is unknown and cannot be auto-connected
+        if (!Kernel::create(Service::class)->isRegistered($this->getPath())) {
+            throw new ApparatInvalidArgumentException(
+                sprintf('Unknown local repository URL "%s"', $this->getPath()),
+                ApparatInvalidArgumentException::UNKNOWN_LOCAL_REPOSITORY_URL
+            );
+        };
     }
 
     /**

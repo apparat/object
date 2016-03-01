@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Domain\Model\Author;
 
-
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 
 /**

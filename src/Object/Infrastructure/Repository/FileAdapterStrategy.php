@@ -60,13 +60,13 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @var array
      */
-    protected $_config = null;
+    protected $config = null;
     /**
      * Root directory (without
      *
      * @var string
      */
-    protected $_root = null;
+    protected $root = null;
 
     /**
      * Adapter strategy type
@@ -87,7 +87,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         parent::__construct($config, ['root']);
 
         // If the root directory configuration is empty
-        if (empty($this->_config['root'])) {
+        if (empty($this->config['root'])) {
             throw new InvalidArgumentException(
                 'Empty file adapter strategy root',
                 InvalidArgumentException::EMTPY_FILE_STRATEGY_ROOT
@@ -95,12 +95,12 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         }
 
         // If the root directory configuration is invalid
-        $this->_root = realpath($this->_config['root']);
-        if (empty($this->_root) || !@is_dir($this->_root)) {
+        $this->root = realpath($this->config['root']);
+        if (empty($this->root) || !@is_dir($this->root)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid file adapter strategy root "%s"',
-                    $this->_config['root']
+                    $this->config['root']
                 ),
                 InvalidArgumentException::INVALID_FILE_STRATEGY_ROOT
             );
@@ -116,7 +116,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
     {
-        chdir($this->_root);
+        chdir($this->root);
 
         // Build a glob string from the selector
         $glob = '';
@@ -179,6 +179,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function getObjectResource($resourcePath)
     {
-        return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->_root.$resourcePath);
+        return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->root.$resourcePath);
     }
 }

@@ -109,7 +109,7 @@ class Url
      */
     public function getUrl()
     {
-        return $this->_getUrl();
+        return $this->getUrlInternal();
     }
 
     /**
@@ -118,7 +118,7 @@ class Url
      * @param array $override Override components
      * @return string Serialized URL
      */
-    protected function _getUrl(array &$override = [])
+    protected function getUrlInternal(array &$override = [])
     {
         // Prepare the URL scheme
         if (isset($override['scheme'])) {

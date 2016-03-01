@@ -103,34 +103,34 @@ class SelectorFactory
 
         $year = $month = $day = $hour = $minute = $second = $uid = null;
         if (($datePrecision > 0)) {
-            $year = isset($selectorParts['year']) ? self::_castInt(
+            $year = isset($selectorParts['year']) ? self::castInt(
                 $selectorParts['year']
             ) : RepositorySelector::WILDCARD;
         }
         if (($datePrecision > 1)) {
-            $month = isset($selectorParts['month']) ? self::_castInt(
+            $month = isset($selectorParts['month']) ? self::castInt(
                 $selectorParts['month']
             ) : RepositorySelector::WILDCARD;
         }
         if (($datePrecision > 2)) {
-            $day = isset($selectorParts['day']) ? self::_castInt($selectorParts['day']) : RepositorySelector::WILDCARD;
+            $day = isset($selectorParts['day']) ? self::castInt($selectorParts['day']) : RepositorySelector::WILDCARD;
         }
         if (($datePrecision > 3)) {
-            $hour = isset($selectorParts['hour']) ? self::_castInt(
+            $hour = isset($selectorParts['hour']) ? self::castInt(
                 $selectorParts['hour']
             ) : RepositorySelector::WILDCARD;
         }
         if (($datePrecision > 4)) {
-            $minute = isset($selectorParts['minute']) ? self::_castInt(
+            $minute = isset($selectorParts['minute']) ? self::castInt(
                 $selectorParts['minute']
             ) : RepositorySelector::WILDCARD;
         }
         if (($datePrecision > 5)) {
-            $second = isset($selectorParts['second']) ? self::_castInt(
+            $second = isset($selectorParts['second']) ? self::castInt(
                 $selectorParts['second']
             ) : RepositorySelector::WILDCARD;
         }
-        $uid = isset($selectorParts['id']) ? self::_castInt($selectorParts['id']) : RepositorySelector::WILDCARD;
+        $uid = isset($selectorParts['id']) ? self::castInt($selectorParts['id']) : RepositorySelector::WILDCARD;
 
         $type = empty($selectorParts['type']) ? RepositorySelector::WILDCARD : trim($selectorParts['type']);
         $revision = (isset($selectorParts['revision']) && strlen($selectorParts['revision'])) ? intval(
@@ -146,7 +146,7 @@ class SelectorFactory
      * @param string $value Value
      * @return int|string Integer value or wildcard
      */
-    protected static function _castInt($value)
+    protected static function castInt($value)
     {
         return ($value === RepositorySelector::WILDCARD) ? $value : intval($value);
     }

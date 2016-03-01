@@ -61,6 +61,6 @@ class TestObjectUrl extends ObjectUrl
             'query' => ['param2' => 'value2'],
             'fragment' => 'fragment2',
         ];
-        return $this->_getUrl($override);
+        return $this->getUrlInternal($override);
     }
 }

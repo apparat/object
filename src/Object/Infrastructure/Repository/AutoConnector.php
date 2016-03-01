@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Infrastructure\Repository;
 
-
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 use Apparat\Object\Ports\Repository;
@@ -49,7 +48,6 @@ use Apparat\Object\Ports\Repository;
  */
 class AutoConnector implements AutoConnectorInterface
 {
-
     /**
      * Auto-connect a repository with URL default settings
      *

@@ -59,31 +59,31 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    protected static $_globBase = null;
+    protected static $globBase = null;
     /**
      * Created temporary files
      *
      * @var array
      */
-    protected static $_globFiles = [];
+    protected static $globFiles = [];
     /**
      * Created temporary directories
      *
      * @var array
      */
-    protected static $_globDirs = [];
+    protected static $globDirs = [];
     /**
      * Type counter
      *
      * @var array
      */
-    protected static $_globTypes = ['event' => 0, 'article' => 0, 'note' => 0];
+    protected static $globTypes = ['event' => 0, 'article' => 0, 'note' => 0];
     /**
      * Revision counter
      *
      * @var array
      */
-    protected static $_globRevisions = ['' => 0, '-0' => 0, '-1' => 0];
+    protected static $globRevisions = ['' => 0, '-0' => 0, '-1' => 0];
 
     /**
      * Setup
@@ -91,19 +91,19 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$_globDirs[] =
-        self::$_globBase = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'glob';
+        self::$globDirs[] =
+        self::$globBase = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'glob';
 
-        $types = array_keys(self::$_globTypes);
-        $revisions = array_keys(self::$_globRevisions);
+        $types = array_keys(self::$globTypes);
+        $revisions = array_keys(self::$globRevisions);
         $index = 0;
 
         // Setup test directories & files
         for ($currentYear = intval(date('Y')), $year = $currentYear; $year < $currentYear + 3; ++$year) {
-            self::$_globDirs[] =
-            $yearDir = self::$_globBase . DIRECTORY_SEPARATOR . $year;
+            self::$globDirs[] =
+            $yearDir = self::$globBase . DIRECTORY_SEPARATOR . $year;
             for ($month = 1; $month < 13; ++$month) {
-                self::$_globDirs[] =
+                self::$globDirs[] =
                 $monthDir = $yearDir . DIRECTORY_SEPARATOR . str_pad($month, 2, '0', STR_PAD_LEFT);
                 $days = [];
                 while (count($days) < 3) {
@@ -111,16 +111,16 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                     $days[$day] = $day;
                 }
                 foreach ($days as $day) {
-                    self::$_globDirs[] =
+                    self::$globDirs[] =
                     $dayDir = $monthDir . DIRECTORY_SEPARATOR . str_pad($day, 2, '0', STR_PAD_LEFT);
                     mkdir($dayDir, 0777, true);
-                    self::$_globDirs[] =
+                    self::$globDirs[] =
                     $hourDir = $dayDir . DIRECTORY_SEPARATOR . '00';
                     mkdir($hourDir, 0777, true);
-                    self::$_globDirs[] =
+                    self::$globDirs[] =
                     $minuteDir = $hourDir . DIRECTORY_SEPARATOR . '00';
                     mkdir($minuteDir, 0777, true);
-                    self::$_globDirs[] =
+                    self::$globDirs[] =
                     $secondDir = $minuteDir . DIRECTORY_SEPARATOR . '00';
                     mkdir($secondDir, 0777, true);
 
@@ -130,12 +130,12 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                         ++$index;
                         $type = $types[rand(0, 2)];
                         $revision = $revisions[rand(0, 2)];
-                        ++self::$_globTypes[$type];
-                        ++self::$_globRevisions[$revision];
-                        self::$_globDirs[] =
+                        ++self::$globTypes[$type];
+                        ++self::$globRevisions[$revision];
+                        self::$globDirs[] =
                         $objectDir = $secondDir . DIRECTORY_SEPARATOR . $index . '.' . $type;
                         mkdir($objectDir);
-                        self::$_globFiles[] =
+                        self::$globFiles[] =
                         $objectFile = $objectDir . DIRECTORY_SEPARATOR . $index . $revision;
                         touch($objectFile);
                     }
@@ -152,10 +152,10 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
-        foreach (self::$_globFiles as $globFile) {
+        foreach (self::$globFiles as $globFile) {
             @unlink($globFile);
         }
-        foreach (array_reverse(self::$_globDirs) as $globDir) {
+        foreach (array_reverse(self::$globDirs) as $globDir) {
             @rmdir($globDir);
         }
 
@@ -352,7 +352,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => self::$_globBase,
+                'root' => self::$globBase,
             ]
         );
         RepositoryFactory::instance('http://example.com');
@@ -367,7 +367,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => self::$_globBase,
+                'root' => self::$globBase,
             ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
@@ -377,7 +377,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->assertInstanceOf(SelectorInterface::class, $selector);
         $collection = $fileRepository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertEquals(array_sum(self::$_globTypes), count($collection));
+        $this->assertEquals(array_sum(self::$globTypes), count($collection));
     }
 
     /**
@@ -389,7 +389,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => self::$_globBase,
+                'root' => self::$globBase,
             ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
@@ -397,7 +397,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*-1');
         $collection = $fileRepository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
-        $this->assertEquals(self::$_globRevisions['-1'], count($collection));
+        $this->assertEquals(self::$globRevisions['-1'], count($collection));
     }
 
     /**
@@ -409,7 +409,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => self::$_globBase,
+                'root' => self::$globBase,
             ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));

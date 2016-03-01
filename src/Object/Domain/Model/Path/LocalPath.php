@@ -149,7 +149,7 @@ class LocalPath implements PathInterface
             $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
             $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
             $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
-            $this->creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
+            $this->creationDate = new \DateTimeImmutable("$year-$month-$day".'T'."$hour:$minute:$second+00:00");
         }
 
         // Determine the leader

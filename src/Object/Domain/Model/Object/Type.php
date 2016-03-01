@@ -172,7 +172,7 @@ class Type implements SerializablePropertyInterface
      *
      * @var array
      */
-    protected static $_types = [
+    protected static $types = [
         self::ARTICLE => true,
         self::AUDIO => true,
         self::BOOKMARK => true,
@@ -199,7 +199,7 @@ class Type implements SerializablePropertyInterface
      *
      * @var string
      */
-    protected $_type = null;
+    protected $type = null;
 
     /**
      * Type constructor
@@ -215,7 +215,7 @@ class Type implements SerializablePropertyInterface
             );
         }
 
-        $this->_type = $type;
+        $this->type = $type;
     }
 
     /**
@@ -227,7 +227,7 @@ class Type implements SerializablePropertyInterface
     public static function isValidType($type)
     {
         $type = trim($type);
-        return strlen($type) && array_key_exists($type, self::$_types);
+        return strlen($type) && array_key_exists($type, self::$types);
     }
 
     /**
@@ -258,6 +258,6 @@ class Type implements SerializablePropertyInterface
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 }

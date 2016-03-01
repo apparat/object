@@ -52,7 +52,7 @@ class Article extends AbstractObject
      *
      * @var string
      */
-    protected $domainPropertyCollectionClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
     /**
      * Object type
      *

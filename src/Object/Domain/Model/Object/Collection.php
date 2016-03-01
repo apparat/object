@@ -50,19 +50,19 @@ class Collection implements CollectionInterface
      *
      * @var ObjectInterface[]|RepositoryPath[]
      */
-    protected $_objects = array();
+    protected $objects = array();
     /**
      * Object IDs
      *
      * @var array
      */
-    protected $_objectIds = array();
+    protected $objectIds = array();
     /**
      * Internal object pointer
      *
      * @var int
      */
-    protected $_pointer = 0;
+    protected $pointer = 0;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -79,11 +79,11 @@ class Collection implements CollectionInterface
         foreach ($objects as $object) {
             // If it's an object
             if ($object instanceof ObjectInterface) {
-                $this->_objects[$object->getId()->getId()] = $object;
+                $this->objects[$object->getId()->getId()] = $object;
 
                 // Else if it's an object path
             } elseif ($object instanceof RepositoryPath) {
-                $this->_objects[$object->getId()->getId()] = $object;
+                $this->objects[$object->getId()->getId()] = $object;
 
                 // Else: Error
             } else {
@@ -94,7 +94,7 @@ class Collection implements CollectionInterface
             }
         }
 
-        $this->_objectIds = array_keys($this->_objects);
+        $this->objectIds = array_keys($this->objects);
     }
 
     /**
@@ -104,7 +104,7 @@ class Collection implements CollectionInterface
      */
     public function current()
     {
-        return $this->_loadObject($this->_objectIds[$this->_pointer]);
+        return $this->_loadObject($this->objectIds[$this->pointer]);
     }
 
     /**
@@ -116,13 +116,13 @@ class Collection implements CollectionInterface
     protected function _loadObject($objectId)
     {
         // Lazy-load the object once
-        if ($this->_objects[$objectId] instanceof RepositoryPath) {
-            $this->_objects[$objectId] = $this->_objects[$objectId]->getRepository()->loadObject(
-                $this->_objects[$objectId]
+        if ($this->objects[$objectId] instanceof RepositoryPath) {
+            $this->objects[$objectId] = $this->objects[$objectId]->getRepository()->loadObject(
+                $this->objects[$objectId]
             );
         }
 
-        return $this->_objects[$objectId];
+        return $this->objects[$objectId];
     }
 
     /**
@@ -132,7 +132,7 @@ class Collection implements CollectionInterface
      */
     public function next()
     {
-        ++$this->_pointer;
+        ++$this->pointer;
     }
 
     /**
@@ -142,7 +142,7 @@ class Collection implements CollectionInterface
      */
     public function key()
     {
-        return $this->_objectIds[$this->_pointer];
+        return $this->objectIds[$this->pointer];
     }
 
     /**
@@ -152,7 +152,7 @@ class Collection implements CollectionInterface
      */
     public function valid()
     {
-        return isset($this->_objectIds[$this->_pointer]);
+        return isset($this->objectIds[$this->pointer]);
     }
 
     /**
@@ -162,7 +162,7 @@ class Collection implements CollectionInterface
      */
     public function rewind()
     {
-        $this->_pointer = 0;
+        $this->pointer = 0;
     }
 
     /**
@@ -173,7 +173,7 @@ class Collection implements CollectionInterface
      */
     public function offsetExists($offset)
     {
-        return isset($this->_objects[$offset]);
+        return isset($this->objects[$offset]);
     }
 
     /**
@@ -184,7 +184,7 @@ class Collection implements CollectionInterface
      */
     public function offsetGet($offset)
     {
-        return $this->_objects[$offset];
+        return $this->objects[$offset];
     }
 
     /**
@@ -218,7 +218,7 @@ class Collection implements CollectionInterface
      */
     public function add($object)
     {
-        $objects = $this->_objects;
+        $objects = $this->objects;
         $objects[] = $object;
         return new self(array_values($objects));
     }
@@ -236,14 +236,14 @@ class Collection implements CollectionInterface
         } else {
             $object = intval($object);
         }
-        if (empty($this->_objects[$object])) {
+        if (empty($this->objects[$object])) {
             throw new InvalidArgumentException(
                 sprintf('Unknown object ID "%s"', $object),
                 InvalidArgumentException::UNKNOWN_OBJECT_ID
             );
         }
 
-        $objects = $this->_objects;
+        $objects = $this->objects;
         unset($objects[$object]);
         return new self(array_values($objects));
     }
@@ -255,7 +255,7 @@ class Collection implements CollectionInterface
      */
     public function count()
     {
-        return count($this->_objects);
+        return count($this->objects);
     }
 
     /*******************************************************************************
@@ -270,7 +270,7 @@ class Collection implements CollectionInterface
      */
     public function append(Collection $collection)
     {
-        $objects = array_merge($this->_objects, $collection->_objects);
+        $objects = array_merge($this->objects, $collection->objects);
         return new self(array_values($objects));
     }
 }

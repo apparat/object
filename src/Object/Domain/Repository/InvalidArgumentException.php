@@ -85,7 +85,7 @@ class InvalidArgumentException extends \InvalidArgumentException
      *
      * @var string
      */
-    protected $_argumentName = null;
+    protected $argumentName = null;
 
     /**
      * Exception constructor
@@ -98,7 +98,7 @@ class InvalidArgumentException extends \InvalidArgumentException
     public function __construct($message = '', $code = '', \Exception $previous = null, $argumentName = null)
     {
         parent::__construct($message, $code, $previous);
-        $this->_argumentName = $argumentName;
+        $this->argumentName = $argumentName;
     }
 
     /**
@@ -108,6 +108,6 @@ class InvalidArgumentException extends \InvalidArgumentException
      */
     public function getArgumentName()
     {
-        return $this->_argumentName;
+        return $this->argumentName;
     }
 }

@@ -52,13 +52,13 @@ class InvalidAuthor implements AuthorInterface
      *
      * @var string
      */
-    protected $_value = '';
+    protected $value = '';
     /**
      * Underlying exception
      *
      * @var \Exception
      */
-    protected $_exception = null;
+    protected $exception = null;
 
     /**
      * Invalid author constructor
@@ -67,8 +67,8 @@ class InvalidAuthor implements AuthorInterface
      */
     public function __construct($value, \Exception $exception = null)
     {
-        $this->_value = $value;
-        $this->_exception = $exception;
+        $this->value = $value;
+        $this->exception = $exception;
     }
 
     /**
@@ -89,7 +89,7 @@ class InvalidAuthor implements AuthorInterface
      */
     public function getException()
     {
-        return $this->_exception;
+        return $this->exception;
     }
 
     /**
@@ -109,6 +109,6 @@ class InvalidAuthor implements AuthorInterface
      */
     public function serialize()
     {
-        return $this->_value;
+        return $this->value;
     }
 }

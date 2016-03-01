@@ -152,14 +152,14 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             $glob .= '/'.$second;
         }
 
-        $id = $selector->getId();
+        $uid = $selector->getId();
         $type = $selector->getType();
-        if (($id !== null) || ($type !== null)) {
-            $glob .= '/'.($id ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
+        if (($uid !== null) || ($type !== null)) {
+            $glob .= '/'.($uid ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
 
             $revision = $selector->getRevision();
             if ($revision !== null) {
-                $glob .= '/'.($id ?: Selector::WILDCARD).'-'.$revision;
+                $glob .= '/'.($uid ?: Selector::WILDCARD).'-'.$revision;
                 $globFlags &= ~GLOB_ONLYDIR;
             }
         }

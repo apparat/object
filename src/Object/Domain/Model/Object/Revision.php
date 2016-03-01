@@ -63,7 +63,7 @@ class Revision implements SerializablePropertyInterface
      *
      * @var int
      */
-    protected $_revision = null;
+    protected $revision = null;
 
     /**
      * Revision constructor
@@ -80,7 +80,7 @@ class Revision implements SerializablePropertyInterface
             );
         }
 
-        $this->_revision = $revision;
+        $this->revision = $revision;
     }
 
     /**
@@ -112,7 +112,7 @@ class Revision implements SerializablePropertyInterface
      */
     public function isDraft()
     {
-        return $this->_revision === self::DRAFT;
+        return $this->revision === self::DRAFT;
     }
 
     /**
@@ -122,7 +122,7 @@ class Revision implements SerializablePropertyInterface
      */
     public function isCurrent()
     {
-        return $this->_revision === self::CURRENT;
+        return $this->revision === self::CURRENT;
     }
 
     /**
@@ -142,6 +142,6 @@ class Revision implements SerializablePropertyInterface
      */
     public function getRevision()
     {
-        return $this->_revision;
+        return $this->revision;
     }
 }

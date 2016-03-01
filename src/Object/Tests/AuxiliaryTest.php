@@ -65,8 +65,8 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testIdSerialization()
     {
-        $id = new Id(123);
-        $this->assertEquals(123, $id->serialize());
+        $uid = new Id(123);
+        $this->assertEquals(123, $uid->serialize());
     }
 
     /**

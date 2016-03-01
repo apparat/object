@@ -52,9 +52,9 @@ class SelectorFactory
      * Date PCRE pattern
      *
      * @var array
-     * @see ObjectUrl::$_datePattern
+     * @see ObjectUrl::$datePattern
      */
-    protected static $_datePattern = [
+    protected static $datePattern = [
         'Y' => '/(?P<year>\d{4}|\*)',
         'm' => '(?:/(?P<month>\d{2}|\*)',
         'd' => '(?:/(?P<day>\d{2}|\*)',
@@ -79,7 +79,7 @@ class SelectorFactory
         if ($datePrecision) {
             $selectorPattern = implode(
                     '', array_slice(
-                    self::$_datePattern, 0,
+                    self::$datePattern, 0,
                     $datePrecision
                 )
                 ).'(?:'.$selectorPattern.str_repeat(
@@ -101,7 +101,7 @@ class SelectorFactory
             );
         }
 
-        $year = $month = $day = $hour = $minute = $second = $id = null;
+        $year = $month = $day = $hour = $minute = $second = $uid = null;
         if (($datePrecision > 0)) {
             $year = isset($selectorParts['year']) ? self::_castInt(
                 $selectorParts['year']
@@ -130,14 +130,14 @@ class SelectorFactory
                 $selectorParts['second']
             ) : RepositorySelector::WILDCARD;
         }
-        $id = isset($selectorParts['id']) ? self::_castInt($selectorParts['id']) : RepositorySelector::WILDCARD;
+        $uid = isset($selectorParts['id']) ? self::_castInt($selectorParts['id']) : RepositorySelector::WILDCARD;
 
         $type = empty($selectorParts['type']) ? RepositorySelector::WILDCARD : trim($selectorParts['type']);
         $revision = (isset($selectorParts['revision']) && strlen($selectorParts['revision'])) ? intval(
             $selectorParts['revision']
         ) : Revision::CURRENT;
 
-        return new RepositorySelector($year, $month, $day, $hour, $minute, $second, $id, $type, $revision);
+        return new RepositorySelector($year, $month, $day, $hour, $minute, $second, $uid, $type, $revision);
     }
 
     /**

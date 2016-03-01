@@ -120,11 +120,11 @@ namespace Apparat\Object\Tests {
 
 namespace Apparat\Object\Infrastructure\Repository {
     /**
-     * Mocked version of the native php_sapi_name() function
+     * Mocked version of the native php_sapiname() function
      *
      * @return string PHP SAPI
      */
-    function php_sapi_name() {
+    function php_sapiname() {
         return (getenv('MOCK_PHP_SAPI_NAME') != 1) ? \php_sapi_name() : 'web';
     }
 }

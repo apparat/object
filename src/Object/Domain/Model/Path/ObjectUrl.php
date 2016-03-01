@@ -51,7 +51,7 @@ class ObjectUrl extends Url implements PathInterface
      *
      * @var LocalPath
      */
-    protected $_localPath = null;
+    protected $localPath = null;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -77,14 +77,14 @@ class ObjectUrl extends Url implements PathInterface
         }
 
         // Instantiate the local path component
-        $this->_localPath = new LocalPath(
-            empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'],
-            $remote ? true : null, $this->_urlParts['path']
+        $this->localPath = new LocalPath(
+            empty($this->urlParts['path']) ? '' : $this->urlParts['path'],
+            $remote ? true : null, $this->urlParts['path']
         );
 
         // Normalize the path prefix
-        if (!strlen($this->_urlParts['path'])) {
-            $this->_urlParts['path'] = null;
+        if (!strlen($this->urlParts['path'])) {
+            $this->urlParts['path'] = null;
         }
     }
 
@@ -95,7 +95,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getCreationDate()
     {
-        return $this->_localPath->getCreationDate();
+        return $this->localPath->getCreationDate();
     }
 
     /**
@@ -106,7 +106,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function setCreationDate(\DateTimeImmutable $creationDate)
     {
-        $this->_localPath = $this->_localPath->setCreationDate($creationDate);
+        $this->localPath = $this->localPath->setCreationDate($creationDate);
         return $this;
     }
 
@@ -117,7 +117,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getType()
     {
-        return $this->_localPath->getType();
+        return $this->localPath->getType();
     }
 
     /**
@@ -128,7 +128,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function setType(Type $type)
     {
-        $this->_localPath = $this->_localPath->setType($type);
+        $this->localPath = $this->localPath->setType($type);
         return $this;
     }
 
@@ -139,18 +139,18 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getId()
     {
-        return $this->_localPath->getId();
+        return $this->localPath->getId();
     }
 
     /**
      * Set the object ID
      *
-     * @param Id $id Object ID
+     * @param Id $uid Object ID
      * @return ObjectUrl New object URL
      */
-    public function setId(Id $id)
+    public function setId(Id $uid)
     {
-        $this->_localPath = $this->_localPath->setId($id);
+        $this->localPath = $this->localPath->setId($uid);
         return $this;
     }
 
@@ -162,7 +162,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getRevision()
     {
-        return $this->_localPath->getRevision();
+        return $this->localPath->getRevision();
     }
 
     /**
@@ -173,7 +173,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function setRevision(Revision $revision)
     {
-        $this->_localPath = $this->_localPath->setRevision($revision);
+        $this->localPath = $this->localPath->setRevision($revision);
         return $this;
     }
 
@@ -223,7 +223,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getLocalPath()
     {
-        return $this->_localPath;
+        return $this->localPath;
     }
 
     /**
@@ -273,7 +273,7 @@ class ObjectUrl extends Url implements PathInterface
         if (isset($override['object'])) {
             $object = $override['object'];
         } else {
-            $object = strval($this->_localPath);
+            $object = strval($this->localPath);
         }
         $override['object'] = $object;
 

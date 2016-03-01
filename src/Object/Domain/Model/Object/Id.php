@@ -51,24 +51,24 @@ class Id implements SerializablePropertyInterface
      *
      * @var int
      */
-    protected $_id = null;
+    protected $uid = null;
 
     /**
      * ID constructor
      *
-     * @param int $id Object ID
+     * @param int $uid Object ID
      */
-    public function __construct($id)
+    public function __construct($uid)
     {
         // If the ID is invalid
-        if (!is_int($id) || ($id <= 0)) {
+        if (!is_int($uid) || ($uid <= 0)) {
             throw new InvalidArgumentException(
-                sprintf('Invalid object ID "%s"', $id),
+                sprintf('Invalid object ID "%s"', $uid),
                 InvalidArgumentException::INVALID_OBJECT_ID
             );
         }
 
-        $this->_id = $id;
+        $this->uid = $uid;
     }
 
     /**
@@ -99,6 +99,6 @@ class Id implements SerializablePropertyInterface
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->uid;
     }
 }

@@ -96,10 +96,10 @@ interface PathInterface
     /**
      * Set the object ID
      *
-     * @param Id $id Object ID
+     * @param Id $uid Object ID
      * @return LocalPath New object path
      */
-    public function setId(Id $id);
+    public function setId(Id $uid);
 
     /**
      * Return the object revision

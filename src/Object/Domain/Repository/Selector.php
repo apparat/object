@@ -58,55 +58,55 @@ class Selector implements SelectorInterface
      *
      * @var int
      */
-    private $_year = null;
+    private $year = null;
     /**
      * Month component
      *
      * @var int
      */
-    private $_month = null;
+    private $month = null;
     /**
      * Day component
      *
      * @var int
      */
-    private $_day = null;
+    private $day = null;
     /**
      * Hour component
      *
      * @var int
      */
-    private $_hour = null;
+    private $hour = null;
     /**
      * Minute component
      *
      * @var int
      */
-    private $_minute = null;
+    private $minute = null;
     /**
      * Second component
      *
      * @var int
      */
-    private $_second = null;
+    private $second = null;
     /**
      * Object ID
      *
      * @var int
      */
-    private $_id = null;
+    private $uid = null;
     /**
      * Object type
      *
      * @var string
      */
-    private $_type = null;
+    private $type = null;
     /**
      * Revision component
      *
      * @var int
      */
-    private $_revision = null;
+    private $revision = null;
 
     /**
      * Repository selector constructor
@@ -117,7 +117,7 @@ class Selector implements SelectorInterface
      * @param string|int|NULL $hour
      * @param string|int|NULL $minute
      * @param string|int|NULL $second
-     * @param string|int|NULL $id Object ID
+     * @param string|int|NULL $uid Object ID
      * @param string|NULL $type Object type
      * @param int|NULL $revision
      * @throws InvalidArgumentException If any of the components isn't valid
@@ -129,7 +129,7 @@ class Selector implements SelectorInterface
         $hour = self::WILDCARD,
         $minute = self::WILDCARD,
         $second = self::WILDCARD,
-        $id = self::WILDCARD,
+        $uid = self::WILDCARD,
         $type = self::WILDCARD,
         $revision = Revision::CURRENT
     ) {
@@ -159,19 +159,19 @@ class Selector implements SelectorInterface
             }
 
             // Set the component value
-            $this->{"_$label"} = ($component === self::WILDCARD) ? self::WILDCARD : str_pad($component, 2, '0', STR_PAD_LEFT);
+            $this->$label = ($component === self::WILDCARD) ? self::WILDCARD : str_pad($component, 2, '0', STR_PAD_LEFT);
         }
 
         // If the ID component isn't valid
-        if (!is_int($id) && ($id !== self::WILDCARD)) {
+        if (!is_int($uid) && ($uid !== self::WILDCARD)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid repository selector ID component "%s"',
-                    $id
+                    $uid
                 ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'id'
             );
         }
-        $this->_id = $id;
+        $this->uid = $uid;
 
         // If the type component isn't valid
         if (!Type::isValidType($type) && ($type !== self::WILDCARD)) {
@@ -182,7 +182,7 @@ class Selector implements SelectorInterface
                 ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'type'
             );
         }
-        $this->_type = $type;
+        $this->type = $type;
 
         // If the revision component isn't valid
         if (!Revision::isValidRevision($revision) && ($revision !== self::WILDCARD)) {
@@ -193,7 +193,7 @@ class Selector implements SelectorInterface
                 ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'revision'
             );
         }
-        $this->_revision = $revision;
+        $this->revision = $revision;
     }
 
     /**
@@ -203,7 +203,7 @@ class Selector implements SelectorInterface
      */
     public function getYear()
     {
-        return $this->_year;
+        return $this->year;
     }
 
     /**
@@ -213,7 +213,7 @@ class Selector implements SelectorInterface
      */
     public function getMonth()
     {
-        return $this->_month;
+        return $this->month;
     }
 
     /**
@@ -223,7 +223,7 @@ class Selector implements SelectorInterface
      */
     public function getDay()
     {
-        return $this->_day;
+        return $this->day;
     }
 
     /**
@@ -233,7 +233,7 @@ class Selector implements SelectorInterface
      */
     public function getHour()
     {
-        return $this->_hour;
+        return $this->hour;
     }
 
     /**
@@ -243,7 +243,7 @@ class Selector implements SelectorInterface
      */
     public function getMinute()
     {
-        return $this->_minute;
+        return $this->minute;
     }
 
     /**
@@ -253,7 +253,7 @@ class Selector implements SelectorInterface
      */
     public function getSecond()
     {
-        return $this->_second;
+        return $this->second;
     }
 
     /**
@@ -263,7 +263,7 @@ class Selector implements SelectorInterface
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->uid;
     }
 
     /**
@@ -273,7 +273,7 @@ class Selector implements SelectorInterface
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -283,6 +283,6 @@ class Selector implements SelectorInterface
      */
     public function getRevision()
     {
-        return $this->_revision;
+        return $this->revision;
     }
 }

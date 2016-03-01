@@ -100,7 +100,7 @@ class SystemProperties extends AbstractProperties
      *
      * @var Id
      */
-    protected $id = null;
+    protected $uid = null;
     /**
      * Object type
      *
@@ -148,7 +148,7 @@ class SystemProperties extends AbstractProperties
 
         // Initialize the object ID
         if (array_key_exists(self::PROPERTY_ID, $data)) {
-            $this->id = Id::unserialize($data[self::PROPERTY_ID]);
+            $this->uid = Id::unserialize($data[self::PROPERTY_ID]);
         }
 
         // Initialize the object type
@@ -178,7 +178,7 @@ class SystemProperties extends AbstractProperties
 
         // Test if all mandatory properties are set
         if (
-            !($this->id instanceof Id) ||
+            !($this->uid instanceof Id) ||
             !($this->type instanceof Type) ||
             !($this->revision instanceof Revision) ||
             !($this->created instanceof \DateTimeImmutable) ||
@@ -195,7 +195,7 @@ class SystemProperties extends AbstractProperties
      */
     public function getId()
     {
-        return $this->id;
+        return $this->uid;
     }
 
     /**
@@ -275,7 +275,7 @@ class SystemProperties extends AbstractProperties
     public function toArray()
     {
         return array_filter([
-            self::PROPERTY_ID => $this->id->getId(),
+            self::PROPERTY_ID => $this->uid->getId(),
             self::PROPERTY_TYPE => $this->type->getType(),
             self::PROPERTY_REVISION => $this->revision->getRevision(),
             self::PROPERTY_CREATED => $this->created->format('c'),

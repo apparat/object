@@ -50,13 +50,13 @@ class TestType extends Type
      * Register an invalid object type
      */
     public static function addInvalidType() {
-        parent::$_types['invalid'] = true;
+        parent::$types['invalid'] = true;
     }
 
     /**
      * Remove the invalid object type
      */
     public static function removeInvalidType() {
-        unset(parent::$_types['invalid']);
+        unset(parent::$types['invalid']);
     }
 }

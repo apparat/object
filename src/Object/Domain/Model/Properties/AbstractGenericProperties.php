@@ -51,7 +51,7 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
      *
      * @var array
      */
-    protected $_data = [];
+    protected $data = [];
 
     /**
      * Property collection constructor
@@ -63,7 +63,7 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     {
         parent::__construct($data, $object);
 
-        $this->_data = $data;
+        $this->data = $data;
     }
 
     /**
@@ -85,17 +85,17 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
         }
 
         // Traverse the property tree
-        $propertyPathTraversed = [];
-        $data =& $this->_data;
+        $propertyPathSteps = [];
+        $data =& $this->data;
         foreach ($propertyPath as $property) {
-            $propertyPathTraversed[] = $property;
+            $propertyPathSteps[] = $property;
 
             // If the property name step is invalid
             if (!array_key_exists($property, $data)) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Invalid property name "%s"',
-                        implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathTraversed)
+                        implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathSteps)
                     ),
                     InvalidArgumentException::INVALID_PROPERTY_NAME
                 );

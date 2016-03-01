@@ -51,19 +51,19 @@ class GenericAuthor implements AuthorInterface
      *
      * @var string
      */
-    private $_name;
+    private $name;
     /**
      * Email address
      *
      * @var string
      */
-    private $_email;
+    private $email;
     /**
      * URL
      *
      * @var string
      */
-    private $_url;
+    private $url;
 
     /**
      * Generic author constructor
@@ -74,9 +74,9 @@ class GenericAuthor implements AuthorInterface
      */
     public function __construct($name, $email = null, $url = null)
     {
-        $this->_name = $name;
-        $this->_email = $email;
-        $this->_url = $url;
+        $this->name = $name;
+        $this->email = $email;
+        $this->url = $url;
     }
 
     /**
@@ -117,14 +117,14 @@ class GenericAuthor implements AuthorInterface
      */
     public function serialize()
     {
-        $parts = [$this->_name];
+        $parts = [$this->name];
 
-        if (strlen($this->_email)) {
-            $parts[] = '<'.$this->_email.'>';
+        if (strlen($this->email)) {
+            $parts[] = '<'.$this->email.'>';
         }
 
-        if (strlen($this->_url)) {
-            $parts[] = '('.$this->_url.')';
+        if (strlen($this->url)) {
+            $parts[] = '('.$this->url.')';
         }
 
         return implode(' ', $parts);

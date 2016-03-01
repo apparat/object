@@ -66,7 +66,7 @@ class Service
      *
      * @var AdapterStrategyFactoryInterface
      */
-    protected $adapterStrategyFactory = null;
+    protected $adptStrategyFactory = null;
     /**
      * Object manager
      *
@@ -88,16 +88,16 @@ class Service
      * Repository service constructor
      *
      * @param AutoConnectorInterface $autoConnector Auto-connector
-     * @param AdapterStrategyFactoryInterface $adapterStrategyFactory Adapter strategy factory
+     * @param AdapterStrategyFactoryInterface $adptStrategyFactory Adapter strategy factory
      * @param ManagerInterface $objectManager Object manager
      */
     public function __construct(
         AutoConnectorInterface $autoConnector,
-        AdapterStrategyFactoryInterface $adapterStrategyFactory,
+        AdapterStrategyFactoryInterface $adptStrategyFactory,
         ManagerInterface $objectManager
     ) {
         $this->autoConnector = $autoConnector;
-        $this->adapterStrategyFactory = $adapterStrategyFactory;
+        $this->adptStrategyFactory = $adptStrategyFactory;
         $this->objectManager = $objectManager;
     }
 
@@ -236,7 +236,7 @@ class Service
      */
     public function getAdapterStrategyFactory()
     {
-        return $this->adapterStrategyFactory;
+        return $this->adptStrategyFactory;
     }
 
     /**

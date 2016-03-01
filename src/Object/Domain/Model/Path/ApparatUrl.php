@@ -53,7 +53,7 @@ class ApparatUrl extends ObjectUrl
      *
      * @var array
      */
-    protected static $_schemes = [self::SCHEME_APRT => true, self::SCHEME_APRTS => true];
+    protected static $schemes = [self::SCHEME_APRT => true, self::SCHEME_APRTS => true];
 
     /**
      * APRT-Schema
@@ -89,7 +89,7 @@ class ApparatUrl extends ObjectUrl
         // If it's an absolute URL
         if ($this->isAbsolute()) {
             // If the Apparat URL scheme is invalid
-            if (!array_key_exists($this->_urlParts['scheme'], self::$_schemes)) {
+            if (!array_key_exists($this->urlParts['scheme'], self::$schemes)) {
                 throw new ApparatInvalidArgumentException(
                     sprintf('Invalid absolute apparat URL "%s"', $url),
                     ApparatInvalidArgumentException::INVALID_ABSOLUTE_APPARAT_URL
@@ -100,7 +100,7 @@ class ApparatUrl extends ObjectUrl
         } else {
             // If this URL doesn't have a repository URL and a context repository is given: Inherit its URL
             if (!strlen($this->getPath()) && ($contextRepository instanceof RepositoryInterface)) {
-                $this->_urlParts['path'] = $contextRepository->getUrl();
+                $this->urlParts['path'] = $contextRepository->getUrl();
             }
 
             // If the the repository involved is unknown and cannot be auto-connected

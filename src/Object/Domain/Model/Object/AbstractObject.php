@@ -88,7 +88,7 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var string
      */
-    protected $domainPropertyCollectionClass = null;
+    protected $domainPropertyCClass = null;
     /**
      * Object relations
      *
@@ -113,11 +113,11 @@ abstract class AbstractObject implements ObjectInterface
     public function __construct(RepositoryPathInterface $path, array $propertyData = [], $payload = '')
     {
         // If the domain property collection class is invalid
-        if (!is_subclass_of($this->domainPropertyCollectionClass, AbstractDomainProperties::class)) {
+        if (!is_subclass_of($this->domainPropertyCClass, AbstractDomainProperties::class)) {
             throw new PropertyInvalidArgumentException(
                 sprintf(
                     'Invalid domain property collection class "%s"',
-                    $this->domainPropertyCollectionClass
+                    $this->domainPropertyCClass
                 ),
                 PropertyInvalidArgumentException::INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS
             );
@@ -142,13 +142,13 @@ abstract class AbstractObject implements ObjectInterface
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        $this->domainProperties = new $this->domainPropertyCollectionClass($domainPropertyData, $this);
+        $this->domainProperties = new $this->domainPropertyCClass($domainPropertyData, $this);
 
         // Instantiate the processing instructions
-        $processingInstructionData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array(
+        $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array(
                 $propertyData[ProcessingInstructions::COLLECTION]
             )) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-        $this->processingInstructions = new ProcessingInstructions($processingInstructionData, $this);
+        $this->processingInstructions = new ProcessingInstructions($procInstData, $this);
 
         // Instantiate the object relations
         $relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array(

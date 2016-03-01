@@ -90,20 +90,20 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
         $this->assertTrue(is_int(count($collection)));
         $this->assertTrue(count($collection) == 1);
 
-        $id = 1;
-        foreach ($collection as $id => $article) {
+        $uid = 1;
+        foreach ($collection as $uid => $article) {
             $this->assertInstanceOf(Article::class, $article);
-            $this->assertEquals($id, $article->getId()->getId());
+            $this->assertEquals($uid, $article->getId()->getId());
         }
 
-        $this->assertTrue(isset($collection[$id]));
-        $this->assertInstanceOf(Article::class, $collection[$id]);
+        $this->assertTrue(isset($collection[$uid]));
+        $this->assertInstanceOf(Article::class, $collection[$uid]);
 
         // Load a contact object
         $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2.contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
-        $collection[$id] = $contactObject;
+        $collection[$uid] = $contactObject;
     }
 
     /**

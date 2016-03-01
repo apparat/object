@@ -53,31 +53,31 @@ class LocalPath implements PathInterface
      *
      * @var \DateTimeImmutable
      */
-    protected $_creationDate = null;
+    protected $creationDate = null;
     /**
      * Object ID
      *
      * @var int
      */
-    protected $_id = null;
+    protected $uid = null;
     /**
      * Object type
      *
      * @var Type
      */
-    protected $_type = null;
+    protected $type = null;
     /**
      * Object revision
      *
      * @var Revision
      */
-    protected $_revision = null;
+    protected $revision = null;
     /**
      * Date PCRE pattern
      *
      * @var array
      */
-    protected static $_datePattern = [
+    protected static $datePattern = [
         'Y' => '(?P<year>\d{4})',
         'm' => '(?P<month>\d{2})',
         'd' => '(?P<day>\d{2})',
@@ -110,13 +110,13 @@ class LocalPath implements PathInterface
         if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
             $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode(
                     '/',
-                    array_slice(self::$_datePattern, 0, $datePrecision)
+                    array_slice(self::$datePattern, 0, $datePrecision)
                 ).($datePrecision ? '/' : '');
 
             // Else if the date precision may be arbitrary
         } elseif ($datePrecision === true) {
-            $pathPattern = '%(?:/'.implode('(?:/', self::$_datePattern);
-            $pathPattern .= str_repeat(')?', count(self::$_datePattern));
+            $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
+            $pathPattern .= str_repeat(')?', count(self::$datePattern));
             $pathPattern .= '/';
 
             // Else: Error
@@ -149,7 +149,7 @@ class LocalPath implements PathInterface
             $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
             $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
             $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
-            $this->_creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
+            $this->creationDate = new \DateTimeImmutable("${year}-${month}-${day}T${hour}:${minute}:${second}+00:00");
         }
 
         // Determine the leader
@@ -158,13 +158,13 @@ class LocalPath implements PathInterface
         ) : $pathParts['leader'];
 
         // Set the ID
-        $this->_id = new Id(intval($pathParts['id']));
+        $this->uid = new Id(intval($pathParts['id']));
 
         // Set the type
-        $this->_type = new Type($pathParts['type']);
+        $this->type = new Type($pathParts['type']);
 
         // Set the revision
-        $this->_revision = new Revision(
+        $this->revision = new Revision(
             empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])
         );
     }
@@ -180,15 +180,15 @@ class LocalPath implements PathInterface
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
         // Add the creation date
-        foreach (array_slice(array_keys(self::$_datePattern), 0, $datePrecision) as $dateFormat) {
-            $path[] = $this->_creationDate->format($dateFormat);
+        foreach (array_slice(array_keys(self::$datePattern), 0, $datePrecision) as $dateFormat) {
+            $path[] = $this->creationDate->format($dateFormat);
         }
 
         // Add the object ID and type
-        $path[] = $this->_id->getId().'.'.$this->_type->getType();
+        $path[] = $this->uid->getId().'.'.$this->type->getType();
 
         // Add the ID and revision
-        $path[] = rtrim($this->_id->getId().'-'.$this->_revision->getRevision(), '-');
+        $path[] = rtrim($this->uid->getId().'-'.$this->revision->getRevision(), '-');
 
         return '/'.implode('/', $path);
     }
@@ -200,7 +200,7 @@ class LocalPath implements PathInterface
      */
     public function getCreationDate()
     {
-        return $this->_creationDate;
+        return $this->creationDate;
     }
 
     /**
@@ -212,7 +212,7 @@ class LocalPath implements PathInterface
     public function setCreationDate(\DateTimeImmutable $creationDate)
     {
         $path = clone $this;
-        $path->_creationDate = $creationDate;
+        $path->creationDate = $creationDate;
         return $path;
     }
 
@@ -223,7 +223,7 @@ class LocalPath implements PathInterface
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -235,7 +235,7 @@ class LocalPath implements PathInterface
     public function setType(Type $type)
     {
         $path = clone $this;
-        $path->_type = $type;
+        $path->type = $type;
         return $path;
     }
 
@@ -246,19 +246,19 @@ class LocalPath implements PathInterface
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->uid;
     }
 
     /**
      * Set the object ID
      *
-     * @param Id $id Object ID
+     * @param Id $uid Object ID
      * @return LocalPath New object path
      */
-    public function setId(Id $id)
+    public function setId(Id $uid)
     {
         $path = clone $this;
-        $path->_id = $id;
+        $path->uid = $uid;
         return $path;
     }
 
@@ -269,7 +269,7 @@ class LocalPath implements PathInterface
      */
     public function getRevision()
     {
-        return $this->_revision;
+        return $this->revision;
     }
 
     /**
@@ -281,7 +281,7 @@ class LocalPath implements PathInterface
     public function setRevision(Revision $revision)
     {
         $path = clone $this;
-        $path->_revision = $revision;
+        $path->revision = $revision;
         return $path;
     }
 }

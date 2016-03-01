@@ -51,7 +51,7 @@ abstract class AbstractProperties implements PropertiesInterface
      *
      * @var ObjectInterface
      */
-    protected $_object = null;
+    protected $object = null;
 
     /**
      * Meta properties constructor
@@ -61,7 +61,7 @@ abstract class AbstractProperties implements PropertiesInterface
      */
     public function __construct(array $data, ObjectInterface $object)
     {
-        $this->_object = $object;
+        $this->object = $object;
     }
 
     /**
@@ -71,6 +71,6 @@ abstract class AbstractProperties implements PropertiesInterface
      */
     public function getObject()
     {
-        return $this->_object;
+        return $this->object;
     }
 }

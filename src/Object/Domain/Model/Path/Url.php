@@ -61,13 +61,13 @@ class Url
      *
      * @var array
      */
-    protected static $_schemes = [self::SCHEME_HTTP => true, self::SCHEME_HTTPS => true];
+    protected static $schemes = [self::SCHEME_HTTP => true, self::SCHEME_HTTPS => true];
     /**
      * URL parts
      *
      * @var array
      */
-    protected $_urlParts = null;
+    protected $urlParts = null;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -83,8 +83,8 @@ class Url
     {
 
         // Parse the URL
-        $this->_urlParts = @parse_url($url);
-        if ($this->_urlParts === false) {
+        $this->urlParts = @parse_url($url);
+        if ($this->urlParts === false) {
             throw new InvalidArgumentException(
                 sprintf('Invalid URL "%s"', $url),
                 InvalidArgumentException::INVALID_URL
@@ -127,7 +127,7 @@ class Url
                 $scheme .= '://';
             }
         } else {
-            $scheme = !empty($this->_urlParts['scheme']) ? $this->getScheme().'://' : '';
+            $scheme = !empty($this->urlParts['scheme']) ? $this->getScheme().'://' : '';
         }
         $override['scheme'] = $scheme;
 
@@ -135,7 +135,7 @@ class Url
         if (isset($override['user'])) {
             $user = $override['user'];
         } else {
-            $user = !empty($this->_urlParts['user']) ? rawurlencode($this->getUser()) : '';
+            $user = !empty($this->urlParts['user']) ? rawurlencode($this->getUser()) : '';
         }
         $override['user'] = $user;
 
@@ -143,7 +143,7 @@ class Url
         if (isset($override['pass'])) {
             $pass = ':'.$override['pass'];
         } else {
-            $pass = !empty($this->_urlParts['pass']) ? ':'.rawurlencode($this->getPassword()) : '';
+            $pass = !empty($this->urlParts['pass']) ? ':'.rawurlencode($this->getPassword()) : '';
         }
         if ($user || $pass) {
             $pass .= '@';
@@ -154,7 +154,7 @@ class Url
         if (isset($override['host'])) {
             $host = $override['host'];
         } else {
-            $host = !empty($this->_urlParts['host']) ? $this->getHost() : '';
+            $host = !empty($this->urlParts['host']) ? $this->getHost() : '';
         }
         $override['host'] = $host;
 
@@ -162,7 +162,7 @@ class Url
         if (isset($override['port'])) {
             $port = ':'.$override['port'];
         } else {
-            $port = !empty($this->_urlParts['port']) ? ':'.$this->getPort() : '';
+            $port = !empty($this->urlParts['port']) ? ':'.$this->getPort() : '';
         }
         $override['port'] = $port;
 
@@ -170,7 +170,7 @@ class Url
         if (isset($override['path'])) {
             $path = $override['path'];
         } else {
-            $path = empty($this->_urlParts['path']) ? '' : $this->_urlParts['path'];
+            $path = empty($this->urlParts['path']) ? '' : $this->urlParts['path'];
         }
         $override['path'] = $path;
 
@@ -181,7 +181,7 @@ class Url
                 $query = '?'.$query;
             }
         } else {
-            $query = !empty($this->_urlParts['query']) ? '?'.$this->_urlParts['query'] : '';
+            $query = !empty($this->urlParts['query']) ? '?'.$this->urlParts['query'] : '';
         }
         $override['query'] = $query;
 
@@ -192,7 +192,7 @@ class Url
                 $fragment = '#'.$fragment;
             }
         } else {
-            $fragment = !empty($this->_urlParts['fragment']) ? '#'.$this->getFragment() : '';
+            $fragment = !empty($this->urlParts['fragment']) ? '#'.$this->getFragment() : '';
         }
         $override['fragment'] = $fragment;
 
@@ -206,7 +206,7 @@ class Url
      */
     public function getScheme()
     {
-        return isset($this->_urlParts['scheme']) ? $this->_urlParts['scheme'] : null;
+        return isset($this->urlParts['scheme']) ? $this->urlParts['scheme'] : null;
     }
 
     /**
@@ -216,7 +216,7 @@ class Url
      */
     public function getUser()
     {
-        return isset($this->_urlParts['user']) ? $this->_urlParts['user'] : null;
+        return isset($this->urlParts['user']) ? $this->urlParts['user'] : null;
     }
 
     /**
@@ -226,7 +226,7 @@ class Url
      */
     public function getPassword()
     {
-        return isset($this->_urlParts['pass']) ? $this->_urlParts['pass'] : null;
+        return isset($this->urlParts['pass']) ? $this->urlParts['pass'] : null;
     }
 
     /**
@@ -236,7 +236,7 @@ class Url
      */
     public function getHost()
     {
-        return isset($this->_urlParts['host']) ? $this->_urlParts['host'] : null;
+        return isset($this->urlParts['host']) ? $this->urlParts['host'] : null;
     }
 
     /**
@@ -246,7 +246,7 @@ class Url
      */
     public function getPort()
     {
-        return isset($this->_urlParts['port']) ? $this->_urlParts['port'] : null;
+        return isset($this->urlParts['port']) ? $this->urlParts['port'] : null;
     }
 
     /**
@@ -256,7 +256,7 @@ class Url
      */
     public function getFragment()
     {
-        return isset($this->_urlParts['fragment']) ? $this->_urlParts['fragment'] : null;
+        return isset($this->urlParts['fragment']) ? $this->urlParts['fragment'] : null;
     }
 
     /**
@@ -281,7 +281,7 @@ class Url
         }
 
         $url = clone $this;
-        $url->_urlParts['host'] = $host;
+        $url->urlParts['host'] = $host;
         return $url;
     }
 
@@ -303,7 +303,7 @@ class Url
         }
 
         $url = clone $this;
-        $url->_urlParts['port'] = $port;
+        $url->urlParts['port'] = $port;
         return $url;
     }
 
@@ -316,7 +316,7 @@ class Url
     public function setUser($user)
     {
         $url = clone $this;
-        $url->_urlParts['user'] = $user ?: null;
+        $url->urlParts['user'] = $user ?: null;
         return $url;
     }
 
@@ -329,7 +329,7 @@ class Url
     public function setPassword($pass)
     {
         $url = clone $this;
-        $url->_urlParts['pass'] = $pass ?: null;
+        $url->urlParts['pass'] = $pass ?: null;
         return $url;
     }
 
@@ -342,7 +342,7 @@ class Url
     public function setQuery(array $query)
     {
         $url = clone $this;
-        $url->_urlParts['query'] = http_build_query($query);
+        $url->urlParts['query'] = http_build_query($query);
         return $url;
     }
 
@@ -355,7 +355,7 @@ class Url
     public function setFragment($fragment)
     {
         $url = clone $this;
-        $url->_urlParts['fragment'] = $fragment;
+        $url->urlParts['fragment'] = $fragment;
         return $url;
     }
 
@@ -376,7 +376,7 @@ class Url
      */
     public function isAbsolute()
     {
-        return !empty($this->_urlParts['scheme']) && !empty($this->_urlParts['host']);
+        return !empty($this->urlParts['scheme']) && !empty($this->urlParts['host']);
     }
 
     /**
@@ -405,7 +405,7 @@ class Url
      */
     public function getPath()
     {
-        return $this->_urlParts['path'];
+        return $this->urlParts['path'];
     }
 
     /**
@@ -419,7 +419,7 @@ class Url
         $path = trim($path, '/');
 
         $url = clone $this;
-        $url->_urlParts['path'] = strlen($path) ? '/'.$path : null;
+        $url->urlParts['path'] = strlen($path) ? '/'.$path : null;
         return $url;
     }
 
@@ -433,7 +433,7 @@ class Url
     public function setScheme($scheme)
     {
         // If the URL scheme is not valid
-        if (strlen($scheme) && !array_key_exists($scheme, static::$_schemes)) {
+        if (strlen($scheme) && !array_key_exists($scheme, static::$schemes)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid URL scheme "%s"', $scheme),
                 InvalidArgumentException::INVALID_URL_SCHEME
@@ -441,7 +441,7 @@ class Url
         }
 
         $url = clone $this;
-        $url->_urlParts['scheme'] = $scheme;
+        $url->urlParts['scheme'] = $scheme;
         return $url;
     }
 
@@ -517,8 +517,8 @@ class Url
     public function getQuery()
     {
         $query = [];
-        if (isset($this->_urlParts['query']) && !empty($this->_urlParts['query'])) {
-            @parse_str($this->_urlParts['query'], $query);
+        if (isset($this->urlParts['query']) && !empty($this->urlParts['query'])) {
+            @parse_str($this->urlParts['query'], $query);
         }
         return ArrayUtility::sortRecursiveByKey($query);
     }

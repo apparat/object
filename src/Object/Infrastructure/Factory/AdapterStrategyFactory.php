@@ -53,7 +53,7 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
      *
      * @var array
      */
-    protected static $_types = [
+    protected static $types = [
         FileAdapterStrategy::TYPE => FileAdapterStrategy::class,
     ];
 
@@ -76,7 +76,7 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
         }
 
         // If the adapter strategy type is missing or invalid
-        if (empty($config['type']) || !array_key_exists($config['type'], self::$_types)) {
+        if (empty($config['type']) || !array_key_exists($config['type'], self::$types)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid adapter strategy type "%s"',
@@ -87,6 +87,6 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
         }
 
         // Instantiate the adapter strategy
-        return new self::$_types[$config['type']]($config);
+        return new self::$types[$config['type']]($config);
     }
 }

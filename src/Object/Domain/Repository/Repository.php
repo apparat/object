@@ -53,19 +53,19 @@ class Repository implements RepositoryInterface
      *
      * @var string
      */
-    protected $_url = null;
+    protected $url = null;
     /**
      * Adapter strategy
      *
      * @var AdapterStrategyInterface
      */
-    protected $_adapterStrategy = null;
+    protected $adapterStrategy = null;
     /**
      * Instance specific object cache
      *
      * @var array
      */
-    protected $_objectCache = [];
+    protected $objectCache = [];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -81,8 +81,8 @@ class Repository implements RepositoryInterface
         $url,
         array $config
     ) {
-        $this->_url = rtrim('/'.$url, '/');
-        $this->_adapterStrategy = Kernel::create(Service::class)->getAdapterStrategyFactory()->createFromConfig($config);
+        $this->url = rtrim('/'.$url, '/');
+        $this->adapterStrategy = Kernel::create(Service::class)->getAdapterStrategyFactory()->createFromConfig($config);
     }
 
     /**
@@ -93,7 +93,7 @@ class Repository implements RepositoryInterface
      */
     public function findObjects(SelectorInterface $selector)
     {
-        return new Collection($this->_adapterStrategy->findObjectPaths($selector, $this));
+        return new Collection($this->adapterStrategy->findObjectPaths($selector, $this));
     }
 
     /**
@@ -138,8 +138,8 @@ class Repository implements RepositoryInterface
     public function loadObject(PathInterface $path)
     {
         // TODO: Really OK to cache? (Immutability ...)
-        if (empty($this->_objectCache[$path->getId()->getId()])) {
-            $this->_objectCache[$path->getId()->getId()] = Kernel::create(Service::class)->getObjectManager()->loadObject(
+        if (empty($this->objectCache[$path->getId()->getId()])) {
+            $this->objectCache[$path->getId()->getId()] = Kernel::create(Service::class)->getObjectManager()->loadObject(
                 new RepositoryPath(
                     $this,
                     $path
@@ -147,7 +147,7 @@ class Repository implements RepositoryInterface
             );
         }
 
-        return $this->_objectCache[$path->getId()->getId()];
+        return $this->objectCache[$path->getId()->getId()];
     }
 
     /**
@@ -157,7 +157,7 @@ class Repository implements RepositoryInterface
      */
     public function getAdapterStrategy()
     {
-        return $this->_adapterStrategy;
+        return $this->adapterStrategy;
     }
 
     /**
@@ -167,6 +167,6 @@ class Repository implements RepositoryInterface
      */
     public function getUrl()
     {
-        return $this->_url;
+        return $this->url;
     }
 }

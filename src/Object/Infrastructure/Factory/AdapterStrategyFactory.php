@@ -39,7 +39,6 @@ namespace Apparat\Object\Infrastructure\Factory;
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Infrastructure\Repository\HttpAdapterStrategy;
 
 /**
  * Repository adapter strategy factory
@@ -56,7 +55,6 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
      */
     protected static $_types = [
         FileAdapterStrategy::TYPE => FileAdapterStrategy::class,
-        HttpAdapterStrategy::TYPE => HttpAdapterStrategy::class,
     ];
 
     /**

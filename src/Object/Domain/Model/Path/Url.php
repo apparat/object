@@ -484,12 +484,6 @@ class Url
             return false;
         }
 
-        // Test the port
-        $urlPort = $url->getPort();
-        if (($urlPort !== null) && ($this->getPort() !== $urlPort)) {
-            return false;
-        }
-
         // Test the path
         $urlPath = $url->getPath();
         if (($urlPath !== null) && ($this->getPath() !== $urlPath)) {

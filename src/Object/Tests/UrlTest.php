@@ -78,7 +78,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const URL = self::REPOSITORY_URL . self::PATH . self::QUERY_FRAGMENT;
+    const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
     /**
      * Example remote repository URL
      *
@@ -90,13 +90,13 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const REMOTE_URL = self::REMOTE_REPOSITORY_URL . self::PATH . self::QUERY_FRAGMENT;
+    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
     /**
      * Example apparat URL
      *
      * @var string
      */
-    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80' . self::PATH . self::QUERY_FRAGMENT;
+    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
 
     /**
      * Test an URL
@@ -142,7 +142,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     public function testLeadedLocalUrl()
     {
         $pathPrefix = '/prefix/path';
-        $url = new ObjectUrl($pathPrefix . self::PATH);
+        $url = new ObjectUrl($pathPrefix.self::PATH);
         $this->assertEquals($pathPrefix, $url->getPath());
         $this->assertEquals(self::PATH, $url->getLocalPath());
     }
@@ -261,7 +261,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlAbsoluteLocal()
     {
-        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/') . self::REPOSITORY_URL . self::PATH, true);
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
         $this->assertTrue($url->isAbsoluteLocal());
     }
 
@@ -270,8 +270,19 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlRelative()
     {
-        $url = new ObjectUrl(self::PATH . self::QUERY_FRAGMENT);
+        $url = new ObjectUrl(self::PATH.self::QUERY_FRAGMENT);
         $this->assertEquals(false, $url->isAbsolute());
+    }
+
+    /**
+     * Test remote URL
+     */
+    public function testUrlRemote()
+    {
+        $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::REPOSITORY_URL.self::PATH, true);
+        $this->assertTrue($url->isRemote());
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
+        $this->assertFalse($url->isRemote());
     }
 
     /**
@@ -281,9 +292,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     {
         $this->assertFalse((new Url('http://example.com'))->matches(new Url('https://example.com')));
         $this->assertFalse((new Url('http://user1@example.com'))->matches(new Url('http://user2@example.com')));
-        $this->assertFalse(
-            (new Url('http://user:pass1@example.com'))->matches(new Url('http://user:pass2@example.com'))
-        );
+        $this->assertFalse((new Url('http://user:pass1@example.com'))->matches(new Url('http://user:pass2@example.com')));
         $this->assertFalse((new Url('http://example1.com'))->matches(new Url('http://example2.com')));
         $this->assertFalse((new Url('http://example.com:80'))->matches(new Url('http://example.com:443')));
         $this->assertFalse((new Url('http://example.com/a'))->matches(new Url('http://example.com/b')));
@@ -369,7 +378,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUnknownRelativeApparatUrl()
     {
-        new ApparatUrl(self::PATH . self::QUERY_FRAGMENT);
+        new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
     }
 
     /**
@@ -425,6 +434,6 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testLocalStringUrlNormalization()
     {
-        $this->assertEquals(self::REPOSITORY_URL . self::PATH, Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL') . self::REPOSITORY_URL . self::PATH));
+        $this->assertEquals(self::REPOSITORY_URL.self::PATH, Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::PATH));
     }
 }

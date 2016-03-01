@@ -58,7 +58,6 @@ class AutoConnector implements AutoConnectorInterface
      */
     public function connect($url)
     {
-//        echo "Auto-connecting: " . var_export($url, true) . PHP_EOL;
         $config = null;
 
         // If it's an absolute URL
@@ -68,7 +67,6 @@ class AutoConnector implements AutoConnectorInterface
 
             // Else: Relative / local URL -> Instantiate as file repository
         } else {
-            echo php_sapi_name();
             // If this is run via CLI
             if (php_sapi_name() == 'cli') {
                 $documentRoot = realpath(getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd()));

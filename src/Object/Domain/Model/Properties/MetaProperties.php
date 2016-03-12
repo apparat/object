@@ -264,6 +264,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setAuthors(array $authors)
     {
+        /** @var AuthorInterface[] $newAuthors */
         $newAuthors = [];
 
         // Run through and validate all authors

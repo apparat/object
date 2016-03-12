@@ -196,9 +196,7 @@ class Collection implements CollectionInterface
      */
     public function offsetSet($offset, $value)
     {
-        $offset = null;
-        $value = null;
-        throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
+        throw new RuntimeException(sprintf('Cannot modify collection by index (%s / %s). Use add() / remove() instead', $offset, gettype($value)), RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
     /**
@@ -209,8 +207,7 @@ class Collection implements CollectionInterface
      */
     public function offsetUnset($offset)
     {
-        $offset = null;
-        throw new RuntimeException('Cannot modify collection by index. Use add() / remove() instead', RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
+        throw new RuntimeException(sprintf('Cannot modify collection by index (%s). Use add() / remove() instead', $offset), RuntimeException::CANNOT_MODIFY_COLLECTION_BY_INDEX);
     }
 
     /**

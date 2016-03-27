@@ -299,13 +299,15 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getPropertyData()
     {
-        $propertyData = [
+        $propertyData = array_filter([
             SystemProperties::COLLECTION => $this->systemProperties->toArray(),
             MetaProperties::COLLECTION => $this->metaProperties->toArray(),
             AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray(),
             ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray(),
             Relations::COLLECTION => $this->relations->toArray(),
-        ];
+        ], function (array $collection) {
+            return (boolean)count($collection);
+        });
 
         return $propertyData;
     }
@@ -327,7 +329,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL') . ltrim($this->path->getRepository()->getUrl(), '/') . strval($this->path);
+        return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($this->path);
     }
 
     /**

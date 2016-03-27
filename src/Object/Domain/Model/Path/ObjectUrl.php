@@ -89,16 +89,6 @@ class ObjectUrl extends Url implements PathInterface
     }
 
     /**
-     * Return the object's creation date
-     *
-     * @return \DateTimeImmutable Object creation date
-     */
-    public function getCreationDate()
-    {
-        return $this->localPath->getCreationDate();
-    }
-
-    /**
      * Set the object's creation date
      *
      * @param \DateTimeImmutable $creationDate
@@ -108,16 +98,6 @@ class ObjectUrl extends Url implements PathInterface
     {
         $this->localPath = $this->localPath->setCreationDate($creationDate);
         return $this;
-    }
-
-    /**
-     * Return the object type
-     *
-     * @return Type Object type
-     */
-    public function getType()
-    {
-        return $this->localPath->getType();
     }
 
     /**
@@ -133,16 +113,6 @@ class ObjectUrl extends Url implements PathInterface
     }
 
     /**
-     * Return the object ID
-     *
-     * @return Id Object ID
-     */
-    public function getId()
-    {
-        return $this->localPath->getId();
-    }
-
-    /**
      * Set the object ID
      *
      * @param Id $uid Object ID
@@ -152,17 +122,6 @@ class ObjectUrl extends Url implements PathInterface
     {
         $this->localPath = $this->localPath->setId($uid);
         return $this;
-    }
-
-
-    /**
-     * Return the object revision
-     *
-     * @return Revision Object revision
-     */
-    public function getRevision()
-    {
-        return $this->localPath->getRevision();
     }
 
     /**
@@ -217,6 +176,46 @@ class ObjectUrl extends Url implements PathInterface
     }
 
     /**
+     * Return the object's creation date
+     *
+     * @return \DateTimeImmutable Object creation date
+     */
+    public function getCreationDate()
+    {
+        return $this->localPath->getCreationDate();
+    }
+
+    /**
+     * Return the object ID
+     *
+     * @return Id Object ID
+     */
+    public function getId()
+    {
+        return $this->localPath->getId();
+    }
+
+    /**
+     * Return the object type
+     *
+     * @return Type Object type
+     */
+    public function getType()
+    {
+        return $this->localPath->getType();
+    }
+
+    /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision()
+    {
+        return $this->localPath->getRevision();
+    }
+
+    /**
      * Return the local object path
      *
      * @return LocalPath Local object path
@@ -236,23 +235,20 @@ class ObjectUrl extends Url implements PathInterface
     {
         // If the object URL is absolute and local: Extract the repository URL
         if ($this->isAbsoluteLocal()) {
-            $repositoryUrl = substr($this->getPath(), strlen((new Url(getenv('APPARAT_BASE_URL')))->getPath()));
+            return substr($this->getPath(), strlen((new Url(getenv('APPARAT_BASE_URL')))->getPath()));
 
             // Else: If it's a relative URL: Extract the repository URL
         } elseif (!$this->isAbsolute()) {
-            $repositoryUrl = $this->getPath();
-
-            // Else: It must be a remote repository
-        } else {
-            $override = [
-                'object' => '',
-                'query' => '',
-                'fragment' => '',
-            ];
-            $repositoryUrl = $this->getUrlInternal($override);
+            return $this->getPath();
         }
 
-        return $repositoryUrl;
+        // Else: It must be a remote repository
+        $override = [
+            'object' => '',
+            'query' => '',
+            'fragment' => '',
+        ];
+        return $this->getUrlInternal($override);
     }
 
     /*******************************************************************************
@@ -270,12 +266,7 @@ class ObjectUrl extends Url implements PathInterface
         parent::getUrlInternal($override);
 
         // Prepare the local object path
-        if (isset($override['object'])) {
-            $object = $override['object'];
-        } else {
-            $object = strval($this->localPath);
-        }
-        $override['object'] = $object;
+        $override['object'] = isset($override['object']) ? $override['object'] : strval($this->localPath);
 
         return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";
     }

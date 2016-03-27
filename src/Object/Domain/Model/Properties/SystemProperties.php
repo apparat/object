@@ -96,13 +96,13 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_HASH = 'hash';
     /**
-     * Object ID
+     * Object ID (constant throughout revisions)
      *
      * @var Id
      */
     protected $uid = null;
     /**
-     * Object type
+     * Object type (constant throughout revisions)
      *
      * @var Type
      */
@@ -114,19 +114,19 @@ class SystemProperties extends AbstractProperties
      */
     protected $revision = null;
     /**
-     * Creation date
+     * Creation date of this revisioon
      *
      * @var \DateTimeImmutable
      */
     protected $created = null;
     /**
-     * Publication date
+     * Publication date of this revision
      *
      * @var \DateTimeImmutable
      */
     protected $published = null;
     /**
-     * Object hash
+     * Object hash of this revision
      *
      * @var string
      */
@@ -219,7 +219,7 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Return the creation date & time
+     * Return the creation date & time of this revision
      *
      * @return \DateTimeImmutable Creation date & time
      */
@@ -229,7 +229,7 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Return the publication date & time
+     * Return the publication date & time of this revision
      *
      * @return \DateTimeImmutable Publication date & time
      */
@@ -239,7 +239,7 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Return the object hash
+     * Return the object hash of this revision
      *
      * @return string Object hash
      */
@@ -249,7 +249,7 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Indicate that the object now got published
+     * Indicate that the object got published
      *
      * @return SystemProperties System properties
      * @throws RuntimeException If the object is already published

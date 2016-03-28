@@ -78,10 +78,12 @@ class SelectorFactory
         // If the creation date is used as selector component
         if ($datePrecision) {
             $selectorPattern = implode(
-                    '', array_slice(
-                    self::$datePattern, 0,
-                    $datePrecision
-                )
+                    '',
+                    array_slice(
+                        self::$datePattern,
+                        0,
+                        $datePrecision
+                    )
                 ).'(?:'.$selectorPattern.str_repeat(
                     ')?',
                     $datePrecision

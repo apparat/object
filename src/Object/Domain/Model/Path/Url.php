@@ -121,29 +121,26 @@ class Url
     protected function getUrlInternal(array &$override = [])
     {
         // Prepare the URL scheme
+        $scheme = !empty($this->urlParts['scheme']) ? $this->getScheme().'://' : '';
         if (isset($override['scheme'])) {
             $scheme = trim($override['scheme']);
             if (strlen($scheme)) {
                 $scheme .= '://';
             }
-        } else {
-            $scheme = !empty($this->urlParts['scheme']) ? $this->getScheme().'://' : '';
         }
         $override['scheme'] = $scheme;
 
         // Prepare the URL user
+        $user = !empty($this->urlParts['user']) ? rawurlencode($this->getUser()) : '';
         if (isset($override['user'])) {
             $user = $override['user'];
-        } else {
-            $user = !empty($this->urlParts['user']) ? rawurlencode($this->getUser()) : '';
         }
         $override['user'] = $user;
 
         // Prepare the URL password
+        $pass = !empty($this->urlParts['pass']) ? ':'.rawurlencode($this->getPassword()) : '';
         if (isset($override['pass'])) {
             $pass = ':'.$override['pass'];
-        } else {
-            $pass = !empty($this->urlParts['pass']) ? ':'.rawurlencode($this->getPassword()) : '';
         }
         if ($user || $pass) {
             $pass .= '@';
@@ -151,48 +148,43 @@ class Url
         $override['pass'] = $pass;
 
         // Prepare the URL host
+        $host = !empty($this->urlParts['host']) ? $this->getHost() : '';
         if (isset($override['host'])) {
             $host = $override['host'];
-        } else {
-            $host = !empty($this->urlParts['host']) ? $this->getHost() : '';
         }
         $override['host'] = $host;
 
         // Prepare the URL port
+        $port = !empty($this->urlParts['port']) ? ':'.$this->getPort() : '';
         if (isset($override['port'])) {
             $port = ':'.$override['port'];
-        } else {
-            $port = !empty($this->urlParts['port']) ? ':'.$this->getPort() : '';
         }
         $override['port'] = $port;
 
         // Prepare the URL path
+        $path = empty($this->urlParts['path']) ? '' : $this->urlParts['path'];
         if (isset($override['path'])) {
             $path = $override['path'];
-        } else {
-            $path = empty($this->urlParts['path']) ? '' : $this->urlParts['path'];
         }
         $override['path'] = $path;
 
         // Prepare the URL query
+        $query = !empty($this->urlParts['query']) ? '?'.$this->urlParts['query'] : '';
         if (isset($override['query'])) {
             $query = (is_array($override['query']) ? http_build_query($override['query']) : strval($override['query']));
             if (strlen($query)) {
                 $query = '?'.$query;
             }
-        } else {
-            $query = !empty($this->urlParts['query']) ? '?'.$this->urlParts['query'] : '';
         }
         $override['query'] = $query;
 
         // Prepare the URL fragment
+        $fragment = !empty($this->urlParts['fragment']) ? '#'.$this->getFragment() : '';
         if (isset($override['fragment'])) {
             $fragment = $override['fragment'];
             if (strlen($fragment)) {
                 $fragment = '#'.$fragment;
             }
-        } else {
-            $fragment = !empty($this->urlParts['fragment']) ? '#'.$this->getFragment() : '';
         }
         $override['fragment'] = $fragment;
 

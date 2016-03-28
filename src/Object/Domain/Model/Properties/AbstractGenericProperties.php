@@ -46,12 +46,6 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  */
 abstract class AbstractGenericProperties extends AbstractProperties implements GenericPropertiesInterface
 {
-    /**
-     * Property data
-     *
-     * @var array
-     */
-    protected $data = [];
 
     /**
      * Property collection constructor
@@ -62,8 +56,6 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     public function __construct(array $data, ObjectInterface $object)
     {
         parent::__construct($data, $object);
-
-        $this->data = $data;
     }
 
     /**

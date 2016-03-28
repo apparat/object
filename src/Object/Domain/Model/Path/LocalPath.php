@@ -49,6 +49,19 @@ use Apparat\Object\Domain\Model\Object\Type;
 class LocalPath implements PathInterface
 {
     /**
+     * Date PCRE pattern
+     *
+     * @var array
+     */
+    protected static $datePattern = [
+        'Y' => '(?P<year>\d{4})',
+        'm' => '(?P<month>\d{2})',
+        'd' => '(?P<day>\d{2})',
+        'H' => '(?P<hour>\d{2})',
+        'i' => '(?P<minute>\d{2})',
+        's' => '(?P<second>\d{2})',
+    ];
+    /**
      * Creation date
      *
      * @var \DateTimeImmutable
@@ -72,19 +85,6 @@ class LocalPath implements PathInterface
      * @var Revision
      */
     protected $revision = null;
-    /**
-     * Date PCRE pattern
-     *
-     * @var array
-     */
-    protected static $datePattern = [
-        'Y' => '(?P<year>\d{4})',
-        'm' => '(?P<month>\d{2})',
-        'd' => '(?P<day>\d{2})',
-        'H' => '(?P<hour>\d{2})',
-        'i' => '(?P<minute>\d{2})',
-        's' => '(?P<second>\d{2})',
-    ];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -106,6 +106,8 @@ class LocalPath implements PathInterface
             $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
         }
 
+        $pathPattern = null;
+
         // If a valid integer date precision is given
         if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
             $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode(
@@ -118,9 +120,10 @@ class LocalPath implements PathInterface
             $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
             $pathPattern .= str_repeat(')?', count(self::$datePattern));
             $pathPattern .= '/';
+        }
 
-            // Else: Error
-        } else {
+        // If the date precision is invalid
+        if ($pathPattern === null) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid date precision "%s" (%s)', strval($datePrecision),

@@ -47,6 +47,12 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 abstract class AbstractProperties implements PropertiesInterface
 {
     /**
+     * Property data
+     *
+     * @var array
+     */
+    protected $data = [];
+    /**
      * Owner object
      *
      * @var ObjectInterface
@@ -61,6 +67,7 @@ abstract class AbstractProperties implements PropertiesInterface
      */
     public function __construct(array $data, ObjectInterface $object)
     {
+        $this->data = $data;
         $this->object = $object;
     }
 

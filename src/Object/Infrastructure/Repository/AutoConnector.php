@@ -56,32 +56,9 @@ class AutoConnector implements AutoConnectorInterface
      */
     public function connect($url)
     {
-        $config = null;
-
         // If it's an absolute URL
         $url = new Url($url);
-        if ($url->isAbsolute()) {
-            // TODO: Absolute connection
-
-            // Else: Relative / local URL -> Instantiate as file repository
-        } else {
-            // If this is run via CLI
-            if (php_sapi_name() == 'cli') {
-                $documentRoot = realpath(getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd()));
-
-                // Else: Use the server's document root
-            } else {
-                $documentRoot = realpath(empty($_SERVER['DOCUMENT_ROOT']) ? (getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) : $_SERVER['DOCUMENT_ROOT']);
-            }
-
-            // If the is a document root: Create a file repository configuration
-            if (strlen($documentRoot)) {
-                $config = [
-                    'type' => FileAdapterStrategy::TYPE,
-                    'root' => rtrim($documentRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $url,
-                ];
-            }
-        }
+        $config = $url->isAbsolute() ? $this->getAbsoluteUrlConfig() : $this->getRelativeUrlConfig($url);
 
         // If a repository configuration has been created
         if ($config !== null) {
@@ -90,5 +67,36 @@ class AutoConnector implements AutoConnectorInterface
         }
 
         return true;
+    }
+
+    /**
+     * Get the repository configuration for an absolute URL
+     *
+     * @return null Repository configuration for an absolute URL
+     * @todo
+     */
+    protected function getAbsoluteUrlConfig()
+    {
+        return null;
+    }
+
+    /**
+     * Get the repository configuration for a relative / local URL
+     *
+     * @param Url $url URL
+     * @return array|null Repository configuration for an relative / local URL
+     */
+    protected function getRelativeUrlConfig(Url $url)
+    {
+        // Determine the document root (depending on the SAPI)
+        $documentRoot = (php_sapi_name() == 'cli') ?
+            realpath(getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) :
+            realpath(empty($_SERVER['DOCUMENT_ROOT']) ? (getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) : $_SERVER['DOCUMENT_ROOT']);
+
+        // If the is a document root: Create a file repository configuration
+        return strlen($documentRoot) ? [
+            'type' => FileAdapterStrategy::TYPE,
+            'root' => rtrim($documentRoot, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$url,
+        ] : null;
     }
 }

@@ -48,6 +48,12 @@ use Apparat\Object\Domain\Repository\InvalidArgumentException;
 abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
 {
     /**
+     * Adapter strategy type
+     *
+     * @var string
+     */
+    const TYPE = 'abstract';
+    /**
      * Configuration
      *
      * Example
@@ -55,13 +61,6 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
      * @var array
      */
     protected $config = null;
-
-    /**
-     * Adapter strategy type
-     *
-     * @var string
-     */
-    const TYPE = 'abstract';
 
     /**
      * Adapter strategy constructor
@@ -81,7 +80,8 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
                 sprintf(
                     'Invalid adapter strategy signature configuration "%s"',
                     implode(', ', $signatureConfigKeys)
-                ), InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE
+                ),
+                InvalidArgumentException::INVALID_ADAPTER_STRATEGY_SIGNATURE
             );
         }
     }

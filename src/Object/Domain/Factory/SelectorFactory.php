@@ -93,7 +93,8 @@ class SelectorFactory
 
         // If the selector is invalid
         if (!strlen($selector) || !preg_match(
-                $selectorPattern, $selector,
+                $selectorPattern,
+                $selector,
                 $selectorParts
             ) || !strlen($selectorParts[0])
         ) {

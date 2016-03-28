@@ -126,9 +126,11 @@ class LocalPath implements PathInterface
         if ($pathPattern === null) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Invalid date precision "%s" (%s)', strval($datePrecision),
+                    'Invalid date precision "%s" (%s)',
+                    strval($datePrecision),
                     gettype($datePrecision)
-                ), InvalidArgumentException::INVALID_DATE_PRECISION
+                ),
+                InvalidArgumentException::INVALID_DATE_PRECISION
             );
         }
 
@@ -157,7 +159,9 @@ class LocalPath implements PathInterface
 
         // Determine the leader
         $leader = ($datePrecision === true) ? substr(
-            $path, 0, strlen($path) - strlen($pathParts[0])
+            $path,
+            0,
+            strlen($path) - strlen($pathParts[0])
         ) : $pathParts['leader'];
 
         // Set the ID

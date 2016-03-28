@@ -386,7 +386,8 @@ class Url
         // If the URL matches the Apparat base URL (the scheme is disregarded)
         return $this->isAbsolute() && $this->matches($apparatBaseUrl) && !strncmp(
             $apparatBaseUrlPath,
-            $this->getPath(), strlen($apparatBaseUrlPath)
+            $this->getPath(),
+            strlen($apparatBaseUrlPath)
         );
     }
 

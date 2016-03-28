@@ -79,7 +79,8 @@ class ObjectUrl extends Url implements PathInterface
         // Instantiate the local path component
         $this->localPath = new LocalPath(
             empty($this->urlParts['path']) ? '' : $this->urlParts['path'],
-            $remote ? true : null, $this->urlParts['path']
+            $remote ? true : null,
+            $this->urlParts['path']
         );
 
         // Normalize the path prefix

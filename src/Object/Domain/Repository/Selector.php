@@ -154,7 +154,10 @@ class Selector implements SelectorInterface
                     sprintf(
                         'Invalid repository selector ' . $label . ' component "%s"',
                         $component
-                    ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, $label
+                    ),
+                    InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                    null,
+                    $label
                 );
             }
 
@@ -168,7 +171,10 @@ class Selector implements SelectorInterface
                 sprintf(
                     'Invalid repository selector ID component "%s"',
                     $uid
-                ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'id'
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'id'
             );
         }
         $this->uid = $uid;
@@ -179,7 +185,10 @@ class Selector implements SelectorInterface
                 sprintf(
                     'Invalid repository selector type component "%s"',
                     $type
-                ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'type'
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'type'
             );
         }
         $this->type = $type;
@@ -190,7 +199,10 @@ class Selector implements SelectorInterface
                 sprintf(
                     'Invalid repository selector revision component "%s"',
                     $revision
-                ), InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT, null, 'revision'
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'revision'
             );
         }
         $this->revision = $revision;

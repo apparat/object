@@ -65,7 +65,8 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
     public static function setUpBeforeClass()
     {
         Repository::register(
-            getenv('REPOSITORY_URL'), [
+            getenv('REPOSITORY_URL'),
+            [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => __DIR__ . DIRECTORY_SEPARATOR . 'Fixture',
             ]

@@ -54,6 +54,12 @@ use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 class AuthorTest extends AbstractDisabledAutoconnectorTest
 {
     /**
+     * Generic author string
+     *
+     * @var string
+     */
+    const GENERIC_AUTHOR = 'John Doe <john@doe.com> (http://doe.com)';
+    /**
      * Test repository
      *
      * @var Repository
@@ -61,21 +67,15 @@ class AuthorTest extends AbstractDisabledAutoconnectorTest
     protected static $repository = null;
 
     /**
-     * Generic author string
-     *
-     * @var string
-     */
-    const GENERIC_AUTHOR = 'John Doe <john@doe.com> (http://doe.com)';
-
-    /**
      * Setup
      */
     public static function setUpBeforeClass()
     {
         \Apparat\Object\Ports\Repository::register(
-            getenv('REPOSITORY_URL'), [
+            getenv('REPOSITORY_URL'),
+            [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__ . DIRECTORY_SEPARATOR . 'Fixture',
+                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
             ]
         );
 
@@ -108,14 +108,16 @@ class AuthorTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test apparat author unserialization
      */
-    public function testApparatAuthorUnserialization() {
+    public function testApparatAuthorUnserialization()
+    {
         $this->assertInstanceOf(ApparatAuthor::class, ApparatAuthor::unserialize('/repo/2016/01/08/2.contact/2'));
     }
 
     /**
      * Test the serialization of a generic author
      */
-    public function testGenericAuthorSerialization() {
+    public function testGenericAuthorSerialization()
+    {
         $genericAuthor = GenericAuthor::unserialize(self::GENERIC_AUTHOR);
         $this->assertEquals(self::GENERIC_AUTHOR, $genericAuthor->serialize());
     }
@@ -123,7 +125,8 @@ class AuthorTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test invalid author
      */
-    public function testInvalidAuthor() {
+    public function testInvalidAuthor()
+    {
         /** @var InvalidAuthor $invalidAuthor */
         $invalidAuthor = AuthorFactory::createFromString('ftp://apparat.tools/2015/10/01/36704.event/36704-1');
         $this->assertInstanceOf(InvalidAuthor::class, $invalidAuthor);
@@ -135,7 +138,8 @@ class AuthorTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test invalid author unserialization
      */
-    public function testInvalidAuthorUnserialization() {
+    public function testInvalidAuthorUnserialization()
+    {
         /** @var InvalidAuthor $invalidAuthor */
         $invalidAuthor = InvalidAuthor::unserialize('ftp://apparat.tools/2015/10/01/36704.event/36704-1');
         $this->assertInstanceOf(InvalidAuthor::class, $invalidAuthor);

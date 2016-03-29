@@ -163,12 +163,12 @@ class SystemProperties extends AbstractProperties
 
         // Initialize the object creation date
         if (array_key_exists(self::PROPERTY_CREATED, $data)) {
-            $this->created = new \DateTimeImmutable('@' . $data[self::PROPERTY_CREATED]);
+            $this->created = new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]);
         }
 
         // Initialize the object publication date
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
-            $this->published = new \DateTimeImmutable('@' . $data[self::PROPERTY_PUBLISHED]);
+            $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
         }
 
         // Initialize the object hash
@@ -186,6 +186,16 @@ class SystemProperties extends AbstractProperties
         ) {
             throw new InvalidArgumentException('Invalid system properties', InvalidArgumentException::INVALID_SYSTEM_PROPERTIES);
         }
+    }
+
+    /**
+     * Test if the object hash is a valid sha1 value
+     *
+     * @return bool The object hash is a valid sha1 value
+     */
+    protected function hasValidHash()
+    {
+        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 
     /**
@@ -259,13 +269,17 @@ class SystemProperties extends AbstractProperties
 
         // If the object is already published
         if ($this->published instanceof \DateTimeImmutable) {
-            throw new RuntimeException('Cannot republish object previously published at ' . $this->published->format('c'), RuntimeException::CANNOT_REPUBLISH_OBJECT);
+            throw new RuntimeException('Cannot republish object previously published at '.$this->published->format('c'), RuntimeException::CANNOT_REPUBLISH_OBJECT);
         }
 
         $systemProperties = clone $this;
         $systemProperties->published = new \DateTimeImmutable();
         return $systemProperties;
     }
+
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
 
     /**
      * Return the property values as array
@@ -282,19 +296,5 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_PUBLISHED => $this->published->format('c'),
             self::PROPERTY_HASH => $this->hash,
         ]);
-    }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
-    /**
-     * Test if the object hash is a valid sha1 value
-     *
-     * @return bool The object hash is a valid sha1 value
-     */
-    protected function hasValidHash()
-    {
-        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 }

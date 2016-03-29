@@ -167,7 +167,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         return array_map(
             function ($objectPath) use ($repository) {
                 return new RepositoryPath($repository, '/'.$objectPath);
-            }, glob(ltrim($glob, '/'), $globFlags)
+            },
+            glob(ltrim($glob, '/'), $globFlags)
         );
     }
 

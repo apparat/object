@@ -139,12 +139,13 @@ class Repository implements RepositoryInterface
     {
         // TODO: Really OK to cache? (Immutability ...)
         if (empty($this->objectCache[$path->getId()->getId()])) {
-            $this->objectCache[$path->getId()->getId()] = Kernel::create(Service::class)->getObjectManager()->loadObject(
-                new RepositoryPath(
-                    $this,
-                    $path
-                )
-            );
+            $this->objectCache[$path->getId()->getId()] =
+                Kernel::create(Service::class)->getObjectManager()->loadObject(
+                    new RepositoryPath(
+                        $this,
+                        $path
+                    )
+                );
         }
 
         return $this->objectCache[$path->getId()->getId()];

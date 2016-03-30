@@ -92,7 +92,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     {
         parent::setUpBeforeClass();
         self::$globDirs[] =
-        self::$globBase = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'glob';
+        self::$globBase = sys_get_temp_dir().DIRECTORY_SEPARATOR.'glob';
 
         $types = array_keys(self::$globTypes);
         $revisions = array_keys(self::$globRevisions);
@@ -101,10 +101,10 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         // Setup test directories & files
         for ($currentYear = intval(date('Y')), $year = $currentYear; $year < $currentYear + 3; ++$year) {
             self::$globDirs[] =
-            $yearDir = self::$globBase . DIRECTORY_SEPARATOR . $year;
+            $yearDir = self::$globBase.DIRECTORY_SEPARATOR.$year;
             for ($month = 1; $month < 13; ++$month) {
                 self::$globDirs[] =
-                $monthDir = $yearDir . DIRECTORY_SEPARATOR . str_pad($month, 2, '0', STR_PAD_LEFT);
+                $monthDir = $yearDir.DIRECTORY_SEPARATOR.str_pad($month, 2, '0', STR_PAD_LEFT);
                 $days = [];
                 while (count($days) < 3) {
                     $day = rand(1, date('t', mktime(0, 0, 0, $month, 1, $year)));
@@ -112,16 +112,16 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                 }
                 foreach ($days as $day) {
                     self::$globDirs[] =
-                    $dayDir = $monthDir . DIRECTORY_SEPARATOR . str_pad($day, 2, '0', STR_PAD_LEFT);
+                    $dayDir = $monthDir.DIRECTORY_SEPARATOR.str_pad($day, 2, '0', STR_PAD_LEFT);
                     mkdir($dayDir, 0777, true);
                     self::$globDirs[] =
-                    $hourDir = $dayDir . DIRECTORY_SEPARATOR . '00';
+                    $hourDir = $dayDir.DIRECTORY_SEPARATOR.'00';
                     mkdir($hourDir, 0777, true);
                     self::$globDirs[] =
-                    $minuteDir = $hourDir . DIRECTORY_SEPARATOR . '00';
+                    $minuteDir = $hourDir.DIRECTORY_SEPARATOR.'00';
                     mkdir($minuteDir, 0777, true);
                     self::$globDirs[] =
-                    $secondDir = $minuteDir . DIRECTORY_SEPARATOR . '00';
+                    $secondDir = $minuteDir.DIRECTORY_SEPARATOR.'00';
                     mkdir($secondDir, 0777, true);
 
 
@@ -133,10 +133,10 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                         ++self::$globTypes[$type];
                         ++self::$globRevisions[$revision];
                         self::$globDirs[] =
-                        $objectDir = $secondDir . DIRECTORY_SEPARATOR . $index . '.' . $type;
+                        $objectDir = $secondDir.DIRECTORY_SEPARATOR.$index.'.'.$type;
                         mkdir($objectDir);
                         self::$globFiles[] =
-                        $objectFile = $objectDir . DIRECTORY_SEPARATOR . $index . $revision;
+                        $objectFile = $objectDir.DIRECTORY_SEPARATOR.$index.$revision;
                         touch($objectFile);
                     }
                 }
@@ -203,7 +203,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRegisterInvalidQueryRepositoryUrl()
     {
-        RepositoryFactory::register(getenv('REPOSITORY_URL') . '?a=1', []);
+        RepositoryFactory::register(getenv('REPOSITORY_URL').'?a=1', []);
     }
 
     /**
@@ -221,7 +221,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                 'root' => __DIR__,
             ]
         );
-        RepositoryFactory::instance(getenv('REPOSITORY_URL') . '?a=1');
+        RepositoryFactory::instance(getenv('REPOSITORY_URL').'?a=1');
     }
 
     /**

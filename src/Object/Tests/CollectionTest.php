@@ -68,7 +68,7 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__ . DIRECTORY_SEPARATOR . 'Fixture',
+                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
             ]
         );
 
@@ -196,7 +196,8 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test appending two object collections
      */
-    public function testObjectCollectionAppend() {
+    public function testObjectCollectionAppend()
+    {
         // Load an article collection
         $articles = self::$repository->findObjects(SelectorFactory::createFromString('/2015/*/*/*.article'));
         $articleCount = count($articles);

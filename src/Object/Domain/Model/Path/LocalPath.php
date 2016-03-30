@@ -94,7 +94,8 @@ class LocalPath implements PathInterface
      * Object URL constructor
      *
      * @param string $path Object path
-     * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object URLs)]
+     * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
+     *     URLs)]
      * @param string $leader Leading base path
      * @throws InvalidArgumentException If the date precision is invalid
      * @throws InvalidArgumentException If the object URL path is invalid

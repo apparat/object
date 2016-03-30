@@ -77,7 +77,8 @@ class PropertyTest extends AbstractDisabledAutoconnectorTest
      * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
      * @expectedExceptionCode 1456522289
      */
-    public function testInvalidSystemProperties() {
+    public function testInvalidSystemProperties()
+    {
         /** @var ObjectInterface $object */
         $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
         new SystemProperties([], $object);

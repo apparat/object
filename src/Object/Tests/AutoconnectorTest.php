@@ -125,7 +125,8 @@ namespace Apparat\Object\Infrastructure\Repository {
      *
      * @return string PHP SAPI
      */
-    function php_sapi_name() {
+    function php_sapi_name()
+    {
         return (getenv('MOCK_PHP_SAPI_NAME') != 1) ? \php_sapi_name() : 'web';
     }
 }

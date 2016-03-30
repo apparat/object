@@ -91,7 +91,8 @@ class AutoConnector implements AutoConnectorInterface
         // Determine the document root (depending on the SAPI)
         $documentRoot = (php_sapi_name() == 'cli') ?
             realpath(getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) :
-            realpath(empty($_SERVER['DOCUMENT_ROOT']) ? (getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) : $_SERVER['DOCUMENT_ROOT']);
+            realpath(empty($_SERVER['DOCUMENT_ROOT']) ?
+                (getenv('APPARAT_DOCUMENT_ROOT') ?: (ini_get('doc_root') ?: getcwd())) : $_SERVER['DOCUMENT_ROOT']);
 
         // If the is a document root: Create a file repository configuration
         return strlen($documentRoot) ? [

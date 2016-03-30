@@ -81,7 +81,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__ . DIRECTORY_SEPARATOR . 'Fixture',
+                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
             ]
         );
 
@@ -139,7 +139,8 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     {
         $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
         $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertEquals(getenv('APPARAT_BASE_URL') . getenv('REPOSITORY_URL') . self::OBJECT_PATH, $articleObject->getAbsoluteUrl());
+        $this->assertEquals(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
+            $articleObject->getAbsoluteUrl());
     }
 
     /**
@@ -156,7 +157,8 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
         $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
         $this->assertEquals('a123456789012345678901234567890123456789', $articleObject->getHash());
-        $this->assertEquals("# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n", $articleObject->getPayload());
+        $this->assertEquals("# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
+            $articleObject->getPayload());
     }
 
     /**
@@ -168,7 +170,8 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $articleObject = self::$repository->loadObject($articleObjectPath);
         $this->assertInstanceOf(Article::class, $articleObject);
         $this->assertEquals('Example article object', $articleObject->getDescription());
-        $this->assertEquals('Article objects feature a Markdown payload along with some custom properties', $articleObject->getAbstract());
+        $this->assertEquals('Article objects feature a Markdown payload along with some custom properties',
+            $articleObject->getAbstract());
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
 
@@ -210,7 +213,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
      */
     public function testObjectFacadeAbsolute()
     {
-        $object = Object::instance(getenv('APPARAT_BASE_URL') . getenv('REPOSITORY_URL') . self::OBJECT_PATH);
+        $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $object);
     }
 
@@ -219,7 +222,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
      */
     public function testObjectFacadeRelative()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL') . self::OBJECT_PATH);
+        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $object);
         foreach ($object->getAuthors() as $author) {
             if ($author instanceof ApparatAuthor) {
@@ -236,7 +239,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
      */
     public function testObjectFacadeRelativeInvalid()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL') . '/2015/12/21/2.article/2');
+        $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
         $this->assertInstanceOf(Article::class, $object);
     }
 
@@ -277,7 +280,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     public function testObjectPropertyData()
     {
 //        $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
-        $object = Object::instance(getenv('REPOSITORY_URL') . self::OBJECT_PATH);
+        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertTrue(is_array($object->getPropertyData()));
 //        print_r($frontMarkResource->getData());
 //        print_r($object->getPropertyData());

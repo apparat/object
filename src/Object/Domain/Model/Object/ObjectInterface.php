@@ -103,14 +103,14 @@ interface ObjectInterface
     /**
      * Return the object description
      *
-     @return string Object description
+     * @return string Object description
      */
     public function getDescription();
 
     /**
      * Return the object abstract
      *
-     @return string Object abstract
+     * @return string Object abstract
      */
     public function getAbstract();
 

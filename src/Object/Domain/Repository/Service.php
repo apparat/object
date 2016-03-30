@@ -160,7 +160,7 @@ class Service
             }
 
             // Ensure this is a bare URL (without query and fragment)
-            if (Module::isAbsoluteBareUrl($apparatBaseUrl . $url)) {
+            if (Module::isAbsoluteBareUrl($apparatBaseUrl.$url)) {
                 return $url;
             }
         }

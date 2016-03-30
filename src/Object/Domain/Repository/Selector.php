@@ -152,7 +152,7 @@ class Selector implements SelectorInterface
             if (!is_int($component) && ($component !== self::WILDCARD)) {
                 throw new InvalidArgumentException(
                     sprintf(
-                        'Invalid repository selector ' . $label . ' component "%s"',
+                        'Invalid repository selector '.$label.' component "%s"',
                         $component
                     ),
                     InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
@@ -162,7 +162,8 @@ class Selector implements SelectorInterface
             }
 
             // Set the component value
-            $this->$label = ($component === self::WILDCARD) ? self::WILDCARD : str_pad($component, 2, '0', STR_PAD_LEFT);
+            $this->$label =
+                ($component === self::WILDCARD) ? self::WILDCARD : str_pad($component, 2, '0', STR_PAD_LEFT);
         }
 
         // If the ID component isn't valid

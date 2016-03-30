@@ -434,6 +434,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testLocalStringUrlNormalization()
     {
-        $this->assertEquals(self::REPOSITORY_URL.self::PATH, Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::PATH));
+        $this->assertEquals(self::REPOSITORY_URL.self::PATH,
+            Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::PATH));
     }
 }

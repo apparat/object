@@ -292,7 +292,9 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     {
         $this->assertFalse((new Url('http://example.com'))->matches(new Url('https://example.com')));
         $this->assertFalse((new Url('http://user1@example.com'))->matches(new Url('http://user2@example.com')));
-        $this->assertFalse((new Url('http://user:pass1@example.com'))->matches(new Url('http://user:pass2@example.com')));
+        $this->assertFalse((new Url('http://user:pass1@example.com'))->matches(
+            new Url('http://user:pass2@example.com')
+        ));
         $this->assertFalse((new Url('http://example1.com'))->matches(new Url('http://example2.com')));
         $this->assertFalse((new Url('http://example.com:80'))->matches(new Url('http://example.com:443')));
         $this->assertFalse((new Url('http://example.com/a'))->matches(new Url('http://example.com/b')));

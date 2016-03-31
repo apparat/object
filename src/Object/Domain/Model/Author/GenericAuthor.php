@@ -89,8 +89,9 @@ class GenericAuthor implements AuthorInterface
     public static function unserialize($str)
     {
         // If the author serialization is invalid
-        if (!strlen(trim($str)) || !preg_match("%^([^\<]+)?(?:\s+\<([^\>]+)\>)?(?:\s+\(([^\)]+)\))?$%", $str,
-                $author)
+        if (
+            !strlen(trim($str)) ||
+            !preg_match("%^([^\<]+)?(?:\s+\<([^\>]+)\>)?(?:\s+\(([^\)]+)\))?$%", $str, $author)
         ) {
             throw new InvalidArgumentException(
                 sprintf('Invalid generic author "%s"', $str),

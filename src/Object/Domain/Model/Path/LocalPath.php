@@ -135,7 +135,8 @@ class LocalPath implements PathInterface
             );
         }
 
-        $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+        $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
+        $pathPattern .= '<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
         if (empty($path) || !preg_match($pathPattern, $path, $pathParts)) {
             throw new InvalidArgumentException(

@@ -157,8 +157,10 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
         $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
         $this->assertEquals('a123456789012345678901234567890123456789', $articleObject->getHash());
-        $this->assertEquals("# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
-            $articleObject->getPayload());
+        $this->assertEquals(
+            "# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
+            $articleObject->getPayload()
+        );
     }
 
     /**
@@ -279,7 +281,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
      */
     public function testObjectPropertyData()
     {
-//        $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
+//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
         $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertTrue(is_array($object->getPropertyData()));
 //        print_r($frontMarkResource->getData());

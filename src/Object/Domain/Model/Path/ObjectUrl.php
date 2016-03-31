@@ -269,6 +269,7 @@ class ObjectUrl extends Url implements PathInterface
         // Prepare the local object path
         $override['object'] = isset($override['object']) ? $override['object'] : strval($this->localPath);
 
-        return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";
+        return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}".
+        "{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";
     }
 }

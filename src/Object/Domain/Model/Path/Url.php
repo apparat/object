@@ -261,10 +261,8 @@ class Url
     public function setHost($host)
     {
         // If the hostname is invalid
-        if (preg_match("%[/\?#]%", $host) || (!filter_var('http://'.$host, FILTER_VALIDATE_URL) && !filter_var(
-                    $host,
-                    FILTER_VALIDATE_IP
-                ))
+        if (preg_match("%[/\?#]%", $host) ||
+            (!filter_var('http://'.$host, FILTER_VALIDATE_URL) && !filter_var($host, FILTER_VALIDATE_IP))
         ) {
             throw new InvalidArgumentException(
                 sprintf('Invalid URL host "%s"', $host),

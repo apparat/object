@@ -64,8 +64,7 @@ class ObjectFactory
         $propertyData = $objectResource->getPropertyData();
 
         // If the object type is undefined
-        if (
-            !array_key_exists(SystemProperties::COLLECTION, $propertyData) ||
+        if (!array_key_exists(SystemProperties::COLLECTION, $propertyData) ||
             !is_array($propertyData[SystemProperties::COLLECTION]) ||
             empty($propertyData[SystemProperties::COLLECTION]['type'])
         ) {

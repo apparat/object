@@ -111,7 +111,8 @@ class LocalPath implements PathInterface
 
         // If a valid integer date precision is given
         if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.implode(
+            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
+                implode(
                     '/',
                     array_slice(self::$datePattern, 0, $datePrecision)
                 ).($datePrecision ? '/' : '');

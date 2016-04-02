@@ -139,8 +139,10 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     {
         $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
         $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertEquals(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
-            $articleObject->getAbsoluteUrl());
+        $this->assertEquals(
+            getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
+            $articleObject->getAbsoluteUrl()
+        );
     }
 
     /**
@@ -172,8 +174,10 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $articleObject = self::$repository->loadObject($articleObjectPath);
         $this->assertInstanceOf(Article::class, $articleObject);
         $this->assertEquals('Example article object', $articleObject->getDescription());
-        $this->assertEquals('Article objects feature a Markdown payload along with some custom properties',
-            $articleObject->getAbstract());
+        $this->assertEquals(
+            'Article objects feature a Markdown payload along with some custom properties',
+            $articleObject->getAbstract()
+        );
         $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
         $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
 

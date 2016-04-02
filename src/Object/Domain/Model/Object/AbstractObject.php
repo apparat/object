@@ -127,31 +127,36 @@ abstract class AbstractObject implements ObjectInterface
         $this->path = $path;
 
         // Instantiate the system properties
-        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) || !is_array(
+        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
+            !is_array(
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
         $this->systemProperties = new SystemProperties($systemPropertyData, $this);
 
         // Instantiate the meta properties
-        $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) || !is_array(
+        $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) ||
+            !is_array(
                 $propertyData[MetaProperties::COLLECTION]
             )) ? [] : $propertyData[MetaProperties::COLLECTION];
         $this->metaProperties = new MetaProperties($metaPropertyData, $this);
 
         // Instantiate the domain properties
-        $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) || !is_array(
+        $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) ||
+            !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
         $this->domainProperties = new $this->domainPropertyCClass($domainPropertyData, $this);
 
         // Instantiate the processing instructions
-        $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) || !is_array(
+        $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) ||
+            !is_array(
                 $propertyData[ProcessingInstructions::COLLECTION]
             )) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
         $this->processingInstructions = new ProcessingInstructions($procInstData, $this);
 
         // Instantiate the object relations
-        $relationData = (empty($propertyData[Relations::COLLECTION]) || !is_array(
+        $relationData = (empty($propertyData[Relations::COLLECTION]) ||
+            !is_array(
                 $propertyData[Relations::COLLECTION]
             )) ? [] : $propertyData[Relations::COLLECTION];
         $this->relations = new Relations($relationData, $this);

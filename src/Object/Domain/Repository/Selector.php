@@ -136,18 +136,15 @@ class Selector implements SelectorInterface
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
         // Validate the creation date and ID components
-        foreach (array_slice(
-                     [
-                         'year' => $year,
-                         'month' => $month,
-                         'day' => $day,
-                         'hour' => $hour,
-                         'minute' => $minute,
-                         'second' => $second
-                     ],
-                     0,
-                     $datePrecision
-                 ) as $label => $component) {
+        $dateComponents = [
+            'year' => $year,
+            'month' => $month,
+            'day' => $day,
+            'hour' => $hour,
+            'minute' => $minute,
+            'second' => $second
+        ];
+        foreach (array_slice($dateComponents, 0, $datePrecision) as $label => $component) {
             // If the component isn't valid
             if (!is_int($component) && ($component !== self::WILDCARD)) {
                 throw new InvalidArgumentException(

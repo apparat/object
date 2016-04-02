@@ -184,8 +184,10 @@ class SystemProperties extends AbstractProperties
             !($this->created instanceof \DateTimeImmutable) ||
             !$this->hasValidHash()
         ) {
-            throw new InvalidArgumentException('Invalid system properties',
-                InvalidArgumentException::INVALID_SYSTEM_PROPERTIES);
+            throw new InvalidArgumentException(
+                'Invalid system properties',
+                InvalidArgumentException::INVALID_SYSTEM_PROPERTIES
+            );
         }
     }
 
@@ -270,8 +272,10 @@ class SystemProperties extends AbstractProperties
 
         // If the object is already published
         if ($this->published instanceof \DateTimeImmutable) {
-            throw new RuntimeException('Cannot republish object previously published at '.$this->published->format('c'),
-                RuntimeException::CANNOT_REPUBLISH_OBJECT);
+            throw new RuntimeException(
+                'Cannot republish object previously published at '.$this->published->format('c'),
+                RuntimeException::CANNOT_REPUBLISH_OBJECT
+            );
         }
 
         $systemProperties = clone $this;

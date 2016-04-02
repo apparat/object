@@ -78,25 +78,24 @@ class SelectorFactory
         // If the creation date is used as selector component
         if ($datePrecision) {
             $selectorPattern = implode(
-                    '',
-                    array_slice(
-                        self::$datePattern,
-                        0,
-                        $datePrecision
-                    )
-                ).'(?:'.$selectorPattern.str_repeat(
-                    ')?',
+                '',
+                array_slice(
+                    self::$datePattern,
+                    0,
                     $datePrecision
-                );
+                )
+            ).'(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
         }
         $selectorPattern = '%^'.$selectorPattern.'$%';
 
         // If the selector is invalid
-        if (!strlen($selector) || !preg_match(
+        if (!strlen($selector) ||
+            !preg_match(
                 $selectorPattern,
                 $selector,
                 $selectorParts
-            ) || !strlen($selectorParts[0])
+            ) ||
+            !strlen($selectorParts[0])
         ) {
             throw new InvalidArgumentException(
                 sprintf('Invalid respository selector "%s"', $selector),

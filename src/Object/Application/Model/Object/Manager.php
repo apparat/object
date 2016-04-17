@@ -41,7 +41,6 @@ use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Object manager
@@ -54,14 +53,14 @@ class Manager implements ManagerInterface
     /**
      * Create and return a new object
      *
-     * @param RepositoryInterface $repository Repository
      * @param Type $type Object type
-     * @param array $data Object data
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public function createObject(RepositoryInterface $repository, Type $type, array $data = [])
+    public function createObject(Type $type, $payload = '', array $propertyData = [])
     {
-        // TODO: Implement createObject() method.
+        return ObjectFactory::createNew($type, $payload, $propertyData);
     }
 
     /**

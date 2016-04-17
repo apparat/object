@@ -37,7 +37,6 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Object manager interface
@@ -50,12 +49,12 @@ interface ManagerInterface
     /**
      * Create and return a new object
      *
-     * @param RepositoryInterface $repository Repository
      * @param Type $type Object type
-     * @param array $data Object data
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public function createObject(RepositoryInterface $repository, Type $type, array $data = []);
+    public function createObject(Type $type, $payload = '', array $propertyData = []);
 
     /**
      * Load an object from a repository

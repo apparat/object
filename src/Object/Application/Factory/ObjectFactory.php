@@ -57,7 +57,6 @@ class ObjectFactory
      * @param RepositoryPath $path Repository object path
      * @return ObjectInterface Object
      * @throws InvalidArgumentException If the object type is undefined
-     * @throws InvalidArgumentException If the object type is invalid
      */
     public static function createFromResource(ResourceInterface $objectResource, RepositoryPath $path)
     {
@@ -74,8 +73,41 @@ class ObjectFactory
             );
         }
 
+        // Determine the object class
+        $objectClass = self::objectClassFromType($path->getType());
+
+        // Instantiate the object
+        return new $objectClass($objectResource->getPayload(), $propertyData, $path);
+    }
+
+    /**
+     * Create and return a new object
+     *
+     * @param Type $type Object type
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
+     * @return ObjectInterface Object
+     */
+    public static function createNew(Type $type, $payload = '', array $propertyData = []) {
+
+        // Determine the object class
+        $objectClass = self::objectClassFromType($type);
+
+        // Instantiate the object
+        return new $objectClass($payload, $propertyData);
+    }
+
+    /**
+     * Determine and validate the object class name from its type
+     *
+     * @param Type $type Object type
+     * @return string Object class name
+     * @throws InvalidArgumentException If the object type is invalid
+     */
+    protected static function objectClassFromType(Type $type) {
+
         // If the object type is invalid
-        $objectType = $path->getType()->getType();
+        $objectType = $type->getType();
         $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
         if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
             throw new InvalidArgumentException(
@@ -84,7 +116,6 @@ class ObjectFactory
             );
         }
 
-        // Instantiate the object
-        return new $objectClass($path, $propertyData, $objectResource->getPayload());
+        return $objectClass;
     }
 }

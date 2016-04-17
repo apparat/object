@@ -291,4 +291,11 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
 //        print_r($frontMarkResource->getData());
 //        print_r($object->getPropertyData());
     }
+
+    /**
+     * Test the creation of an article object
+     */
+    public function testCreateArticleObject() {
+//        $object = Object::create(Type::ARTICLE);
+    }
 }

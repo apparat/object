@@ -55,7 +55,7 @@ class Revision implements SerializablePropertyInterface
     /**
      * Draft revision
      *
-     * @var string
+     * @var int
      */
     const DRAFT = 0;
     /**

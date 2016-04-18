@@ -52,6 +52,12 @@ class Id implements SerializablePropertyInterface
      * @var int
      */
     protected $uid = null;
+    /**
+     * Provisional ID
+     *
+     * @var int
+     */
+    const PROVISIONAL = 0;
 
     /**
      * ID constructor
@@ -61,7 +67,7 @@ class Id implements SerializablePropertyInterface
     public function __construct($uid)
     {
         // If the ID is invalid
-        if (!is_int($uid) || ($uid <= 0)) {
+        if (!is_int($uid) || ($uid < self::PROVISIONAL)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid object ID "%s"', $uid),
                 InvalidArgumentException::INVALID_OBJECT_ID

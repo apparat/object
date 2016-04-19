@@ -177,11 +177,12 @@ class SystemProperties extends AbstractProperties
         }
 
         // Test if all mandatory properties are set
-        if (!($this->uid instanceof Id) ||
+        if (
+            !($this->uid instanceof Id) ||
             !($this->type instanceof Type) ||
             !($this->revision instanceof Revision) ||
             !($this->created instanceof \DateTimeImmutable) ||
-            !$this->hasValidHash()
+            (!$this->uid->isProvisional() && !$this->hasValidHash())
         ) {
             throw new InvalidArgumentException(
                 'Invalid system properties',

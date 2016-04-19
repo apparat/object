@@ -128,6 +128,7 @@ class ObjectFactory
         $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $type->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = Revision::DRAFT;
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] = time();
+        $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
 
         // Instantiate the object
         return new $objectClass($payload, $propertyData);

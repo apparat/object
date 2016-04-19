@@ -107,4 +107,13 @@ class Id implements SerializablePropertyInterface
     {
         return $this->uid;
     }
+
+    /**
+     * Test if this ID is provisional
+     *
+     * @return bool Provisional ID
+     */
+    public function isProvisional() {
+        return $this->uid === self::PROVISIONAL;
+    }
 }

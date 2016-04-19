@@ -296,6 +296,9 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
      * Test the creation of an article object
      */
     public function testCreateArticleObject() {
-//        $object = Object::create(Type::ARTICLE);
+        $payload = md5(rand());
+        $article = Object::create(Type::ARTICLE, $payload);
+        $this->assertInstanceOf(Article::class, $article);
+        $this->assertEquals($payload, $article->getPayload());
     }
 }

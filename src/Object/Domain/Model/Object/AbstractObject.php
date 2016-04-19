@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
@@ -131,35 +132,35 @@ abstract class AbstractObject implements ObjectInterface
             !is_array(
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $this->systemProperties = new SystemProperties($systemPropertyData, $this);
+        $this->systemProperties = Kernel::create(SystemProperties::class, [$systemPropertyData, $this]);
 
         // Instantiate the meta properties
         $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) ||
             !is_array(
                 $propertyData[MetaProperties::COLLECTION]
             )) ? [] : $propertyData[MetaProperties::COLLECTION];
-        $this->metaProperties = new MetaProperties($metaPropertyData, $this);
+        $this->metaProperties = Kernel::create(MetaProperties::class, [$metaPropertyData, $this]);
 
         // Instantiate the domain properties
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) ||
             !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        $this->domainProperties = new $this->domainPropertyCClass($domainPropertyData, $this);
+        $this->domainProperties = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
 
         // Instantiate the processing instructions
         $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) ||
             !is_array(
                 $propertyData[ProcessingInstructions::COLLECTION]
             )) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-        $this->processingInstructions = new ProcessingInstructions($procInstData, $this);
+        $this->processingInstructions = Kernel::create(ProcessingInstructions::class, [$procInstData, $this]);
 
         // Instantiate the object relations
         $relationData = (empty($propertyData[Relations::COLLECTION]) ||
             !is_array(
                 $propertyData[Relations::COLLECTION]
             )) ? [] : $propertyData[Relations::COLLECTION];
-        $this->relations = new Relations($relationData, $this);
+        $this->relations = Kernel::create(Relations::class, [$relationData, $this]);
     }
 
     /**

@@ -37,7 +37,7 @@
 namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Apparat URL specific invalid argumment exception
+ * Apparat URL specific invalid argument exception
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain

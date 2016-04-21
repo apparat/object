@@ -93,7 +93,7 @@ class Repository implements RepositoryInterface
      */
     public function findObjects(SelectorInterface $selector)
     {
-        return new Collection($this->adapterStrategy->findObjectPaths($selector, $this));
+        return Kernel::create(Collection::class, [$this->adapterStrategy->findObjectPaths($selector, $this)]);
     }
 
     /**
@@ -141,10 +141,7 @@ class Repository implements RepositoryInterface
         if (empty($this->objectCache[$path->getId()->getId()])) {
             $this->objectCache[$path->getId()->getId()] =
                 Kernel::create(Service::class)->getObjectManager()->loadObject(
-                    new RepositoryPath(
-                        $this,
-                        $path
-                    )
+                    Kernel::create(RepositoryPath::class, [$this, $path])
                 );
         }
 

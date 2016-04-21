@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Infrastructure\Repository;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
@@ -166,7 +167,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         return array_map(
             function ($objectPath) use ($repository) {
-                return new RepositoryPath($repository, '/'.$objectPath);
+                return Kernel::create(RepositoryPath::class,[$repository, '/'.$objectPath]);
             },
             glob(ltrim($glob, '/'), $globFlags)
         );

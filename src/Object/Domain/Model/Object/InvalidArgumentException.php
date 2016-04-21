@@ -43,7 +43,7 @@ namespace Apparat\Object\Domain\Model\Object;
 class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Unkown object ID
+     * Unknown object ID
      *
      * @var int
      */

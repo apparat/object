@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Infrastructure\Factory;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
@@ -87,6 +88,6 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
         }
 
         // Instantiate the adapter strategy
-        return new self::$types[$config['type']]($config);
+        return Kernel::create(self::$types[$config['type']], [$config]);
     }
 }

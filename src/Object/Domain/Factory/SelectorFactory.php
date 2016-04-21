@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Factory;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
@@ -78,13 +79,13 @@ class SelectorFactory
         // If the creation date is used as selector component
         if ($datePrecision) {
             $selectorPattern = implode(
-                '',
-                array_slice(
-                    self::$datePattern,
-                    0,
-                    $datePrecision
-                )
-            ).'(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
+                    '',
+                    array_slice(
+                        self::$datePattern,
+                        0,
+                        $datePrecision
+                    )
+                ).'(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
         }
         $selectorPattern = '%^'.$selectorPattern.'$%';
 
@@ -98,7 +99,7 @@ class SelectorFactory
             !strlen($selectorParts[0])
         ) {
             throw new InvalidArgumentException(
-                sprintf('Invalid respository selector "%s"', $selector),
+                sprintf('Invalid repository selector "%s"', $selector),
                 InvalidArgumentException::INVALID_REPOSITORY_SELECTOR
             );
         }
@@ -139,7 +140,10 @@ class SelectorFactory
             $selectorParts['revision']
         ) : Revision::CURRENT;
 
-        return new RepositorySelector($year, $month, $day, $hour, $minute, $second, $uid, $type, $revision);
+        return Kernel::create(
+            RepositorySelector::class,
+            [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision]
+        );
     }
 
     /**

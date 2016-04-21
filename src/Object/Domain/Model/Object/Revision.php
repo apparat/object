@@ -106,7 +106,7 @@ class Revision implements SerializablePropertyInterface
     }
 
     /**
-     * Test wheter this is the draft revision
+     * Test whether this is the draft revision
      *
      * @return bool Is draft revision
      */
@@ -116,7 +116,7 @@ class Revision implements SerializablePropertyInterface
     }
 
     /**
-     * Test wheter this is the current revision
+     * Test whether this is the current revision
      *
      * @return bool Is current revision
      */

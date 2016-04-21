@@ -97,7 +97,7 @@ class Module extends AbstractModule
      * Test whether a URL is absolute and doesn't have query parameters and / or a fragment
      *
      * @param string $url URL
-     * @return boolean If the URL is absolut and has neither query parameters or a fragment
+     * @return boolean If the URL is absolute and has neither query parameters or a fragment
      * @throws \RuntimeException If the URL is not absolute / valid
      * @throws \RuntimeException If the URL has query parameters
      * @throws \RuntimeException If the URL has a fragment

@@ -35,6 +35,7 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
@@ -236,7 +237,8 @@ class ObjectUrl extends Url implements PathInterface
     {
         // If the object URL is absolute and local: Extract the repository URL
         if ($this->isAbsoluteLocal()) {
-            return substr($this->getPath(), strlen((new Url(getenv('APPARAT_BASE_URL')))->getPath()));
+            $baseUrl = Kernel::create(Url::class, [getenv('APPARAT_BASE_URL')]);
+            return substr($this->getPath(), strlen($baseUrl->getPath()));
 
             // Else: If it's a relative URL: Extract the repository URL
         } elseif (!$this->isAbsolute()) {

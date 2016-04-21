@@ -73,7 +73,7 @@ class Repository
         }
 
         // Instantiate the object repository
-        $repository = new \Apparat\Object\Domain\Repository\Repository($url, $config);
+        $repository = Kernel::create(\Apparat\Object\Domain\Repository\Repository::class, [$url, $config]);
 
         // Register the repository
         Kernel::create(Service::class)->register($url, $repository);

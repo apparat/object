@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Factory;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Author\ApparatAuthor;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Author\GenericAuthor;
@@ -65,12 +66,13 @@ class AuthorFactory
     {
         // Try to instantiate an apparat object based author
         try {
-            $apparatUrl = new ApparatUrl($author, true, $contextRepository);
-            return new ApparatAuthor($apparatUrl);
+            /** @var ApparatUrl $apparatUrl */
+            $apparatUrl = Kernel::create(ApparatUrl::class, [$author, true, $contextRepository]);
+            return Kernel::create(ApparatAuthor::class, [$apparatUrl]);
 
             // If there's an apparat URL problem
         } catch (ApparatInvalidArgumentException $e) {
-            return new InvalidAuthor($author, $e);
+            return Kernel::create(InvalidAuthor::class, [$author, $e]);
 
             // Proceed on other errors
         } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {

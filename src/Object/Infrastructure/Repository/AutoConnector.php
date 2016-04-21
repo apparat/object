@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Infrastructure\Repository;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 use Apparat\Object\Ports\Repository;
@@ -57,7 +58,8 @@ class AutoConnector implements AutoConnectorInterface
     public function connect($url)
     {
         // If it's an absolute URL
-        $url = new Url($url);
+        /** @var Url $url */
+        $url = Kernel::create(Url::class, [$url]);
         $config = $url->isAbsolute() ? $this->getAbsoluteUrlConfig() : $this->getRelativeUrlConfig($url);
 
         // If a repository configuration has been created

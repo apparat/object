@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
@@ -168,14 +169,15 @@ class LocalPath implements PathInterface
         ) : $pathParts['leader'];
 
         // Set the ID
-        $this->uid = new Id(intval($pathParts['id']));
+        $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
 
         // Set the type
-        $this->type = new Type($pathParts['type']);
+        $this->type = Kernel::create(Type::class, [$pathParts['type']]);
 
         // Set the revision
-        $this->revision = new Revision(
-            empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])
+        $this->revision = Kernel::create(
+            Revision::class,
+            [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])]
         );
     }
 

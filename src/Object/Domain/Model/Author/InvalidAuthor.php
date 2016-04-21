@@ -63,6 +63,7 @@ class InvalidAuthor implements AuthorInterface
      * Invalid author constructor
      *
      * @param string $value Value
+     * @param \Exception $exception Exception
      */
     public function __construct($value, \Exception $exception = null)
     {
@@ -82,7 +83,7 @@ class InvalidAuthor implements AuthorInterface
     }
 
     /**
-     * Return the underying exception
+     * Return the underlying exception
      *
      * @return \Exception Underlying exception
      */

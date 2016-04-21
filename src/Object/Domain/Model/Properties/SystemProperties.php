@@ -114,7 +114,7 @@ class SystemProperties extends AbstractProperties
      */
     protected $revision = null;
     /**
-     * Creation date of this revisioon
+     * Creation date of this revision
      *
      * @var \DateTimeImmutable
      */

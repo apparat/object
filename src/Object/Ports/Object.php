@@ -60,7 +60,8 @@ class Object
     public static function instance($url)
     {
         // Instantiate the object URL
-        $objectUrl = new ObjectUrl($url, true);
+        /** @var ObjectUrl $objectUrl */
+        $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
 
         // Instantiate the local object repository, load and return the object
         return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
@@ -79,7 +80,8 @@ class Object
 
         // Instantiate the object type
         if (!($type instanceof Type)) {
-            $type = new Type($type);
+            /** @var Type $type */
+            $type = Kernel::create(Type::class, [$type]);
         }
 
         // Create and return the new object

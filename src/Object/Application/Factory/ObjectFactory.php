@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Application\Factory;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
@@ -79,7 +80,7 @@ class ObjectFactory
         $objectClass = self::objectClassFromType($path->getType());
 
         // Instantiate the object
-        return new $objectClass($objectResource->getPayload(), $propertyData, $path);
+        return Kernel::create($objectClass, [$objectResource->getPayload(), $propertyData, $path]);
     }
 
     /**
@@ -131,6 +132,6 @@ class ObjectFactory
         $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
 
         // Instantiate the object
-        return new $objectClass($payload, $propertyData);
+        return Kernel::create($objectClass, [$payload, $propertyData, null]);
     }
 }

@@ -71,7 +71,7 @@ class LocalPath implements PathInterface
     /**
      * Object ID
      *
-     * @var int
+     * @var Id
      */
     protected $uid = null;
     /**
@@ -169,6 +169,7 @@ class LocalPath implements PathInterface
         ) : $pathParts['leader'];
 
         // Set the ID
+
         $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
 
         // Set the type

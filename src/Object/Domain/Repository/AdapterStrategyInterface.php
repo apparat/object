@@ -69,4 +69,18 @@ interface AdapterStrategyInterface
      * @return string Adapter strategy type
      */
     public function getType();
+
+    /**
+     * Return the repository size (number of objects in the repository)
+     *
+     * @return int Repository size
+     */
+    public function getRepositorySize();
+
+    /**
+     * Initialize the repository
+     *
+     * @return void
+     */
+    public function initializeRepository();
 }

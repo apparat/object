@@ -46,6 +46,12 @@ use Apparat\Object\Domain\Model\Path\PathInterface;
 interface RepositoryInterface extends SearchableRepositoryInterface
 {
     /**
+     * Initialize the repository
+     *
+     * @return void
+     */
+    public function initialize();
+    /**
      * Add an object to the repository
      *
      * @param ObjectInterface $object Object
@@ -90,4 +96,11 @@ interface RepositoryInterface extends SearchableRepositoryInterface
      * @return string Repository URL
      */
     public function getUrl();
+
+    /**
+     * Return the repository size (number of objects in the repository)
+     *
+     * @return int Repository size
+     */
+    public function getSize();
 }

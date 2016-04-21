@@ -86,6 +86,16 @@ class Repository implements RepositoryInterface
     }
 
     /**
+     * Initialize the repository
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        $this->adapterStrategy->initializeRepository();
+    }
+
+    /**
      * Find objects by selector
      *
      * @param SelectorInterface $selector Object selector
@@ -166,5 +176,15 @@ class Repository implements RepositoryInterface
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Return the repository size (number of objects in the repository)
+     *
+     * @return int Repository size
+     */
+    public function getSize()
+    {
+        // TODO: Implement getSize() method.
     }
 }

@@ -50,4 +50,16 @@ class RuntimeException extends \RuntimeException
      * @var int
      */
     const SERVICE_NOT_CONFIGURED = 1453111671;
+    /**
+     * The repository could not be initialized
+     *
+     * @var int
+     */
+    const REPO_NOT_INITIALIZED = 1461276430;
+    /**
+     * The repository size descriptor could not be created
+     *
+     * @var int
+     */
+    const REPO_SIZE_DESCRIPTOR_NOT_CREATED = 1461276603;
 }

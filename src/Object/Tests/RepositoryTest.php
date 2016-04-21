@@ -378,6 +378,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $collection = $fileRepository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
         $this->assertEquals(array_sum(self::$globTypes), count($collection));
+        $this->assertEquals(0, $fileRepository->getSize());
     }
 
     /**

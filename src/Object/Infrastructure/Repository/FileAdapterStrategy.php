@@ -41,6 +41,7 @@ use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\RuntimeException;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
@@ -55,6 +56,12 @@ use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 class FileAdapterStrategy extends AbstractAdapterStrategy
 {
     /**
+     * Adapter strategy type
+     *
+     * @var string
+     */
+    const TYPE = 'file';
+    /**
      * Configuration
      *
      * Example
@@ -63,18 +70,17 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected $config = null;
     /**
-     * Root directory (without
+     * Root directory (without trailing directory separator)
      *
      * @var string
      */
     protected $root = null;
-
     /**
-     * Adapter strategy type
+     * Configuration directory (including trailing directory separator)
      *
      * @var string
      */
-    const TYPE = 'file';
+    protected $configDir = null;
 
     /**
      * Adapter strategy constructor
@@ -106,6 +112,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
                 InvalidArgumentException::INVALID_FILE_STRATEGY_ROOT
             );
         }
+
+        $this->configDir = $this->root.DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -167,7 +175,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         return array_map(
             function ($objectPath) use ($repository) {
-                return Kernel::create(RepositoryPath::class,[$repository, '/'.$objectPath]);
+                return Kernel::create(RepositoryPath::class, [$repository, '/'.$objectPath]);
             },
             glob(ltrim($glob, '/'), $globFlags)
         );
@@ -182,5 +190,43 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     public function getObjectResource($resourcePath)
     {
         return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->root.$resourcePath);
+    }
+
+    /**
+     * Return the repository size (number of objects in the repository)
+     *
+     * @return int Repository size
+     */
+    public function getRepositorySize()
+    {
+        $sizeDescriptorFile = $this->configDir.'size.txt';
+        $repositorySize = 0;
+        if (is_file($sizeDescriptorFile) && is_readable($sizeDescriptorFile)) {
+            $repositorySize = intval(file_get_contents($this->configDir.'size.txt'));
+        }
+        return $repositorySize;
+    }
+
+    /**
+     * Initialize the repository
+     *
+     * @return void
+     * @throws RuntimeException If the repository cannot be initialized
+     * @throws RuntimeException If the repository size descriptor can not be created
+     */
+    public function initializeRepository()
+    {
+        // If the repository cannot be initialized
+        if (!is_dir($this->configDir) && !mkdir($this->configDir, 0777, true)) {
+            throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
+        }
+
+        // If the repository size descriptor can not be created
+        if (!@is_file($this->configDir.'size.txt') && !file_put_contents($this->configDir.'size.txt', '0')) {
+            throw new RuntimeException(
+                'Could not create repository size descriptor',
+                RuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED
+            );
+        }
     }
 }

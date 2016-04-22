@@ -39,6 +39,7 @@ namespace Apparat\Object\Infrastructure\Repository;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\RuntimeException;
@@ -159,7 +160,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @param Selector|SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return array[PathInterface] Object paths
+     * @return PathInterface[] Object paths
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
     {

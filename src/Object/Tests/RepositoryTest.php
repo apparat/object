@@ -422,7 +422,8 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the creation of a new repository
      */
-    public function testRepositoryCreation() {
+    public function testRepositoryCreation()
+    {
         $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
         $fileRepository = RepositoryFactory::create(
             getenv('REPOSITORY_URL'),

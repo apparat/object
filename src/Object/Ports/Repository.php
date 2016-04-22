@@ -48,7 +48,6 @@ use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
  */
 class Repository
 {
-
     /*******************************************************************************
      * PUBLIC METHODS
      *******************************************************************************/
@@ -99,5 +98,19 @@ class Repository
         } catch (\Exception $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * Create a repository
+     *
+     * @param string $url Repository URL (relative or absolute including the apparat base URL)
+     * @param array $config Repository configuration
+     * @return Repository Repository instance
+     * @api
+     */
+    public static function create($url, array $config)
+    {
+        $config['init'] = true;
+        return self::register($url, $config);
     }
 }

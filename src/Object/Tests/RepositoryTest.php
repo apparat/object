@@ -418,4 +418,24 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
         $this->assertEquals($fileRepository, $repositoryPath->getRepository());
     }
+
+    /**
+     * Test the creation of a new repository
+     */
+    public function testRepositoryCreation() {
+        $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $fileRepository = RepositoryFactory::create(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => $tempRepoDirectory,
+            ]
+        );
+        $this->assertInstanceOf(Repository::class, $fileRepository);
+
+        $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
+        self::$globFiles[] = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
+        self::$globDirs[] = $tempRepoDirectory;
+        self::$globDirs[] = $tempRepoConfigDir;
+    }
 }

@@ -80,7 +80,7 @@ interface AdapterStrategyInterface
     /**
      * Initialize the repository
      *
-     * @return void
+     * @return boolean Success
      */
     public function initializeRepository();
 }

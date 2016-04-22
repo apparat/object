@@ -101,8 +101,19 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             );
         }
 
-        // If the root directory configuration is invalid
+        // Get the real path of the root directory
         $this->root = realpath($this->config['root']);
+
+        // If the repository should be initialized
+        if (
+            !empty($this->config['init'])
+            && (boolean)$this->config['init']
+            && $this->initializeRepository()
+        ) {
+            $this->root = realpath($this->config['root']);
+        }
+
+        // If the root directory configuration is still invalid
         if (empty($this->root) || !@is_dir($this->root)) {
             throw new InvalidArgumentException(
                 sprintf(
@@ -114,6 +125,33 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         }
 
         $this->configDir = $this->root.DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * Initialize the repository
+     *
+     * @return boolean Success
+     * @throws RuntimeException If the repository cannot be initialized
+     * @throws RuntimeException If the repository size descriptor can not be created
+     */
+    public function initializeRepository()
+    {
+        $configDir = $this->config['root'].DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
+
+        // If the repository cannot be initialized
+        if (!is_dir($configDir) && !mkdir($configDir, 0777, true)) {
+            throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
+        }
+
+        // If the repository size descriptor can not be created
+        if (!@is_file($configDir.'size.txt') && !file_put_contents($configDir.'size.txt', '0')) {
+            throw new RuntimeException(
+                'Could not create repository size descriptor',
+                RuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED
+            );
+        }
+
+        return true;
     }
 
     /**
@@ -205,28 +243,5 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             $repositorySize = intval(file_get_contents($this->configDir.'size.txt'));
         }
         return $repositorySize;
-    }
-
-    /**
-     * Initialize the repository
-     *
-     * @return void
-     * @throws RuntimeException If the repository cannot be initialized
-     * @throws RuntimeException If the repository size descriptor can not be created
-     */
-    public function initializeRepository()
-    {
-        // If the repository cannot be initialized
-        if (!is_dir($this->configDir) && !mkdir($this->configDir, 0777, true)) {
-            throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
-        }
-
-        // If the repository size descriptor can not be created
-        if (!@is_file($this->configDir.'size.txt') && !file_put_contents($this->configDir.'size.txt', '0')) {
-            throw new RuntimeException(
-                'Could not create repository size descriptor',
-                RuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED
-            );
-        }
     }
 }

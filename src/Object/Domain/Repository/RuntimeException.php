@@ -62,4 +62,10 @@ class RuntimeException extends \RuntimeException
      * @var int
      */
     const REPO_SIZE_DESCRIPTOR_NOT_CREATED = 1461276603;
+    /**
+     * The repository size descriptor is unlockable
+     *
+     * @var int
+     */
+    const REPO_SIZE_DESCRIPTOR_UNLOCKABLE = 1461406873;
 }

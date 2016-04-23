@@ -89,7 +89,7 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var string
      */
-    protected $domainPropertyCClass = null;
+    protected $domainPropertyCClass = AbstractDomainProperties::class;
     /**
      * Object relations
      *
@@ -114,7 +114,11 @@ abstract class AbstractObject implements ObjectInterface
     public function __construct($payload = '', array $propertyData = [], RepositoryPathInterface $path = null)
     {
         // If the domain property collection class is invalid
-        if (!is_subclass_of($this->domainPropertyCClass, AbstractDomainProperties::class)) {
+        if (
+            !$this->domainPropertyCClass
+            || !class_exists($this->domainPropertyCClass)
+            || !(new \ReflectionClass($this->domainPropertyCClass))->isSubclassOf(AbstractDomainProperties::class)
+        ) {
             throw new PropertyInvalidArgumentException(
                 sprintf(
                     'Invalid domain property collection class "%s"',

@@ -38,6 +38,8 @@ namespace Apparat\Object\Infrastructure\Repository;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
+use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
@@ -64,8 +66,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     const TYPE = 'file';
     /**
      * Configuration
-     *
-     * Example
      *
      * @var array
      */
@@ -229,6 +229,64 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     public function getObjectResource($resourcePath)
     {
         return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->root.$resourcePath);
+    }
+
+    /**
+     * Allocate an object ID and create an object resource
+     *
+     * @param \Closure $creation Object creation closure
+     * @return ObjectInterface Object
+     */
+    public function createObjectResource(\Closure $creation)
+    {
+        $sizeDescriptor = null;
+
+        try {
+            // Open the size descriptor
+            $sizeDescriptor = fopen($this->configDir.'size.txt', 'r+');
+
+            // If a lock of the size descriptor can be acquired
+            if (flock($sizeDescriptor, LOCK_EX)) {
+
+                // Determine the current repository size
+                $repositorySize = '';
+                while (!feof($sizeDescriptor)) {
+                    $repositorySize .= fread($sizeDescriptor, 8);
+                }
+                $repositorySize = intval(trim($repositorySize));
+
+                // Instantiate the next consecutive object ID
+                $nextObjectId = Kernel::create(Id::class, [++$repositorySize]);
+
+                // Create the object
+                $object = $creation($nextObjectId);
+
+                // TODO: Resource creation and persistence
+
+                // Dump the new repository size, unlock the size descriptor
+                ftruncate($sizeDescriptor, 0);
+                fwrite($sizeDescriptor, $repositorySize);
+                fflush($sizeDescriptor);
+                flock($sizeDescriptor, LOCK_UN);
+
+                // Return the newly created object
+                return $object;
+            }
+
+            // Throw an error if no object could be created
+            throw new RuntimeException('The repository size descriptor is unlockable',
+                RuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE);
+
+            // If any exception is thrown
+        } catch (\Exception $e) {
+            // Release the size descriptor lock
+            if (is_resource($sizeDescriptor)) {
+                flock($sizeDescriptor, LOCK_UN);
+            }
+
+            // Forward the thrown exception
+            throw $e;
+        }
     }
 
     /**

@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
 /**
@@ -57,11 +57,11 @@ class ObjectFactory
      * Create an object
      *
      * @param ResourceInterface $objectResource
-     * @param RepositoryPath $path Repository object path
+     * @param RepositoryPathInterface $path Repository object path
      * @return ObjectInterface Object
      * @throws InvalidArgumentException If the object type is undefined
      */
-    public static function createFromResource(ResourceInterface $objectResource, RepositoryPath $path)
+    public static function createFromResource(ResourceInterface $objectResource, RepositoryPathInterface $path)
     {
         $propertyData = $objectResource->getPropertyData();
 
@@ -84,6 +84,35 @@ class ObjectFactory
     }
 
     /**
+     * Create and return a new object
+     *
+     * @param Id $id Object ID
+     * @param Type $type Object type
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
+     * @return ObjectInterface Object
+     */
+    public static function createFromParams(Id $id, Type $type, $payload = '', array $propertyData = [])
+    {
+        // Determine the object class
+        $objectClass = self::objectClassFromType($type);
+
+        // Prepare the system properties collection
+        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
+            !is_array(
+                $propertyData[SystemProperties::COLLECTION]
+            )) ? [] : $propertyData[SystemProperties::COLLECTION];
+        $systemPropertyData[SystemProperties::PROPERTY_ID] = $id->getId();
+        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $type->getType();
+        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = Revision::DRAFT;
+        $systemPropertyData[SystemProperties::PROPERTY_CREATED] = time();
+        $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
+
+        // Instantiate the object
+        return Kernel::create($objectClass, [$payload, $propertyData, null]);
+    }
+
+    /**
      * Determine and validate the object class name from its type
      *
      * @param Type $type Object type
@@ -92,7 +121,6 @@ class ObjectFactory
      */
     protected static function objectClassFromType(Type $type)
     {
-
         // If the object type is invalid
         $objectType = $type->getType();
         $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
@@ -104,34 +132,5 @@ class ObjectFactory
         }
 
         return $objectClass;
-    }
-
-    /**
-     * Create and return a new object
-     *
-     * @param Type $type Object type
-     * @param string $payload Object payload
-     * @param array $propertyData Object property data
-     * @return ObjectInterface Object
-     */
-    public static function createNew(Type $type, $payload = '', array $propertyData = [])
-    {
-
-        // Determine the object class
-        $objectClass = self::objectClassFromType($type);
-
-        // Prepare the system properties collection
-        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
-            !is_array(
-                $propertyData[SystemProperties::COLLECTION]
-            )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $systemPropertyData[SystemProperties::PROPERTY_ID] = Id::PROVISIONAL;
-        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $type->getType();
-        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = Revision::DRAFT;
-        $systemPropertyData[SystemProperties::PROPERTY_CREATED] = time();
-        $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
-
-        // Instantiate the object
-        return Kernel::create($objectClass, [$payload, $propertyData, null]);
     }
 }

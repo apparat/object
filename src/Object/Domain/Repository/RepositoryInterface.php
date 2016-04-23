@@ -36,6 +36,7 @@
 namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 
 /**
@@ -51,13 +52,16 @@ interface RepositoryInterface extends SearchableRepositoryInterface
      * @return void
      */
     public function initialize();
+
     /**
-     * Add an object to the repository
+     * Create an object and add it to the repository
      *
-     * @param ObjectInterface $object Object
-     * @return boolean Success
+     * @param string|Type $type Object type
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
+     * @return ObjectInterface Object
      */
-    public function addObject(ObjectInterface $object);
+    public function createObject($type, $payload = '', array $propertyData = []);
 
     /**
      * Delete and object from the repository

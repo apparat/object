@@ -117,9 +117,8 @@ class Collection implements CollectionInterface
     {
         // Lazy-load the object once
         if ($this->objects[$objectId] instanceof RepositoryPath) {
-            $this->objects[$objectId] = $this->objects[$objectId]->getRepository()->loadObject(
-                $this->objects[$objectId]
-            );
+            $object = $this->objects[$objectId]->getRepository()->loadObject($this->objects[$objectId]);
+            $this->objects[$objectId] = $object;
         }
 
         return $this->objects[$objectId];
@@ -180,7 +179,7 @@ class Collection implements CollectionInterface
      * Get an object with a particular ID
      *
      * @param int $offset Object ID
-     * @return ObjectInterface Object
+     * @return RepositoryPath|ObjectInterface Object
      */
     public function offsetGet($offset)
     {

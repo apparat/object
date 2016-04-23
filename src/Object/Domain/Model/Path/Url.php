@@ -509,8 +509,8 @@ class Url
     {
         $query = [];
         if (isset($this->urlParts['query']) && !empty($this->urlParts['query'])) {
-            @parse_str($this->urlParts['query'], $query);
+            parse_str($this->urlParts['query'], $query);
         }
-        return ArrayUtility::sortRecursiveByKey($query);
+        return ArrayUtility::sortRecursiveByKey((array)$query);
     }
 }

@@ -92,7 +92,7 @@ class Selector implements SelectorInterface
     /**
      * Object ID
      *
-     * @var int
+     * @var int|string
      */
     private $uid = null;
     /**

@@ -95,7 +95,7 @@ class LocalPath implements PathInterface
      * Object URL constructor
      *
      * @param string $path Object path
-     * @param NULL|TRUE|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
+     * @param NULL|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
      *     URLs)]
      * @param string $leader Leading base path
      * @throws InvalidArgumentException If the date precision is invalid
@@ -220,7 +220,7 @@ class LocalPath implements PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeImmutable $creationDate
-     * @return LocalPath New object path
+     * @return PathInterface|LocalPath New object path
      */
     public function setCreationDate(\DateTimeImmutable $creationDate)
     {
@@ -243,7 +243,7 @@ class LocalPath implements PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return LocalPath New object path
+     * @return PathInterface|LocalPath New object path
      */
     public function setType(Type $type)
     {
@@ -266,7 +266,7 @@ class LocalPath implements PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return LocalPath New object path
+     * @return PathInterface|LocalPath New object path
      */
     public function setId(Id $uid)
     {
@@ -289,7 +289,7 @@ class LocalPath implements PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return LocalPath New object path
+     * @return PathInterface|LocalPath New object path
      */
     public function setRevision(Revision $revision)
     {

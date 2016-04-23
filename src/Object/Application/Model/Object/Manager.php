@@ -37,10 +37,12 @@
 namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Factory\ObjectFactory;
+use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
  * Object manager
@@ -53,23 +55,30 @@ class Manager implements ManagerInterface
     /**
      * Create and return a new object
      *
+     * @param RepositoryInterface $repository Repository to create the object in
      * @param Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public function createObject(Type $type, $payload = '', array $propertyData = [])
+    public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = [])
     {
-        return ObjectFactory::createNew($type, $payload, $propertyData);
+        // Construct a creation closure
+        $creationClosure = function (Id $id) use ($type, $payload, $propertyData) {
+            return ObjectFactory::createFromParams($id, $type, $payload, $propertyData);
+        };
+
+        // Wrap the object creation in an ID allocation transaction
+        return $repository->getAdapterStrategy()->createObjectResource($creationClosure);
     }
 
     /**
      * Load an object from a repository
      *
-     * @param RepositoryPath $path Repository object path
+     * @param RepositoryPathInterface $path Repository object path
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryPath $path)
+    public function loadObject(RepositoryPathInterface $path)
     {
         /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
         $objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource(

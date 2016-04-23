@@ -67,7 +67,7 @@ interface PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeImmutable $creationDate
-     * @return LocalPath New object path
+     * @return PathInterface New object path
      */
     public function setCreationDate(\DateTimeImmutable $creationDate);
 
@@ -82,7 +82,7 @@ interface PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return LocalPath New object path
+     * @return PathInterface New object path
      */
     public function setType(Type $type);
 
@@ -97,7 +97,7 @@ interface PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return LocalPath New object path
+     * @return PathInterface New object path
      */
     public function setId(Id $uid);
 
@@ -112,7 +112,7 @@ interface PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return LocalPath New object path
+     * @return PathInterface New object path
      */
     public function setRevision(Revision $revision);
 }

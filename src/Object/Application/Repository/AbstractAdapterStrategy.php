@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Application\Repository;
 
-use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
 
 /**

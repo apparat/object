@@ -105,7 +105,7 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return Repository Repository instance
+     * @return \Apparat\Object\Domain\Repository\Repository Repository instance
      * @api
      */
     public static function create($url, array $config)

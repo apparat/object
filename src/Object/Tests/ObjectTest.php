@@ -50,6 +50,7 @@ use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Repository as RepositoryFactory;
 
 /**
  * Object tests
@@ -295,10 +296,28 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the creation of an article object
      */
-    public function testCreateArticleObject() {
+    public function testCreateArticleObject()
+    {
+        // Create a temporary repositors
+        $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $fileRepository = RepositoryFactory::create(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => $tempRepoDirectory,
+            ]
+        );
+        $this->assertInstanceOf(Repository::class, $fileRepository);
+
+        // Create a new article in the temporary repository
         $payload = md5(rand());
-        $article = Object::create(Type::ARTICLE, $payload);
+        $article = $fileRepository->createObject(Type::ARTICLE, $payload);
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals($payload, $article->getPayload());
+
+        $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
+        unlink($tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt');
+        rmdir($tempRepoConfigDir);
+        rmdir($tempRepoDirectory);
     }
 }

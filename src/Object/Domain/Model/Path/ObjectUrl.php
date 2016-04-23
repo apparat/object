@@ -94,7 +94,7 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeImmutable $creationDate
-     * @return LocalPath New object path
+     * @return PathInterface|ObjectUrl New object path
      */
     public function setCreationDate(\DateTimeImmutable $creationDate)
     {
@@ -106,7 +106,7 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return ObjectUrl New object URL
+     * @return PathInterface|ObjectUrl New object URL
      */
     public function setType(Type $type)
     {
@@ -118,7 +118,7 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return ObjectUrl New object URL
+     * @return PathInterface|ObjectUrl New object URL
      */
     public function setId(Id $uid)
     {
@@ -130,7 +130,7 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return ObjectUrl New object URL
+     * @return PathInterface|ObjectUrl New object URL
      */
     public function setRevision(Revision $revision)
     {
@@ -220,7 +220,7 @@ class ObjectUrl extends Url implements PathInterface
     /**
      * Return the local object path
      *
-     * @return LocalPath Local object path
+     * @return PathInterface|LocalPath Local object path
      */
     public function getLocalPath()
     {

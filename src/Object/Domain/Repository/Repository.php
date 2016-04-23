@@ -37,9 +37,12 @@ namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
 /**
  * Abstract object repository
@@ -107,14 +110,24 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * Add an object to the repository
+     * Create an object and add it to the repository
      *
-     * @param ObjectInterface $object Object
-     * @return boolean Success
+     * @param string|Type $type Object type
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
+     * @return ObjectInterface Object
      */
-    public function addObject(ObjectInterface $object)
+    public function createObject($type, $payload = '', array $propertyData = [])
     {
-        // TODO: Implement addObject() method.
+        // Instantiate the object type
+        if (!($type instanceof Type)) {
+            /** @var Type $type */
+            $type = Kernel::create(Type::class, [$type]);
+        }
+
+        /** @var ManagerInterface $objectManager */
+        $objectManager = Kernel::create(Service::class)->getObjectManager();
+        return $objectManager->createObject($this, $type, $payload, $propertyData);
     }
 
     /**
@@ -149,10 +162,14 @@ class Repository implements RepositoryInterface
     {
         // TODO: Really OK to cache? (Immutability ...)
         if (empty($this->objectCache[$path->getId()->getId()])) {
-            $this->objectCache[$path->getId()->getId()] =
-                Kernel::create(Service::class)->getObjectManager()->loadObject(
-                    Kernel::create(RepositoryPath::class, [$this, $path])
-                );
+
+            /** @var ManagerInterface $objectManager */
+            $objectManager = Kernel::create(Service::class)->getObjectManager();
+
+            /** @var RepositoryPathInterface $repositoryPath */
+            $repositoryPath = Kernel::create(RepositoryPath::class, [$this, $path]);
+
+            $this->objectCache[$path->getId()->getId()] = $objectManager->loadObject($repositoryPath);
         }
 
         return $this->objectCache[$path->getId()->getId()];

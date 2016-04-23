@@ -38,9 +38,7 @@ namespace Apparat\Object\Ports;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
-use Apparat\Object\Domain\Repository\Service;
 
 /**
  * Object facade
@@ -65,26 +63,5 @@ class Object
 
         // Instantiate the local object repository, load and return the object
         return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
-    }
-
-
-    /**
-     * Create and return an object
-     *
-     * @param string|Type $type Object type
-     * @param string $payload Object payload
-     * @param array $propertyData Object property data
-     * @return ObjectInterface Object
-     */
-    public static function create($type, $payload = '', array $propertyData = []) {
-
-        // Instantiate the object type
-        if (!($type instanceof Type)) {
-            /** @var Type $type */
-            $type = Kernel::create(Type::class, [$type]);
-        }
-
-        // Create and return the new object
-        return Kernel::create(Service::class)->getObjectManager()->createObject($type, $payload, $propertyData);
     }
 }

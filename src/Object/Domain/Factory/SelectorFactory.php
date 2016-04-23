@@ -104,7 +104,7 @@ class SelectorFactory
             );
         }
 
-        $year = $month = $day = $hour = $minute = $second = $uid = null;
+        $year = $month = $day = $hour = $minute = $second = null;
         if (($datePrecision > 0)) {
             $year = isset($selectorParts['year']) ? self::castInt(
                 $selectorParts['year']

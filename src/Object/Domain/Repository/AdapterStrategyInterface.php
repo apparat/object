@@ -36,7 +36,9 @@
 
 namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
 
 /**
  * Repository adapter strategy interface
@@ -51,7 +53,7 @@ interface AdapterStrategyInterface
      *
      * @param SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return array[PathInterface] Object paths
+     * @return PathInterface[] Object paths
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
 
@@ -62,6 +64,14 @@ interface AdapterStrategyInterface
      * @return ResourceInterface Object resource
      */
     public function getObjectResource($resourcePath);
+
+    /**
+     * Allocate an object ID and create an object resource
+     *
+     * @param \Closure $creation Object creation closure
+     * @return ObjectInterface Object
+     */
+    public function createObjectResource(\Closure $creation);
 
     /**
      * Return the adapter strategy type

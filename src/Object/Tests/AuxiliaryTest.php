@@ -57,14 +57,7 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidId()
     {
-        new Id(-1);
-    }
-
-    /**
-     * Test a provisional ID
-     */
-    public function testProvisionalId() {
-        $this->assertTrue((new Id(0))->isProvisional());
+        new Id(0);
     }
 
     /**

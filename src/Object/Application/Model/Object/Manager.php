@@ -78,7 +78,7 @@ class Manager implements ManagerInterface
             $repositoryPath = $repositoryPath->setType($type);
             $repositoryPath = $repositoryPath->setCreationDate(new \DateTimeImmutable());
 
-            return ObjectFactory::createFromParams($payload, $propertyData, $repositoryPath);
+            return ObjectFactory::createFromParams($repositoryPath, $payload, $propertyData);
         };
 
         // Wrap the object creation in an ID allocation transaction
@@ -98,6 +98,6 @@ class Manager implements ManagerInterface
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
 
-        return ObjectFactory::createFromResource($objectResource, $path);
+        return ObjectFactory::createFromResource($path, $objectResource);
     }
 }

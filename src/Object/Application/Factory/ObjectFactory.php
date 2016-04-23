@@ -54,12 +54,12 @@ class ObjectFactory
     /**
      * Create an object
      *
-     * @param ResourceInterface $objectResource
      * @param RepositoryPathInterface $path Repository object path
+     * @param ResourceInterface $objectResource
      * @return ObjectInterface Object
      * @throws InvalidArgumentException If the object type is undefined
      */
-    public static function createFromResource(ResourceInterface $objectResource, RepositoryPathInterface $path)
+    public static function createFromResource(RepositoryPathInterface $path, ResourceInterface $objectResource)
     {
         $propertyData = $objectResource->getPropertyData();
 
@@ -106,12 +106,12 @@ class ObjectFactory
     /**
      * Create and return a new object
      *
+     * @param RepositoryPathInterface $path Repository object path
      * @param string $payload Object payload
      * @param array $propertyData Object property data
-     * @param RepositoryPathInterface $path Repository object path
      * @return ObjectInterface Object
      */
-    public static function createFromParams($payload = '', array $propertyData = [], RepositoryPathInterface $path)
+    public static function createFromParams(RepositoryPathInterface $path, $payload = '', array $propertyData = [])
     {
         // Determine the object class
         $objectClass = self::objectClassFromType($path->getType());

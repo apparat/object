@@ -35,8 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Application\Repository;
-
-use Symfony\Component\Config\Resource\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 
 /**
  * Repository adapter strategy interface

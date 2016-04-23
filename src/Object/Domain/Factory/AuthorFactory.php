@@ -65,7 +65,6 @@ class AuthorFactory
     public static function createFromString($author, RepositoryInterface $contextRepository = null)
     {
         if (strlen($author)) {
-
             // Try to instantiate an apparat object based author
             try {
                 /** @var ApparatUrl $apparatUrl */

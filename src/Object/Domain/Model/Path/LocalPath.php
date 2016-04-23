@@ -104,7 +104,6 @@ class LocalPath implements PathInterface
     public function __construct($path = null, $datePrecision = null, &$leader = '')
     {
         if (!empty($path)) {
-
             // If the local default date precision should be used
             if ($datePrecision === null) {
                 $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));

@@ -114,7 +114,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
 
         /** @var ResourceInterface $resource */
         /** @var RepositoryPath $repositoryPath */
-        ObjectFactory::createFromResource($resource, $repositoryPath);
+        ObjectFactory::createFromResource($repositoryPath, $resource);
     }
 
     /**
@@ -130,7 +130,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
 
         /** @var ResourceInterface $resource */
-        ObjectFactory::createFromResource($resource, $articleObjectPath);
+        ObjectFactory::createFromResource($articleObjectPath, $resource);
     }
 
     /**
@@ -265,7 +265,7 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5.invalid/5');
 
         /** @var ResourceInterface $resource */
-        ObjectFactory::createFromResource($resource, $articleObjectPath);
+        ObjectFactory::createFromResource($articleObjectPath, $resource);
     }
 
     /**

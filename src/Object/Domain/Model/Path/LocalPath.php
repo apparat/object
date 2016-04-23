@@ -94,92 +94,92 @@ class LocalPath implements PathInterface
     /**
      * Object URL constructor
      *
-     * @param string $path Object path
-     * @param NULL|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
+     * @param null|string $path Object path
+     * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
      *     URLs)]
      * @param string $leader Leading base path
      * @throws InvalidArgumentException If the date precision is invalid
      * @throws InvalidArgumentException If the object URL path is invalid
      */
-    public function __construct($path, $datePrecision = null, &$leader = '')
+    public function __construct($path = null, $datePrecision = null, &$leader = '')
     {
-        // If the local default date precision should be used
-        if ($datePrecision === null) {
-            $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-        }
+        if (!empty($path)) {
 
-        $pathPattern = null;
+            // If the local default date precision should be used
+            if ($datePrecision === null) {
+                $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
+            }
 
-        // If a valid integer date precision is given
-        if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
-                implode(
-                    '/',
-                    array_slice(self::$datePattern, 0, $datePrecision)
-                ).($datePrecision ? '/' : '');
+            $pathPattern = null;
 
-            // Else if the date precision may be arbitrary
-        } elseif ($datePrecision === true) {
-            $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
-            $pathPattern .= str_repeat(')?', count(self::$datePattern));
-            $pathPattern .= '/';
-        }
+            // If a valid integer date precision is given
+            if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
+                $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
+                    implode(
+                        '/',
+                        array_slice(self::$datePattern, 0, $datePrecision)
+                    ).($datePrecision ? '/' : '');
 
-        // If the date precision is invalid
-        if ($pathPattern === null) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid date precision "%s" (%s)',
-                    strval($datePrecision),
-                    gettype($datePrecision)
-                ),
-                InvalidArgumentException::INVALID_DATE_PRECISION
+                // Else if the date precision may be arbitrary
+            } elseif ($datePrecision === true) {
+                $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
+                $pathPattern .= str_repeat(')?', count(self::$datePattern));
+                $pathPattern .= '/';
+            }
+
+            // If the date precision is invalid
+            if ($pathPattern === null) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Invalid date precision "%s" (%s)',
+                        strval($datePrecision),
+                        gettype($datePrecision)
+                    ),
+                    InvalidArgumentException::INVALID_DATE_PRECISION
+                );
+            }
+
+            $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
+            $pathPattern .= '<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+
+            if (!preg_match($pathPattern, $path, $pathParts)) {
+                throw new InvalidArgumentException(
+                    sprintf('Invalid object URL path "%s"', $path),
+                    InvalidArgumentException::INVALID_OBJECT_URL_PATH
+                );
+            }
+
+            // If date components are used
+            if ($datePrecision) {
+                $year = $pathParts['year'];
+                $month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
+                $day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
+                $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
+                $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
+                $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
+                $this->creationDate = new \DateTimeImmutable("$year-$month-$day".'T'."$hour:$minute:$second+00:00");
+            }
+
+            // Determine the leader
+            $leader = ($datePrecision === true) ? substr(
+                $path,
+                0,
+                strlen($path) - strlen($pathParts[0])
+            ) : $pathParts['leader'];
+
+            // Set the ID
+
+            $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
+
+            // Set the type
+            $this->type = Kernel::create(Type::class, [$pathParts['type']]);
+
+            // Set the revision
+            $this->revision = Kernel::create(
+                Revision::class,
+                [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])]
             );
         }
-
-        $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
-        $pathPattern .= '<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
-
-        if (empty($path) || !preg_match($pathPattern, $path, $pathParts)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid object URL path "%s"',
-                    empty($path) ? '(empty)' : $path
-                ),
-                InvalidArgumentException::INVALID_OBJECT_URL_PATH
-            );
-        }
-
-        // If date components are used
-        if ($datePrecision) {
-            $year = $pathParts['year'];
-            $month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
-            $day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
-            $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
-            $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
-            $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
-            $this->creationDate = new \DateTimeImmutable("$year-$month-$day".'T'."$hour:$minute:$second+00:00");
-        }
-
-        // Determine the leader
-        $leader = ($datePrecision === true) ? substr(
-            $path,
-            0,
-            strlen($path) - strlen($pathParts[0])
-        ) : $pathParts['leader'];
-
-        // Set the ID
-
-        $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
-
-        // Set the type
-        $this->type = Kernel::create(Type::class, [$pathParts['type']]);
-
-        // Set the revision
-        $this->revision = Kernel::create(
-            Revision::class,
-            [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])]
-        );
     }
 
     /**

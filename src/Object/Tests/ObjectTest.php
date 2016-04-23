@@ -294,11 +294,11 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     }
 
     /**
-     * Test the creation of an article object
+     * Test the creation and persisting of an article object
      */
     public function testCreateArticleObject()
     {
-        // Create a temporary repositors
+        // Create a temporary repository
         $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
         $fileRepository = RepositoryFactory::create(
             getenv('REPOSITORY_URL'),
@@ -314,10 +314,31 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
         $article = $fileRepository->createObject(Type::ARTICLE, $payload);
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals($payload, $article->getPayload());
+        $this->assertFileExists($tempRepoDirectory.
+            str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
+                ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
 
-        $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
-        unlink($tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt');
-        rmdir($tempRepoConfigDir);
-        rmdir($tempRepoDirectory);
+        // Delete temporary repository
+        $this->deleteRecursive($tempRepoDirectory);
+    }
+
+    /**
+     * Recursively register a directory and all nested files and directories for deletion on teardown
+     *
+     * @param string $directory Directory
+     */
+    protected function deleteRecursive($directory)
+    {
+        $this->tmpFiles[] = $directory;
+        foreach (scandir($directory) as $item) {
+            if (!preg_match('%^\.+$%', $item)) {
+                $path = $directory.DIRECTORY_SEPARATOR.$item;
+                if (is_dir($path)) {
+                    $this->deleteRecursive($path);
+                } else {
+                    $this->tmpFiles[] = $path;
+                }
+            }
+        }
     }
 }

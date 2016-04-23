@@ -36,11 +36,14 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
@@ -64,10 +67,18 @@ class Manager implements ManagerInterface
     public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = [])
     {
         // Construct a creation closure
-        $creationClosure = function (Id $id) use ($type, $payload, $propertyData) {
-            
-            
-            return ObjectFactory::createFromParams($id, $type, $payload, $propertyData);
+        $creationClosure = function (Id $uid) use ($repository, $type, $payload, $propertyData) {
+            /** @var Revision $revision */
+            $revision = Kernel::create(Revision::class, [Revision::DRAFT]);
+
+            /** @var RepositoryPath $repositoryPath */
+            $repositoryPath = Kernel::create(RepositoryPath::class, [$repository]);
+            $repositoryPath = $repositoryPath->setId($uid);
+            $repositoryPath = $repositoryPath->setRevision($revision);
+            $repositoryPath = $repositoryPath->setType($type);
+            $repositoryPath = $repositoryPath->setCreationDate(new \DateTimeImmutable());
+
+            return ObjectFactory::createFromParams($payload, $propertyData, $repositoryPath);
         };
 
         // Wrap the object creation in an ID allocation transaction

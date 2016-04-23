@@ -64,6 +64,7 @@ class ObjectUrl extends Url implements PathInterface
      * @param string $url Object URL
      * @param boolean $remote Accept remote URL (less strict date component checking)
      * @throws InvalidArgumentException If remote URLs are not allowed and a remote URL is given
+     * @throws InvalidArgumentException If the path component is empty
      */
     public function __construct($url, $remote = false)
     {
@@ -77,9 +78,17 @@ class ObjectUrl extends Url implements PathInterface
             );
         }
 
+        // If the path component is empty
+        if (empty($this->urlParts['path'])) {
+            throw new InvalidArgumentException(
+                'Invalid object URL path (empty)',
+                InvalidArgumentException::INVALID_OBJECT_URL_PATH
+            );
+        }
+
         // Instantiate the local path component
         $this->localPath = new LocalPath(
-            empty($this->urlParts['path']) ? '' : $this->urlParts['path'],
+            $this->urlParts['path'],
             $remote ? true : null,
             $this->urlParts['path']
         );

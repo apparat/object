@@ -49,6 +49,7 @@ use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
+use Apparat\Resource\Infrastructure\Io\File\Writer;
 
 /**
  * File adapter strategy
@@ -256,11 +257,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
                 // Instantiate the next consecutive object ID
                 $nextObjectId = Kernel::create(Id::class, [++$repositorySize]);
 
-                // Create the object and its resource
-                $object = $creator($nextObjectId);
-                $objectResource = ResourceFactory::createFromObject($object);
-
-                // TODO: Resource creation and persistence
+                // Create & persist the object
+                $object = $this->persistObject($creator($nextObjectId));
 
                 // Dump the new repository size, unlock the size descriptor
                 ftruncate($sizeDescriptor, 0);
@@ -288,6 +286,33 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             // Forward the thrown exception
             throw $e;
         }
+    }
+
+    /**
+     * Persist an object in the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return ObjectInterface Persisted object
+     */
+    public function persistObject(ObjectInterface $object)
+    {
+        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
+        $objectResource = ResourceFactory::createFromObject($object);
+
+        // Create the absolute object resource path
+        $objectResourcePath = $this->root.str_replace('/', DIRECTORY_SEPARATOR,
+                $object->getRepositoryPath()->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
+
+        /** @var Writer $fileWriter */
+        $fileWriter = Kernel::create(
+            Writer::class,
+            [$objectResourcePath, Writer::FILE_CREATE | Writer::FILE_CREATE_DIRS | Writer::FILE_OVERWRITE]
+        );
+        $objectResource->dump($fileWriter);
+
+        // TODO: Set object clean
+
+        return $object;
     }
 
     /**

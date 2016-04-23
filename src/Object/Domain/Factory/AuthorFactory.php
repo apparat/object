@@ -64,26 +64,29 @@ class AuthorFactory
      */
     public static function createFromString($author, RepositoryInterface $contextRepository = null)
     {
-        // Try to instantiate an apparat object based author
-        try {
-            /** @var ApparatUrl $apparatUrl */
-            $apparatUrl = Kernel::create(ApparatUrl::class, [$author, true, $contextRepository]);
-            return Kernel::create(ApparatAuthor::class, [$apparatUrl]);
+        if (strlen($author)) {
 
-            // If there's an apparat URL problem
-        } catch (ApparatInvalidArgumentException $e) {
-            return Kernel::create(InvalidAuthor::class, [$author, $e]);
+            // Try to instantiate an apparat object based author
+            try {
+                /** @var ApparatUrl $apparatUrl */
+                $apparatUrl = Kernel::create(ApparatUrl::class, [$author, true, $contextRepository]);
+                return Kernel::create(ApparatAuthor::class, [$apparatUrl]);
 
-            // Proceed on other errors
-        } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
-        }
+                // If there's an apparat URL problem
+            } catch (ApparatInvalidArgumentException $e) {
+                return Kernel::create(InvalidAuthor::class, [$author, $e]);
 
-        // Try to instantiate a generic author
-        try {
-            return GenericAuthor::unserialize($author);
+                // Proceed on other errors
+            } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
+            }
 
-            // Proceed on errors
-        } catch (InvalidArgumentException $e) {
+            // Try to instantiate a generic author
+            try {
+                return GenericAuthor::unserialize($author);
+
+                // Proceed on errors
+            } catch (InvalidArgumentException $e) {
+            }
         }
 
         throw new InvalidArgumentException(

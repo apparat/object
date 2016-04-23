@@ -57,9 +57,9 @@ class RepositoryPath extends LocalPath implements RepositoryPathInterface
      * Repository path constructor
      *
      * @param RepositoryInterface $repository Object repository this path applies to
-     * @param string|PathInterface $path Object path
+     * @param null|string|PathInterface $path Object path
      */
-    public function __construct(RepositoryInterface $repository, $path)
+    public function __construct(RepositoryInterface $repository, $path = null)
     {
         $this->repository = $repository;
 

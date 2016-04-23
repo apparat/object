@@ -37,10 +37,8 @@
 namespace Apparat\Object\Application\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
@@ -84,35 +82,6 @@ class ObjectFactory
     }
 
     /**
-     * Create and return a new object
-     *
-     * @param Id $uid Object ID
-     * @param Type $type Object type
-     * @param string $payload Object payload
-     * @param array $propertyData Object property data
-     * @return ObjectInterface Object
-     */
-    public static function createFromParams(Id $uid, Type $type, $payload = '', array $propertyData = [])
-    {
-        // Determine the object class
-        $objectClass = self::objectClassFromType($type);
-
-        // Prepare the system properties collection
-        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
-            !is_array(
-                $propertyData[SystemProperties::COLLECTION]
-            )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $systemPropertyData[SystemProperties::PROPERTY_ID] = $uid->getId();
-        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $type->getType();
-        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = Revision::DRAFT;
-        $systemPropertyData[SystemProperties::PROPERTY_CREATED] = time();
-        $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
-
-        // Instantiate the object
-        return Kernel::create($objectClass, [$payload, $propertyData, null]);
-    }
-
-    /**
      * Determine and validate the object class name from its type
      *
      * @param Type $type Object type
@@ -132,5 +101,33 @@ class ObjectFactory
         }
 
         return $objectClass;
+    }
+
+    /**
+     * Create and return a new object
+     *
+     * @param string $payload Object payload
+     * @param array $propertyData Object property data
+     * @param RepositoryPathInterface $path Repository object path
+     * @return ObjectInterface Object
+     */
+    public static function createFromParams($payload = '', array $propertyData = [], RepositoryPathInterface $path)
+    {
+        // Determine the object class
+        $objectClass = self::objectClassFromType($path->getType());
+
+        // Prepare the system properties collection
+        $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
+            !is_array(
+                $propertyData[SystemProperties::COLLECTION]
+            )) ? [] : $propertyData[SystemProperties::COLLECTION];
+        $systemPropertyData[SystemProperties::PROPERTY_ID] = $path->getId()->getId();
+        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $path->getType()->getType();
+        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $path->getRevision()->getRevision();
+        $systemPropertyData[SystemProperties::PROPERTY_CREATED] = $path->getCreationDate()->format('U');
+        $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
+
+        // Instantiate the object
+        return Kernel::create($objectClass, [$payload, $propertyData, $path]);
     }
 }

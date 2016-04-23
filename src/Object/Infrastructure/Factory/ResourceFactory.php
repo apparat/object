@@ -36,6 +36,8 @@
 
 namespace Apparat\Object\Infrastructure\Factory;
 
+use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Infrastructure\Model\Object\Resource;
 
@@ -48,14 +50,29 @@ use Apparat\Object\Infrastructure\Model\Object\Resource;
 class ResourceFactory extends \Apparat\Resource\Ports\Resource
 {
     /**
-     * Create and return a FrontMark resource instance
+     * Create and return a FrontMark resource instance from as resource string
      *
      * @param string $src Stream-wrapped source
      * @param array $parameters Reader parameters
      * @return ResourceInterface Object resource
      */
-    public static function create($src, ...$parameters)
+    public static function createFromSource($src, ...$parameters)
     {
         return self::fromSource($src, Resource::class, ...$parameters);
+    }
+
+    /**
+     * Create and return a FrontMark resource instance from an object
+     *
+     * @param ObjectInterface $object Object
+     * @return Resource Object resource
+     */
+    public static function createFromObject(ObjectInterface $object)
+    {
+        /** @var Resource $resource */
+        $resource = Kernel::create(Resource::class, [null]);
+        $resource->setPropertyData($object->getPropertyData());
+        $resource->setPayload($object->getPayload());
+        return $resource;
     }
 }

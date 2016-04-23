@@ -227,16 +227,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function getObjectResource($resourcePath)
     {
-        return ResourceFactory::create(AbstractFileReaderWriter::WRAPPER.$this->root.$resourcePath);
+        return ResourceFactory::createFromSource(AbstractFileReaderWriter::WRAPPER.$this->root.$resourcePath);
     }
 
     /**
      * Allocate an object ID and create an object resource
      *
-     * @param \Closure $creation Object creation closure
+     * @param \Closure $creator Object creation closure
      * @return ObjectInterface Object
      */
-    public function createObjectResource(\Closure $creation)
+    public function createObjectResource(\Closure $creator)
     {
         $sizeDescriptor = null;
 
@@ -256,8 +256,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
                 // Instantiate the next consecutive object ID
                 $nextObjectId = Kernel::create(Id::class, [++$repositorySize]);
 
-                // Create the object
-                $object = $creation($nextObjectId);
+                // Create the object and its resource
+                $object = $creator($nextObjectId);
+                $objectResource = ResourceFactory::createFromObject($object);
 
                 // TODO: Resource creation and persistence
 

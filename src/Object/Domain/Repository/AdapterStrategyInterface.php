@@ -68,10 +68,10 @@ interface AdapterStrategyInterface
     /**
      * Allocate an object ID and create an object resource
      *
-     * @param \Closure $creation Object creation closure
+     * @param \Closure $creator Object creation closure
      * @return ObjectInterface Object
      */
-    public function createObjectResource(\Closure $creation);
+    public function createObjectResource(\Closure $creator);
 
     /**
      * Return the adapter strategy type

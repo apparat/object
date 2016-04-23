@@ -65,6 +65,8 @@ class Manager implements ManagerInterface
     {
         // Construct a creation closure
         $creationClosure = function (Id $id) use ($type, $payload, $propertyData) {
+            
+            
             return ObjectFactory::createFromParams($id, $type, $payload, $propertyData);
         };
 

@@ -191,16 +191,6 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Test if the object hash is a valid sha1 value
-     *
-     * @return bool The object hash is a valid sha1 value
-     */
-    protected function hasValidHash()
-    {
-        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
-    }
-
-    /**
      * Return the object ID
      *
      * @return Id Object ID
@@ -282,10 +272,6 @@ class SystemProperties extends AbstractProperties
         return $systemProperties;
     }
 
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
     /**
      * Return the property values as array
      *
@@ -298,8 +284,23 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_TYPE => $this->type->getType(),
             self::PROPERTY_REVISION => $this->revision->getRevision(),
             self::PROPERTY_CREATED => $this->created->format('c'),
-            self::PROPERTY_PUBLISHED => $this->published->format('c'),
+            self::PROPERTY_PUBLISHED => ($this->published instanceof \DateTimeImmutable) ?
+                $this->published->format('c') : null,
             self::PROPERTY_HASH => $this->hash,
         ]);
+    }
+
+    /*******************************************************************************
+     * PRIVATE METHODS
+     *******************************************************************************/
+
+    /**
+     * Test if the object hash is a valid sha1 value
+     *
+     * @return bool The object hash is a valid sha1 value
+     */
+    protected function hasValidHash()
+    {
+        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 }

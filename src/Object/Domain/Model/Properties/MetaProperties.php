@@ -299,7 +299,7 @@ class MetaProperties extends AbstractProperties
      */
     public function toArray()
     {
-        return [
+        return array_filter([
             self::PROPERTY_DESCRIPTION => $this->description,
             self::PROPERTY_ABSTRACT => $this->abstract,
             self::PROPERTY_KEYWORDS => $this->keywords,
@@ -310,6 +310,6 @@ class MetaProperties extends AbstractProperties
                 },
                 $this->authors
             )
-        ];
+        ]);
     }
 }

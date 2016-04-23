@@ -162,7 +162,6 @@ class Repository implements RepositoryInterface
     {
         // TODO: Really OK to cache? (Immutability ...)
         if (empty($this->objectCache[$path->getId()->getId()])) {
-
             /** @var ManagerInterface $objectManager */
             $objectManager = Kernel::create(Service::class)->getObjectManager();
 

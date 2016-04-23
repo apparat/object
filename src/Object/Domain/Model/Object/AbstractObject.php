@@ -114,8 +114,7 @@ abstract class AbstractObject implements ObjectInterface
     public function __construct($payload = '', array $propertyData = [], RepositoryPathInterface $path = null)
     {
         // If the domain property collection class is invalid
-        if (
-            !$this->domainPropertyCClass
+        if (!$this->domainPropertyCClass
             || !class_exists($this->domainPropertyCClass)
             || !(new \ReflectionClass($this->domainPropertyCClass))->isSubclassOf(AbstractDomainProperties::class)
         ) {

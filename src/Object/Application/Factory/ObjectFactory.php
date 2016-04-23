@@ -86,13 +86,13 @@ class ObjectFactory
     /**
      * Create and return a new object
      *
-     * @param Id $id Object ID
+     * @param Id $uid Object ID
      * @param Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public static function createFromParams(Id $id, Type $type, $payload = '', array $propertyData = [])
+    public static function createFromParams(Id $uid, Type $type, $payload = '', array $propertyData = [])
     {
         // Determine the object class
         $objectClass = self::objectClassFromType($type);
@@ -102,7 +102,7 @@ class ObjectFactory
             !is_array(
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $systemPropertyData[SystemProperties::PROPERTY_ID] = $id->getId();
+        $systemPropertyData[SystemProperties::PROPERTY_ID] = $uid->getId();
         $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $type->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = Revision::DRAFT;
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] = time();

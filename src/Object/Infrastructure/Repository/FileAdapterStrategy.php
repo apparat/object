@@ -106,8 +106,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $this->root = realpath($this->config['root']);
 
         // If the repository should be initialized
-        if (
-            !empty($this->config['init'])
+        if (!empty($this->config['init'])
             && (boolean)$this->config['init']
             && $this->initializeRepository()
         ) {
@@ -247,7 +246,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
             // If a lock of the size descriptor can be acquired
             if (flock($sizeDescriptor, LOCK_EX)) {
-
                 // Determine the current repository size
                 $repositorySize = '';
                 while (!feof($sizeDescriptor)) {
@@ -274,8 +272,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             }
 
             // Throw an error if no object could be created
-            throw new RuntimeException('The repository size descriptor is unlockable',
-                RuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE);
+            throw new RuntimeException(
+                'The repository size descriptor is unlockable',
+                RuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE
+            );
 
             // If any exception is thrown
         } catch (\Exception $e) {

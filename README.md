@@ -1,26 +1,29 @@
 # Apparat Objects
 
-Purpose of this module
-* Mapping between objects and their resources (e.g. file system)
-	* Instantiate objects from object resources
-	* Create new resources from unpersisted objects
+Purpose of this module:
+
+1. **Mapping between objects and their file resources**
+	* Instantiation of objects from persisted resources
+	* Creation of resources from new / unpersisted objects
 		* FrontMark resources for text-based objects
 		* Pairs of binary and meta data resources for binary objects
-	* Object deletion
-	* Handle [object versioning](https://github.com/apparat/apparat/blob/master/doc/VERSIONING.md) (creation of versioned object resources)
-	* Handle object localization (creation of localized object resources)
-	* Creation and handling of [object drafts](https://github.com/apparat/apparat/blob/master/doc/VERSIONING.md#drafts)
-* Provide an abstract object interface
-	* Encapsulate object resources with an abstract layer ("objects")
-	* Object content getters & setters
-	* Object meta data getters & setters
-	* [Object references & involvement handling](https://github.com/apparat/apparat/blob/master/doc/VERSIONING.md#object-cross-references)
+	* Object ~~deletion~~ unpublication
+	* [Object revision](doc/object-revisions.md) management
+	* Object ID assignment & incrementation
+	* [Object hash](doc/object-hash.md) management
+	* Object localization (?)
+2. **Object API**
+    * Implementation of different [object types](doc/object-types.md)
+	* [Object property](doc/object-properties.md) getters & setters
+	* Object payload getters & setters
+	* Handling of [object states](doc/object-states.md)
+	* Handling of object privacy
+	* [Object references & involvement handling](doc/object-revisions.md#object-cross-references)
 		* Extraction of references from text-based resources
 		* Involvement signalling to other objects
-* Utility function
-	* [Object URL](https://github.com/apparat/apparat/blob/master/doc/VERSIONING.md#drafts) handling (composition, decomposition)
-	* `apparat://` URL handling
-	* Object ID assignment & incrementation
+3. **Utility functions**
+	* [Object URL](doc/object-url.md) handling (composition, decomposition)
+	* `aprt://` and `aprts://` URL handling
 
 ### Object repositories
 

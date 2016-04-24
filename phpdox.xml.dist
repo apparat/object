@@ -8,7 +8,7 @@
             <inheritance resolve="true"/>
         </collector>
 
-        <generator output="${basedir}/docs">
+        <generator output="${basedir}/apidoc">
             <enrich base="${basedir}/build/logs">
                 <source type="phploc"/>
                 <source type="git">

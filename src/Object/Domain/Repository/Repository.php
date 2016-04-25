@@ -63,12 +63,6 @@ class Repository implements RepositoryInterface
      * @var AdapterStrategyInterface
      */
     protected $adapterStrategy = null;
-    /**
-     * Instance specific object cache
-     *
-     * @var array
-     */
-    protected $objectCache = [];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -160,18 +154,14 @@ class Repository implements RepositoryInterface
      */
     public function loadObject(PathInterface $path)
     {
-        // TODO: Really OK to cache? (Immutability ...)
-        if (empty($this->objectCache[$path->getId()->getId()])) {
-            /** @var ManagerInterface $objectManager */
-            $objectManager = Kernel::create(Service::class)->getObjectManager();
+        /** @var ManagerInterface $objectManager */
+        $objectManager = Kernel::create(Service::class)->getObjectManager();
 
-            /** @var RepositoryPathInterface $repositoryPath */
-            $repositoryPath = Kernel::create(RepositoryPath::class, [$this, $path]);
+        /** @var RepositoryPathInterface $repositoryPath */
+        $repositoryPath = Kernel::create(RepositoryPath::class, [$this, $path]);
 
-            $this->objectCache[$path->getId()->getId()] = $objectManager->loadObject($repositoryPath);
-        }
-
-        return $this->objectCache[$path->getId()->getId()];
+        // Load and return the object
+        return $objectManager->loadObject($repositoryPath);
     }
 
     /**

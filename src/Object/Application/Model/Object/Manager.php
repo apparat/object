@@ -41,6 +41,7 @@ use Apparat\Object\Application\Factory\ObjectFactory;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
@@ -93,11 +94,31 @@ class Manager implements ManagerInterface
      */
     public function loadObject(RepositoryPathInterface $path)
     {
-        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
-        $objectResource = $path->getRepository()->getAdapterStrategy()->getObjectResource(
-            $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        // Load the current object resource
+        $objectResource = $this->loadObjectResource(
+            $path->setRevision(Kernel::create(Revision::class, [Revision::CURRENT]))
         );
 
-        return ObjectFactory::createFromResource($path, $objectResource);
+        // Instantiate the object
+        $object = ObjectFactory::createFromResource($path, $objectResource);
+
+        // Use and return the requested object revision
+        return $object;
+
+        // TODO: Implement revision loading
+//        return $object->useRevision($path->getRevision());
+    }
+
+    /**
+     * Load and return an object resource
+     *
+     * @param RepositoryPathInterface $path
+     * @return ResourceInterface Object resource
+     */
+    public function loadObjectResource(RepositoryPathInterface $path)
+    {
+        return $path->getRepository()->getAdapterStrategy()->getObjectResource(
+            $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        );
     }
 }

@@ -82,28 +82,6 @@ class ObjectFactory
     }
 
     /**
-     * Determine and validate the object class name from its type
-     *
-     * @param Type $type Object type
-     * @return string Object class name
-     * @throws InvalidArgumentException If the object type is invalid
-     */
-    protected static function objectClassFromType(Type $type)
-    {
-        // If the object type is invalid
-        $objectType = $type->getType();
-        $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
-        if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid object type "%s"', $objectType),
-                InvalidArgumentException::INVALID_OBJECT_TYPE
-            );
-        }
-
-        return $objectClass;
-    }
-
-    /**
      * Create and return a new object
      *
      * @param RepositoryPathInterface $path Repository object path
@@ -129,5 +107,27 @@ class ObjectFactory
 
         // Instantiate the object
         return Kernel::create($objectClass, [$payload, $propertyData, $path]);
+    }
+
+    /**
+     * Determine and validate the object class name from its type
+     *
+     * @param Type $type Object type
+     * @return string Object class name
+     * @throws InvalidArgumentException If the object type is invalid
+     */
+    protected static function objectClassFromType(Type $type)
+    {
+        // If the object type is invalid
+        $objectType = $type->getType();
+        $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
+        if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object type "%s"', $objectType),
+                InvalidArgumentException::INVALID_OBJECT_TYPE
+            );
+        }
+
+        return $objectClass;
     }
 }

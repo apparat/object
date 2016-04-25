@@ -45,6 +45,7 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Repository\Service;
 
 /**
  * Abstract object
@@ -95,13 +96,19 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @var Relations
      */
-    private $relations;
+    protected $relations;
     /**
      * Processing instructions
      *
      * @var ProcessingInstructions
      */
-    private $processingInstructions;
+    protected $processingInstructions;
+    /**
+     * Latest revision index
+     *
+     * @var Revision
+     */
+    protected $latestRevision;
 
     /**
      * Object constructor
@@ -109,7 +116,6 @@ abstract class AbstractObject implements ObjectInterface
      * @param string $payload Object payload
      * @param array $propertyData Property data
      * @param RepositoryPathInterface $path Object repository path
-     * @throws PropertyInvalidArgumentException If the domain property collection class is invalid
      */
     public function __construct($payload = '', array $propertyData = [], RepositoryPathInterface $path = null)
     {
@@ -127,8 +133,25 @@ abstract class AbstractObject implements ObjectInterface
             );
         }
 
-        $this->payload = $payload;
         $this->path = $path;
+
+        // Load the current revision data
+        $this->loadRevisionData($payload, $propertyData);
+
+        // Save the latest revision index
+        $this->latestRevision = $this->getRevision();
+        $this->path = $path->setRevision($this->latestRevision);
+    }
+
+    /**
+     * Load object revision data
+     *
+     * @param string $payload Object payload
+     * @param array $propertyData Property data
+     */
+    protected function loadRevisionData($payload = '', array $propertyData = [])
+    {
+        $this->payload = $payload;
 
         // Instantiate the system properties
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
@@ -167,6 +190,52 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object revision
+     *
+     * @return Revision Object revision
+     */
+    public function getRevision()
+    {
+        return $this->systemProperties->getRevision();
+    }
+
+    /**
+     * Use a specific object revision
+     *
+     * @param Revision $revision Revision to be used
+     * @return ObjectInterface Object
+     * @throws OutOfBoundsException If the requested revision is invalid
+     */
+    public function useRevision(Revision $revision)
+    {
+        $isCurrentRevision = false;
+
+            // If the requested revision is invalid
+        if (!$revision->isCurrent() && (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))) {
+            throw new OutOfBoundsException(sprintf('Invalid object revision "%s"', $revision->getRevision()),
+                OutOfBoundsException::INVALID_OBJECT_REVISION);
+        }
+
+        // If the requested revision is not already used
+        if ($revision->getRevision() !== $this->path->getRevision()->getRevision()) {
+            /** @var ManagerInterface $objectManager */
+            $objectManager = Kernel::create(Service::class)->getObjectManager();
+
+            // Load the requested object revision resource
+            $newRevisionPath = $this->path->setRevision($isCurrentRevision ? Kernel::create(Revision::class, [Revision::CURRENT]) : $revision);
+            $revisionResource = $objectManager->loadObject($newRevisionPath);
+
+            // Load the revision resource data
+            $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
+
+            // Set the current revision path
+            $this->path = $newRevisionPath;
+        }
+
+        return $this;
+    }
+
+    /**
      * Return the object ID
      *
      * @return Id Object ID
@@ -184,16 +253,6 @@ abstract class AbstractObject implements ObjectInterface
     public function getType()
     {
         return $this->systemProperties->getType();
-    }
-
-    /**
-     * Return the object revision
-     *
-     * @return Revision Object revision
-     */
-    public function getRevision()
-    {
-        return $this->systemProperties->getRevision();
     }
 
     /**
@@ -245,7 +304,6 @@ abstract class AbstractObject implements ObjectInterface
     {
         return $this->metaProperties->getAbstract();
     }
-
 
     /**
      * Return all object keywords

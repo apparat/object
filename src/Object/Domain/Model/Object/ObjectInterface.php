@@ -180,4 +180,12 @@ interface ObjectInterface
      * @return mixed Property value
      */
     public function getDomainProperty($property);
+
+    /**
+     * Use a specific object revision
+     *
+     * @param Revision $revision Revision to be used
+     * @return ObjectInterface Object
+     */
+    public function useRevision(Revision $revision);
 }

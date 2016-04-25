@@ -264,10 +264,6 @@ class ObjectProxy implements ObjectInterface
         return $this->object()->getDomainProperty($property);
     }
 
-    /*******************************************************************************
-     * MAGIC METHODS
-     *******************************************************************************/
-
     /**
      * Return the absolute object URL
      *
@@ -277,10 +273,6 @@ class ObjectProxy implements ObjectInterface
     {
         return strval($this->url);
     }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
 
     /**
      * Generic caller
@@ -299,5 +291,16 @@ class ObjectProxy implements ObjectInterface
             sprintf('Invalid object proxy method "%s"', $name),
             InvalidArgumentException::INVALID_OBJECT_PROXY_METHOD
         );
+    }
+
+    /**
+     * Use a specific object revision
+     *
+     * @param Revision $revision Revision to be used
+     * @return ObjectInterface Object
+     */
+    public function useRevision(Revision $revision)
+    {
+        return $this->object()->useRevision($revision);
     }
 }

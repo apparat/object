@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Model
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -36,41 +36,18 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
-
 /**
- * Object manager interface
+ * OutOfBoundsException
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface ManagerInterface
+class OutOfBoundsException extends \OutOfBoundsException
 {
     /**
-     * Create and return a new object
+     * Invalid object revision
      *
-     * @param RepositoryInterface $repository Repository to create the object in
-     * @param Type $type Object type
-     * @param string $payload Object payload
-     * @param array $propertyData Object property data
-     * @return ObjectInterface Object
+     * @var int
      */
-    public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = []);
-
-    /**
-     * Load an object from a repository
-     *
-     * @param RepositoryPathInterface $path Repository object path
-     * @return ObjectInterface Object
-     */
-    public function loadObject(RepositoryPathInterface $path);
-
-    /**
-     * Load and return an object resource
-     *
-     * @param RepositoryPathInterface $path
-     * @return ResourceInterface Object resource
-     */
-    public function loadObjectResource(RepositoryPathInterface $path);
+    const INVALID_OBJECT_REVISION = 1461619783;
 }

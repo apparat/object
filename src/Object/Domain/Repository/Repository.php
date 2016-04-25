@@ -121,6 +121,8 @@ class Repository implements RepositoryInterface
 
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
+
+        // Create and return the object
         return $objectManager->createObject($this, $type, $payload, $propertyData);
     }
 

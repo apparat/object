@@ -38,6 +38,7 @@ namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Author\AuthorInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
@@ -140,7 +141,6 @@ abstract class AbstractObject implements ObjectInterface
 
         // Save the latest revision index
         $this->latestRevision = $this->getRevision();
-        $this->path = $path->setRevision($this->latestRevision);
     }
 
     /**
@@ -210,19 +210,31 @@ abstract class AbstractObject implements ObjectInterface
     {
         $isCurrentRevision = false;
 
-            // If the requested revision is invalid
-        if (!$revision->isCurrent() && (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))) {
+        // If the requested revision is invalid
+        if (!$revision->isCurrent() &&
+            (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))
+        ) {
             throw new OutOfBoundsException(sprintf('Invalid object revision "%s"', $revision->getRevision()),
                 OutOfBoundsException::INVALID_OBJECT_REVISION);
         }
 
+        // If the current revision got requested
+        if ($revision->isCurrent()) {
+            $isCurrentRevision = true;
+            $revision = $this->latestRevision;
+        }
+
         // If the requested revision is not already used
-        if ($revision->getRevision() !== $this->path->getRevision()->getRevision()) {
+        if ($revision != $this->getRevision()) {
             /** @var ManagerInterface $objectManager */
             $objectManager = Kernel::create(Service::class)->getObjectManager();
 
             // Load the requested object revision resource
-            $newRevisionPath = $this->path->setRevision($isCurrentRevision ? Kernel::create(Revision::class, [Revision::CURRENT]) : $revision);
+            /** @var Revision $newRevision */
+            $newRevision = $isCurrentRevision ? Kernel::create(Revision::class, [Revision::CURRENT]) :
+                $revision;
+            /** @var RepositoryPath $newRevisionPath */
+            $newRevisionPath = $this->path->setRevision($newRevision);
             $revisionResource = $objectManager->loadObject($newRevisionPath);
 
             // Load the revision resource data

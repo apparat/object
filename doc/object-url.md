@@ -30,9 +30,9 @@ It consists of
 
 1. a [base URL](#base-url) associated with the *apparat* instance as a whole (`https://apparat.tools/`),
 2. a [repository URL](#repository-url) identifying the repository the object belongs to (might be empty),
-3. up to six nested subdirectories denoting the object's [creation date (and time)](#creation-date), configurable from `YYYY/MM/DD` to `YYYY/MM/DD/HH/II/SS`,
-4. an innermost directory named after the [object ID](#object-ids) and the [object type](#object-types.md), serving as parent directory for all object related files,
-5. and finally the [object name](#object-names) itself, consisting of the original **object file name** ([media objects](#media-objects) only), the **object ID** an optionally an [object revision](#object-revisioning) number.
+3. up to six nested subdirectories denoting the object's [creation date (and time)](#creation-date), configurable from `YYYY/MM/DD` to `YYYY/MM/DD/HH/II/SS` and consisting of digits only,
+4. a directory named after the [object ID](#object-ids) and the [object type](#object-types.md) (separated by a dot), serving as container for all object related resources,
+5. and finally the [object name](#object-names) itself, consisting of the original **object file name** ([media objects](#media-objects) only), the **object ID** and potentially the [object revision](#object-revisioning) number.
 
 ```
 https://apparat.tools  /  blog  /  2015/10/01  /  36704  .  image  /  36704  -  2
@@ -88,14 +88,14 @@ An example could be `myphoto.36704-2`. The media file will be saved with its **o
 
 #### Object revision
 
-When an object gets modified and re-published, *apparat* saves a copy of the previous instance instead of simply overwriting it with the updated version. The latest instance will always be accessible under the canonical object URL, with the current version number being part of the object meta data. Previous versions may be explicitely retrieved by inserting a **version identifier** into the object URL (as a suffix of the object ID):
+When an object gets modified and re-published, *apparat* saves a copy of the previous instance instead of simply overwriting it with the updated revision. The latest instance will always be accessible under the canonical object URL, with the current revision number being part of the object system properties (this way, it's a very straightforward task to find out the number of revisions available). Previous revisions may be explicitly retrieved by appending a **revision number** into the object URL (as a suffix to the object ID, separated by a minus):
 
 ```
 https://apparat.tools/2015/10/01/36704.event/36704-1.md
-                         Identifier for version 1 ^^
+                        Identifier for revision 1 ^^
 ```
 
-*Apparat*'s versioning system is [explained in detail here](object-revisions.md).
+Also, an object may have **[draft status](object-states.md)**, which will also result in a different URL. *Apparat*'s revisioning system is [explained in detail here](object-revisions.md).
 
 ## Object resources
 

@@ -18,7 +18,6 @@ Object properties
 
 * Keywords
 * Categories
-* Authors
 * Summary
 
 #### C. Domain properties
@@ -29,6 +28,7 @@ Object type dependent properties.
 
 Resource relations need to carry the following characteristics:
 
+* Authors
 * Relation type (active / passive)
   - **refers-to / referred-by**: Regular links from / to resources (both *apparat* objects and regular HTTP links)
   - **embeds / embedded-by**: Inclusive associations like media objects (images, audio, video)

@@ -1,16 +1,27 @@
+Object states & modes
+=====================
+
 Object states
-=============
+-------------
 
 Each object has one of three states at a time:
 
-* `clean`: The object hasn't changed since its last persistence.
-* `dirty`: At least one property of the object (or the payload) has been set and the object has potentially been altered.
-* `mutated`: The object's contents have been altered and needs to be persisted.
+1. `clean`: The **object hasn't changed** since its last persistence. This is also the state an object has immediately after its retrieval from a repository.
+2. `dirty`: Each **significant change** (at least one property has to effectively change its value) will force the object into `dirty` state (at least, see below). The object needs to be persisted.
+3. `mutated`: If one of the object's **content properties** gets altered, the object is forced into `mutated` state which will also trigger **draft mode** (see below).
 
-As soon as an object reaches the `mutated` state, it's automatically converted into a [draft revision](object-revisions.md#drafts) (if it's not already a draft) and will result in a new object resource when persisted.
+The object content consists of
 
-It's important to understand that new revisions are only created when the **content of an object is altered** (i.e. when the [object hash](object-hash.md) changes). Not all kinds of changes affect the object hash though. Examples:
+* the [Meta properties](object-properties.md#b-meta-properties),
+* the [Domain properties](object-properties.md#c-domain-properties) and
+* the object payload (if any).
 
-* Adding an object author does't change the object's content (as long as the author is not somehow included in the object's payload, which would be a content change)
-* Changes in external involvements don't affect the object's content.
+Together these properties result in the [object hash](object-hash.md) which is part of the [System properties](object-properties.md#a-system-properties). Whenever the object hash changes, persistence will result in a new revision (draft or published mode).
 
+Object modes
+------------
+
+Each object has one of two modes at a time:
+
+1. `published`: An object is in **published mode** when it has been explicitly published (resulting in the `system.published` property being set to a timestamp) and there hasn't occured any content change since then.
+2. `draft`: As soon as a content change occurs (see above), the object automatically falls into **draft mode**. The `system.published` property gets unset, persisting the object will result in a new [object revision](object-revisions.md). The draft mode can also be triggered explicitly.

@@ -1,25 +1,30 @@
 Object revisions
 ================
 
-Instead of simply overwriting objects during re-publication, *apparat* uses a versioning strategy that is best explained with the help of some examples.
+Instead of simply overwriting objects during re-publication, *apparat* uses a revisioning strategy that is best explained with the help of some examples.
 
 
-Versioning basics - a simple text object
------------------------------------------
+Revisioning basics — a simple text object
+------------------------------------------
 
-1. Imagine the initial publication of a note. An object file `note.123.md` is created with the `revision` property set to `1` in its meta data.
-2. When the object gets re-published, *apparat* compares the new content to the latest revision. If the content didn't change, the process finishes with possibly altering the meta data of the latest existing object revision.
-3. If the content did change, however,
-	* the latest object revision is renamed to `note.123-1.md`, with `-1` being inserted as a revision indicator (both the object file name and the meta data gets adjusted).
-	* Then the updated object is again saved as `note.123.md`, using the previous revision's meta data as a basis and updating it accordingly (e.g. setting the `revision` property to `2`).
-4. This way the most recent object revision is always accessible under the very same canonical URL, with each instance having a complete list of its predecessors stored in its meta data.
-4. A specific object revision may be retrieved by inserting the desired revision identifier into the canonical URL.
+Imagine the **initial publication** of a note. An object file `123.md` is created with its `revision` system property set to `1`. Because it's published, this revision is considered **immutable**.
+
+When the note gets updated afterwards, it depends on the affected properties whether the object falls into **draft mode** or not (see [object states](object-states.md) for details). When a draft gets spawned and persisted without being published at the same time, a `+` symbol will be added to the object resource name to indicate that this is an unpublished new revision. The draft will be saved as `123+.md`, with its `revision` system property incremented to `2`, while the canonical object URL will still reference the latest published revision.
+
+When the draft gets finally published,
+
+1. a revision number is added to the resource name of the latest published revision (e.g. `123-1.md`) and the resource file is renamed accordingly.
+2. the draft resource gets renamed to `123.md`, so that it's now referenced by the canonical object URL. It looses it's draft state and is considered immutable again.
+
+This way the most recent published object revision is always accessible under the very same canonical URL, with each instance having a complete list of its predecessors stored in its meta data.
+
+A specific object revision may be retrieved by inserting the desired revision number into the canonical URL. By inserting the `+` symbol one can explicitly create-retrieve the current draft revision.
 
 
 Object cross references
 -----------------------
 
-As soon as there are multiple objects with references to each other (e.g. an article that embeds images), the situation gets more complex. The versioning strategy in this case partly depends on whether the objects have been created in one go.
+As soon as there are multiple objects with references to each other (e.g. an article that embeds images), the situation gets more complex. The revisioning strategy in this case partly depends on whether the objects have been created in one go.
 
 
 ### Independent objects

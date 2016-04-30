@@ -80,6 +80,13 @@ interface ObjectInterface
     public function getRevision();
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft();
+
+    /**
      * Return the creation date & time
      *
      * @return \DateTimeImmutable Creation date & time

@@ -221,6 +221,16 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return !($this->published instanceof \DateTimeImmutable);
+    }
+
+    /**
      * Return the creation date & time of this revision
      *
      * @return \DateTimeImmutable Creation date & time

@@ -53,12 +53,6 @@ class Revision implements SerializablePropertyInterface
      */
     const CURRENT = null;
     /**
-     * Draft revision
-     *
-     * @var int
-     */
-    const DRAFT = 0;
-    /**
      * Object revision number
      *
      * @var int
@@ -91,7 +85,7 @@ class Revision implements SerializablePropertyInterface
      */
     public static function isValidRevision($revision)
     {
-        return ($revision === self::CURRENT) || (is_int($revision) && ($revision >= self::DRAFT));
+        return ($revision === self::CURRENT) || (is_int($revision) && ($revision >= 1));
     }
 
     /**
@@ -103,16 +97,6 @@ class Revision implements SerializablePropertyInterface
     public static function unserialize($str)
     {
         return new static(intval($str));
-    }
-
-    /**
-     * Test whether this is the draft revision
-     *
-     * @return bool Is draft revision
-     */
-    public function isDraft()
-    {
-        return $this->revision === self::DRAFT;
     }
 
     /**

@@ -74,6 +74,12 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     const PATH = '/2015/10/01/36704.event/36704-1';
     /**
+     * Example path (draft mode)
+     *
+     * @var string
+     */
+    const DRAFT_PATH = '/2015/10/01/36704.event/36704+';
+    /**
      * Example URL
      *
      * @var string
@@ -418,6 +424,15 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     {
         $path = new LocalPath(self::PATH, true);
         $this->assertInstanceOf(LocalPath::class, $path);
+    }
+
+    /**
+     * Test draft path
+     */
+    public function testDraftPath() {
+        $path = new LocalPath(self::DRAFT_PATH);
+        $this->assertInstanceOf(LocalPath::class, $path);
+        $this->assertTrue($path->isDraft());
     }
 
     /**

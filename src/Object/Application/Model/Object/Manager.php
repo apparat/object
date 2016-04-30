@@ -70,7 +70,7 @@ class Manager implements ManagerInterface
         // Construct a creation closure
         $creationClosure = function (Id $uid) use ($repository, $type, $payload, $propertyData) {
             /** @var Revision $revision */
-            $revision = Kernel::create(Revision::class, [Revision::DRAFT]);
+            $revision = Kernel::create(Revision::class, [1]);
 
             /** @var RepositoryPath $repositoryPath */
             $repositoryPath = Kernel::create(RepositoryPath::class, [$repository]);
@@ -78,6 +78,7 @@ class Manager implements ManagerInterface
             $repositoryPath = $repositoryPath->setRevision($revision);
             $repositoryPath = $repositoryPath->setType($type);
             $repositoryPath = $repositoryPath->setCreationDate(new \DateTimeImmutable());
+            $repositoryPath = $repositoryPath->setDraft(true);
 
             return ObjectFactory::createFromParams($repositoryPath, $payload, $propertyData);
         };

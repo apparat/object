@@ -200,6 +200,15 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft() {
+        return $this->systemProperties->isDraft();
+    }
+
+    /**
      * Use a specific object revision
      *
      * @param Revision $revision Revision to be used

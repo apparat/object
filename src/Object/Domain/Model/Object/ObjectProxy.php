@@ -161,6 +161,15 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft() {
+        return $this->object()->isDraft();
+    }
+
+    /**
      * Return the creation date & time
      *
      * @return \DateTimeImmutable Creation date & time

@@ -121,15 +121,6 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
     }
 
     /**
-     * Test draft revision
-     */
-    public function testDraftRevision()
-    {
-        $revision = new Revision(Revision::DRAFT);
-        $this->assertTrue($revision->isDraft());
-    }
-
-    /**
      * Test a repository invalid argument exception
      */
     public function testInvalidArgumentException()

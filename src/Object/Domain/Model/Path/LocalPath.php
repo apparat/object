@@ -86,6 +86,12 @@ class LocalPath implements PathInterface
      * @var Revision
      */
     protected $revision = null;
+    /**
+     * Object draft mode
+     *
+     * @var boolean
+     */
+    protected $draft = false;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -139,7 +145,7 @@ class LocalPath implements PathInterface
             }
 
             $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
-            $pathPattern .= '<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+            $pathPattern .= '<id>(?:(?P<draft>\+)|(?:-(?P<revision>\d+)))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
             if (!preg_match($pathPattern, $path, $pathParts)) {
                 throw new InvalidArgumentException(
@@ -178,6 +184,9 @@ class LocalPath implements PathInterface
                 Revision::class,
                 [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])]
             );
+
+            // Set the draft mode
+            $this->draft = !empty($pathParts['draft']);
         }
     }
 
@@ -199,8 +208,9 @@ class LocalPath implements PathInterface
         // Add the object ID and type
         $path[] = $this->uid->getId().'.'.$this->type->getType();
 
-        // Add the ID and revision
-        $path[] = rtrim($this->uid->getId().'-'.$this->revision->getRevision(), '-');
+        // Add the ID, draft mode and revision
+        $id = $this->uid->getId();
+        $path[] = $this->draft ? $id.'+' : rtrim($id.'-'.$this->revision->getRevision(), '-');
 
         return '/'.implode('/', $path);
     }
@@ -294,6 +304,28 @@ class LocalPath implements PathInterface
     {
         $path = clone $this;
         $path->revision = $revision;
+        return $path;
+    }
+
+    /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return $this->draft;
+    }
+
+    /**
+     * Set the object draft mode
+     *
+     * @param boolean $draft Object draft mode
+     */
+    public function setDraft($draft)
+    {
+        $path = clone $this;
+        $path->draft = (boolean)$draft;
         return $path;
     }
 }

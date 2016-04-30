@@ -57,6 +57,24 @@ use Apparat\Object\Domain\Repository\Service;
 abstract class AbstractObject implements ObjectInterface
 {
     /**
+     * Clean state
+     *
+     * @var int
+     */
+    const STATE_CLEAN = 0;
+    /**
+     * Dirty state
+     *
+     * @var int
+     */
+    const STATE_DIRTY = 1;
+    /**
+     * Mutated state
+     *
+     * @var int
+     */
+    const STATE_MUTATED = 2;
+    /**
      * System properties
      *
      * @var SystemProperties
@@ -110,6 +128,18 @@ abstract class AbstractObject implements ObjectInterface
      * @var Revision
      */
     protected $latestRevision;
+    /**
+     * Object state
+     *
+     * @var int
+     */
+    protected $state = self::STATE_CLEAN;
+    /**
+     * Property collection states
+     *
+     * @var array
+     */
+    protected $collectionStates = [];
 
     /**
      * Object constructor
@@ -165,7 +195,9 @@ abstract class AbstractObject implements ObjectInterface
             !is_array(
                 $propertyData[MetaProperties::COLLECTION]
             )) ? [] : $propertyData[MetaProperties::COLLECTION];
-        $this->metaProperties = Kernel::create(MetaProperties::class, [$metaPropertyData, $this]);
+        /** @var MetaProperties $metaPropertyCollection */
+        $metaPropertyCollection = Kernel::create(MetaProperties::class, [$metaPropertyData, $this]);
+        $this->setMetaProperties($metaPropertyCollection, true);
 
         // Instantiate the domain properties
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) ||
@@ -187,6 +219,45 @@ abstract class AbstractObject implements ObjectInterface
                 $propertyData[Relations::COLLECTION]
             )) ? [] : $propertyData[Relations::COLLECTION];
         $this->relations = Kernel::create(Relations::class, [$relationData, $this]);
+
+        // Reset the object state to clean
+        $this->state = self::STATE_CLEAN;
+    }
+
+    /**
+     * Set the meta properties collection
+     *
+     * @param MetaProperties $metaProperties Meta property collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setMetaProperties(MetaProperties $metaProperties, $overwrite = false)
+    {
+        $this->metaProperties = $metaProperties;
+        $metaPropertiesState = spl_object_hash($this->metaProperties);
+
+        // If the meta property collection state has changed
+        if (!$overwrite && !empty($this->collectionStates[MetaProperties::COLLECTION]) &&
+            ($metaPropertiesState !== $this->collectionStates[MetaProperties::COLLECTION])
+        ) {
+            // Flag this object as mutated
+            $this->setMutatedState();
+        }
+
+        $this->collectionStates[MetaProperties::COLLECTION] = $metaPropertiesState;
+    }
+
+    /**
+     * Set the object state to mutated
+     */
+    protected function setMutatedState()
+    {
+        // If this object is not in mutated state yet
+        if (!($this->state & self::STATE_MUTATED)) {
+            // TODO: Take actions to make this the most recent revision (in draft mode)
+        }
+
+        // Enable the mutated (and dirty) state
+        $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
     }
 
     /**
@@ -200,11 +271,32 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return whether the object is in dirty state
+     *
+     * @return boolean Dirty state
+     */
+    public function isDirty()
+    {
+        return !!($this->state & self::STATE_DIRTY);
+    }
+
+    /**
+     * Return whether the object is in mutated state
+     *
+     * @return boolean Mutated state
+     */
+    public function isMutated()
+    {
+        return !!($this->state & self::STATE_MUTATED);
+    }
+
+    /**
      * Return the object draft mode
      *
      * @return boolean Object draft mode
      */
-    public function isDraft() {
+    public function isDraft()
+    {
         return $this->systemProperties->isDraft();
     }
 
@@ -317,6 +409,18 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Set the description
+     *
+     * @param string $description Description
+     * @return ObjectInterface Self reference
+     */
+    public function setDescription($description)
+    {
+        $this->setMetaProperties($this->metaProperties->setDescription($description));
+        return $this;
+    }
+
+    /**
      * Return the object abstract
      *
      * @return string Object abstract
@@ -324,6 +428,18 @@ abstract class AbstractObject implements ObjectInterface
     public function getAbstract()
     {
         return $this->metaProperties->getAbstract();
+    }
+
+    /**
+     * Set the abstract
+     *
+     * @param string $abstract Abstract
+     * @return ObjectInterface Self reference
+     */
+    public function setAbstract($abstract)
+    {
+        $this->setMetaProperties($this->metaProperties->setAbstract($abstract));
+        return $this;
     }
 
     /**
@@ -337,6 +453,18 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Set the keywords
+     *
+     * @param array $keywords Keywords
+     * @return ObjectInterface Self reference
+     */
+    public function setKeywords(array $keywords)
+    {
+        $this->setMetaProperties($this->metaProperties->setKeywords($keywords));
+        return $this;
+    }
+
+    /**
      * Return all object categories
      *
      * @return array Object categories
@@ -344,6 +472,18 @@ abstract class AbstractObject implements ObjectInterface
     public function getCategories()
     {
         return $this->metaProperties->getCategories();
+    }
+
+    /**
+     * Set the categories
+     *
+     * @param array $categories Categories
+     * @return ObjectInterface Self reference
+     */
+    public function setCategories(array $categories)
+    {
+        $this->setMetaProperties($this->metaProperties->setCategories($categories));
+        return $this;
     }
 
     /**
@@ -431,5 +571,17 @@ abstract class AbstractObject implements ObjectInterface
     public function getDomainProperty($property)
     {
         return $this->domainProperties->getProperty($property);
+    }
+
+    protected function setDirtyState()
+    {
+
+        // If this object is not in dirty state yet
+        if (!($this->state & self::STATE_DIRTY)) {
+
+        }
+
+        // Enable the dirty state
+        $this->state |= self::STATE_DIRTY;
     }
 }

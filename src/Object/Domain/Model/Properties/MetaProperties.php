@@ -131,22 +131,22 @@ class MetaProperties extends AbstractProperties
 
         // Initialize the description
         if (array_key_exists(self::PROPERTY_DESCRIPTION, $data)) {
-            $this->setDescription($data[self::PROPERTY_DESCRIPTION]);
+            $this->description = $data[self::PROPERTY_DESCRIPTION];
         }
 
         // Initialize the abstract
         if (array_key_exists(self::PROPERTY_ABSTRACT, $data)) {
-            $this->setAbstract($data[self::PROPERTY_ABSTRACT]);
+            $this->abstract = $data[self::PROPERTY_ABSTRACT];
         }
 
         // Initialize the keywords
         if (array_key_exists(self::PROPERTY_KEYWORDS, $data)) {
-            $this->setKeywords((array)$data[self::PROPERTY_KEYWORDS]);
+            $this->keywords = $this->normalizeSortedPropertyValues((array)$data[self::PROPERTY_KEYWORDS]);
         }
 
         // Initialize the categories
         if (array_key_exists(self::PROPERTY_CATEGORIES, $data)) {
-            $this->setCategories((array)$data[self::PROPERTY_CATEGORIES]);
+            $this->categories = $this->normalizeSortedPropertyValues((array)$data[self::PROPERTY_CATEGORIES]);
         }
 
         // Initialize the authors
@@ -173,8 +173,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setDescription($description)
     {
-        $this->description = $description;
-        return $this;
+        return $this->mutateStringProperty(self::PROPERTY_DESCRIPTION, $description);
     }
 
     /**
@@ -195,8 +194,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setAbstract($abstract)
     {
-        $this->abstract = $abstract;
-        return $this;
+        return $this->mutateStringProperty(self::PROPERTY_ABSTRACT, $abstract);
     }
 
     /**
@@ -217,9 +215,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setKeywords(array $keywords)
     {
-        $this->keywords = array_unique($keywords);
-        sort($this->keywords, SORT_NATURAL);
-        return $this;
+        return $this->mutateListProperty(self::PROPERTY_KEYWORDS, $this->normalizeSortedPropertyValues($keywords));
     }
 
     /**
@@ -240,9 +236,7 @@ class MetaProperties extends AbstractProperties
      */
     public function setCategories(array $categories)
     {
-        $this->categories = array_unique($categories);
-        sort($this->categories, SORT_NATURAL);
-        return $this;
+        return $this->mutateListProperty(self::PROPERTY_CATEGORIES, $this->normalizeSortedPropertyValues($categories));
     }
 
     /**

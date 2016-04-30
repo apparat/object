@@ -105,6 +105,22 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the enclosed remote object
+     *
+     * @return ObjectInterface Remote object
+     */
+    protected function object()
+    {
+        // Lazy-load the remote object if necessary
+        if (!$this->object instanceof ObjectInterface) {
+            // Instantiate the local object repository, load and return the object
+            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocalPath());
+        }
+
+        return $this->object;
+    }
+
+    /**
      * Return the object payload
      *
      * @return string Object payload
@@ -122,22 +138,6 @@ class ObjectProxy implements ObjectInterface
     public function getId()
     {
         return $this->object()->getId();
-    }
-
-    /**
-     * Return the enclosed remote object
-     *
-     * @return ObjectInterface Remote object
-     */
-    protected function object()
-    {
-        // Lazy-load the remote object if necessary
-        if (!$this->object instanceof ObjectInterface) {
-            // Instantiate the local object repository, load and return the object
-            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocalPath());
-        }
-
-        return $this->object;
     }
 
     /**
@@ -165,7 +165,8 @@ class ObjectProxy implements ObjectInterface
      *
      * @return boolean Object draft mode
      */
-    public function isDraft() {
+    public function isDraft()
+    {
         return $this->object()->isDraft();
     }
 
@@ -210,6 +211,17 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Set the description
+     *
+     * @param string $description Description
+     * @return ObjectInterface Self reference
+     */
+    public function setDescription($description)
+    {
+        return $this->object()->setDescription($description);
+    }
+
+    /**
      * Return the object abstract
      *
      * @return string Object abstract
@@ -217,6 +229,17 @@ class ObjectProxy implements ObjectInterface
     public function getAbstract()
     {
         return $this->object()->getAbstract();
+    }
+
+    /**
+     * Set the abstract
+     *
+     * @param string $Abstract
+     * @return ObjectInterface Self reference
+     */
+    public function setAbstract($abstract)
+    {
+        return $this->object()->setAbstract($abstract);
     }
 
     /**
@@ -230,6 +253,17 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Set the keywords
+     *
+     * @param array $keywords Keywords
+     * @return ObjectInterface Self reference
+     */
+    public function setKeywords(array $keywords)
+    {
+        return $this->object()->setKeywords($keywords);
+    }
+
+    /**
      * Return all object categories
      *
      * @return array Object categories
@@ -237,6 +271,17 @@ class ObjectProxy implements ObjectInterface
     public function getCategories()
     {
         return $this->object()->getCategories();
+    }
+
+    /**
+     * Set the categories
+     *
+     * @param array $categories Categories
+     * @return ObjectInterface Self reference
+     */
+    public function setCategories(array $categories)
+    {
+        return $this->object()->setCategories($categories);
     }
 
     /**

@@ -115,11 +115,27 @@ interface ObjectInterface
     public function getDescription();
 
     /**
+     * Set the description
+     *
+     * @param string $description Description
+     * @return ObjectInterface Self reference
+     */
+    public function setDescription($description);
+
+    /**
      * Return the object abstract
      *
      * @return string Object abstract
      */
     public function getAbstract();
+
+    /**
+     * Set the abstract
+     *
+     * @param string $abstract Abstract
+     * @return ObjectInterface Self reference
+     */
+    public function setAbstract($abstract);
 
     /**
      * Return all object keywords
@@ -129,11 +145,27 @@ interface ObjectInterface
     public function getKeywords();
 
     /**
+     * Set the keywords
+     *
+     * @param array $keywords Keywords
+     * @return ObjectInterface Self reference
+     */
+    public function setKeywords(array $keywords);
+
+    /**
      * Return all object categories
      *
      * @return array Object categories
      */
     public function getCategories();
+
+    /**
+     * Set the categories
+     *
+     * @param array $categories Categories
+     * @return ObjectInterface Self reference
+     */
+    public function setCategories(array $categories);
 
     /**
      * Return all object authors

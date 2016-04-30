@@ -10,7 +10,6 @@ Object properties
 * UID
 * Type
 * Revision
-* Draft
 * Creation date
 * Publication date
 * [Hash](object-hash.md)

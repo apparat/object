@@ -295,6 +295,16 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     }
 
     /**
+     * Test the property data
+     */
+    public function testMetaDataMutation()
+    {
+        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $this->assertTrue(is_array($object->getPropertyData()));
+        $object->setDescription('Example article objectq');
+    }
+
+    /**
      * Test the creation and persisting of an article object
      */
     public function testCreateArticleObject()

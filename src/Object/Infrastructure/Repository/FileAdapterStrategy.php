@@ -236,6 +236,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @param \Closure $creator Object creation closure
      * @return ObjectInterface Object
+     * @throws RuntimeException If no object could be created
+     * @throws \Exception If another error occurs
      */
     public function createObjectResource(\Closure $creator)
     {
@@ -270,7 +272,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
                 return $object;
             }
 
-            // Throw an error if no object could be created
+            // If no object could be created
             throw new RuntimeException(
                 'The repository size descriptor is unlockable',
                 RuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE

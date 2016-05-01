@@ -58,6 +58,6 @@ class ProcessingInstructions extends AbstractGenericProperties
      */
     public function toArray()
     {
-        return [];
+        return $this->data;
     }
 }

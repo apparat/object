@@ -131,6 +131,17 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload)
+    {
+        return $this->object()->setPayload($payload);
+    }
+
+    /**
      * Return the object ID
      *
      * @return Id Object ID
@@ -168,6 +179,26 @@ class ObjectProxy implements ObjectInterface
     public function isDraft()
     {
         return $this->object()->isDraft();
+    }
+
+    /**
+     * Return whether the object is in dirty state
+     *
+     * @return boolean Dirty state
+     */
+    public function isDirty()
+    {
+        return $this->object()->isDirty();
+    }
+
+    /**
+     * Return whether the object is in mutated state
+     *
+     * @return boolean Mutated state
+     */
+    public function isMutated()
+    {
+        return $this->object()->isMutated();
     }
 
     /**
@@ -306,7 +337,7 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Get a particular property value
+     * Get a domain property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").
      *
@@ -316,6 +347,41 @@ class ObjectProxy implements ObjectInterface
     public function getDomainProperty($property)
     {
         return $this->object()->getDomainProperty($property);
+    }
+
+    /**
+     * Set a domain property value
+     *
+     * @param string $property Property name
+     * @param mixed $value Property value
+     * @return ObjectInterface Self reference
+     */
+    public function setDomainProperty($property, $value)
+    {
+        return $this->object()->setDomainProperty($property, $value);
+    }
+
+    /**
+     * Get a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @return mixed Processing instruction
+     */
+    public function getProcessingInstruction($procInst)
+    {
+        return $this->object()->getProcessingInstruction($procInst);
+    }
+
+    /**
+     * Set a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @param mixed $value Processing instruction
+     * @return ObjectInterface Self reference
+     */
+    public function setProcessingInstruction($procInst, $value)
+    {
+        return $this->object()->setProcessingInstruction($procInst, $value);
     }
 
     /**
@@ -356,5 +422,15 @@ class ObjectProxy implements ObjectInterface
     public function useRevision(Revision $revision)
     {
         return $this->object()->useRevision($revision);
+    }
+
+    /**
+     * Persist the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function persist()
+    {
+        return $this->object()->persist();
     }
 }

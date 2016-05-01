@@ -296,7 +296,7 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Test the property data
+         * Test mutation by altering metadata
          */
         public function testMetaDataMutation()
         {
@@ -305,11 +305,53 @@ namespace Apparat\Object\Tests {
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
             $object->setDescription($object->getDescription().' (mutated)');
-            $object->setAbstract($object->getAbstract().' (mutated)');
-            $object->setKeywords($object->getKeywords() + ['mutated']);
-            $object->setCategories($object->getCategories() + ['mutated']);
+            $object->setAbstract($object->getAbstract());
+            $object->setKeywords(array_merge($object->getKeywords(), ['mutated']));
+            $object->setCategories($object->getCategories());
             $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
+            $this->assertTrue($object->isDirty());
+            $this->assertTrue($object->isMutated());
+        }
+
+        /**
+         * Test mutation by altering domain properties
+         */
+        public function testDomainPropertyMutation()
+        {
+            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertTrue(is_array($object->getPropertyData()));
+            $objectUrl = $object->getAbsoluteUrl();
+            $objectRevision = $object->getRevision();
+            $object->setDomainProperty('a:b:c', 'mutated');
+            $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
+            $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
+            $this->assertTrue($object->isDirty());
+            $this->assertTrue($object->isMutated());
+        }
+
+        /**
+         * Test change by altering processing instructions
+         */
+        public function testProcessingInstructionChange()
+        {
+            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertTrue(is_array($object->getPropertyData()));
+            $objectUrl = $object->getAbsoluteUrl();
+            $objectRevision = $object->getRevision();
+            $object->setProcessingInstruction('css', 'other-style.css');
+            $this->assertEquals($objectUrl, $object->getAbsoluteUrl());
+            $this->assertEquals($objectRevision->getRevision(), $object->getRevision()->getRevision());
+            $this->assertTrue($object->isDirty());
+            $this->assertFalse($object->isMutated());
+            print_r($object->getPropertyData());
+        }
+
+        /**
+         * Test change by altering relations
+         */
+        public function testRelationChange() {
+            // TODO: Implement
         }
 
         /**
@@ -338,8 +380,19 @@ namespace Apparat\Object\Tests {
                 str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
                     ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
 
+            // Persist the object
+//            $article->persist();
+//            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 1);
+
             // Delete temporary repository
             $this->deleteRecursive($tempRepoDirectory);
+        }
+
+        /**
+         * Test to persist an earlier revision
+         */
+        public function testPersistEarlierRevision() {
+
         }
 
         /**

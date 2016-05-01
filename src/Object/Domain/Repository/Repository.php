@@ -83,16 +83,6 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * Initialize the repository
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        $this->adapterStrategy->initializeRepository();
-    }
-
-    /**
      * Find objects by selector
      *
      * @param SelectorInterface $selector Object selector
@@ -145,7 +135,9 @@ class Repository implements RepositoryInterface
      */
     public function updateObject(ObjectInterface $object)
     {
-        // TODO: Implement updateObject() method.
+        echo 'persisting';
+
+        return true;
     }
 
     /**

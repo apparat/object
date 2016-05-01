@@ -54,4 +54,10 @@ class RuntimeException extends \RuntimeException
      * @var int
      */
     const CANNOT_MODIFY_COLLECTION_BY_INDEX = 1456530074;
+    /**
+     * Cannot persist an earlier revision
+     *
+     * @var int
+     */
+    const CANNOT_PERSIST_EARLIER_REVISION = 1462124874;
 }

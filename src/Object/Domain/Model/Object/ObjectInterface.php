@@ -50,7 +50,7 @@ interface ObjectInterface
      * Object constructor
      *
      * The constructor is not part of the interface as the object proxy class also implements it
-     * without having the same constructor signature
+     * with a different signature
      *
      * @param RepositoryPath $path Object repository path
      * @param array $propertyData Property data
@@ -85,6 +85,20 @@ interface ObjectInterface
      * @return boolean Object draft mode
      */
     public function isDraft();
+
+    /**
+     * Return whether the object is in dirty state
+     *
+     * @return boolean Dirty state
+     */
+    public function isDirty();
+
+    /**
+     * Return whether the object is in mutated state
+     *
+     * @return boolean Mutated state
+     */
+    public function isMutated();
 
     /**
      * Return the creation date & time
@@ -204,6 +218,14 @@ interface ObjectInterface
     public function getPayload();
 
     /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload);
+
+    /**
      * Return the absolute object URL
      *
      * @return string
@@ -211,7 +233,7 @@ interface ObjectInterface
     public function getAbsoluteUrl();
 
     /**
-     * Get a particular property value
+     * Get a domain property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").
      *
@@ -221,10 +243,43 @@ interface ObjectInterface
     public function getDomainProperty($property);
 
     /**
+     * Set a domain property value
+     *
+     * @param string $property Property name
+     * @param mixed $value Property value
+     * @return ObjectInterface Self reference
+     */
+    public function setDomainProperty($property, $value);
+
+    /**
+     * Get a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @return mixed Processing instruction
+     */
+    public function getProcessingInstruction($procInst);
+
+    /**
+     * Set a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @param mixed $value Processing instruction
+     * @return ObjectInterface Self reference
+     */
+    public function setProcessingInstruction($procInst, $value);
+
+    /**
      * Use a specific object revision
      *
      * @param Revision $revision Revision to be used
      * @return ObjectInterface Object
      */
     public function useRevision(Revision $revision);
+
+    /**
+     * Persist the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function persist();
 }

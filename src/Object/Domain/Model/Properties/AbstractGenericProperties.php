@@ -59,22 +59,17 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     }
 
     /**
-     * Get a particular property value
+     * Get a property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").
      *
      * @param string $property Property name
      * @return mixed Property value
-     * @throws InvalidArgumentException If the property name is empty
+     * @throws InvalidArgumentException If the property name is invalid
      */
     public function getProperty($property)
     {
-        $propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
-
-        // If the property traversal path is empty
-        if (!count($propertyPath)) {
-            throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
-        }
+        $propertyPath = $this->buildPropertyPath($property);
 
         // Traverse the property tree
         $propertyPathSteps = [];
@@ -97,5 +92,63 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
         }
 
         return $data;
+    }
+
+    /**
+     * Translate a property name to a property path segments
+     *
+     * @param string $property Property name
+     * @return array Property path
+     * @throws InvalidArgumentException If the property name is empty
+     */
+    protected function buildPropertyPath($property)
+    {
+        $propertyPath = array_filter(array_map('trim', explode(self::PROPERTY_TRAVERSAL_SEPARATOR, $property)));
+
+        // If the property traversal path is empty
+        if (!count($propertyPath)) {
+            throw new InvalidArgumentException('Empty property name', InvalidArgumentException::EMPTY_PROPERTY_NAME);
+        }
+
+        return $propertyPath;
+    }
+
+    /**
+     * Set a property value
+     *
+     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     *
+     * @param string $property Property name
+     * @param mixed $value Property value
+     * @return GenericPropertiesInterface Self reference
+     */
+    public function setProperty($property, $value)
+    {
+        $propertyPath = $this->buildPropertyPath($property);
+
+        // Traverse the property tree
+        $mutated = false;
+        $propertyPathSteps = [];
+        $dataRoot = $this->data;
+        $data =& $dataRoot;
+        foreach ($propertyPath as $property) {
+            $propertyPathSteps[] = $property;
+
+            // If the property name step is invalid
+            if (!array_key_exists($property, $data)) {
+                $data[$property] = [];
+                $mutated = true;
+            }
+
+            $data =& $data[$property];
+        }
+
+        // If a new property is created with a non-empty value or an existing property is altered: Mutate
+        if ($mutated ? !empty($value) : ($value !== $data)) {
+            $data = $value;
+            return new static($dataRoot, $this->object);
+        }
+
+        return $this;
     }
 }

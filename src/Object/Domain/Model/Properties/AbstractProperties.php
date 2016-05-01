@@ -87,7 +87,8 @@ abstract class AbstractProperties implements PropertiesInterface
      * @param array $values Property values
      * @return array Normalized and sorted property values
      */
-    protected function normalizeSortedPropertyValues(array $values) {
+    protected function normalizeSortedPropertyValues(array $values)
+    {
         $values = array_unique($values);
         sort($values, SORT_NATURAL);
         return $values;
@@ -100,7 +101,8 @@ abstract class AbstractProperties implements PropertiesInterface
      * @param string $value New value
      * @return $this|AbstractProperties Self reference or clone
      */
-    protected function mutateStringProperty($property, $value) {
+    protected function mutateStringProperty($property, $value)
+    {
 
         // If the new value differs from the current: Return clone
         if (strval($this->$property) !== strval($value)) {
@@ -120,8 +122,8 @@ abstract class AbstractProperties implements PropertiesInterface
      * @param array $values New values
      * @return $this|AbstractProperties Self reference or clone
      */
-    protected function mutateListProperty($property, array $values) {
-
+    protected function mutateListProperty($property, array $values)
+    {
         // If the new values differ from the current ones: Return clone
         if (array_diff($this->$property, $values) || array_diff($values, $this->$property)) {
             $collection = clone $this;

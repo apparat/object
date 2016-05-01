@@ -41,6 +41,7 @@ use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Domain\Model\Properties\GenericPropertiesInterface;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
@@ -181,7 +182,6 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected function loadRevisionData($payload = '', array $propertyData = [])
     {
-        // TODO Add mutation handler for object payload
         $this->payload = $payload;
 
         // Instantiate the system properties
@@ -205,22 +205,27 @@ abstract class AbstractObject implements ObjectInterface
             !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        // TODO Add mutation handler for domain properties
-        $this->domainProperties = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
+        /** @var AbstractDomainProperties $domainPropertyCollection */
+        $domainPropertyCollection = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
+        $this->setDomainProperties($domainPropertyCollection, true);
 
         // Instantiate the processing instructions
         $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) ||
             !is_array(
                 $propertyData[ProcessingInstructions::COLLECTION]
             )) ? [] : $propertyData[ProcessingInstructions::COLLECTION];
-        $this->processingInstructions = Kernel::create(ProcessingInstructions::class, [$procInstData, $this]);
+        /** @var ProcessingInstructions $procInstCollection */
+        $procInstCollection = Kernel::create(ProcessingInstructions::class, [$procInstData, $this]);
+        $this->setProcessingInstructions($procInstCollection, true);
 
         // Instantiate the object relations
         $relationData = (empty($propertyData[Relations::COLLECTION]) ||
             !is_array(
                 $propertyData[Relations::COLLECTION]
             )) ? [] : $propertyData[Relations::COLLECTION];
-        $this->relations = Kernel::create(Relations::class, [$relationData, $this]);
+        /** @var Relations $relationCollection */
+        $relationCollection = Kernel::create(Relations::class, [$relationData, $this]);
+        $this->setRelations($relationCollection, true);
 
         // Reset the object state to clean
         $this->state = self::STATE_CLEAN;
@@ -238,8 +243,9 @@ abstract class AbstractObject implements ObjectInterface
         $metaPropertiesState = spl_object_hash($this->metaProperties);
 
         // If the meta property collection state has changed
-        if (!$overwrite && !empty($this->collectionStates[MetaProperties::COLLECTION]) &&
-            ($metaPropertiesState !== $this->collectionStates[MetaProperties::COLLECTION])
+        if (!$overwrite
+            && !empty($this->collectionStates[MetaProperties::COLLECTION])
+            && ($metaPropertiesState !== $this->collectionStates[MetaProperties::COLLECTION])
         ) {
             // Flag this object as mutated
             $this->setMutatedState();
@@ -255,6 +261,8 @@ abstract class AbstractObject implements ObjectInterface
     {
         // If this object is not in mutated state yet
         if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
+            // TODO: Send signal
+
             // Increment the latest revision number
             $this->latestRevision = $this->latestRevision->increment();
 
@@ -265,21 +273,114 @@ abstract class AbstractObject implements ObjectInterface
             $this->path = $this->path->setDraft(true);
 
             // If this is not already a draft ...
-                // Recreate the system properties
-                    // Copy the object ID
-                    // Copy the object type
-                    // Set the revision number to latest revision + 1
-                    // Set the creation date to now
-                    // Set no publication date
-                // Set the draft flag on the repository path
-                // Increase the latest revision by 1
+            // Recreate the system properties
+            // Copy the object ID
+            // Copy the object type
+            // Set the revision number to latest revision + 1
+            // Set the creation date to now
+            // Set no publication date
+            // Set the draft flag on the repository path
+            // Increase the latest revision by 1
 
             // Else if this is a draft
-                // No action needed
+            // No action needed
         }
 
         // Enable the mutated (and dirty) state
         $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
+    }
+
+    /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return $this->systemProperties->isDraft();
+    }
+
+    /**
+     * Set the domain properties collection
+     *
+     * @param GenericPropertiesInterface $domainProperties Domain property collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setDomainProperties(GenericPropertiesInterface $domainProperties, $overwrite = false)
+    {
+        $this->domainProperties = $domainProperties;
+        $domainPropertiesState = spl_object_hash($this->domainProperties);
+
+        // If the domain property collection state has changed
+        if (!$overwrite
+            && !empty($this->collectionStates[AbstractDomainProperties::COLLECTION])
+            && ($domainPropertiesState !== $this->collectionStates[AbstractDomainProperties::COLLECTION])
+        ) {
+            // Flag this object as mutated
+            $this->setMutatedState();
+        }
+
+        $this->collectionStates[AbstractDomainProperties::COLLECTION] = $domainPropertiesState;
+    }
+
+    /**
+     * Set the processing instruction collection
+     *
+     * @param GenericPropertiesInterface $processingInstructions Processing instruction collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setProcessingInstructions(GenericPropertiesInterface $processingInstructions, $overwrite = false)
+    {
+        $this->processingInstructions = $processingInstructions;
+        $processingInstructionsState = spl_object_hash($this->processingInstructions);
+
+        // If the domain property collection state has changed
+        if (!$overwrite
+            && !empty($this->collectionStates[ProcessingInstructions::COLLECTION])
+            && ($processingInstructionsState !== $this->collectionStates[ProcessingInstructions::COLLECTION])
+        ) {
+            // Flag this object as dirty
+            $this->setDirtyState();
+        }
+
+        $this->collectionStates[ProcessingInstructions::COLLECTION] = $processingInstructionsState;
+    }
+
+    /**
+     * Set the object state to dirty
+     */
+    protected function setDirtyState()
+    {
+        // If this object is not in dirty state yet
+        if (!($this->state & self::STATE_DIRTY)) {
+            // TODO: Send signal
+        }
+
+        // Enable the dirty state
+        $this->state |= self::STATE_DIRTY;
+    }
+
+    /**
+     * Set the relations collection
+     *
+     * @param Relations $relations Relations collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setRelations(Relations $relations, $overwrite = false)
+    {
+        $this->relations = $relations;
+        $relationsState = spl_object_hash($this->relations);
+
+        // If the domain property collection state has changed
+        if (!$overwrite
+            && !empty($this->collectionStates[Relations::COLLECTION])
+            && ($relationsState !== $this->collectionStates[Relations::COLLECTION])
+        ) {
+            // Flag this object as dirty
+            $this->setDirtyState();
+        }
+
+        $this->collectionStates[Relations::COLLECTION] = $relationsState;
     }
 
     /**
@@ -293,16 +394,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Return whether the object is in dirty state
-     *
-     * @return boolean Dirty state
-     */
-    public function isDirty()
-    {
-        return !!($this->state & self::STATE_DIRTY);
-    }
-
-    /**
      * Return whether the object is in mutated state
      *
      * @return boolean Mutated state
@@ -310,16 +401,6 @@ abstract class AbstractObject implements ObjectInterface
     public function isMutated()
     {
         return !!($this->state & self::STATE_MUTATED);
-    }
-
-    /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return $this->systemProperties->isDraft();
     }
 
     /**
@@ -573,6 +654,23 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload)
+    {
+        // If the payload is changed
+        if ($payload !== $this->payload) {
+            $this->setMutatedState();
+        }
+
+        $this->payload = $payload;
+        return $this;
+    }
+
+    /**
      * Return the absolute object URL
      *
      * @return string
@@ -583,7 +681,7 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Get a particular property value
+     * Get a domain property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").
      *
@@ -595,15 +693,78 @@ abstract class AbstractObject implements ObjectInterface
         return $this->domainProperties->getProperty($property);
     }
 
-    protected function setDirtyState()
+    /**
+     * Set a domain property value
+     *
+     * @param string $property Property name
+     * @param mixed $value Property value
+     * @return ObjectInterface Self reference
+     */
+    public function setDomainProperty($property, $value)
     {
+        $this->setDomainProperties($this->domainProperties->setProperty($property, $value));
+        return $this;
+    }
 
-        // If this object is not in dirty state yet
-        if (!($this->state & self::STATE_DIRTY)) {
+    /**
+     * Get a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @return mixed Processing instruction
+     */
+    public function getProcessingInstruction($procInst)
+    {
+        return $this->processingInstructions->getProperty($procInst);
+    }
 
+    /**
+     * Set a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @param mixed $value Processing instruction
+     * @return ObjectInterface Self reference
+     */
+    public function setProcessingInstruction($procInst, $value)
+    {
+        $this->setProcessingInstructions($this->processingInstructions->setProperty($procInst, $value));
+        return $this;
+    }
+
+    /**
+     * Persist the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function persist()
+    {
+        // If this is not the latest revision
+        if ($this->getRevision() != $this->latestRevision) {
+            throw new RuntimeException(
+                sprintf(
+                    'Cannot persist revision %s/%s',
+                    $this->getRevision()->getRevision(),
+                    $this->latestRevision->getRevision()
+                ),
+                RuntimeException::CANNOT_PERSIST_EARLIER_REVISION
+            );
         }
 
-        // Enable the dirty state
-        $this->state |= self::STATE_DIRTY;
+        // If this object is in dirty state
+        if ($this->isDirty()) {
+            $this->path->getRepository()->updateObject($this);
+            $this->state = self::STATE_CLEAN;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return whether the object is in dirty state
+     *
+     * @return boolean Dirty state
+     */
+    public function isDirty()
+    {
+        return !!($this->state & self::STATE_DIRTY);
     }
 }

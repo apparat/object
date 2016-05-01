@@ -58,6 +58,6 @@ abstract class AbstractDomainProperties extends AbstractGenericProperties
      */
     public function toArray()
     {
-        return [];
+        return $this->data;
     }
 }

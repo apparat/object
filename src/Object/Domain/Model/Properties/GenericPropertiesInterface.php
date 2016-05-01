@@ -46,7 +46,7 @@ interface GenericPropertiesInterface extends PropertiesInterface
 {
 
     /**
-     * Get a particular property value
+     * Get a property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").
      *
@@ -54,4 +54,15 @@ interface GenericPropertiesInterface extends PropertiesInterface
      * @return mixed Property value
      */
     public function getProperty($property);
+
+    /**
+     * Set a property value
+     *
+     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     *
+     * @param string $property Property name
+     * @param mixed $value Property value
+     * @return GenericPropertiesInterface Self reference
+     */
+    public function setProperty($property, $value);
 }

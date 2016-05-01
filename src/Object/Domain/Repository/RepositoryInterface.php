@@ -47,13 +47,6 @@ use Apparat\Object\Domain\Model\Path\PathInterface;
 interface RepositoryInterface extends SearchableRepositoryInterface
 {
     /**
-     * Initialize the repository
-     *
-     * @return void
-     */
-    public function initialize();
-
-    /**
      * Create an object and add it to the repository
      *
      * @param string|Type $type Object type

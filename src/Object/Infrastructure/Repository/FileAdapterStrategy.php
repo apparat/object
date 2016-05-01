@@ -137,15 +137,21 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function initializeRepository()
     {
-        $configDir = $this->config['root'].DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
-
-        // If the repository cannot be initialized
-        if (!is_dir($configDir) && !mkdir($configDir, 0777, true)) {
-            throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
+        // Successively create the repository directories
+        $repoDirectories = [$this->config['root'], $this->config['root'].DIRECTORY_SEPARATOR.'.repo'];
+        foreach ($repoDirectories as $repoDirectory) {
+            // If the repository cannot be initialized
+            if (file_exists($repoDirectory) ? !is_dir($repoDirectory) : !mkdir($repoDirectory, 0777, true)) {
+                throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
+            }
         }
 
         // If the repository size descriptor can not be created
-        if (!@is_file($configDir.'size.txt') && !file_put_contents($configDir.'size.txt', '0')) {
+        $configDir = $this->config['root'].DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
+        if (
+            (file_exists($configDir.'size.txt') && !is_file($configDir.'size.txt'))
+            || !file_put_contents($configDir.'size.txt', '0')
+        ) {
             throw new RuntimeException(
                 'Could not create repository size descriptor',
                 RuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED

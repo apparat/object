@@ -34,327 +34,360 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Tests;
+namespace Apparat\Object\Tests {
 
-use Apparat\Object\Application\Factory\ObjectFactory;
-use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Domain\Factory\AuthorFactory;
-use Apparat\Object\Domain\Model\Author\ApparatAuthor;
-use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\Id;
-use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Properties\SystemProperties;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Ports\Object;
-use Apparat\Object\Ports\Repository as RepositoryFactory;
+    use Apparat\Object\Application\Factory\ObjectFactory;
+    use Apparat\Object\Application\Model\Object\Article;
+    use Apparat\Object\Domain\Factory\AuthorFactory;
+    use Apparat\Object\Domain\Model\Author\ApparatAuthor;
+    use Apparat\Object\Domain\Model\Object\AbstractObject;
+    use Apparat\Object\Domain\Model\Object\Id;
+    use Apparat\Object\Domain\Model\Object\ResourceInterface;
+    use Apparat\Object\Domain\Model\Object\Revision;
+    use Apparat\Object\Domain\Model\Object\Type;
+    use Apparat\Object\Domain\Model\Path\RepositoryPath;
+    use Apparat\Object\Domain\Model\Properties\SystemProperties;
+    use Apparat\Object\Domain\Repository\Repository;
+    use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+    use Apparat\Object\Ports\Object;
+    use Apparat\Object\Ports\Repository as RepositoryFactory;
 
-/**
- * Object tests
- *
- * @package Apparat\Object
- * @subpackage ApparatTest
- */
-class ObjectTest extends AbstractDisabledAutoconnectorTest
-{
     /**
-     * Example object path
+     * Object tests
      *
-     * @var string
+     * @package Apparat\Object
+     * @subpackage ApparatTest
      */
-    const OBJECT_PATH = '/2015/12/21/1.article/1';
-    /**
-     * Test repository
-     *
-     * @var Repository
-     */
-    protected static $repository = null;
-
-    /**
-     * Setup
-     */
-    public static function setUpBeforeClass()
+    class ObjectTest extends AbstractDisabledAutoconnectorTest
     {
-        \Apparat\Object\Ports\Repository::register(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-            ]
-        );
+        /**
+         * Example object path
+         *
+         * @var string
+         */
+        const OBJECT_PATH = '/2015/12/21/1.article/1';
+        /**
+         * Test repository
+         *
+         * @var Repository
+         */
+        protected static $repository = null;
 
-        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
+        /**
+         * Setup
+         */
+        public static function setUpBeforeClass()
+        {
+            \Apparat\Object\Ports\Repository::register(
+                getenv('REPOSITORY_URL'),
+                [
+                    'type' => FileAdapterStrategy::TYPE,
+                    'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+                ]
+            );
 
-        \date_default_timezone_set('UTC');
-    }
+            self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
 
-    /**
-     * Tears down the fixture
-     */
-    public function tearDown()
-    {
-        TestType::removeInvalidType();
-        parent::tearDown();
-    }
-
-    /**
-     * Test undefined object type
-     *
-     * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
-     * @expectedExceptionCode 1450905868
-     */
-    public function testUndefinedObjectType()
-    {
-        $resource = $this->getMock(ResourceInterface::class);
-        $resource->method('getPropertyData')->willReturn([]);
-        $repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
-
-        /** @var ResourceInterface $resource */
-        /** @var RepositoryPath $repositoryPath */
-        ObjectFactory::createFromResource($repositoryPath, $resource);
-    }
-
-    /**
-     * Test invalid object type
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
-     * @expectedExceptionCode 1449871242
-     */
-    public function testInvalidObjectType()
-    {
-        $resource = $this->getMock(ResourceInterface::class);
-        $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-
-        /** @var ResourceInterface $resource */
-        ObjectFactory::createFromResource($articleObjectPath, $resource);
-    }
-
-    /**
-     * Load an article object and test basic properties
-     */
-    public function testLoadArticleObject()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-        $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertEquals(
-            getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
-            $articleObject->getAbsoluteUrl()
-        );
-    }
-
-    /**
-     * Load an article object and test its system properties
-     */
-    public function testLoadArticleObjectSystemProperties()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-        $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertInstanceOf(Article::class, $articleObject);
-        $this->assertEquals(new Id(1), $articleObject->getId());
-        $this->assertEquals(new Type(Type::ARTICLE), $articleObject->getType());
-        $this->assertEquals(new Revision(1), $articleObject->getRevision());
-        $this->assertFalse($articleObject->isDraft());
-        $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
-        $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
-        $this->assertEquals('a123456789012345678901234567890123456789', $articleObject->getHash());
-        $this->assertEquals(
-            "# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
-            $articleObject->getPayload()
-        );
-    }
-
-    /**
-     * Load an article object and test its meta properties
-     */
-    public function testLoadArticleObjectMetaProperties()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-        $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertInstanceOf(Article::class, $articleObject);
-        $this->assertEquals('Example article object', $articleObject->getDescription());
-        $this->assertEquals(
-            'Article objects feature a Markdown payload along with some custom properties',
-            $articleObject->getAbstract()
-        );
-        $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
-        $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
-
-        $authorCount = count($articleObject->getAuthors());
-        $articleObject->addAuthor(AuthorFactory::createFromString(AuthorTest::GENERIC_AUTHOR));
-        $this->assertEquals($authorCount + 1, count($articleObject->getAuthors()));
-    }
-
-    /**
-     * Load an article object and test its domain properties
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1450818168
-     */
-    public function testLoadArticleObjectDomainProperties()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-        $articleObject = self::$repository->loadObject($articleObjectPath);
-        $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
-        $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
-        $articleObject->getDomainProperty('group:invalid');
-    }
-
-    /**
-     * Load an article object and test an empty domain property name
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1450817720
-     */
-    public function testLoadArticleObjectDomainEmptyProperty()
-    {
-        $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
-        $articleObject = self::$repository->loadObject($articleObjectPath);
-        $articleObject->getDomainProperty('');
-    }
-
-    /**
-     * Test the object facade with an absolute object URL
-     */
-    public function testObjectFacadeAbsolute()
-    {
-        $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $this->assertInstanceOf(Article::class, $object);
-    }
-
-    /**
-     * Test the object facade with a relative object URL
-     */
-    public function testObjectFacadeRelative()
-    {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $this->assertInstanceOf(Article::class, $object);
-        foreach ($object->getAuthors() as $author) {
-            if ($author instanceof ApparatAuthor) {
-//				echo $author->getId()->getId();
-            }
+            \date_default_timezone_set('UTC');
         }
-    }
 
-    /**
-     * Test the object facade with an invalid relative object URL
-     *
-     * @expectedException \Apparat\Resource\Infrastructure\Io\File\InvalidArgumentException
-     * @expectedExceptionCode 1447616824
-     */
-    public function testObjectFacadeRelativeInvalid()
-    {
-        $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
-        $this->assertInstanceOf(Article::class, $object);
-    }
+        /**
+         * Tears down the fixture
+         */
+        public function tearDown()
+        {
+            putenv('MOCK_FLOCK');
+            TestType::removeInvalidType();
+            parent::tearDown();
+        }
 
-    /**
-     * Test with a missing object type class
-     *
-     * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
-     * @expectedExceptionCode 1450824842
-     */
-    public function testInvalidObjectTypeClass()
-    {
-        TestType::addInvalidType();
+        /**
+         * Test undefined object type
+         *
+         * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+         * @expectedExceptionCode 1450905868
+         */
+        public function testUndefinedObjectType()
+        {
+            $resource = $this->getMock(ResourceInterface::class);
+            $resource->method('getPropertyData')->willReturn([]);
+            $repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
 
-        $resource = $this->getMock(ResourceInterface::class);
-        $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-        $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5.invalid/5');
+            /** @var ResourceInterface $resource */
+            /** @var RepositoryPath $repositoryPath */
+            ObjectFactory::createFromResource($repositoryPath, $resource);
+        }
 
-        /** @var ResourceInterface $resource */
-        ObjectFactory::createFromResource($articleObjectPath, $resource);
-    }
+        /**
+         * Test invalid object type
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Object\InvalidArgumentException
+         * @expectedExceptionCode 1449871242
+         */
+        public function testInvalidObjectType()
+        {
+            $resource = $this->getMock(ResourceInterface::class);
+            $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
 
-    /**
-     * Test instantiation of object with invalid domain properties collection
-     *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1452288429
-     */
-    public function testInvalidDomainPropertyCollectionClass()
-    {
-        $this->getMockBuilder(AbstractObject::class)
-            ->setConstructorArgs([new RepositoryPath(self::$repository, self::OBJECT_PATH)])
-            ->getMock();
-    }
+            /** @var ResourceInterface $resource */
+            ObjectFactory::createFromResource($articleObjectPath, $resource);
+        }
 
-    /**
-     * Test the property data
-     */
-    public function testObjectPropertyData()
-    {
-//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
-        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $this->assertTrue(is_array($object->getPropertyData()));
-//        print_r($frontMarkResource->getData());
-//        print_r($object->getPropertyData());
-    }
+        /**
+         * Load an article object and test basic properties
+         */
+        public function testLoadArticleObject()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $this->assertEquals(
+                getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
+                $articleObject->getAbsoluteUrl()
+            );
+        }
 
-    /**
-     * Test the property data
-     */
-    public function testMetaDataMutation()
-    {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $this->assertTrue(is_array($object->getPropertyData()));
-        $objectUrl = $object->getAbsoluteUrl();
-        $objectRevision = $object->getRevision();
-        $object->setDescription($object->getDescription().' (mutated)');
-        $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
-        $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
-//        $this->assertTrue($object->getRevision() > $objectRevision);
-    }
+        /**
+         * Load an article object and test its system properties
+         */
+        public function testLoadArticleObjectSystemProperties()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $this->assertInstanceOf(Article::class, $articleObject);
+            $this->assertEquals(new Id(1), $articleObject->getId());
+            $this->assertEquals(new Type(Type::ARTICLE), $articleObject->getType());
+            $this->assertEquals(new Revision(1), $articleObject->getRevision());
+            $this->assertFalse($articleObject->isDraft());
+            $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
+            $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
+            $this->assertEquals('a123456789012345678901234567890123456789', $articleObject->getHash());
+            $this->assertEquals(
+                "# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
+                $articleObject->getPayload()
+            );
+        }
 
-    /**
-     * Test the creation and persisting of an article object
-     */
-    public function testCreateArticleObject()
-    {
-        // Create a temporary repository
-        $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-        $fileRepository = RepositoryFactory::create(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => $tempRepoDirectory,
-            ]
-        );
-        $this->assertInstanceOf(Repository::class, $fileRepository);
+        /**
+         * Load an article object and test its meta properties
+         */
+        public function testLoadArticleObjectMetaProperties()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $this->assertInstanceOf(Article::class, $articleObject);
+            $this->assertEquals('Example article object', $articleObject->getDescription());
+            $this->assertEquals(
+                'Article objects feature a Markdown payload along with some custom properties',
+                $articleObject->getAbstract()
+            );
+            $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
+            $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
 
-        // Create a new article in the temporary repository
-        $payload = md5(rand());
-        $article = $fileRepository->createObject(Type::ARTICLE, $payload);
-        $this->assertInstanceOf(Article::class, $article);
-        $this->assertEquals($payload, $article->getPayload());
-        $this->assertFileExists($tempRepoDirectory.
-            str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
-                ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
+            $authorCount = count($articleObject->getAuthors());
+            $articleObject->addAuthor(AuthorFactory::createFromString(AuthorTest::GENERIC_AUTHOR));
+            $this->assertEquals($authorCount + 1, count($articleObject->getAuthors()));
+        }
 
-        // Delete temporary repository
-        $this->deleteRecursive($tempRepoDirectory);
-    }
+        /**
+         * Load an article object and test its domain properties
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+         * @expectedExceptionCode 1450818168
+         */
+        public function testLoadArticleObjectDomainProperties()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
+            $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
+            $articleObject->getDomainProperty('group:invalid');
+        }
 
-    /**
-     * Recursively register a directory and all nested files and directories for deletion on teardown
-     *
-     * @param string $directory Directory
-     */
-    protected function deleteRecursive($directory)
-    {
-        $this->tmpFiles[] = $directory;
-        foreach (scandir($directory) as $item) {
-            if (!preg_match('%^\.+$%', $item)) {
-                $path = $directory.DIRECTORY_SEPARATOR.$item;
-                if (is_dir($path)) {
-                    $this->deleteRecursive($path);
-                } else {
-                    $this->tmpFiles[] = $path;
+        /**
+         * Load an article object and test an empty domain property name
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+         * @expectedExceptionCode 1450817720
+         */
+        public function testLoadArticleObjectDomainEmptyProperty()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObject->getDomainProperty('');
+        }
+
+        /**
+         * Test the object facade with an absolute object URL
+         */
+        public function testObjectFacadeAbsolute()
+        {
+            $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertInstanceOf(Article::class, $object);
+        }
+
+        /**
+         * Test the object facade with a relative object URL
+         */
+        public function testObjectFacadeRelative()
+        {
+            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertInstanceOf(Article::class, $object);
+            foreach ($object->getAuthors() as $author) {
+                if ($author instanceof ApparatAuthor) {
+//				echo $author->getId()->getId();
                 }
             }
         }
+
+        /**
+         * Test the object facade with an invalid relative object URL
+         *
+         * @expectedException \Apparat\Resource\Infrastructure\Io\File\InvalidArgumentException
+         * @expectedExceptionCode 1447616824
+         */
+        public function testObjectFacadeRelativeInvalid()
+        {
+            $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
+            $this->assertInstanceOf(Article::class, $object);
+        }
+
+        /**
+         * Test with a missing object type class
+         *
+         * @expectedException \Apparat\Object\Application\Factory\InvalidArgumentException
+         * @expectedExceptionCode 1450824842
+         */
+        public function testInvalidObjectTypeClass()
+        {
+            TestType::addInvalidType();
+
+            $resource = $this->getMock(ResourceInterface::class);
+            $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
+            $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5.invalid/5');
+
+            /** @var ResourceInterface $resource */
+            ObjectFactory::createFromResource($articleObjectPath, $resource);
+        }
+
+        /**
+         * Test instantiation of object with invalid domain properties collection
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+         * @expectedExceptionCode 1452288429
+         */
+        public function testInvalidDomainPropertyCollectionClass()
+        {
+            $this->getMockBuilder(AbstractObject::class)
+                ->setConstructorArgs([new RepositoryPath(self::$repository, self::OBJECT_PATH)])
+                ->getMock();
+        }
+
+        /**
+         * Test the property data
+         */
+        public function testObjectPropertyData()
+        {
+//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
+            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertTrue(is_array($object->getPropertyData()));
+//        print_r($frontMarkResource->getData());
+//        print_r($object->getPropertyData());
+        }
+
+        /**
+         * Test the property data
+         */
+        public function testMetaDataMutation()
+        {
+            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $this->assertTrue(is_array($object->getPropertyData()));
+            $objectUrl = $object->getAbsoluteUrl();
+            $objectRevision = $object->getRevision();
+            $object->setDescription($object->getDescription().' (mutated)');
+            $object->setAbstract($object->getAbstract().' (mutated)');
+            $object->setKeywords($object->getKeywords() + ['mutated']);
+            $object->setCategories($object->getCategories() + ['mutated']);
+            $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
+            $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
+        }
+
+        /**
+         * Test the creation and persisting of an article object
+         */
+        public function testCreateArticleObject()
+        {
+            // Create a temporary repository
+            $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+            $fileRepository = RepositoryFactory::create(
+                getenv('REPOSITORY_URL'),
+                [
+                    'type' => FileAdapterStrategy::TYPE,
+                    'root' => $tempRepoDirectory,
+                ]
+            );
+            $this->assertInstanceOf(Repository::class, $fileRepository);
+            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
+
+            // Create a new article in the temporary repository
+            $payload = md5(rand());
+            $article = $fileRepository->createObject(Type::ARTICLE, $payload);
+            $this->assertInstanceOf(Article::class, $article);
+            $this->assertEquals($payload, $article->getPayload());
+            $this->assertFileExists($tempRepoDirectory.
+                str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
+                    ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
+
+            // Delete temporary repository
+            $this->deleteRecursive($tempRepoDirectory);
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Domain\Repository\RuntimeException
+         * @expectedExceptionCode 1461406873
+         */
+        public function testCreateArticleObjectLockingImpossible() {
+            putenv('MOCK_FLOCK=1');
+            $this->testCreateArticleObject();
+        }
+
+        /**
+         * Recursively register a directory and all nested files and directories for deletion on teardown
+         *
+         * @param string $directory Directory
+         */
+        protected function deleteRecursive($directory)
+        {
+            $this->tmpFiles[] = $directory;
+            foreach (scandir($directory) as $item) {
+                if (!preg_match('%^\.+$%', $item)) {
+                    $path = $directory.DIRECTORY_SEPARATOR.$item;
+                    if (is_dir($path)) {
+                        $this->deleteRecursive($path);
+                    } else {
+                        $this->tmpFiles[] = $path;
+                    }
+                }
+            }
+        }
+    }
+}
+
+namespace Apparat\Object\Infrastructure\Repository {
+
+    /**
+     * Mocked version of the native flock() function
+     *
+     * @param resource $handle An open file pointer.
+     * @param int $operation Operation is one of the following: LOCK_SH to acquire a shared lock (reader).
+     * @param int $wouldblock The optional third argument is set to true if the lock would block (EWOULDBLOCK errno
+     *     condition).
+     * @return bool True on success or False on failure.
+     */
+    function flock($handle, $operation, &$wouldblock = null)
+    {
+        return (getenv('MOCK_FLOCK') != 1) ? \flock($handle, $operation, $wouldblock) : false;
     }
 }

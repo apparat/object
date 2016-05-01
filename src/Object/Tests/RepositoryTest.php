@@ -424,7 +424,9 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRepositoryCreation()
     {
-        $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
+        $this->tmpFiles[] = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
         $fileRepository = RepositoryFactory::create(
             getenv('REPOSITORY_URL'),
             [
@@ -433,10 +435,44 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             ]
         );
         $this->assertInstanceOf(Repository::class, $fileRepository);
+    }
 
-        $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
-        self::$globFiles[] = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
-        self::$globDirs[] = $tempRepoDirectory;
-        self::$globDirs[] = $tempRepoConfigDir;
+    /**
+     * Test creation of a repository over an existing file
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\RuntimeException
+     * @expectedExceptionCode 1461276430
+     */
+    public function testRepositoryCreationOverExistingFile()
+    {
+        $tempFile = $this->createTemporaryFile();
+        RepositoryFactory::create(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => $tempFile,
+            ]
+        );
+    }
+
+    /**
+     * Test creation of a repository over an existing size descriptor directory
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\RuntimeException
+     * @expectedExceptionCode 1461276603
+     */
+    public function testRepositoryCreationOverExistingSizeDescriptor()
+    {
+        $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $this->tmpFiles[] = $tempRepoConfigDirectory = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
+        $this->tmpFiles[] = $tempSizeDescriptor = $tempRepoConfigDirectory.DIRECTORY_SEPARATOR.'size.txt';
+        @mkdir($tempSizeDescriptor, 0777, true);
+        RepositoryFactory::create(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => $tempRepoDirectory,
+            ]
+        );
     }
 }

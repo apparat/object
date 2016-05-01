@@ -181,6 +181,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected function loadRevisionData($payload = '', array $propertyData = [])
     {
+        // TODO Add mutation handler for object payload
         $this->payload = $payload;
 
         // Instantiate the system properties
@@ -204,6 +205,7 @@ abstract class AbstractObject implements ObjectInterface
             !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
+        // TODO Add mutation handler for domain properties
         $this->domainProperties = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
 
         // Instantiate the processing instructions
@@ -252,8 +254,28 @@ abstract class AbstractObject implements ObjectInterface
     protected function setMutatedState()
     {
         // If this object is not in mutated state yet
-        if (!($this->state & self::STATE_MUTATED)) {
-            // TODO: Take actions to make this the most recent revision (in draft mode)
+        if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
+            // Increment the latest revision number
+            $this->latestRevision = $this->latestRevision->increment();
+
+            // Create draft system properties
+            $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
+
+            // Set the draft flag on the repository path
+            $this->path = $this->path->setDraft(true);
+
+            // If this is not already a draft ...
+                // Recreate the system properties
+                    // Copy the object ID
+                    // Copy the object type
+                    // Set the revision number to latest revision + 1
+                    // Set the creation date to now
+                    // Set no publication date
+                // Set the draft flag on the repository path
+                // Increase the latest revision by 1
+
+            // Else if this is a draft
+                // No action needed
         }
 
         // Enable the mutated (and dirty) state

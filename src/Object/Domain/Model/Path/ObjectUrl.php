@@ -237,6 +237,28 @@ class ObjectUrl extends Url implements PathInterface
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return $this->localPath->isDraft();
+    }
+
+    /**
+     * Set the object draft mode
+     *
+     * @param boolean $draft Object draft mode
+     * @return PathInterface|LocalPath New object path
+     */
+    public function setDraft($draft)
+    {
+        $this->localPath = $this->localPath->setDraft($draft);
+        return $this;
+    }
+
+    /**
      * Return the repository URL part of this object URL
      *
      * @return string Repository URL

@@ -128,4 +128,13 @@ class Revision implements SerializablePropertyInterface
     {
         return $this->revision;
     }
+
+    /**
+     * Return an incremented revision
+     *
+     * @return Revision Incremented revision
+     */
+    public function increment() {
+        return ($this->revision === self::CURRENT) ? $this : new static($this->revision + 1);
+    }
 }

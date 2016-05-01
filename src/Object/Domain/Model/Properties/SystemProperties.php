@@ -261,6 +261,25 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Derive draft system properties
+     *
+     * @param Revision $draftRevision Draft revision
+     * @return SystemProperties Draft system properties
+     */
+    public function createDraft(Revision $draftRevision)
+    {
+        return new static(
+            [
+                self::PROPERTY_ID => $this->uid->getId(),
+                self::PROPERTY_TYPE => $this->type->getType(),
+                self::PROPERTY_REVISION => $draftRevision->getRevision(),
+                self::PROPERTY_CREATED => time(),
+            ],
+            $this->object
+        );
+    }
+
+    /**
      * Indicate that the object got published
      *
      * @return SystemProperties System properties

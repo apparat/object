@@ -301,7 +301,12 @@ class ObjectTest extends AbstractDisabledAutoconnectorTest
     {
         $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertTrue(is_array($object->getPropertyData()));
-        $object->setDescription('Example article objectq');
+        $objectUrl = $object->getAbsoluteUrl();
+        $objectRevision = $object->getRevision();
+        $object->setDescription($object->getDescription().' (mutated)');
+        $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
+        $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
+//        $this->assertTrue($object->getRevision() > $objectRevision);
     }
 
     /**

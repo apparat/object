@@ -115,4 +115,19 @@ interface PathInterface
      * @return PathInterface New object path
      */
     public function setRevision(Revision $revision);
+
+    /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft();
+
+    /**
+     * Set the object draft mode
+     *
+     * @param boolean $draft Object draft mode
+     * @return PathInterface|LocalPath New object path
+     */
+    public function setDraft($draft);
 }

@@ -234,7 +234,7 @@ class ObjectProxy implements ObjectInterface
     /**
      * Set the abstract
      *
-     * @param string $Abstract
+     * @param string $abstract Abstract
      * @return ObjectInterface Self reference
      */
     public function setAbstract($abstract)

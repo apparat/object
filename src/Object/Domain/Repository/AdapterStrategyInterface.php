@@ -74,6 +74,14 @@ interface AdapterStrategyInterface
     public function createObjectResource(\Closure $creator);
 
     /**
+     * Persist an object in the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return AdapterStrategyInterface Self reference
+     */
+    public function persistObject(ObjectInterface $object);
+
+    /**
      * Return the adapter strategy type
      *
      * @return string Adapter strategy type

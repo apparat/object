@@ -41,8 +41,11 @@ use Apparat\Object\Application\Repository\AbstractAdapterStrategy;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\RuntimeException;
 use Apparat\Object\Domain\Repository\Selector;
@@ -265,8 +268,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
                 // Instantiate the next consecutive object ID
                 $nextObjectId = Kernel::create(Id::class, [++$repositorySize]);
 
-                // Create & persist the object
-                $object = $this->persistObject($creator($nextObjectId));
+                // Create & persist the object (bypassing the repository)
+                $object = $creator($nextObjectId);
+                $this->persistObject($object);
 
                 // Dump the new repository size, unlock the size descriptor
                 ftruncate($sizeDescriptor, 0);
@@ -300,16 +304,20 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * Persist an object in the repository
      *
      * @param ObjectInterface $object Object
-     * @return ObjectInterface Persisted object
+     * @return AdapterStrategyInterface Self reference
      */
     public function persistObject(ObjectInterface $object)
     {
+        // If the object has just been published
+        if ($object->isPublished()) {
+            $this->publishObject($object);
+        }
+
         /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
         $objectResource = ResourceFactory::createFromObject($object);
 
         // Create the absolute object resource path
-        $objectResourcePath = $this->root.str_replace('/', DIRECTORY_SEPARATOR,
-                $object->getRepositoryPath()->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
+        $objectResourcePath = $this->absoluteResourcePath($object->getRepositoryPath());
 
         /** @var Writer $fileWriter */
         $fileWriter = Kernel::create(
@@ -318,9 +326,55 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         );
         $objectResource->dump($fileWriter);
 
-        // TODO: Set object clean
+        return $this;
+    }
 
-        return $object;
+    /**
+     * Publish an object in the repository
+     *
+     * @param ObjectInterface $object
+     */
+    protected function publishObject(ObjectInterface $object)
+    {
+        $objectRepositoryPath = $object->getRepositoryPath();
+
+        // If the object had been persisted as a draft: Remove the draft resource
+        $objectDraftResourcePath = $this->absoluteResourcePath($objectRepositoryPath->setDraft(true));
+        if (@file_exists($objectDraftResourcePath)) {
+            unlink($objectDraftResourcePath);
+        }
+
+        // If it's not the first object revision: Rotate the previous revision resource
+        $objectRevisionNumber = $object->getRevision()->getRevision();
+        if ($objectRevisionNumber > 1) {
+            // Build the "current" object repository path
+            $currentRevision = Revision::current();
+            $currentObjectResourcePath =
+                $this->absoluteResourcePath($objectRepositoryPath->setRevision($currentRevision));
+
+            // Build the previous object repository path
+            /** @var Revision $previousRevision */
+            $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
+            $previousObjectResourcePath
+                = $this->absoluteResourcePath($objectRepositoryPath->setRevision($previousRevision));
+
+            // Rotate the previous revision's resource path
+            if (file_exists($currentObjectResourcePath)) {
+                rename($currentObjectResourcePath, $previousObjectResourcePath);
+            }
+        }
+    }
+
+    /**
+     * Build an absolute repository resource path
+     *
+     * @param RepositoryPathInterface $repositoryPath Repository path
+     * @return string Absolute repository resource path
+     */
+    protected function absoluteResourcePath(RepositoryPathInterface $repositoryPath)
+    {
+        return $this->root.str_replace('/', DIRECTORY_SEPARATOR,
+            $repositoryPath->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
     }
 
     /**

@@ -76,6 +76,12 @@ abstract class AbstractObject implements ObjectInterface
      */
     const STATE_MUTATED = 2;
     /**
+     * Published state
+     *
+     * @var int
+     */
+    const STATE_PUBLISHED = 4;
+    /**
      * System properties
      *
      * @var SystemProperties
@@ -165,7 +171,8 @@ abstract class AbstractObject implements ObjectInterface
             );
         }
 
-        $this->path = $path;
+        // Right after instantiation it's always the current revision
+        $this->path = $path->setRevision(Revision::current());
 
         // Load the current revision data
         $this->loadRevisionData($payload, $propertyData);
@@ -262,28 +269,7 @@ abstract class AbstractObject implements ObjectInterface
         // If this object is not in mutated state yet
         if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
             // TODO: Send signal
-
-            // Increment the latest revision number
-            $this->latestRevision = $this->latestRevision->increment();
-
-            // Create draft system properties
-            $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
-
-            // Set the draft flag on the repository path
-            $this->path = $this->path->setDraft(true);
-
-            // If this is not already a draft ...
-            // Recreate the system properties
-            // Copy the object ID
-            // Copy the object type
-            // Set the revision number to latest revision + 1
-            // Set the creation date to now
-            // Set no publication date
-            // Set the draft flag on the repository path
-            // Increase the latest revision by 1
-
-            // Else if this is a draft
-            // No action needed
+            $this->convertToDraft();
         }
 
         // Enable the mutated (and dirty) state
@@ -297,7 +283,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function isDraft()
     {
-        return $this->systemProperties->isDraft();
+        return $this->systemProperties->isDraft() || $this->isPublished();
     }
 
     /**
@@ -361,6 +347,20 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Set the object state to published
+     */
+    protected function setPublishedState()
+    {
+        // If this object is not in dirty state yet
+        if (!($this->state & self::STATE_PUBLISHED)) {
+            // TODO: Send signal
+        }
+
+        // Enable the dirty state
+        $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
+    }
+
+    /**
      * Set the relations collection
      *
      * @param Relations $relations Relations collection
@@ -404,6 +404,16 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished()
+    {
+        return !!($this->state & self::STATE_PUBLISHED);
+    }
+
+    /**
      * Use a specific object revision
      *
      * @param Revision $revision Revision to be used
@@ -435,8 +445,7 @@ abstract class AbstractObject implements ObjectInterface
 
             // Load the requested object revision resource
             /** @var Revision $newRevision */
-            $newRevision = $isCurrentRevision ? Kernel::create(Revision::class, [Revision::CURRENT]) :
-                $revision;
+            $newRevision = $isCurrentRevision ? Revision::current() : $revision;
             /** @var RepositoryPath $newRevisionPath */
             $newRevisionPath = $this->path->setRevision($newRevision);
             $revisionResource = $objectManager->loadObject($newRevisionPath);
@@ -484,7 +493,7 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Return the publication date & time
      *
-     * @return \DateTimeImmutable Publication date & time
+     * @return \DateTimeImmutable|null Publication date & time
      */
     public function getPublished()
     {
@@ -749,13 +758,69 @@ abstract class AbstractObject implements ObjectInterface
             );
         }
 
-        // If this object is in dirty state
-        if ($this->isDirty()) {
-            $this->path->getRepository()->updateObject($this);
-            $this->state = self::STATE_CLEAN;
+        // Update the object repository
+        $this->path->getRepository()->updateObject($this);
+
+        // Reset state
+        $this->state = self::STATE_CLEAN;
+
+        return $this;
+    }
+
+    /**
+     * Publish the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function publish() {
+        // If this is a draft
+        if ($this->isDraft()) {
+            // TODO: Send signal
+
+            // Create draft system properties
+            $this->systemProperties = $this->systemProperties->publish();
+
+            // Adapt the system properties collection state
+            $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
+
+            // Set the draft flag on the repository path
+            $this->path = $this->path->setDraft(false);
+
+            // Flag this object as dirty
+            $this->setPublishedState();
         }
 
         return $this;
+    }
+
+    /**
+     * Convert this object revision into a draft
+     */
+    protected function convertToDraft() {
+        // Increment the latest revision number
+        $this->latestRevision = $this->latestRevision->increment();
+
+        // Create draft system properties
+        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
+
+        // Adapt the system properties collection state
+        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
+
+        // Set the draft flag on the repository path
+        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
+
+        // If this is not already a draft ...
+        // Recreate the system properties
+        // Copy the object ID
+        // Copy the object type
+        // Set the revision number to latest revision + 1
+        // Set the creation date to now
+        // Set no publication date
+        // Set the draft flag on the repository path
+        // Increase the latest revision by 1
+
+        // Else if this is a draft
+        // No action needed
     }
 
     /**

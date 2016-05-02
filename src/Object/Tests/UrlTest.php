@@ -147,7 +147,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test a remote draft URL
      */
-    public function testRemoteDraftUrl() {
+    public function testRemoteDraftUrl()
+    {
         $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::DRAFT_PATH, true);
         $this->assertInstanceOf(ObjectUrl::class, $url);
         $this->assertTrue($url->isDraft());
@@ -247,7 +248,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals('article', $url->setType(new Type('article'))->getType()->getType());
         $this->assertEquals(
             Revision::CURRENT,
-            $url->setRevision(new Revision(Revision::CURRENT))->getRevision()->getRevision()
+            $url->setRevision(Revision::current())->getRevision()->getRevision()
         );
     }
 
@@ -440,7 +441,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test draft path
      */
-    public function testDraftPath() {
+    public function testDraftPath()
+    {
         $path = new LocalPath(self::DRAFT_PATH);
         $this->assertInstanceOf(LocalPath::class, $path);
         $this->assertTrue($path->isDraft());

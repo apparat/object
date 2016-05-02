@@ -36,6 +36,9 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
@@ -52,6 +55,46 @@ interface RepositoryPathInterface extends PathInterface
      * @return RepositoryInterface Repository
      */
     public function getRepository();
+
+    /**
+     * Set the object's creation date
+     *
+     * @param \DateTimeImmutable $creationDate
+     * @return RepositoryPathInterface New object path
+     */
+    public function setCreationDate(\DateTimeImmutable $creationDate);
+
+    /**
+     * Set the object type
+     *
+     * @param Type $type Object type
+     * @return RepositoryPathInterface New object path
+     */
+    public function setType(Type $type);
+
+    /**
+     * Set the object ID
+     *
+     * @param Id $uid Object ID
+     * @return RepositoryPathInterface New object path
+     */
+    public function setId(Id $uid);
+
+    /**
+     * Set the object revision
+     *
+     * @param Revision $revision Object revision
+     * @return RepositoryPathInterface New object path
+     */
+    public function setRevision(Revision $revision);
+
+    /**
+     * Set the object draft mode
+     *
+     * @param boolean $draft Object draft mode
+     * @return RepositoryPathInterface New object path
+     */
+    public function setDraft($draft);
 
     /**
      * Return the repository relative object path with a file extension

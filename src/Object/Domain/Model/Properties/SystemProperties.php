@@ -243,7 +243,7 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the publication date & time of this revision
      *
-     * @return \DateTimeImmutable Publication date & time
+     * @return \DateTimeImmutable|null Publication date & time
      */
     public function getPublished()
     {
@@ -287,7 +287,6 @@ class SystemProperties extends AbstractProperties
      */
     public function publish()
     {
-
         // If the object is already published
         if ($this->published instanceof \DateTimeImmutable) {
             throw new RuntimeException(

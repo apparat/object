@@ -344,7 +344,6 @@ namespace Apparat\Object\Tests {
             $this->assertEquals($objectRevision->getRevision(), $object->getRevision()->getRevision());
             $this->assertTrue($object->isDirty());
             $this->assertFalse($object->isMutated());
-            print_r($object->getPropertyData());
         }
 
         /**
@@ -357,7 +356,7 @@ namespace Apparat\Object\Tests {
         /**
          * Test the creation and persisting of an article object
          */
-        public function testCreateArticleObject()
+        public function testCreateAndPublishArticleObject()
         {
             // Create a temporary repository
             $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
@@ -372,7 +371,8 @@ namespace Apparat\Object\Tests {
             $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
 
             // Create a new article in the temporary repository
-            $payload = md5(rand());
+            $payload = 'Revision 1 draft';
+            /** @var Article $article */
             $article = $fileRepository->createObject(Type::ARTICLE, $payload);
             $this->assertInstanceOf(Article::class, $article);
             $this->assertEquals($payload, $article->getPayload());
@@ -380,12 +380,26 @@ namespace Apparat\Object\Tests {
                 str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
                     ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
 
-            // Persist the object
-//            $article->persist();
-//            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 1);
+            // Alter and persist the object
+            $article->setPayload('Revision 1 draft (updated)');
+            $article->persist();
+
+            // Publish and persist the first object revision
+            $article->setPayload('Revision 1');
+            $article->publish();
+            $article->persist();
+
+            // Draft a second object revision
+            $article->setPayload('Revision 2 draft');
+            $article->persist();
+
+            // Publish and persist the second object revision
+            $article->publish();
+            $article->setPayload('Revision 2');
+            $article->persist();
 
             // Delete temporary repository
-            $this->deleteRecursive($tempRepoDirectory);
+//            $this->deleteRecursive($tempRepoDirectory);
         }
 
         /**
@@ -403,7 +417,7 @@ namespace Apparat\Object\Tests {
          */
         public function testCreateArticleObjectLockingImpossible() {
             putenv('MOCK_FLOCK=1');
-            $this->testCreateArticleObject();
+            $this->testCreateAndPublishArticleObject();
         }
 
         /**

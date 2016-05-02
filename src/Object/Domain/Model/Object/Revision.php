@@ -89,6 +89,15 @@ class Revision implements SerializablePropertyInterface
     }
 
     /**
+     * Return a current revision instance
+     *
+     * @return Revision Current revision instance
+     */
+    public static function current() {
+        return new static(self::CURRENT);
+    }
+
+    /**
      * Unserialize the string representation of this property
      *
      * @param string $str Serialized property

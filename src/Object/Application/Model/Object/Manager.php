@@ -96,10 +96,8 @@ class Manager implements ManagerInterface
     public function loadObject(RepositoryPathInterface $path)
     {
         // Create the current revision path
-        /** @var Revision $currentRevision */
-        $currentRevision = Kernel::create(Revision::class, [Revision::CURRENT]);
         /** @var RepositoryPathInterface $currentPath */
-        $currentPath = $path->setRevision($currentRevision);
+        $currentPath = $path->setRevision(Revision::current());
 
         // Load the current object resource
         $objectResource = $this->loadObjectResource($currentPath);

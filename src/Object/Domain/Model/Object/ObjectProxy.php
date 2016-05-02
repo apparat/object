@@ -433,4 +433,26 @@ class ObjectProxy implements ObjectInterface
     {
         return $this->object()->persist();
     }
+
+    /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished()
+    {
+        return $this->object()->isPublished();
+    }
+
+    /**
+     * Publish the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function publish()
+    {
+        return $this->object()->publish();
+    }
+
+
 }

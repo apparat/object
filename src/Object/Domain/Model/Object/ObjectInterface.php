@@ -101,6 +101,13 @@ interface ObjectInterface
     public function isMutated();
 
     /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished();
+
+    /**
      * Return the creation date & time
      *
      * @return \DateTimeImmutable Creation date & time
@@ -282,4 +289,11 @@ interface ObjectInterface
      * @return ObjectInterface Object
      */
     public function persist();
+
+    /**
+     * Publish the current object revision
+     *
+     * @return ObjectInterface Object
+     */
+    public function publish();
 }

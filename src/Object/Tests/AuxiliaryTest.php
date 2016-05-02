@@ -107,7 +107,7 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
     {
         $revision = new Revision(123);
         $this->assertEquals(123, $revision->serialize());
-        $revision = new Revision(Revision::CURRENT);
+        $revision = Revision::current();
         $this->assertEquals(Revision::CURRENT, $revision->serialize());
     }
 
@@ -116,7 +116,7 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testCurrentRevision()
     {
-        $revision = new Revision(Revision::CURRENT);
+        $revision = Revision::current();
         $this->assertTrue($revision->isCurrent());
     }
 

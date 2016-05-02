@@ -135,8 +135,7 @@ class Repository implements RepositoryInterface
      */
     public function updateObject(ObjectInterface $object)
     {
-        echo 'persisting';
-
+        $this->adapterStrategy->persistObject($object);
         return true;
     }
 

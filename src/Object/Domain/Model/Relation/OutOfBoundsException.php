@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,44 +34,27 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
-
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * Object resource relations
+ * Relation OutOfBoundsException
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-class Relations extends AbstractProperties
+class OutOfBoundsException extends \OutOfBoundsException
 {
     /**
-     * Collection name
+     * Invalid object relation type
      *
-     * @var string
+     * @var int
      */
-    const COLLECTION = 'relations';
-    
+    const INVALID_OBJECT_RELATION_TYPE = 1462311104;
 
     /**
-     * Relations constructor
+     * Invalid object coupling
      *
-     * @param array $data Property data
-     * @param ObjectInterface $object Owner object
+     * @var int
      */
-    public function __construct(array $data, ObjectInterface $object)
-    {
-        parent::__construct($data, $object);
-    }
-
-    /**
-     * Return the property values as array
-     *
-     * @return array Property values
-     */
-    public function toArray()
-    {
-        return [];
-    }
+    const INVALID_OBJECT_COUPLING = 1462311299;
 }

@@ -28,13 +28,13 @@ Object type dependent properties.
 
 Resource relations need to carry the following characteristics:
 
-* Authors
 * Relation type (active / passive)
-  - **refers-to / referred-by**: Regular links from / to resources (both *apparat* objects and regular HTTP links)
-  - **embeds / embedded-by**: Inclusive associations like media objects (images, audio, video)
-  - **replies-to / replied-by**: Responses between resources
-  - **likes / liked-by**: Relationships between resources expressing sympathy or approval ("Likes")
-  - **reposts / reposted-by**: Reationships between a resource reposting another resource
+    1. **refers-to / referred-by**: Regular links from / to resources (both *apparat* objects and regular HTTP links)
+    2. **embeds / embedded-by**: Inclusive associations like media objects (images, audio, video)
+    3. **contributes-to** / **contributed-by**: Author / contributor relation
+    4. **replies-to / replied-by**: Responses between resources
+    5. **likes / liked-by**: Relationships between resources expressing sympathy or approval ("Likes")
+    6. **reposts / reposted-by**: Reationships between a resource reposting another resource
 * Relation target
 	* local (apparat) URL
 	* absolute apparat URL (remote object)
@@ -42,6 +42,8 @@ Resource relations need to carry the following characteristics:
 * Coupling
 	* Coupled objects (only valid for apparat objects)
 	* Loosely coupled
+
+The relation types **refers-to** and **embeds** cannot be set intentionally but are derived from the object payload. They may be extracted from the object content at any time and are listed here only for convenience reasons.
 
 #### E. Processing instructions
 

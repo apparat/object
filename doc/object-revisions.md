@@ -43,4 +43,4 @@ For instance, if an newly created article embeds image `/2015/10/02/12345/image.
 Drafts
 ------
 
-It is possible to modify an object without immediately publishing it. For this purpose, exactly one **unpublished draft** of the object may exist. A draft's revision number is `0` and it may be accessed with `-0` as revision identifier. Every time an object is updated, *apparat* is looking for an existing draft and update it in case it exists.
+It is possible to modify an object without immediately publishing it. For this purpose, exactly one **unpublished draft** of the object may exist. A draft's revision number is always one higher than the last published object revision and the draft may be accessed with `+` as revision identifier. Every time an object is updated, *apparat* is looking for an existing draft and updates that on in case it exists.

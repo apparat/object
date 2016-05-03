@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,44 +34,98 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
-
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * Object resource relations
+ * Relation interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-class Relations extends AbstractProperties
+interface RelationInterface
 {
     /**
-     * Collection name
+     * Active resource referral
      *
      * @var string
      */
-    const COLLECTION = 'relations';
-    
-
+    const REFERS_TO = 'refers-to';
     /**
-     * Relations constructor
+     * Passive resource referral
      *
-     * @param array $data Property data
-     * @param ObjectInterface $object Owner object
+     * @var string
      */
-    public function __construct(array $data, ObjectInterface $object)
-    {
-        parent::__construct($data, $object);
-    }
-
+    const REFERRED_BY = 'referred-by';
     /**
-     * Return the property values as array
+     * Active resource embedding
      *
-     * @return array Property values
+     * @var string
      */
-    public function toArray()
-    {
-        return [];
-    }
+    const EMBEDS = 'embeds';
+    /**
+     * Passive resource embedding
+     *
+     * @var string
+     */
+    const EMBEDDED_BY = 'embedded-by';
+    /**
+     * Active resource reply
+     *
+     * @var string
+     */
+    const REPLIES_TO = 'replies-to';
+    /**
+     * Passive resource reply
+     *
+     * @var string
+     */
+    const REPLIED_BY = 'replied-by';
+    /**
+     * Active resource liking
+     *
+     * @var string
+     */
+    const LIKES = 'likes';
+    /**
+     * Passive resource liking
+     *
+     * @var string
+     */
+    const LIKED_BY = 'liked-by';
+    /**
+     * Active resource re-posting
+     *
+     * @var string
+     */
+    const REPOSTS = 'reposts';
+    /**
+     * Passive resource re-posting
+     *
+     * @var string
+     */
+    const REPOSTED_BY = 'reposted-by';
+    /**
+     * Active resource contribution
+     *
+     * @var string
+     */
+    const CONTRIBUTES = 'contributes';
+    /**
+     * Passive resource contribution
+     *
+     * @var string
+     */
+    const CONTRIBUTED_BY = 'contributed-by';
+    /**
+     * Loose coupling
+     *
+     * @var int
+     */
+    const LOOSE_COUPLING = 0;
+    /**
+     * Tight coupling (⚭)
+     *
+     * @var int
+     */
+    const TIGHT_COUPLING = 1;
 }

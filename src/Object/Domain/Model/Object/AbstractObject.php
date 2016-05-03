@@ -511,6 +511,50 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object title
+     *
+     * @return string Object title
+     */
+    public function getTitle()
+    {
+        return $this->metaProperties->getTitle();
+    }
+
+    /**
+     * Set the title
+     *
+     * @param string $title Title
+     * @return ObjectInterface Self reference
+     */
+    public function setTitle($title)
+    {
+        $this->setMetaProperties($this->metaProperties->setTitle($title));
+        return $this;
+    }
+
+    /**
+     * Return the object slug
+     *
+     * @return string Object slug
+     */
+    public function getSlug()
+    {
+        return $this->metaProperties->getSlug();
+    }
+
+    /**
+     * Set the slug
+     *
+     * @param string $slug Slug
+     * @return ObjectInterface Self reference
+     */
+    public function setSlug($slug)
+    {
+        $this->setMetaProperties($this->metaProperties->setSlug($slug));
+        return $this;
+    }
+
+    /**
      * Return the object description
      *
      * @return string Object description

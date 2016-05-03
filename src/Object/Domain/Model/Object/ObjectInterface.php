@@ -128,6 +128,37 @@ interface ObjectInterface
      */
     public function getPublished();
 
+
+    /**
+     * Return the object title
+     *
+     * @return string Object title
+     */
+    public function getTitle();
+
+    /**
+     * Set the title
+     *
+     * @param string $title Title
+     * @return ObjectInterface Self reference
+     */
+    public function setTitle($title);
+
+    /**
+     * Return the object slug
+     *
+     * @return string Object slug
+     */
+    public function getSlug();
+
+    /**
+     * Set the slug
+     *
+     * @param string $slug Slug
+     * @return ObjectInterface Self reference
+     */
+    public function setSlug($slug);
+
     /**
      * Return the object description
      *

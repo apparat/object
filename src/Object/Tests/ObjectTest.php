@@ -304,6 +304,8 @@ namespace Apparat\Object\Tests {
             $this->assertTrue(is_array($object->getPropertyData()));
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
+            $object->setTitle($object->getTitle().' (mutated)');
+            $object->setSlug($object->getSlug().'-mutated');
             $object->setDescription($object->getDescription().' (mutated)');
             $object->setAbstract($object->getAbstract());
             $object->setKeywords(array_merge($object->getKeywords(), ['mutated']));

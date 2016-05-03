@@ -55,6 +55,18 @@ class MetaProperties extends AbstractProperties
      */
     const COLLECTION = 'meta';
     /**
+     * Title property
+     *
+     * @var string
+     */
+    const PROPERTY_TITLE = 'title';
+    /**
+     * Slug property
+     *
+     * @var string
+     */
+    const PROPERTY_SLUG = 'slug';
+    /**
      * Description property
      *
      * @var string
@@ -84,6 +96,18 @@ class MetaProperties extends AbstractProperties
      * @var string
      */
     const PROPERTY_AUTHORS = 'authors';
+    /**
+     * Object title
+     *
+     * @var string
+     */
+    protected $title = '';
+    /**
+     * Object slug
+     *
+     * @var string
+     */
+    protected $slug = '';
     /**
      * Object description
      *
@@ -129,6 +153,16 @@ class MetaProperties extends AbstractProperties
     {
         parent::__construct($data, $object);
 
+        // Initialize the title
+        if (array_key_exists(self::PROPERTY_TITLE, $data)) {
+            $this->title = $data[self::PROPERTY_TITLE];
+        }
+
+        // Initialize the slug
+        if (array_key_exists(self::PROPERTY_SLUG, $data)) {
+            $this->slug = $data[self::PROPERTY_SLUG];
+        }
+
         // Initialize the description
         if (array_key_exists(self::PROPERTY_DESCRIPTION, $data)) {
             $this->description = $data[self::PROPERTY_DESCRIPTION];
@@ -153,6 +187,48 @@ class MetaProperties extends AbstractProperties
         if (array_key_exists(self::PROPERTY_AUTHORS, $data)) {
             $this->setAuthors($data[self::PROPERTY_AUTHORS]);
         }
+    }
+
+    /**
+     * Return the object title
+     *
+     * @return string Object title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the object title
+     *
+     * @param string $title Object title
+     * @return MetaProperties Self reference
+     */
+    public function setTitle($title)
+    {
+        return $this->mutateStringProperty(self::PROPERTY_TITLE, $title);
+    }
+
+    /**
+     * Return the object slug
+     *
+     * @return string Object slug
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the object slug
+     *
+     * @param string $slug Object slug
+     * @return MetaProperties Self reference
+     */
+    public function setSlug($slug)
+    {
+        return $this->mutateStringProperty(self::PROPERTY_SLUG, $slug);
     }
 
     /**

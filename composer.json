@@ -12,7 +12,8 @@
   "require": {
     "php": ">=5.6.0",
     "apparat/resource": "^0.1.2",
-    "apparat/kernel": "@dev"
+    "apparat/kernel": "@dev",
+    "dominicsayers/isemail": "@dev"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.8",
@@ -27,6 +28,11 @@
     {
       "type": "vcs",
       "url": "git@github.com:apparat/kernel.git",
+      "reference": "master"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:dominicsayers/isemail.git",
       "reference": "master"
     }
   ],

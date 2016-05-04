@@ -35,94 +35,37 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Relation;
-use Apparat\Object\Domain\Factory\RelationFactory;
-use Apparat\Object\Domain\Model\Path\Url;
 
 /**
- * Abstract base relation
+ * Relation InvalidArgumentException
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractRelation implements RelationInterface
+class InvalidArgumentException extends \RuntimeException
 {
     /**
-     * Relation type
-     *
-     * @var string
-     */
-    protected $type = null;
-    /**
-     * Relation URL
-     *
-     * @var string
-     */
-    protected $url = null;
-    /**
-     * Relation label
-     *
-     * @var string
-     */
-    protected $label = null;
-    /**
-     * Relation email
-     *
-     * @var string
-     */
-    protected $email = null;
-    /**
-     * Coupling
+     * Invalid object coupling
      *
      * @var int
      */
-    protected $coupling = self::LOOSE_COUPLING;
-
+    const INVALID_OBJECT_COUPLING = 1462311299;
     /**
-     * @param string $type Relation type
-     * @param Url $url Relation URL
-     * @param string $label Relation label
-     * @param string $email Relation email
-     * @param int $coupling Coupling
-     * @throws OutOfBoundsException If the object type is invalid
-     * @throws OutOfBoundsException If the object coupling is invalid
-     */
-    public function __construct(
-        Url $url,
-        $label,
-        $email,
-        $coupling
-    ) {
-        // If the coupling type is invalid
-//        if (($coupling !== self::LOOSE_COUPLING) && ($coupling !== self::TIGHT_COUPLING)) {
-//            throw new InvalidArgumentException(
-//                sprintf('Invalid object coupling "%s"', $coupling),
-//                InvalidArgumentException::INVALID_OBJECT_COUPLING
-//            );
-//        }
-
-        $this->url = $url;
-        $this->label = $label;
-        $this->email = $email;
-        $this->coupling = $coupling;
-    }
-
-    /**
-     * Return the relation type
+     * Repeated relation component not allowed
      *
-     * @return string Relation type
+     * @var int
      */
-    public function getType()
-    {
-        return $this->type;
-    }
-
+    const REPEATED_RELATION_COMPONENT_NOT_ALLOWED = 1462394737;
     /**
-     * Return the unique relation signature
+     * Invalid relation email address
      *
-     * @return string Relation signature
+     * @var int
      */
-    public function getSignature()
-    {
-        return md5($this->url);
-    }
+    const INVALID_RELATION_EMAIL_ADDRESS = 1462395977;
+    /**
+     * Invalid relation URL
+     *
+     * @var int
+     */
+    const INVALID_RELATION_URL = 1462396440;
 }

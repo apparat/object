@@ -37,24 +37,17 @@
 namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * Relation OutOfBoundsException
+ * "liked-by" relation
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class OutOfBoundsException extends \OutOfBoundsException
+class LikedByRelation extends AbstractRelation
 {
     /**
-     * Invalid object relation type
+     * Relation type
      *
-     * @var int
+     * @var string
      */
-    const INVALID_OBJECT_RELATION_TYPE = 1462311104;
-
-    /**
-     * Invalid object coupling
-     *
-     * @var int
-     */
-    const INVALID_OBJECT_COUPLING = 1462311299;
+    const TYPE = 'liked-by';
 }

@@ -36,7 +36,9 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Domain\Factory\RelationFactory;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 
 /**
  * Object resource relations
@@ -52,7 +54,13 @@ class Relations extends AbstractProperties
      * @var string
      */
     const COLLECTION = 'relations';
-    
+    /**
+     * Relations
+     *
+     * @var array
+     */
+    protected $relations = [];
+
 
     /**
      * Relations constructor
@@ -63,6 +71,59 @@ class Relations extends AbstractProperties
     public function __construct(array $data, ObjectInterface $object)
     {
         parent::__construct($data, $object);
+
+        // Run through all registered relation type collections
+        /**
+         * @var string $relationType
+         * @var RelationInterface[] $relations
+         */
+        foreach ($this->data as $relationType => $relations) {
+            // If the relation type collection is invalid or empty
+            if (!is_array($relations) || !count($relations)) {
+                // TODO Trigger warning
+                continue;
+            }
+
+            // Run through all (serialized) relations
+            foreach ($relations as $serializedRelation) {
+                $this->addRelationInstance(RelationFactory::createFromString(
+                    $relationType,
+                    $serializedRelation,
+                    $this->object->getRepositoryPath()->getRepository()
+                ));
+            }
+        }
+
+//        print_r($this->relations);
+    }
+
+    /**
+     * Unserialize and add a relation
+     *
+     * @param string $relationType Relation type
+     * @param string $serializedRelation Serialized relation
+     * @return RelationInterface Self reference
+     */
+    public function addRelation($relationType, $serializedRelation)
+    {
+        // Unserialize and instantiate the relation
+        $relation = RelationFactory::createFromString(
+            $relationType,
+            $serializedRelation,
+            $this->object->getRepositoryPath()->getRepository()
+        );
+
+        // If a new relation is to be added
+        if (empty($this->relations[$relationType])
+            || !array_key_exists($relation->getSignature(), $this->relations[$relationType])
+        ) {
+            $relations = clone $this;
+            $relations->addRelationInstance($relation);
+            return $relations;
+        }
+
+        // Else: Return this
+        return $this;
     }
 
     /**
@@ -73,5 +134,20 @@ class Relations extends AbstractProperties
     public function toArray()
     {
         return [];
+    }
+
+    /**
+     * Add a relation
+     *
+     * @param RelationInterface $relation Relation
+     */
+    protected function addRelationInstance(RelationInterface $relation)
+    {
+        // Initialize the relation type
+        if (!array_key_exists($relation->getType(), $this->relations)) {
+            $this->relations[$relation->getType()] = [];
+        }
+
+        $this->relations[$relation->getType()][$relation->getSignature()] = $relation;
     }
 }

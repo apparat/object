@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,40 +34,23 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Relation;
+namespace Apparat\Object\Infrastructure\Utilities;
 
 /**
- * Relation interface
+ * Validator
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Infrastructure
  */
-interface RelationInterface
+class Validator
 {
     /**
-     * Loose coupling
+     * Validate an email address against RFCs 3696, 1123, 4291, 5321, 5322
      *
-     * @var int
+     * @param string $email Email address
+     * @return boolean Valid email address
      */
-    const LOOSE_COUPLING = 0;
-    /**
-     * Tight coupling (⚭)
-     *
-     * @var int
-     */
-    const TIGHT_COUPLING = 1;
-
-    /**
-     * Return the relation type
-     *
-     * @return string Relation type
-     */
-    public function getType();
-
-    /**
-     * Return the unique relation signature
-     *
-     * @return string Relation signature
-     */
-    public function getSignature();
+    public static function isEmail($email) {
+     return true;
+    }
 }

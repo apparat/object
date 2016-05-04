@@ -37,37 +37,17 @@
 namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * Relation interface
+ * "reposts" relation
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface RelationInterface
+class RepostsRelation extends AbstractRelation
 {
     /**
-     * Loose coupling
+     * Relation type
      *
-     * @var int
+     * @var string
      */
-    const LOOSE_COUPLING = 0;
-    /**
-     * Tight coupling (⚭)
-     *
-     * @var int
-     */
-    const TIGHT_COUPLING = 1;
-
-    /**
-     * Return the relation type
-     *
-     * @return string Relation type
-     */
-    public function getType();
-
-    /**
-     * Return the unique relation signature
-     *
-     * @return string Relation signature
-     */
-    public function getSignature();
+    const TYPE = 'reposts';
 }

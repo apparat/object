@@ -45,6 +45,8 @@ Resource relations need to carry the following characteristics:
 
 The relation types **refers-to** and **embeds** cannot be set intentionally but are derived from the object payload. They may be extracted from the object content at any time and are listed here only for convenience reasons.
 
+The relation type **contributed-by** may be an extended author relation including a name and email address
+
 #### E. Processing instructions
 
 * Templating variables

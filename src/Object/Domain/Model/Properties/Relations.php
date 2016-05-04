@@ -93,8 +93,6 @@ class Relations extends AbstractProperties
                 ));
             }
         }
-
-//        print_r($this->relations);
     }
 
     /**

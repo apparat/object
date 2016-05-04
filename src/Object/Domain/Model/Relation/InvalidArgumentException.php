@@ -42,14 +42,8 @@ namespace Apparat\Object\Domain\Model\Relation;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \RuntimeException
+class InvalidArgumentException extends \InvalidArgumentException
 {
-    /**
-     * Invalid object coupling
-     *
-     * @var int
-     */
-    const INVALID_OBJECT_COUPLING = 1462311299;
     /**
      * Repeated relation component not allowed
      *

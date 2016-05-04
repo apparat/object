@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,24 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Utilities;
+namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * Validator
+ * Relation OutOfBoundsException
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Domain
  */
-class Validator
+class OutOfBoundsException extends \OutOfBoundsException
 {
     /**
-     * Validate an email address against RFCs 3696, 1123, 4291, 5321, 5322
+     * Invalid object coupling
      *
-     * @param string $email Email address
-     * @return boolean Valid email address
+     * @var int
      */
-    public static function isEmail($email)
-    {
-        return is_email($email);
-    }
+    const INVALID_OBJECT_RELATION_TYPE = 1462401333;
+    /**
+     * Invalid object coupling
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_COUPLING = 1462311299;
 }

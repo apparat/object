@@ -37,7 +37,6 @@
 namespace Apparat\Object\Domain\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
@@ -128,11 +127,9 @@ class RelationFactory
                 OutOfBoundsException::INVALID_OBJECT_RELATION_TYPE
             );
         }
-
-        $relationParams = self::parseRelationString($relation, $contextRepository);
         return Kernel::create(
             self::$relationTypes[$relationType],
-            array_values($relationParams)
+            array_values(self::parseRelationString($relation, $contextRepository))
         );
     }
 
@@ -142,6 +139,8 @@ class RelationFactory
      * @param string $relation Relation serialization
      * @param RepositoryInterface $contextRepository Context repository
      * @return array Parsed relation components
+     * @throws InvalidArgumentException If the email component has already been registered
+     * @throws InvalidArgumentException If the URL component has already been registered
      */
     protected static function parseRelationString($relation, RepositoryInterface $contextRepository)
     {
@@ -158,7 +157,7 @@ class RelationFactory
 
             // If it's an email component
             if (!strncmp('<', $relationComponent, 1)) {
-                // If an email component has already been matched
+                // If the email component has already been registered
                 if (!empty($parsed[self::PARSE_EMAIL])) {
                     throw new InvalidArgumentException(
                         sprintf('Repeated relation email component "%s" not allowed', self::PARSE_EMAIL),
@@ -174,7 +173,7 @@ class RelationFactory
             try {
                 $url = self::parseRelationUrl($relationComponent, $parsed[self::PARSE_COUPLING], $contextRepository);
 
-                // If an email component has already been matched
+                // If the URL component has already been registered
                 if (!empty($parsed[self::PARSE_URL])) {
                     throw new InvalidArgumentException(
                         sprintf('Repeated relation url component "%s" not allowed', self::PARSE_URL),
@@ -186,6 +185,7 @@ class RelationFactory
 
                 // Else: Process as label component
             } catch (\Exception $e) {
+                echo $e->getMessage();
                 $parsed[self::PARSE_LABEL] = trim($parsed[self::PARSE_LABEL].' '.$relationComponent);
             }
         }
@@ -220,6 +220,7 @@ class RelationFactory
      * @param boolean $coupling Strong coupling
      * @param RepositoryInterface $contextRepository Context repository
      * @return Url URL
+     * @throws InvalidArgumentException If the relation URL is invalid
      */
     protected static function parseRelationUrl($url, &$coupling, RepositoryInterface $contextRepository)
     {
@@ -235,8 +236,12 @@ class RelationFactory
                 return Kernel::create(ApparatUrl::class, [$url, true, $contextRepository]);
 
                 // If there's an apparat URL problem: Try to instantiate as a regular URL
-            } catch (ApparatInvalidArgumentException $e) {
-                return Kernel::create(Url::class, [$url]);
+            } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
+                /** @var Url $urlInstance */
+                $urlInstance = Kernel::create(Url::class, [$url]);
+                if ($urlInstance->isAbsolute()) {
+                    return $urlInstance;
+                }
             }
         }
 

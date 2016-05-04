@@ -35,7 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Relation;
-use Apparat\Object\Domain\Factory\RelationFactory;
+
 use Apparat\Object\Domain\Model\Path\Url;
 
 /**
@@ -51,11 +51,11 @@ abstract class AbstractRelation implements RelationInterface
      *
      * @var string
      */
-    protected $type = null;
+    const TYPE = 'abstract';
     /**
      * Relation URL
      *
-     * @var string
+     * @var Url
      */
     protected $url = null;
     /**
@@ -78,27 +78,25 @@ abstract class AbstractRelation implements RelationInterface
     protected $coupling = self::LOOSE_COUPLING;
 
     /**
-     * @param string $type Relation type
      * @param Url $url Relation URL
      * @param string $label Relation label
      * @param string $email Relation email
      * @param int $coupling Coupling
-     * @throws OutOfBoundsException If the object type is invalid
      * @throws OutOfBoundsException If the object coupling is invalid
      */
     public function __construct(
-        Url $url,
-        $label,
-        $email,
-        $coupling
+        Url $url = null,
+        $label = null,
+        $email = null,
+        $coupling = null
     ) {
         // If the coupling type is invalid
-//        if (($coupling !== self::LOOSE_COUPLING) && ($coupling !== self::TIGHT_COUPLING)) {
-//            throw new InvalidArgumentException(
-//                sprintf('Invalid object coupling "%s"', $coupling),
-//                InvalidArgumentException::INVALID_OBJECT_COUPLING
-//            );
-//        }
+        if (($coupling !== self::LOOSE_COUPLING) && ($coupling !== self::TIGHT_COUPLING)) {
+            throw new OutOfBoundsException(
+                sprintf('Invalid object coupling "%s"', $coupling),
+                OutOfBoundsException::INVALID_OBJECT_COUPLING
+            );
+        }
 
         $this->url = $url;
         $this->label = $label;
@@ -113,7 +111,108 @@ abstract class AbstractRelation implements RelationInterface
      */
     public function getType()
     {
-        return $this->type;
+        return static::TYPE;
+    }
+
+    /**
+     * Return the URL
+     *
+     * @return Url URL
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set the URL
+     *
+     * @param Url|null $url URL
+     * @return RelationInterface Self reference
+     */
+    public function setUrl(Url $url = null)
+    {
+        $relation = clone $this;
+        $relation->url = $url;
+        return $relation;
+    }
+
+    /**
+     * Return the label
+     *
+     * @return string|null Label
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * Set the label
+     *
+     * @param string|null $label Label
+     * @return RelationInterface Self reference
+     */
+    public function setLabel($label)
+    {
+        $relation = clone $this;
+        $relation->label = $label;
+        return $relation;
+    }
+
+    /**
+     * Return the email address
+     *
+     * @return string|null Email address
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the email address
+     *
+     * @param string|null $email Email address
+     * @return RelationInterface Self reference
+     */
+    public function setEmail($email)
+    {
+        $relation = clone $this;
+        $relation->email = $email;
+        return $relation;
+    }
+
+    /**
+     * Return the coupling
+     *
+     * @return int Coupling
+     */
+    public function getCoupling()
+    {
+        return $this->coupling;
+    }
+
+    /**
+     * Set the coupling
+     *
+     * @param int $coupling Coupling
+     * @return RelationInterface Self reference
+     * @throws OutOfBoundsException If the object coupling is invalid
+     */
+    public function setCoupling($coupling)
+    {
+        // If the coupling type is invalid
+        if (($coupling !== self::LOOSE_COUPLING) && ($coupling !== self::TIGHT_COUPLING)) {
+            throw new OutOfBoundsException(
+                sprintf('Invalid object coupling "%s"', $coupling),
+                OutOfBoundsException::INVALID_OBJECT_COUPLING
+            );
+        }
+
+        $relation = clone $this;
+        $relation->coupling = $coupling;
+        return $relation;
     }
 
     /**
@@ -123,6 +222,12 @@ abstract class AbstractRelation implements RelationInterface
      */
     public function getSignature()
     {
-        return md5($this->url);
+        return md5(
+            empty($this->url) ?
+                (empty($this->email) ?
+                    (empty($this->label) ?
+                        '-' : $this->label)
+                    : $this->email)
+                : $this->url);
     }
 }

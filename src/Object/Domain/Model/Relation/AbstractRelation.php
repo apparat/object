@@ -223,11 +223,20 @@ abstract class AbstractRelation implements RelationInterface
     public function getSignature()
     {
         return md5(
-            empty($this->url) ?
-                (empty($this->email) ?
-                    (empty($this->label) ?
-                        '-' : $this->label)
-                    : $this->email)
-                : $this->url);
+            empty($this->url)
+                ? (empty($this->email) ? (empty($this->label) ? '-' : $this->label) : $this->email)
+                : $this->url
+        );
+    }
+
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function __toString()
+    {
+        $relationParts = [$this->url, $this->label, empty($this->email) ? null : '<'.$this->email.'>'];
+        return implode(' ', array_filter($relationParts));
     }
 }

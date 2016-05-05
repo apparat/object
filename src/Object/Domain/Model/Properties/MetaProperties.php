@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
-use Apparat\Object\Domain\Factory\AuthorFactory;
-use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
@@ -91,12 +89,6 @@ class MetaProperties extends AbstractProperties
      */
     const PROPERTY_CATEGORIES = 'categories';
     /**
-     * Authors property
-     *
-     * @var string
-     */
-    const PROPERTY_AUTHORS = 'authors';
-    /**
      * Object title
      *
      * @var string
@@ -132,12 +124,6 @@ class MetaProperties extends AbstractProperties
      * @var array
      */
     protected $categories = [];
-    /**
-     * Object authors
-     *
-     * @var AuthorInterface[]
-     */
-    protected $authors = [];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -181,11 +167,6 @@ class MetaProperties extends AbstractProperties
         // Initialize the categories
         if (array_key_exists(self::PROPERTY_CATEGORIES, $data)) {
             $this->categories = $this->normalizeSortedPropertyValues((array)$data[self::PROPERTY_CATEGORIES]);
-        }
-
-        // Initialize the authors
-        if (array_key_exists(self::PROPERTY_AUTHORS, $data)) {
-            $this->setAuthors($data[self::PROPERTY_AUTHORS]);
         }
     }
 
@@ -316,53 +297,6 @@ class MetaProperties extends AbstractProperties
     }
 
     /**
-     * Return the object authors
-     *
-     * @return AuthorInterface[]
-     */
-    public function getAuthors()
-    {
-        return $this->authors;
-    }
-
-    /**
-     * Set the object authors
-     *
-     * @param array $authors Object authors
-     * @return MetaProperties Self reference
-     * @throws InvalidArgumentException If an author is invalid
-     */
-    public function setAuthors(array $authors)
-    {
-        /** @var AuthorInterface[] $newAuthors */
-        $newAuthors = [];
-
-        // Run through and validate all authors
-        foreach ($authors as $author) {
-            // If the author is invalid
-            if (is_string($author)) {
-                $author = AuthorFactory::createFromString(
-                    $author,
-                    $this->getObject()->getRepositoryPath()->getRepository()
-                );
-            }
-
-            // If the author is invalid
-            if (!$author instanceof AuthorInterface) {
-                throw new InvalidArgumentException(
-                    'Invalid object author',
-                    InvalidArgumentException::INVALID_OBJECT_AUTHOR
-                );
-            }
-
-            $newAuthors[$author->getSignature()] = $author;
-        }
-
-        $this->authors = array_values($newAuthors);
-        return $this;
-    }
-
-    /**
      * Return the property values as array
      *
      * @return array Property values
@@ -374,12 +308,6 @@ class MetaProperties extends AbstractProperties
             self::PROPERTY_ABSTRACT => $this->abstract,
             self::PROPERTY_KEYWORDS => $this->keywords,
             self::PROPERTY_CATEGORIES => $this->categories,
-            self::PROPERTY_AUTHORS => array_map(
-                function (AuthorInterface $author) {
-                    return $author->serialize();
-                },
-                $this->authors
-            )
         ]);
     }
 }

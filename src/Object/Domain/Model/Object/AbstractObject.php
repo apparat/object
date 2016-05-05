@@ -37,7 +37,6 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
@@ -287,6 +286,47 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished()
+    {
+        return !!($this->state & self::STATE_PUBLISHED);
+    }
+
+    /**
+     * Convert this object revision into a draft
+     */
+    protected function convertToDraft()
+    {
+        // Increment the latest revision number
+        $this->latestRevision = $this->latestRevision->increment();
+
+        // Create draft system properties
+        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
+
+        // Adapt the system properties collection state
+        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
+
+        // Set the draft flag on the repository path
+        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
+
+        // If this is not already a draft ...
+        // Recreate the system properties
+        // Copy the object ID
+        // Copy the object type
+        // Set the revision number to latest revision + 1
+        // Set the creation date to now
+        // Set no publication date
+        // Set the draft flag on the repository path
+        // Increase the latest revision by 1
+
+        // Else if this is a draft
+        // No action needed
+    }
+
+    /**
      * Set the domain properties collection
      *
      * @param GenericPropertiesInterface $domainProperties Domain property collection
@@ -347,20 +387,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Set the object state to published
-     */
-    protected function setPublishedState()
-    {
-        // If this object is not in dirty state yet
-        if (!($this->state & self::STATE_PUBLISHED)) {
-            // TODO: Send signal
-        }
-
-        // Enable the dirty state
-        $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
-    }
-
-    /**
      * Set the relations collection
      *
      * @param Relations $relations Relations collection
@@ -401,16 +427,6 @@ abstract class AbstractObject implements ObjectInterface
     public function isMutated()
     {
         return !!($this->state & self::STATE_MUTATED);
-    }
-
-    /**
-     * Return whether the object is in published state
-     *
-     * @return boolean Published state
-     */
-    public function isPublished()
-    {
-        return !!($this->state & self::STATE_PUBLISHED);
     }
 
     /**
@@ -643,30 +659,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Return all object authors
-     *
-     * @return AuthorInterface[] Authors
-     */
-    public function getAuthors()
-    {
-        return $this->metaProperties->getAuthors();
-    }
-
-    /**
-     * Add an object author
-     *
-     * @param AuthorInterface $author Author
-     * @return ObjectInterface Self reference
-     */
-    public function addAuthor(AuthorInterface $author)
-    {
-        $authors = $this->metaProperties->getAuthors();
-        $authors[] = $author;
-        $this->metaProperties->setAuthors($authors);
-        return $this;
-    }
-
-    /**
      * Return the object repository path
      *
      * @return RepositoryPathInterface Object repository path
@@ -816,7 +808,8 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @return ObjectInterface Object
      */
-    public function publish() {
+    public function publish()
+    {
         // If this is a draft
         if ($this->isDraft()) {
             // TODO: Send signal
@@ -838,33 +831,17 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Convert this object revision into a draft
+     * Set the object state to published
      */
-    protected function convertToDraft() {
-        // Increment the latest revision number
-        $this->latestRevision = $this->latestRevision->increment();
+    protected function setPublishedState()
+    {
+        // If this object is not in dirty state yet
+        if (!($this->state & self::STATE_PUBLISHED)) {
+            // TODO: Send signal
+        }
 
-        // Create draft system properties
-        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
-
-        // Adapt the system properties collection state
-        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
-
-        // Set the draft flag on the repository path
-        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
-
-        // If this is not already a draft ...
-        // Recreate the system properties
-        // Copy the object ID
-        // Copy the object type
-        // Set the revision number to latest revision + 1
-        // Set the creation date to now
-        // Set no publication date
-        // Set the draft flag on the repository path
-        // Increase the latest revision by 1
-
-        // Else if this is a draft
-        // No action needed
+        // Enable the dirty state
+        $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
     }
 
     /**

@@ -36,6 +36,8 @@
 
 namespace Apparat\Object\Domain\Model\Relation;
 
+use Apparat\Object\Domain\Model\Path\Url;
+
 /**
  * Relation interface
  *
@@ -63,6 +65,67 @@ interface RelationInterface
      * @return string Relation type
      */
     public function getType();
+
+    /**
+     * Return the URL
+     *
+     * @return Url URL
+     */
+    public function getUrl();
+
+    /**
+     * Set the URL
+     *
+     * @param Url|null $url URL
+     * @return RelationInterface Self reference
+     */
+    public function setUrl(Url $url = null);
+
+    /**
+     * Return the label
+     *
+     * @return string|null Label
+     */
+    public function getLabel();
+
+    /**
+     * Set the label
+     *
+     * @param string|null $label Label
+     * @return RelationInterface Self reference
+     */
+    public function setLabel($label);
+
+    /**
+     * Return the email address
+     *
+     * @return string|null Email address
+     */
+    public function getEmail();
+
+    /**
+     * Set the email address
+     *
+     * @param string|null $email Email address
+     * @return RelationInterface Self reference
+     */
+    public function setEmail($email);
+
+    /**
+     * Return the coupling
+     *
+     * @return int Coupling
+     */
+    public function getCoupling();
+
+    /**
+     * Set the coupling
+     *
+     * @param int $coupling Coupling
+     * @return RelationInterface Self reference
+     * @throws OutOfBoundsException If the object coupling is invalid
+     */
+    public function setCoupling($coupling);
 
     /**
      * Return the unique relation signature

@@ -35,7 +35,6 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
@@ -218,21 +217,6 @@ interface ObjectInterface
      * @return ObjectInterface Self reference
      */
     public function setCategories(array $categories);
-
-    /**
-     * Return all object authors
-     *
-     * @return AuthorInterface[] Authors
-     */
-    public function getAuthors();
-
-    /**
-     * Add an object author
-     *
-     * @param AuthorInterface $author Author
-     * @return ObjectInterface Self reference
-     */
-    public function addAuthor(AuthorInterface $author);
 
     /**
      * Return the object repository path

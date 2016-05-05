@@ -185,7 +185,6 @@ class RelationFactory
 
                 // Else: Process as label component
             } catch (\Exception $e) {
-                echo $e->getMessage();
                 $parsed[self::PARSE_LABEL] = trim($parsed[self::PARSE_LABEL].' '.$relationComponent);
             }
         }

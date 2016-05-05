@@ -38,8 +38,6 @@ namespace Apparat\Object\Tests {
 
     use Apparat\Object\Application\Factory\ObjectFactory;
     use Apparat\Object\Application\Model\Object\Article;
-    use Apparat\Object\Domain\Factory\AuthorFactory;
-    use Apparat\Object\Domain\Model\Author\ApparatAuthor;
     use Apparat\Object\Domain\Model\Object\AbstractObject;
     use Apparat\Object\Domain\Model\Object\Id;
     use Apparat\Object\Domain\Model\Object\ResourceInterface;
@@ -184,9 +182,10 @@ namespace Apparat\Object\Tests {
             $this->assertArrayEquals(['apparat', 'object', 'example', 'article'], $articleObject->getKeywords());
             $this->assertArrayEquals(['example', 'text'], $articleObject->getCategories());
 
-            $authorCount = count($articleObject->getAuthors());
-            $articleObject->addAuthor(AuthorFactory::createFromString(AuthorTest::GENERIC_AUTHOR));
-            $this->assertEquals($authorCount + 1, count($articleObject->getAuthors()));
+            // TODO Replace with contributed-by relations
+//            $authorCount = count($articleObject->getAuthors());
+//            $articleObject->addAuthor(AuthorFactory::createFromString(AuthorTest::GENERIC_AUTHOR));
+//            $this->assertEquals($authorCount + 1, count($articleObject->getAuthors()));
         }
 
         /**
@@ -233,11 +232,6 @@ namespace Apparat\Object\Tests {
         {
             $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
             $this->assertInstanceOf(Article::class, $object);
-            foreach ($object->getAuthors() as $author) {
-                if ($author instanceof ApparatAuthor) {
-//				echo $author->getId()->getId();
-                }
-            }
         }
 
         /**

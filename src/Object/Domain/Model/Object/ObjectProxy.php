@@ -37,7 +37,6 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Author\AuthorInterface;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Repository\Service;
@@ -356,27 +355,6 @@ class ObjectProxy implements ObjectInterface
     public function setCategories(array $categories)
     {
         return $this->object()->setCategories($categories);
-    }
-
-    /**
-     * Return all object authors
-     *
-     * @return AuthorInterface[] Authors
-     */
-    public function getAuthors()
-    {
-        return $this->object()->getAuthors();
-    }
-
-    /**
-     * Add an object author
-     *
-     * @param AuthorInterface $author Author
-     * @return ObjectInterface Self reference
-     */
-    public function addAuthor(AuthorInterface $author)
-    {
-        return $this->object()->addAuthor($author);
     }
 
     /**

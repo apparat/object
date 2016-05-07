@@ -188,6 +188,37 @@ interface ObjectInterface
      */
     public function setAbstract($abstract);
 
+
+    /**
+     * Return the license
+     *
+     * @return string License
+     */
+    public function getLicense();
+
+    /**
+     * Set the license
+     *
+     * @param string $license License
+     * @return ObjectInterface Self reference
+     */
+    public function setLicense($license);
+
+    /**
+     * Return the privacy
+     *
+     * @return string Privacy
+     */
+    public function getPrivacy();
+
+    /**
+     * Set the privacy
+     *
+     * @param string $privacy Privacy
+     * @return ObjectInterface Self reference
+     */
+    public function setPrivacy($privacy);
+
     /**
      * Return all object keywords
      *

@@ -291,6 +291,9 @@ namespace Apparat\Object\Tests {
 
         /**
          * Test mutation by altering metadata
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Properties\OutOfBoundsException
+         * @expectedExceptionCode 1462632083
          */
         public function testMetaDataMutation()
         {
@@ -302,12 +305,17 @@ namespace Apparat\Object\Tests {
             $object->setSlug($object->getSlug().'-mutated');
             $object->setDescription($object->getDescription().' (mutated)');
             $object->setAbstract($object->getAbstract());
+            $object->setLicense(ltrim($object->getLicense().', ', ', ').'MIT');
             $object->setKeywords(array_merge($object->getKeywords(), ['mutated']));
             $object->setCategories($object->getCategories());
             $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
             $this->assertTrue($object->isDirty());
             $this->assertTrue($object->isMutated());
+            $this->assertEquals('MIT', $object->getLicense());
+            $this->assertEquals(Object::PRIVACY_PRIVATE, $object->getPrivacy());
+            $this->assertEquals(Object::PRIVACY_PUBLIC, $object->setPrivacy(Object::PRIVACY_PUBLIC)->getPrivacy());
+            $object->setPrivacy('invalid');
         }
 
         /**

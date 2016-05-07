@@ -19,6 +19,8 @@ Object properties
 * Keywords
 * Categories
 * Summary
+* License
+* Privacy
 
 #### C. Domain properties
 

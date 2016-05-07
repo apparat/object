@@ -77,6 +77,18 @@ class MetaProperties extends AbstractProperties
      */
     const PROPERTY_ABSTRACT = 'abstract';
     /**
+     * License property
+     *
+     * @var string
+     */
+    const PROPERTY_LICENSE = 'license';
+    /**
+     * Privacy property
+     *
+     * @var string
+     */
+    const PROPERTY_PRIVACY = 'privacy';
+    /**
      * Keywords property
      *
      * @var string
@@ -88,6 +100,18 @@ class MetaProperties extends AbstractProperties
      * @var string
      */
     const PROPERTY_CATEGORIES = 'categories';
+    /**
+     * Private
+     *
+     * @var string
+     */
+    const PRIVACY_PRIVATE = 'private';
+    /**
+     * Public
+     *
+     * @var string
+     */
+    const PRIVACY_PUBLIC = 'public';
     /**
      * Object title
      *
@@ -113,6 +137,18 @@ class MetaProperties extends AbstractProperties
      */
     protected $abstract = '';
     /**
+     * Object license
+     *
+     * @var string
+     */
+    protected $license = '';
+    /**
+     * Object privacy
+     *
+     * @var string
+     */
+    protected $privacy = self::PRIVACY_PRIVATE;
+    /**
      * Object keywords
      *
      * @var array
@@ -124,6 +160,15 @@ class MetaProperties extends AbstractProperties
      * @var array
      */
     protected $categories = [];
+    /**
+     * Privacy levels
+     *
+     * @var array
+     */
+    protected static $privacyLevels = [
+        self::PRIVACY_PRIVATE,
+        self::PRIVACY_PUBLIC,
+    ];
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -252,6 +297,56 @@ class MetaProperties extends AbstractProperties
     public function setAbstract($abstract)
     {
         return $this->mutateStringProperty(self::PROPERTY_ABSTRACT, $abstract);
+    }
+
+    /**
+     * Return the object license
+     *
+     * @return string Object license
+     */
+    public function getLicense()
+    {
+        return $this->license;
+    }
+
+    /**
+     * Set the object license
+     *
+     * @param string $license Object license
+     * @return MetaProperties Self reference
+     */
+    public function setLicense($license)
+    {
+        return $this->mutateStringProperty(self::PROPERTY_LICENSE, $license);
+    }
+
+    /**
+     * Return the object privacy
+     *
+     * @return string Object privacy
+     */
+    public function getPrivacy()
+    {
+        return $this->privacy;
+    }
+
+    /**
+     * Set the object privacy
+     *
+     * @param string $privacy Object privacy
+     * @return MetaProperties Self reference
+     */
+    public function setPrivacy($privacy)
+    {
+        // If the privacy level is unknown
+        if (!in_array($privacy, self::$privacyLevels)) {
+            throw new OutOfBoundsException(
+                sprintf('Invalid privacy level "%s"', $privacy),
+                OutOfBoundsException::INVALID_PRIVACY_LEVEL
+            );
+        }
+
+        return $this->mutateStringProperty(self::PROPERTY_PRIVACY, $privacy);
     }
 
     /**

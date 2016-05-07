@@ -615,6 +615,50 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the license
+     *
+     * @return string License
+     */
+    public function getLicense()
+    {
+        return $this->metaProperties->getLicense();
+    }
+
+    /**
+     * Set the license
+     *
+     * @param string $license License
+     * @return MetaProperties Self reference
+     */
+    public function setLicense($license)
+    {
+        $this->setMetaProperties($this->metaProperties->setLicense($license));
+        return $this;
+    }
+
+    /**
+     * Return the privacy
+     *
+     * @return string Privacy
+     */
+    public function getPrivacy()
+    {
+        return $this->metaProperties->getPrivacy();
+    }
+
+    /**
+     * Set the privacy
+     *
+     * @param string $privacy Privacy
+     * @return MetaProperties Self reference
+     */
+    public function setPrivacy($privacy)
+    {
+        $this->setMetaProperties($this->metaProperties->setPrivacy($privacy));
+        return $this;
+    }
+
+    /**
      * Return all object keywords
      *
      * @return array Object keywords

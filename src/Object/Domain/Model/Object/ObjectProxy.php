@@ -337,6 +337,48 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the license
+     *
+     * @return string License
+     */
+    public function getLicense()
+    {
+        return $this->object()->getLicense();
+    }
+
+    /**
+     * Set the license
+     *
+     * @param string $license License
+     * @return ObjectInterface Self reference
+     */
+    public function setLicense($license)
+    {
+        return $this->object()->setLicense($license);
+    }
+
+    /**
+     * Return the privacy
+     *
+     * @return string Privacy
+     */
+    public function getPrivacy()
+    {
+        return $this->object()->getPrivacy();
+    }
+
+    /**
+     * Set the privacy
+     *
+     * @param string $privacy Privacy
+     * @return ObjectInterface Self reference
+     */
+    public function setPrivacy($privacy)
+    {
+        return $this->object()->setPrivacy($privacy);
+    }
+
+    /**
      * Return all object categories
      *
      * @return array Object categories

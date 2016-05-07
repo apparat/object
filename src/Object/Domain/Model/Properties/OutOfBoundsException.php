@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Ports
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,47 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
-
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
-use Apparat\Object\Domain\Model\Properties\MetaProperties;
+namespace Apparat\Object\Domain\Model\Properties;
 
 /**
- * Object facade
+ * Properties OutOfBoundsException
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Ports
+ * @subpackage Apparat\Object\Domain
  */
-class Object
+class OutOfBoundsException extends \OutOfBoundsException
 {
     /**
-     * Private
+     * Invalid privacy level
      *
-     * @var string
+     * @var int
      */
-    const PRIVACY_PRIVATE = MetaProperties::PRIVACY_PRIVATE;
-    /**
-     * Public
-     *
-     * @var string
-     */
-    const PRIVACY_PUBLIC = MetaProperties::PRIVACY_PUBLIC;
-    /**
-     * Instantiate and return an object
-     *
-     * @param string $url Object URL (relative or absolute including the apparat base URL)
-     * @return ObjectInterface Object
-     * @api
-     */
-    public static function instance($url)
-    {
-        // Instantiate the object URL
-        /** @var ObjectUrl $objectUrl */
-        $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
-
-        // Instantiate the local object repository, load and return the object
-        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
-    }
+    const INVALID_PRIVACY_LEVEL = 1462632083;
 }

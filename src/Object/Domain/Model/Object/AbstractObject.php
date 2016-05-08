@@ -37,10 +37,14 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Model\Object\Traits\DomainPropertiesTrait;
+use Apparat\Object\Domain\Model\Object\Traits\MetaPropertiesTrait;
+use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
+use Apparat\Object\Domain\Model\Object\Traits\RelationsTrait;
+use Apparat\Object\Domain\Model\Object\Traits\SystemPropertiesTrait;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Domain\Model\Properties\GenericPropertiesInterface;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
@@ -56,6 +60,10 @@ use Apparat\Object\Domain\Repository\Service;
  */
 abstract class AbstractObject implements ObjectInterface
 {
+    /**
+     * Use traits
+     */
+    use SystemPropertiesTrait, MetaPropertiesTrait, DomainPropertiesTrait, RelationsTrait, ProcessingInstructionsTrait;
     /**
      * Clean state
      *
@@ -81,24 +89,6 @@ abstract class AbstractObject implements ObjectInterface
      */
     const STATE_PUBLISHED = 4;
     /**
-     * System properties
-     *
-     * @var SystemProperties
-     */
-    protected $systemProperties;
-    /**
-     * Meta properties
-     *
-     * @var MetaProperties
-     */
-    protected $metaProperties;
-    /**
-     * Domain properties
-     *
-     * @var AbstractDomainProperties
-     */
-    protected $domainProperties;
-    /**
      * Object payload
      *
      * @var string
@@ -110,24 +100,6 @@ abstract class AbstractObject implements ObjectInterface
      * @var RepositoryPathInterface
      */
     protected $path;
-    /**
-     * Domain property collection class
-     *
-     * @var string
-     */
-    protected $domainPropertyCClass = AbstractDomainProperties::class;
-    /**
-     * Object relations
-     *
-     * @var Relations
-     */
-    protected $relations;
-    /**
-     * Processing instructions
-     *
-     * @var ProcessingInstructions
-     */
-    protected $processingInstructions;
     /**
      * Latest revision index
      *
@@ -238,26 +210,117 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Set the meta properties collection
+     * Return whether the object is in mutated state
      *
-     * @param MetaProperties $metaProperties Meta property collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
+     * @return boolean Mutated state
      */
-    protected function setMetaProperties(MetaProperties $metaProperties, $overwrite = false)
+    public function isMutated()
     {
-        $this->metaProperties = $metaProperties;
-        $metaPropertiesState = spl_object_hash($this->metaProperties);
+        return !!($this->state & self::STATE_MUTATED);
+    }
 
-        // If the meta property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[MetaProperties::COLLECTION])
-            && ($metaPropertiesState !== $this->collectionStates[MetaProperties::COLLECTION])
+    /**
+     * Use a specific object revision
+     *
+     * @param Revision $revision Revision to be used
+     * @return ObjectInterface Object
+     * @throws OutOfBoundsException If the requested revision is invalid
+     */
+    public function useRevision(Revision $revision)
+    {
+        $isCurrentRevision = false;
+
+        // If the requested revision is invalid
+        if (!$revision->isCurrent() &&
+            (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))
         ) {
-            // Flag this object as mutated
+            throw new OutOfBoundsException(sprintf('Invalid object revision "%s"', $revision->getRevision()),
+                OutOfBoundsException::INVALID_OBJECT_REVISION);
+        }
+
+        // If the current revision got requested
+        if ($revision->isCurrent()) {
+            $isCurrentRevision = true;
+            $revision = $this->latestRevision;
+        }
+
+        // If the requested revision is not already used
+        if ($revision != $this->getRevision()) {
+            /** @var ManagerInterface $objectManager */
+            $objectManager = Kernel::create(Service::class)->getObjectManager();
+
+            // Load the requested object revision resource
+            /** @var Revision $newRevision */
+            $newRevision = $isCurrentRevision ? Revision::current() : $revision;
+            /** @var RepositoryPath $newRevisionPath */
+            $newRevisionPath = $this->path->setRevision($newRevision);
+            $revisionResource = $objectManager->loadObject($newRevisionPath);
+
+            // Load the revision resource data
+            $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
+
+            // Set the current revision path
+            $this->path = $newRevisionPath;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return the object repository path
+     *
+     * @return RepositoryPathInterface Object repository path
+     */
+    public function getRepositoryPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Return the object property data
+     *
+     * @return array Object property data
+     */
+    public function getPropertyData()
+    {
+        $propertyData = array_filter([
+            SystemProperties::COLLECTION => $this->systemProperties->toArray(),
+            MetaProperties::COLLECTION => $this->metaProperties->toArray(),
+            AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray(),
+            ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray(),
+            Relations::COLLECTION => $this->relations->toArray(),
+        ], function (array $collection) {
+            return (boolean)count($collection);
+        });
+
+        return $propertyData;
+    }
+
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload()
+    {
+        return $this->payload;
+    }
+
+    /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload)
+    {
+        // If the payload is changed
+        if ($payload !== $this->payload) {
             $this->setMutatedState();
         }
 
-        $this->collectionStates[MetaProperties::COLLECTION] = $metaPropertiesState;
+        $this->payload = $payload;
+        return $this;
     }
 
     /**
@@ -327,439 +390,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Set the domain properties collection
-     *
-     * @param GenericPropertiesInterface $domainProperties Domain property collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    protected function setDomainProperties(GenericPropertiesInterface $domainProperties, $overwrite = false)
-    {
-        $this->domainProperties = $domainProperties;
-        $domainPropertiesState = spl_object_hash($this->domainProperties);
-
-        // If the domain property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[AbstractDomainProperties::COLLECTION])
-            && ($domainPropertiesState !== $this->collectionStates[AbstractDomainProperties::COLLECTION])
-        ) {
-            // Flag this object as mutated
-            $this->setMutatedState();
-        }
-
-        $this->collectionStates[AbstractDomainProperties::COLLECTION] = $domainPropertiesState;
-    }
-
-    /**
-     * Set the processing instruction collection
-     *
-     * @param GenericPropertiesInterface $processingInstructions Processing instruction collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    protected function setProcessingInstructions(GenericPropertiesInterface $processingInstructions, $overwrite = false)
-    {
-        $this->processingInstructions = $processingInstructions;
-        $processingInstructionsState = spl_object_hash($this->processingInstructions);
-
-        // If the domain property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[ProcessingInstructions::COLLECTION])
-            && ($processingInstructionsState !== $this->collectionStates[ProcessingInstructions::COLLECTION])
-        ) {
-            // Flag this object as dirty
-            $this->setDirtyState();
-        }
-
-        $this->collectionStates[ProcessingInstructions::COLLECTION] = $processingInstructionsState;
-    }
-
-    /**
-     * Set the object state to dirty
-     */
-    protected function setDirtyState()
-    {
-        // If this object is not in dirty state yet
-        if (!($this->state & self::STATE_DIRTY)) {
-            // TODO: Send signal
-        }
-
-        // Enable the dirty state
-        $this->state |= self::STATE_DIRTY;
-    }
-
-    /**
-     * Set the relations collection
-     *
-     * @param Relations $relations Relations collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    protected function setRelations(Relations $relations, $overwrite = false)
-    {
-        $this->relations = $relations;
-        $relationsState = spl_object_hash($this->relations);
-
-        // If the domain property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[Relations::COLLECTION])
-            && ($relationsState !== $this->collectionStates[Relations::COLLECTION])
-        ) {
-            // Flag this object as dirty
-            $this->setDirtyState();
-        }
-
-        $this->collectionStates[Relations::COLLECTION] = $relationsState;
-    }
-
-    /**
-     * Return the object revision
-     *
-     * @return Revision Object revision
-     */
-    public function getRevision()
-    {
-        return $this->systemProperties->getRevision();
-    }
-
-    /**
-     * Return whether the object is in mutated state
-     *
-     * @return boolean Mutated state
-     */
-    public function isMutated()
-    {
-        return !!($this->state & self::STATE_MUTATED);
-    }
-
-    /**
-     * Use a specific object revision
-     *
-     * @param Revision $revision Revision to be used
-     * @return ObjectInterface Object
-     * @throws OutOfBoundsException If the requested revision is invalid
-     */
-    public function useRevision(Revision $revision)
-    {
-        $isCurrentRevision = false;
-
-        // If the requested revision is invalid
-        if (!$revision->isCurrent() &&
-            (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))
-        ) {
-            throw new OutOfBoundsException(sprintf('Invalid object revision "%s"', $revision->getRevision()),
-                OutOfBoundsException::INVALID_OBJECT_REVISION);
-        }
-
-        // If the current revision got requested
-        if ($revision->isCurrent()) {
-            $isCurrentRevision = true;
-            $revision = $this->latestRevision;
-        }
-
-        // If the requested revision is not already used
-        if ($revision != $this->getRevision()) {
-            /** @var ManagerInterface $objectManager */
-            $objectManager = Kernel::create(Service::class)->getObjectManager();
-
-            // Load the requested object revision resource
-            /** @var Revision $newRevision */
-            $newRevision = $isCurrentRevision ? Revision::current() : $revision;
-            /** @var RepositoryPath $newRevisionPath */
-            $newRevisionPath = $this->path->setRevision($newRevision);
-            $revisionResource = $objectManager->loadObject($newRevisionPath);
-
-            // Load the revision resource data
-            $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
-
-            // Set the current revision path
-            $this->path = $newRevisionPath;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Return the object ID
-     *
-     * @return Id Object ID
-     */
-    public function getId()
-    {
-        return $this->systemProperties->getId();
-    }
-
-    /**
-     * Return the object type
-     *
-     * @return Type Object type
-     */
-    public function getType()
-    {
-        return $this->systemProperties->getType();
-    }
-
-    /**
-     * Return the creation date & time
-     *
-     * @return \DateTimeImmutable Creation date & time
-     */
-    public function getCreated()
-    {
-        return $this->systemProperties->getCreated();
-    }
-
-    /**
-     * Return the publication date & time
-     *
-     * @return \DateTimeImmutable|null Publication date & time
-     */
-    public function getPublished()
-    {
-        return $this->systemProperties->getPublished();
-    }
-
-    /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash()
-    {
-        return $this->systemProperties->getHash();
-    }
-
-    /**
-     * Return the object title
-     *
-     * @return string Object title
-     */
-    public function getTitle()
-    {
-        return $this->metaProperties->getTitle();
-    }
-
-    /**
-     * Set the title
-     *
-     * @param string $title Title
-     * @return ObjectInterface Self reference
-     */
-    public function setTitle($title)
-    {
-        $this->setMetaProperties($this->metaProperties->setTitle($title));
-        return $this;
-    }
-
-    /**
-     * Return the object slug
-     *
-     * @return string Object slug
-     */
-    public function getSlug()
-    {
-        return $this->metaProperties->getSlug();
-    }
-
-    /**
-     * Set the slug
-     *
-     * @param string $slug Slug
-     * @return ObjectInterface Self reference
-     */
-    public function setSlug($slug)
-    {
-        $this->setMetaProperties($this->metaProperties->setSlug($slug));
-        return $this;
-    }
-
-    /**
-     * Return the object description
-     *
-     * @return string Object description
-     */
-    public function getDescription()
-    {
-        return $this->metaProperties->getDescription();
-    }
-
-    /**
-     * Set the description
-     *
-     * @param string $description Description
-     * @return ObjectInterface Self reference
-     */
-    public function setDescription($description)
-    {
-        $this->setMetaProperties($this->metaProperties->setDescription($description));
-        return $this;
-    }
-
-    /**
-     * Return the object abstract
-     *
-     * @return string Object abstract
-     */
-    public function getAbstract()
-    {
-        return $this->metaProperties->getAbstract();
-    }
-
-    /**
-     * Set the abstract
-     *
-     * @param string $abstract Abstract
-     * @return ObjectInterface Self reference
-     */
-    public function setAbstract($abstract)
-    {
-        $this->setMetaProperties($this->metaProperties->setAbstract($abstract));
-        return $this;
-    }
-
-    /**
-     * Return the license
-     *
-     * @return string License
-     */
-    public function getLicense()
-    {
-        return $this->metaProperties->getLicense();
-    }
-
-    /**
-     * Set the license
-     *
-     * @param string $license License
-     * @return MetaProperties Self reference
-     */
-    public function setLicense($license)
-    {
-        $this->setMetaProperties($this->metaProperties->setLicense($license));
-        return $this;
-    }
-
-    /**
-     * Return the privacy
-     *
-     * @return string Privacy
-     */
-    public function getPrivacy()
-    {
-        return $this->metaProperties->getPrivacy();
-    }
-
-    /**
-     * Set the privacy
-     *
-     * @param string $privacy Privacy
-     * @return MetaProperties Self reference
-     */
-    public function setPrivacy($privacy)
-    {
-        $this->setMetaProperties($this->metaProperties->setPrivacy($privacy));
-        return $this;
-    }
-
-    /**
-     * Return all object keywords
-     *
-     * @return array Object keywords
-     */
-    public function getKeywords()
-    {
-        return $this->metaProperties->getKeywords();
-    }
-
-    /**
-     * Set the keywords
-     *
-     * @param array $keywords Keywords
-     * @return ObjectInterface Self reference
-     */
-    public function setKeywords(array $keywords)
-    {
-        $this->setMetaProperties($this->metaProperties->setKeywords($keywords));
-        return $this;
-    }
-
-    /**
-     * Return all object categories
-     *
-     * @return array Object categories
-     */
-    public function getCategories()
-    {
-        return $this->metaProperties->getCategories();
-    }
-
-    /**
-     * Set the categories
-     *
-     * @param array $categories Categories
-     * @return ObjectInterface Self reference
-     */
-    public function setCategories(array $categories)
-    {
-        $this->setMetaProperties($this->metaProperties->setCategories($categories));
-        return $this;
-    }
-
-    /**
-     * Return the object repository path
-     *
-     * @return RepositoryPathInterface Object repository path
-     */
-    public function getRepositoryPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * Return the object property data
-     *
-     * @return array Object property data
-     */
-    public function getPropertyData()
-    {
-        $propertyData = array_filter([
-            SystemProperties::COLLECTION => $this->systemProperties->toArray(),
-            MetaProperties::COLLECTION => $this->metaProperties->toArray(),
-            AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray(),
-            ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray(),
-            Relations::COLLECTION => $this->relations->toArray(),
-        ], function (array $collection) {
-            return (boolean)count($collection);
-        });
-
-        return $propertyData;
-    }
-
-    /**
-     * Return the object payload
-     *
-     * @return string Object payload
-     */
-    public function getPayload()
-    {
-        return $this->payload;
-    }
-
-    /**
-     * Set the payload
-     *
-     * @param string $payload Payload
-     * @return ObjectInterface Self reference
-     */
-    public function setPayload($payload)
-    {
-        // If the payload is changed
-        if ($payload !== $this->payload) {
-            $this->setMutatedState();
-        }
-
-        $this->payload = $payload;
-        return $this;
-    }
-
-    /**
      * Return the absolute object URL
      *
      * @return string
@@ -767,32 +397,6 @@ abstract class AbstractObject implements ObjectInterface
     public function getAbsoluteUrl()
     {
         return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($this->path);
-    }
-
-    /**
-     * Get a domain property value
-     *
-     * Multi-level properties might be traversed by property name paths separated with colons (":").
-     *
-     * @param string $property Property name
-     * @return mixed Property value
-     */
-    public function getDomainProperty($property)
-    {
-        return $this->domainProperties->getProperty($property);
-    }
-
-    /**
-     * Set a domain property value
-     *
-     * @param string $property Property name
-     * @param mixed $value Property value
-     * @return ObjectInterface Self reference
-     */
-    public function setDomainProperty($property, $value)
-    {
-        $this->setDomainProperties($this->domainProperties->setProperty($property, $value));
-        return $this;
     }
 
     /**
@@ -896,5 +500,19 @@ abstract class AbstractObject implements ObjectInterface
     public function isDirty()
     {
         return !!($this->state & self::STATE_DIRTY);
+    }
+
+    /**
+     * Set the object state to dirty
+     */
+    protected function setDirtyState()
+    {
+        // If this object is not in dirty state yet
+        if (!($this->state & self::STATE_DIRTY)) {
+            // TODO: Send signal
+        }
+
+        // Enable the dirty state
+        $this->state |= self::STATE_DIRTY;
     }
 }

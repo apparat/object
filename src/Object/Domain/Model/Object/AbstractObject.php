@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Model\Object;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Traits\DomainPropertiesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\MetaPropertiesTrait;
+use Apparat\Object\Domain\Model\Object\Traits\PayloadTrait;
 use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\RelationsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\SystemPropertiesTrait;
@@ -63,7 +64,8 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Use traits
      */
-    use SystemPropertiesTrait, MetaPropertiesTrait, DomainPropertiesTrait, RelationsTrait, ProcessingInstructionsTrait;
+    use SystemPropertiesTrait, MetaPropertiesTrait, DomainPropertiesTrait, RelationsTrait,
+        ProcessingInstructionsTrait, PayloadTrait;
     /**
      * Clean state
      *
@@ -88,12 +90,6 @@ abstract class AbstractObject implements ObjectInterface
      * @var int
      */
     const STATE_PUBLISHED = 4;
-    /**
-     * Object payload
-     *
-     * @var string
-     */
-    protected $payload;
     /**
      * Repository path
      *
@@ -297,33 +293,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Return the object payload
-     *
-     * @return string Object payload
-     */
-    public function getPayload()
-    {
-        return $this->payload;
-    }
-
-    /**
-     * Set the payload
-     *
-     * @param string $payload Payload
-     * @return ObjectInterface Self reference
-     */
-    public function setPayload($payload)
-    {
-        // If the payload is changed
-        if ($payload !== $this->payload) {
-            $this->setMutatedState();
-        }
-
-        $this->payload = $payload;
-        return $this;
-    }
-
-    /**
      * Set the object state to mutated
      */
     protected function setMutatedState()
@@ -397,30 +366,6 @@ abstract class AbstractObject implements ObjectInterface
     public function getAbsoluteUrl()
     {
         return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($this->path);
-    }
-
-    /**
-     * Get a processing instruction
-     *
-     * @param string $procInst Processing instruction name
-     * @return mixed Processing instruction
-     */
-    public function getProcessingInstruction($procInst)
-    {
-        return $this->processingInstructions->getProperty($procInst);
-    }
-
-    /**
-     * Set a processing instruction
-     *
-     * @param string $procInst Processing instruction name
-     * @param mixed $value Processing instruction
-     * @return ObjectInterface Self reference
-     */
-    public function setProcessingInstruction($procInst, $value)
-    {
-        $this->setProcessingInstructions($this->processingInstructions->setProperty($procInst, $value));
-        return $this;
     }
 
     /**

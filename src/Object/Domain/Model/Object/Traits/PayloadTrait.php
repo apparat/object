@@ -37,78 +37,48 @@
 namespace Apparat\Object\Domain\Model\Object\Traits;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
-use Apparat\Object\Domain\Model\Properties\GenericPropertiesInterface;
 
 /**
- * Domain properties trait
+ * Payload trait
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
- * @property array $collectionStates
  */
-trait DomainPropertiesTrait
+trait PayloadTrait
 {
     /**
-     * Domain properties
-     *
-     * @var GenericPropertiesInterface
-     */
-    protected $domainProperties;
-    /**
-     * Domain property collection class
+     * Object payload
      *
      * @var string
      */
-    protected $domainPropertyCClass = AbstractDomainProperties::class;
+    protected $payload;
+
 
     /**
-     * Get a domain property value
+     * Return the object payload
      *
-     * Multi-level properties might be traversed by property name paths separated with colons (":").
-     *
-     * @param string $property Property name
-     * @return mixed Property value
+     * @return string Object payload
      */
-    public function getDomainProperty($property)
+    public function getPayload()
     {
-        return $this->domainProperties->getProperty($property);
+        return $this->payload;
     }
 
     /**
-     * Set a domain property value
+     * Set the payload
      *
-     * @param string $property Property name
-     * @param mixed $value Property value
+     * @param string $payload Payload
      * @return ObjectInterface Self reference
      */
-    public function setDomainProperty($property, $value)
+    public function setPayload($payload)
     {
-        $this->setDomainProperties($this->domainProperties->setProperty($property, $value));
-        return $this;
-    }
-
-    /**
-     * Set the domain properties collection
-     *
-     * @param GenericPropertiesInterface $domainProperties Domain property collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    protected function setDomainProperties(GenericPropertiesInterface $domainProperties, $overwrite = false)
-    {
-        $this->domainProperties = $domainProperties;
-        $domainPropertiesState = spl_object_hash($this->domainProperties);
-
-        // If the domain property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[AbstractDomainProperties::COLLECTION])
-            && ($domainPropertiesState !== $this->collectionStates[AbstractDomainProperties::COLLECTION])
-        ) {
-            // Flag this object as mutated
+        // If the payload is changed
+        if ($payload !== $this->payload) {
             $this->setMutatedState();
         }
 
-        $this->collectionStates[AbstractDomainProperties::COLLECTION] = $domainPropertiesState;
+        $this->payload = $payload;
+        return $this;
     }
 
     /**

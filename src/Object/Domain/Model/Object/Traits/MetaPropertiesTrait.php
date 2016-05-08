@@ -44,6 +44,7 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
+ * @property array $collectionStates
  */
 trait MetaPropertiesTrait
 {
@@ -252,4 +253,9 @@ trait MetaPropertiesTrait
         $this->setMetaProperties($this->metaProperties->setCategories($categories));
         return $this;
     }
+
+    /**
+     * Set the object state to mutated
+     */
+    abstract protected function setMutatedState();
 }

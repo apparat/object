@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Properties\Relations;
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
+ * @property array $collectionStates
  */
 trait RelationsTrait
 {
@@ -74,4 +75,9 @@ trait RelationsTrait
 
         $this->collectionStates[Relations::COLLECTION] = $relationsState;
     }
+
+    /**
+     * Set the object state to dirty
+     */
+    abstract protected function setDirtyState();
 }

@@ -35,6 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Object\Traits;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\GenericPropertiesInterface;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 
@@ -43,13 +44,14 @@ use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
+ * @property array $collectionStates
  */
 trait ProcessingInstructionsTrait
 {
     /**
      * Processing instructions
      *
-     * @var ProcessingInstructions
+     * @var GenericPropertiesInterface
      */
     protected $processingInstructions;
 
@@ -75,4 +77,33 @@ trait ProcessingInstructionsTrait
 
         $this->collectionStates[ProcessingInstructions::COLLECTION] = $processingInstructionsState;
     }
+
+    /**
+     * Get a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @return mixed Processing instruction
+     */
+    public function getProcessingInstruction($procInst)
+    {
+        return $this->processingInstructions->getProperty($procInst);
+    }
+
+    /**
+     * Set a processing instruction
+     *
+     * @param string $procInst Processing instruction name
+     * @param mixed $value Processing instruction
+     * @return ObjectInterface Self reference
+     */
+    public function setProcessingInstruction($procInst, $value)
+    {
+        $this->setProcessingInstructions($this->processingInstructions->setProperty($procInst, $value));
+        return $this;
+    }
+
+    /**
+     * Set the object state to dirty
+     */
+    abstract protected function setDirtyState();
 }

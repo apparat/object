@@ -236,7 +236,7 @@ abstract class AbstractRelation implements RelationInterface
      */
     public function __toString()
     {
-        $relationParts = [$this->url, $this->label, empty($this->email) ? null : '<'.$this->email.'>'];
+        $relationParts = [$this->url, empty($this->email) ? null : '<'.$this->email.'>', $this->label];
         return implode(' ', array_filter($relationParts));
     }
 }

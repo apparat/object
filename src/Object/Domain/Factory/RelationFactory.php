@@ -41,7 +41,7 @@ use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
 use Apparat\Object\Domain\Model\Relation\ContributesRelation;
-use Apparat\Object\Domain\Model\Relation\EmbeddedRelation;
+use Apparat\Object\Domain\Model\Relation\EmbeddedByRelation;
 use Apparat\Object\Domain\Model\Relation\EmbedsRelation;
 use Apparat\Object\Domain\Model\Relation\InvalidArgumentException;
 use Apparat\Object\Domain\Model\Relation\LikedByRelation;
@@ -98,7 +98,7 @@ class RelationFactory
         ContributesRelation::TYPE => ContributesRelation::class,
         ContributedByRelation::TYPE => ContributedByRelation::class,
         EmbedsRelation::TYPE => EmbedsRelation::class,
-        EmbeddedRelation::TYPE => EmbeddedRelation::class,
+        EmbeddedByRelation::TYPE => EmbeddedByRelation::class,
         LikesRelation::TYPE => LikesRelation::class,
         LikedByRelation::TYPE => LikedByRelation::class,
         RefersToRelation::TYPE => RefersToRelation::class,
@@ -116,10 +116,26 @@ class RelationFactory
      * @param string $relation Relation serialization
      * @param RepositoryInterface $contextRepository Context repository
      * @return RelationInterface Relation object
-     * @throws InvalidArgumentException If the relation format is invalid
      */
     public static function createFromString($relationType, $relation, RepositoryInterface $contextRepository)
     {
+        // Validate the relation type
+        self::validateRelationType($relationType);
+
+        // Create the relation instance
+        return Kernel::create(
+            self::$relationTypes[$relationType],
+            array_values(self::parseRelationString($relation, $contextRepository))
+        );
+    }
+
+    /**
+     * Validate a relation type
+     *
+     * @param string $relationType Relation type
+     * @throws InvalidArgumentException If the relation type is invalid
+     */
+    public static function validateRelationType($relationType) {
         // If the relation type is invalid
         if (empty($relationType) || empty(self::$relationTypes[$relationType])) {
             throw new OutOfBoundsException(
@@ -127,10 +143,6 @@ class RelationFactory
                 OutOfBoundsException::INVALID_OBJECT_RELATION_TYPE
             );
         }
-        return Kernel::create(
-            self::$relationTypes[$relationType],
-            array_values(self::parseRelationString($relation, $contextRepository))
-        );
     }
 
     /**

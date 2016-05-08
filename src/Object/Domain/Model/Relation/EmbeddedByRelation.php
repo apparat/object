@@ -42,12 +42,12 @@ namespace Apparat\Object\Domain\Model\Relation;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class EmbeddedRelation extends AbstractRelation
+class EmbeddedByRelation extends AbstractRelation
 {
     /**
      * Relation type
      *
      * @var string
      */
-    const TYPE = 'emmbedded';
+    const TYPE = 'emmbedded-by';
 }

@@ -35,7 +35,9 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Object\Traits;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\Relations;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 
 /**
  * Relations trait
@@ -80,4 +82,26 @@ trait RelationsTrait
      * Set the object state to dirty
      */
     abstract protected function setDirtyState();
+
+    /**
+     * Add an object relation
+     *
+     * @param string $relationType Relation type
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @return ObjectInterface
+     */
+    public function addRelation($relationType, $relation) {
+        $this->setRelations($this->relations->addRelation($relationType, $relation));
+        return $this;
+    }
+
+    /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null) {
+        return $this->relations->getRelations($relationType);
+    }
 }

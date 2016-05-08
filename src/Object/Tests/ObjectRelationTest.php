@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Test
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,72 +34,61 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Properties;
+namespace Apparat\Object\Tests;
+
+use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Repository\Repository;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Relation;
 
 /**
- * Object properties invalid argument exception
+ * Object relation test
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Tests
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class ObjectRelationTest extends AbstractDisabledAutoconnectorTest
 {
     /**
-     * Empty property name
+     * Example object path
      *
-     * @var int
+     * @var string
      */
-    const EMPTY_PROPERTY_NAME = 1450817720;
+    const OBJECT_PATH = '/2015/12/21/1.article/1';
 
     /**
-     * Invalid property name
+     * Test repository
      *
-     * @var int
+     * @var Repository
      */
-    const INVALID_PROPERTY_NAME = 1450818168;
+    protected static $repository = null;
 
     /**
-     * Empty property collection name
-     *
-     * @var int
+     * Setup
      */
-    const EMPTY_COLLECTION_NAME = 1450821755;
+    public static function setUpBeforeClass()
+    {
+        \Apparat\Object\Ports\Repository::register(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+            ]
+        );
+
+        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
+
+        \date_default_timezone_set('UTC');
+    }
 
     /**
-     * Invalid property collection name
-     *
-     * @var int
+     * Test the addition of an object relation
      */
-    const INVALID_COLLECTION_NAME = 1450821628;
-
-    /**
-     * Invalid object type
-     *
-     * @var int
-     */
-    const INVALID_OBJECT_TYPE = 1450824343;
-    /**
-     * Invalid object author
-     *
-     * @var int
-     */
-    const INVALID_OBJECT_AUTHOR = 1451425516;
-    /**
-     * Invalid domain property collection class
-     *
-     * @var int
-     */
-    const INVALID_DOMAIN_PROPERTY_COLLECTION_CLASS = 1452288429;
-    /**
-     * Invalid system properties
-     *
-     * @var int
-     */
-    const INVALID_SYSTEM_PROPERTIES = 1456522289;
-    /**
-     * Invalid object relation
-     *
-     * @var int
-     */
-    const INVALID_OBJECT_RELATION = 1462703468;
+    public function testObjectAddRelation()
+    {
+        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $this->assertInstanceOf(Article::class, $article);
+        $article->addRelation(Relation::EMBEDDED_BY, 'http://example.com <john@example.com> John Doe');
+    }
 }

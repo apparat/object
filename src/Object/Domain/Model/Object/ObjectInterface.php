@@ -37,6 +37,7 @@ namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 
 /**
  * Object interface
@@ -342,4 +343,21 @@ interface ObjectInterface
      * @return ObjectInterface Object
      */
     public function publish();
+
+    /**
+     * Add an object relation
+     *
+     * @param string $relationType Relation type
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @return ObjectInterface
+     */
+    public function addRelation($relationType, $relation);
+
+    /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null);
 }

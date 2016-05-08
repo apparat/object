@@ -54,7 +54,7 @@ namespace Apparat\Object\Tests {
      * Object tests
      *
      * @package Apparat\Object
-     * @subpackage ApparatTest
+     * @subpackage Apparat\Object\Test
      */
     class ObjectTest extends AbstractDisabledAutoconnectorTest
     {

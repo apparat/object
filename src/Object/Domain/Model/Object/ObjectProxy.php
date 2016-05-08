@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Model\Object;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -517,5 +518,26 @@ class ObjectProxy implements ObjectInterface
         return $this->object()->publish();
     }
 
+    /**
+     * Add an object relation
+     *
+     * @param string $relationType Relation type
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @return ObjectInterface
+     */
+    public function addRelation($relationType, $relation)
+    {
+        return $this->object()->addRelation($relationType, $relation);
+    }
 
+    /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null)
+    {
+        return $this->object()->getRelations($relationType);
+    }
 }

@@ -96,20 +96,46 @@ class Relations extends AbstractProperties
     }
 
     /**
+     * Add a relation
+     *
+     * @param RelationInterface $relation Relation
+     */
+    protected function addRelationInstance(RelationInterface $relation)
+    {
+        // Initialize the relation type
+        if (!array_key_exists($relation->getType(), $this->relations)) {
+            $this->relations[$relation->getType()] = [];
+        }
+
+        $this->relations[$relation->getType()][$relation->getSignature()] = $relation;
+    }
+
+    /**
      * Unserialize and add a relation
      *
      * @param string $relationType Relation type
-     * @param string $serializedRelation Serialized relation
-     * @return RelationInterface Self reference
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @return Relations Self reference
+     * @throws InvalidArgumentException If the relation is not a valid relation instance
      */
-    public function addRelation($relationType, $serializedRelation)
+    public function addRelation($relationType, $relation)
     {
-        // Unserialize and instantiate the relation
-        $relation = RelationFactory::createFromString(
-            $relationType,
-            $serializedRelation,
-            $this->object->getRepositoryPath()->getRepository()
-        );
+        // Unserialize and instantiate the relation if it's given in serialized form
+        if (is_string($relation)) {
+            $relation = RelationFactory::createFromString(
+                $relationType,
+                $relation,
+                $this->object->getRepositoryPath()->getRepository()
+            );
+        }
+
+        // If the relation is not a valid relation instance
+        if (!($relation instanceof RelationInterface)) {
+            throw new InvalidArgumentException(
+                'Invalid object relation',
+                InvalidArgumentException::INVALID_OBJECT_RELATION
+            );
+        }
 
         // If a new relation is to be added
         if (empty($this->relations[$relationType])
@@ -125,27 +151,43 @@ class Relations extends AbstractProperties
     }
 
     /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null) {
+
+        // Return all relations in case no particular type was requested
+        if ($relationType === null) {
+            return $this->relations;
+        }
+
+        // Validate the relation type
+        RelationFactory::validateRelationType($relationType);
+
+        return empty($this->relations[$relationType]) ? [] : $this->relations[$relationType];
+    }
+
+    /**
      * Return the property values as array
      *
      * @return array Property values
      */
     public function toArray()
     {
-        return [];
-    }
-
-    /**
-     * Add a relation
-     *
-     * @param RelationInterface $relation Relation
-     */
-    protected function addRelationInstance(RelationInterface $relation)
-    {
-        // Initialize the relation type
-        if (!array_key_exists($relation->getType(), $this->relations)) {
-            $this->relations[$relation->getType()] = [];
-        }
-
-        $this->relations[$relation->getType()][$relation->getSignature()] = $relation;
+        $relations = array_filter(
+            array_map(
+                function(array $relationTypeCollection) {
+                    if (!count($relationTypeCollection)) {
+                        return false;
+                    }
+                    return array_values(array_map('strval', $relationTypeCollection));
+                },
+                $this->relations
+            )
+        );
+        ksort($relations);
+        return $relations;
     }
 }

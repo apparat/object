@@ -35,6 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Object\Traits;
+
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
@@ -114,4 +115,98 @@ trait SystemPropertiesTrait
     {
         return $this->systemProperties->getHash();
     }
+
+    /**
+     * Return the latitude
+     *
+     * @return float Latitude
+     */
+    public function getLatitude()
+    {
+        return $this->systemProperties->getLatitude();
+    }
+
+    /**
+     * Set the latitude
+     *
+     * @param float $latitude Latitude
+     * @return SystemProperties Self reference
+     */
+    public function setLatitude($latitude)
+    {
+        $this->setSystemProperties($this->systemProperties->setLatitude($latitude));
+        return $this;
+    }
+
+    /**
+     * Set the system properties collection
+     *
+     * @param SystemProperties $systemProperties System property collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setSystemProperties(SystemProperties $systemProperties, $overwrite = false)
+    {
+        $this->systemProperties = $systemProperties;
+        $systemPropertiesState = spl_object_hash($this->systemProperties);
+
+        // If the system property collection state has changed
+        if (!$overwrite
+            && !empty($this->collectionStates[SystemProperties::COLLECTION])
+            && ($systemPropertiesState !== $this->collectionStates[SystemProperties::COLLECTION])
+        ) {
+            // Flag this object as mutated
+            $this->setDirtyState();
+        }
+
+        $this->collectionStates[SystemProperties::COLLECTION] = $systemPropertiesState;
+    }
+
+    /**
+     * Return the longitude
+     *
+     * @return float Longitude
+     */
+    public function getLongitude()
+    {
+        return $this->systemProperties->getLongitude();
+    }
+
+    /**
+     * Set the longitude
+     *
+     * @param float $longitude Longitude
+     * @return SystemProperties Self reference
+     */
+    public function setLongitude($longitude)
+    {
+        $this->setSystemProperties($this->systemProperties->setLongitude($longitude));
+        return $this;
+    }
+
+    /**
+     * Return the elevation
+     *
+     * @return float Elevation
+     */
+    public function getElevation()
+    {
+        return $this->systemProperties->getElevation();
+    }
+
+    /**
+     * Set the elevation
+     *
+     * @param float $elevation
+     * @return SystemProperties Self reference
+     */
+    public function setElevation($elevation)
+    {
+        $this->setSystemProperties($this->systemProperties->setElevation($elevation));
+        return $this;
+    }
+
+    /**
+     * Set the object state to dirty
+     */
+    abstract protected function setDirtyState();
 }

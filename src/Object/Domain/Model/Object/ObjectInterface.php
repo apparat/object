@@ -280,6 +280,51 @@ interface ObjectInterface
     public function setPayload($payload);
 
     /**
+     * Return the latitude
+     *
+     * @return float Latitude
+     */
+    public function getLatitude();
+
+    /**
+     * Set the latitude
+     *
+     * @param float $latitude Latitude
+     * @return ObjectInterface Self reference
+     */
+    public function setLatitude($latitude);
+
+    /**
+     * Return the longitude
+     *
+     * @return float Longitude
+     */
+    public function getLongitude();
+
+    /**
+     * Set the longitude
+     *
+     * @param float $longitude Longitude
+     * @return ObjectInterface Self reference
+     */
+    public function setLongitude($longitude);
+
+    /**
+     * Return the elevation
+     *
+     * @return float Elevation
+     */
+    public function getElevation();
+
+    /**
+     * Set the elevation
+     *
+     * @param float $elevation
+     * @return ObjectInterface Self reference
+     */
+    public function setElevation($elevation);
+
+    /**
      * Return the absolute object URL
      *
      * @return string

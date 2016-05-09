@@ -116,6 +116,27 @@ abstract class AbstractProperties implements PropertiesInterface
     }
 
     /**
+     * Mutate a float property
+     *
+     * @param string $property Property name
+     * @param float $value New value
+     * @return $this|AbstractProperties Self reference or clone
+     */
+    protected function mutateFloatProperty($property, $value)
+    {
+
+        // If the new value differs from the current: Return clone
+        if ($this->$property !== floatval($value)) {
+            $collection = clone $this;
+            $collection->$property = floatval($value);
+            return $collection;
+        }
+
+        // Else: return self reference
+        return $this;
+    }
+
+    /**
      * Mutate a list property
      *
      * @param string $property Property name
@@ -128,6 +149,26 @@ abstract class AbstractProperties implements PropertiesInterface
         if (array_diff($this->$property, $values) || array_diff($values, $this->$property)) {
             $collection = clone $this;
             $collection->$property = $values;
+            return $collection;
+        }
+
+        // Else: return self reference
+        return $this;
+    }
+
+    /**
+     * Mutate a neste properties property
+     *
+     * @param string $property Property name
+     * @param PropertiesInterface $value Nested properties
+     * @return $this|AbstractProperties Self reference or clone
+     */
+    protected function mutatePropertiesProperty($property, PropertiesInterface $value)
+    {
+        // If the new value differs from the current one: Return clone
+        if (spl_object_hash($this->$property) !== spl_object_hash($value)) {
+            $collection = clone $this;
+            $collection->$property = $value;
             return $collection;
         }
 

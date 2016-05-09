@@ -12,6 +12,7 @@ Object properties
 * Revision
 * Creation date
 * Publication date
+* Location
 * [Hash](object-hash.md)
 
 #### B. Meta properties

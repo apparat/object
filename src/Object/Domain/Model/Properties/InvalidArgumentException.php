@@ -102,4 +102,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_OBJECT_RELATION = 1462703468;
+    /**
+     * Invalid location property value
+     *
+     * @var int
+     */
+    const INVALID_LOCATION_PROPERTY_VALUE = 1462903252;
 }

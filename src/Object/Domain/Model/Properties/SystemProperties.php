@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Kernel\Tests\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
@@ -90,6 +91,12 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_PUBLISHED = 'published';
     /**
+     * LocationProperties property
+     *
+     * @var string
+     */
+    const PROPERTY_LOCATION = 'location';
+    /**
      * Hash property
      *
      * @var string
@@ -126,15 +133,17 @@ class SystemProperties extends AbstractProperties
      */
     protected $published = null;
     /**
+     * Location
+     *
+     * @var LocationProperties
+     */
+    protected $location = null;
+    /**
      * Object hash of this revision
      *
      * @var string
      */
     protected $hash = '';
-
-    /*******************************************************************************
-     * PUBLIC METHODS
-     *******************************************************************************/
 
     /**
      * System properties constructor
@@ -170,6 +179,12 @@ class SystemProperties extends AbstractProperties
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
             $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
         }
+
+        // Initialize the location
+        $this->location = Kernel::create(
+            LocationProperties::class,
+            [empty($data[self::PROPERTY_LOCATION]) ? [] : $data[self::PROPERTY_LOCATION], $this->object]
+        );
 
         // Initialize the object hash
         if (array_key_exists(self::PROPERTY_HASH, $data)) {
@@ -251,6 +266,78 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Return the latitude
+     *
+     * @return float Latitude
+     */
+    public function getLatitude()
+    {
+        return $this->location->getLatitude();
+    }
+
+    /**
+     * Set the latitude
+     *
+     * @param float $latitude Latitude
+     * @return SystemProperties Self reference
+     */
+    public function setLatitude($latitude)
+    {
+        return $this->mutatePropertiesProperty(
+            self::PROPERTY_LOCATION,
+            $this->location->setLatitude($latitude)
+        );
+    }
+
+    /**
+     * Return the longitude
+     *
+     * @return float Longitude
+     */
+    public function getLongitude()
+    {
+        return $this->location->getLongitude();
+    }
+
+    /**
+     * Set the longitude
+     *
+     * @param float $longitude Longitude
+     * @return SystemProperties Self reference
+     */
+    public function setLongitude($longitude)
+    {
+        return $this->mutatePropertiesProperty(
+            self::PROPERTY_LOCATION,
+            $this->location->setLongitude($longitude)
+        );
+    }
+
+    /**
+     * Return the elevation
+     *
+     * @return float Elevation
+     */
+    public function getElevation()
+    {
+        return $this->location->getElevation();
+    }
+
+    /**
+     * Set the elevation
+     *
+     * @param float $elevation
+     * @return SystemProperties Self reference
+     */
+    public function setElevation($elevation)
+    {
+        return $this->mutatePropertiesProperty(
+            self::PROPERTY_LOCATION,
+            $this->location->setElevation($elevation)
+        );
+    }
+
+    /**
      * Return the object hash of this revision
      *
      * @return string Object hash
@@ -314,13 +401,10 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_CREATED => $this->created->format('c'),
             self::PROPERTY_PUBLISHED => ($this->published instanceof \DateTimeImmutable) ?
                 $this->published->format('c') : null,
+            self::PROPERTY_LOCATION => $this->location->toArray(),
             self::PROPERTY_HASH => $this->hash,
         ]);
     }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
 
     /**
      * Test if the object hash is a valid sha1 value

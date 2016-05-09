@@ -172,6 +172,70 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the latitude
+     *
+     * @return float Latitude
+     */
+    public function getLatitude()
+    {
+        return $this->object()->getLatitude();
+    }
+
+    /**
+     * Set the latitude
+     *
+     * @param float $latitude Latitude
+     * @return ObjectInterface Self reference
+     */
+    public function setLatitude($latitude)
+    {
+        return $this->object()->setLatitude($latitude);
+    }
+
+    /**
+     * Return the longitude
+     *
+     * @return float Longitude
+     */
+    public function getLongitude()
+    {
+        return $this->object()->getLongitude();
+    }
+
+    /**
+     * Set the longitude
+     *
+     * @param float $longitude Longitude
+     * @return ObjectInterface Self reference
+     */
+    public function setLongitude($longitude)
+    {
+        return $this->object()->setLongitude($longitude);
+    }
+
+    /**
+     * Return the elevation
+     *
+     * @return float Elevation
+     */
+    public function getElevation()
+    {
+        return $this->object()->getElevation();
+    }
+
+    /**
+     * Set the elevation
+     *
+     * @param float $elevation
+     * @return ObjectInterface Self reference
+     */
+    public function setElevation($elevation)
+    {
+        return $this->object()->setElevation($elevation);
+    }
+
+
+    /**
      * Return the object draft mode
      *
      * @return boolean Object draft mode

@@ -585,13 +585,24 @@ class ObjectProxy implements ObjectInterface
     /**
      * Add an object relation
      *
-     * @param string $relationType Relation type
      * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @param string|null $relationType Relation type
      * @return ObjectInterface
      */
-    public function addRelation($relationType, $relation)
+    public function addRelation($relation, $relationType = null)
     {
-        return $this->object()->addRelation($relationType, $relation);
+        return $this->object()->addRelation($relation, $relationType);
+    }
+
+    /**
+     * Delete an object relation
+     *
+     * @param RelationInterface $relation Object relation
+     * @return ObjectInterface
+     */
+    public function deleteRelation(RelationInterface $relation)
+    {
+        return $this->object()->deleteRelation($relation);
     }
 
     /**
@@ -604,4 +615,17 @@ class ObjectProxy implements ObjectInterface
     {
         return $this->object()->getRelations($relationType);
     }
+
+    /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria)
+    {
+        return $this->object()->findRelations($criteria);
+    }
+
+
 }

@@ -51,6 +51,7 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -459,5 +460,49 @@ abstract class AbstractObject implements ObjectInterface
 
         // Enable the dirty state
         $this->state |= self::STATE_DIRTY;
+    }
+
+    /**
+     * Add an object relation
+     *
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @param string|null $relationType Relation type
+     * @return ObjectInterface
+     */
+    public function addRelation($relation, $relationType = null) {
+        $this->setRelations($this->relations->addRelation($relation, $relationType));
+        return $this;
+    }
+
+    /**
+     * Delete an object relation
+     *
+     * @param RelationInterface $relation Object relation
+     * @return ObjectInterface
+     */
+    public function deleteRelation(RelationInterface $relation)
+    {
+        $this->setRelations($this->relations->deleteRelation($relation));
+        return $this;
+    }
+
+    /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null) {
+        return $this->relations->getRelations($relationType);
+    }
+
+    /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria) {
+        return $this->relations->findRelations($criteria);
     }
 }

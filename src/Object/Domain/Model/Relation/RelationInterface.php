@@ -58,6 +58,36 @@ interface RelationInterface
      * @var int
      */
     const TIGHT_COUPLING = 1;
+    /**
+     * Type property
+     *
+     * @var string
+     */
+    const FILTER_TYPE = 'type';
+    /**
+     * URL property
+     *
+     * @var string
+     */
+    const FILTER_URL = 'url';
+    /**
+     * Label property
+     *
+     * @var string
+     */
+    const FILTER_LABEL = 'label';
+    /**
+     * Email property
+     *
+     * @var string
+     */
+    const FILTER_EMAIL = 'email';
+    /**
+     * Coupling property
+     *
+     * @var string
+     */
+    const FILTER_COUPLING = 'coupling';
 
     /**
      * Return the relation type

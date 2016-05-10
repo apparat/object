@@ -44,6 +44,7 @@ use Apparat\Object\Domain\Model\Relation\LikedByRelation;
 use Apparat\Object\Domain\Model\Relation\LikesRelation;
 use Apparat\Object\Domain\Model\Relation\ReferredByRelation;
 use Apparat\Object\Domain\Model\Relation\RefersToRelation;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Model\Relation\RepliedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepliesToRelation;
 use Apparat\Object\Domain\Model\Relation\RepostedByRelation;
@@ -129,4 +130,34 @@ class Relation
      * @var string
      */
     const REPOSTS = RepostsRelation::TYPE;
+    /**
+     * Type property
+     *
+     * @var string
+     */
+    const TYPE = RelationInterface::FILTER_TYPE;
+    /**
+     * URL property
+     *
+     * @var string
+     */
+    const URL = RelationInterface::FILTER_URL;
+    /**
+     * Label property
+     *
+     * @var string
+     */
+    const LABEL = RelationInterface::FILTER_LABEL;
+    /**
+     * Email property
+     *
+     * @var string
+     */
+    const EMAIL = RelationInterface::FILTER_EMAIL;
+    /**
+     * Coupling property
+     *
+     * @var string
+     */
+    const COUPLING = RelationInterface::FILTER_COUPLING;
 }

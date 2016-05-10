@@ -392,11 +392,19 @@ interface ObjectInterface
     /**
      * Add an object relation
      *
-     * @param string $relationType Relation type
      * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @param string|null $relationType Relation type
      * @return ObjectInterface
      */
-    public function addRelation($relationType, $relation);
+    public function addRelation($relation, $relationType = null);
+
+    /**
+     * Delete an object relation
+     *
+     * @param RelationInterface $relation Object relation
+     * @return ObjectInterface
+     */
+    public function deleteRelation(RelationInterface $relation);
 
     /**
      * Get all relations (optional: Of a particular type)
@@ -405,4 +413,12 @@ interface ObjectInterface
      * @return array Object relations
      */
     public function getRelations($relationType = null);
+
+    /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria);
 }

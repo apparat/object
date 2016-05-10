@@ -84,11 +84,20 @@ class ObjectRelationTest extends AbstractDisabledAutoconnectorTest
 
     /**
      * Test the addition of an object relation
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Relation\OutOfBoundsException
+     * @expectedExceptionCode 1462401333
      */
     public function testObjectAddRelation()
     {
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
-        $article->addRelation(Relation::EMBEDDED_BY, 'http://example.com <john@example.com> John Doe');
+        $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
+        $this->assertEquals(2, count($article->findRelations([Relation::URL => 'example.com'])));
+        foreach ($article->findRelations([Relation::EMAIL => 'tollwerk.de']) as $relation) {
+            $article->deleteRelation($relation);
+        }
+        $this->assertEquals(2, count($article->getRelations()));
+        $article->addRelation('http://example.com <john@example.com> John Doe', 'invalid');
     }
 }

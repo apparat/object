@@ -35,6 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Object\Traits;
+
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
@@ -54,6 +55,30 @@ trait RelationsTrait
      * @var Relations
      */
     protected $relations;
+
+    /**
+     * Add an object relation
+     *
+     * @param string $relationType Relation type
+     * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @return ObjectInterface
+     */
+    public function addRelation($relationType, $relation)
+    {
+        $this->setRelations($this->relations->addRelation($relationType, $relation));
+        return $this;
+    }
+
+    /**
+     * Get all relations (optional: Of a particular type)
+     *
+     * @param string|null $relationType Optional: Relation type
+     * @return array Object relations
+     */
+    public function getRelations($relationType = null)
+    {
+        return $this->relations->getRelations($relationType);
+    }
 
     /**
      * Set the relations collection
@@ -79,29 +104,18 @@ trait RelationsTrait
     }
 
     /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria)
+    {
+        return $this->relations->findRelations($criteria);
+    }
+
+    /**
      * Set the object state to dirty
      */
     abstract protected function setDirtyState();
-
-    /**
-     * Add an object relation
-     *
-     * @param string $relationType Relation type
-     * @param string|RelationInterface $relation Serialized or instantiated object relation
-     * @return ObjectInterface
-     */
-    public function addRelation($relationType, $relation) {
-        $this->setRelations($this->relations->addRelation($relationType, $relation));
-        return $this;
-    }
-
-    /**
-     * Get all relations (optional: Of a particular type)
-     *
-     * @param string|null $relationType Optional: Relation type
-     * @return array Object relations
-     */
-    public function getRelations($relationType = null) {
-        return $this->relations->getRelations($relationType);
-    }
 }

@@ -46,6 +46,7 @@ use Apparat\Object\Domain\Model\Properties\SystemProperties;
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
+ * @property array $collectionStates
  */
 trait SystemPropertiesTrait
 {

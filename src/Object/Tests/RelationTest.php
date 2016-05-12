@@ -173,7 +173,7 @@ class RelationTest extends AbstractDisabledAutoconnectorTest
         $relations = $relations->deleteRelation($contributedByRels[0]);
 
         // Add invalid relation
-        $relations->addRelation(new \stdClass());
+        $relations->addRelation(null);
     }
 
     /**

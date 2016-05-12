@@ -176,21 +176,24 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
             break;
         }
 
-        // Add the contact to the collection
-        /** @var Collection $collection */
-        $collection = $collection->add($contactObject);
-        $this->assertEquals($articleCount + 1, count($collection));
+        if ($article instanceof Article) {
 
-        // Remove the article
-        $collection = $collection->remove($article);
-        $this->assertEquals($articleCount, count($collection));
+            // Add the contact to the collection
+            /** @var Collection $collection */
+            $collection = $collection->add($contactObject);
+            $this->assertEquals($articleCount + 1, count($collection));
 
-        // Remove the contact by ID
-        $collection = $collection->remove(2);
-        $this->assertEquals($articleCount - 1, count($collection));
+            // Remove the article
+            $collection = $collection->remove($article);
+            $this->assertEquals($articleCount, count($collection));
 
-        // Remove invalid object
-        $collection->remove('invalid');
+            // Remove the contact by ID
+            $collection = $collection->remove(2);
+            $this->assertEquals($articleCount - 1, count($collection));
+
+            // Remove invalid object
+            $collection->remove('invalid');
+        }
     }
 
     /**

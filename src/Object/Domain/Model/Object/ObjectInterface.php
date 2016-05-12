@@ -35,6 +35,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
@@ -253,7 +254,7 @@ interface ObjectInterface
     /**
      * Return the object repository path
      *
-     * @return RepositoryPathInterface Object repository path
+     * @return RepositoryPathInterface|PathInterface Object repository path
      */
     public function getRepositoryPath();
 

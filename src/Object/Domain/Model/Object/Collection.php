@@ -48,7 +48,7 @@ class Collection implements CollectionInterface
     /**
      * Objects
      *
-     * @var ObjectInterface[]|RepositoryPath[]
+     * @var RepositoryPath[]|ObjectInterface[]
      */
     protected $objects = array();
     /**

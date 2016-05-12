@@ -78,7 +78,7 @@ class ObjectFactory
         $objectClass = self::objectClassFromType($path->getType());
 
         // Instantiate the object
-        return Kernel::create($objectClass, [$objectResource->getPayload(), $propertyData, $path]);
+        return Kernel::create($objectClass, [$path, $objectResource->getPayload(), $propertyData]);
     }
 
     /**
@@ -106,7 +106,7 @@ class ObjectFactory
         $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
 
         // Instantiate the object
-        return Kernel::create($objectClass, [$payload, $propertyData, $path]);
+        return Kernel::create($objectClass, [$path, $payload, $propertyData]);
     }
 
     /**

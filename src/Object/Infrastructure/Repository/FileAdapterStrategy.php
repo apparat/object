@@ -151,8 +151,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         // If the repository size descriptor can not be created
         $configDir = $this->config['root'].DIRECTORY_SEPARATOR.'.repo'.DIRECTORY_SEPARATOR;
-        if (
-            (file_exists($configDir.'size.txt') && !is_file($configDir.'size.txt'))
+        if ((file_exists($configDir.'size.txt') && !is_file($configDir.'size.txt'))
             || !file_put_contents($configDir.'size.txt', '0')
         ) {
             throw new RuntimeException(

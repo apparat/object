@@ -166,7 +166,6 @@ class RelationFactory
 
         // Split the relation string and parse the components
         foreach (preg_split('%\s+%', $relation) as $relationComponent) {
-
             // If it's an email component
             if (!strncmp('<', $relationComponent, 1)) {
                 // If the email component has already been registered
@@ -235,7 +234,7 @@ class RelationFactory
      * Parse and instantiate a relation URL
      *
      * @param string $url URL
-     * @param boolean $coupling Strong coupling
+     * @param int $coupling Strong coupling
      * @param RepositoryInterface $contextRepository Context repository
      * @return Url URL
      * @throws InvalidArgumentException If the relation URL is invalid

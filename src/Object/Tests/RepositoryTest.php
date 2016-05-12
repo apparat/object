@@ -153,10 +153,10 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     {
         parent::tearDownAfterClass();
         foreach (self::$globFiles as $globFile) {
-            @unlink($globFile);
+            unlink($globFile);
         }
         foreach (array_reverse(self::$globDirs) as $globDir) {
-            @rmdir($globDir);
+            rmdir($globDir);
         }
 
         putenv('OBJECT_DATE_PRECISION=3');
@@ -466,7 +466,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
         $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
         $this->tmpFiles[] = $tempSizeDescriptor = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
-        @mkdir($tempSizeDescriptor, 0777, true);
+        mkdir($tempSizeDescriptor, 0777, true);
         RepositoryFactory::create(
             getenv('REPOSITORY_URL'),
             [

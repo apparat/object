@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Model\Object;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Path\ApparatUrl;
 use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
@@ -80,18 +81,16 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the object repository path
      *
-     * @return PathInterface Object repository path
+     * @return RepositoryPathInterface|PathInterface Object repository path
      */
     public function getRepositoryPath()
     {
         // If the object has already been instantiated
         if ($this->object instanceof ObjectInterface) {
             return $this->object->getRepositoryPath();
-
-            // Else
-        } else {
-            return $this->url->getLocalPath();
         }
+
+        return $this->url->getLocalPath();
     }
 
     /**

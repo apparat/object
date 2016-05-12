@@ -118,11 +118,11 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Object constructor
      *
+     * @param RepositoryPathInterface $path Object repository path
      * @param string $payload Object payload
      * @param array $propertyData Property data
-     * @param RepositoryPathInterface $path Object repository path
      */
-    public function __construct($payload = '', array $propertyData = [], RepositoryPathInterface $path = null)
+    public function __construct(RepositoryPath $path, $payload = '', array $propertyData = [])
     {
         // If the domain property collection class is invalid
         if (!$this->domainPropertyCClass

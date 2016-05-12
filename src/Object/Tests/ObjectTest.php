@@ -353,8 +353,29 @@ namespace Apparat\Object\Tests {
         /**
          * Test change by altering relations
          */
-        public function testRelationChange() {
+        public function testRelationChange()
+        {
             // TODO: Implement
+        }
+
+        /**
+         * Test to persist an earlier revision
+         */
+        public function testPersistEarlierRevision()
+        {
+            // TODO
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Domain\Repository\RuntimeException
+         * @expectedExceptionCode 1461406873
+         */
+        public function testCreateArticleObjectLockingImpossible()
+        {
+            putenv('MOCK_FLOCK=1');
+            $this->testCreateAndPublishArticleObject();
         }
 
         /**
@@ -407,24 +428,6 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Test to persist an earlier revision
-         */
-        public function testPersistEarlierRevision() {
-
-        }
-
-        /**
-         * Test the creation and persisting of an article object with failing file lock
-         *
-         * @expectedException \Apparat\Object\Domain\Repository\RuntimeException
-         * @expectedExceptionCode 1461406873
-         */
-        public function testCreateArticleObjectLockingImpossible() {
-            putenv('MOCK_FLOCK=1');
-            $this->testCreateAndPublishArticleObject();
-        }
-
-        /**
          * Recursively register a directory and all nested files and directories for deletion on teardown
          *
          * @param string $directory Directory
@@ -437,9 +440,10 @@ namespace Apparat\Object\Tests {
                     $path = $directory.DIRECTORY_SEPARATOR.$item;
                     if (is_dir($path)) {
                         $this->deleteRecursive($path);
-                    } else {
-                        $this->tmpFiles[] = $path;
+                        continue;
                     }
+
+                    $this->tmpFiles[] = $path;
                 }
             }
         }

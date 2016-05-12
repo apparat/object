@@ -35,6 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Domain\Model\Object\Traits;
+
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\GenericPropertiesInterface;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
@@ -54,29 +55,6 @@ trait ProcessingInstructionsTrait
      * @var GenericPropertiesInterface
      */
     protected $processingInstructions;
-
-    /**
-     * Set the processing instruction collection
-     *
-     * @param GenericPropertiesInterface $processingInstructions Processing instruction collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    protected function setProcessingInstructions(GenericPropertiesInterface $processingInstructions, $overwrite = false)
-    {
-        $this->processingInstructions = $processingInstructions;
-        $processingInstructionsState = spl_object_hash($this->processingInstructions);
-
-        // If the domain property collection state has changed
-        if (!$overwrite
-            && !empty($this->collectionStates[ProcessingInstructions::COLLECTION])
-            && ($processingInstructionsState !== $this->collectionStates[ProcessingInstructions::COLLECTION])
-        ) {
-            // Flag this object as dirty
-            $this->setDirtyState();
-        }
-
-        $this->collectionStates[ProcessingInstructions::COLLECTION] = $processingInstructionsState;
-    }
 
     /**
      * Get a processing instruction
@@ -100,6 +78,29 @@ trait ProcessingInstructionsTrait
     {
         $this->setProcessingInstructions($this->processingInstructions->setProperty($procInst, $value));
         return $this;
+    }
+
+    /**
+     * Set the processing instruction collection
+     *
+     * @param GenericPropertiesInterface $procInstructions Processing instruction collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    protected function setProcessingInstructions(GenericPropertiesInterface $procInstructions, $overwrite = false)
+    {
+        $this->processingInstructions = $procInstructions;
+        $procInstState = spl_object_hash($this->processingInstructions);
+
+        // If the domain property collection state has changed
+        if (!$overwrite
+            && !empty($this->collectionStates[ProcessingInstructions::COLLECTION])
+            && ($procInstState !== $this->collectionStates[ProcessingInstructions::COLLECTION])
+        ) {
+            // Flag this object as dirty
+            $this->setDirtyState();
+        }
+
+        $this->collectionStates[ProcessingInstructions::COLLECTION] = $procInstState;
     }
 
     /**

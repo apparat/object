@@ -97,18 +97,18 @@ trait DomainPropertiesTrait
     protected function setDomainProperties(GenericPropertiesInterface $domainProperties, $overwrite = false)
     {
         $this->domainProperties = $domainProperties;
-        $domainPropertiesState = spl_object_hash($this->domainProperties);
+        $domainPropsState = spl_object_hash($this->domainProperties);
 
         // If the domain property collection state has changed
         if (!$overwrite
             && !empty($this->collectionStates[AbstractDomainProperties::COLLECTION])
-            && ($domainPropertiesState !== $this->collectionStates[AbstractDomainProperties::COLLECTION])
+            && ($domainPropsState !== $this->collectionStates[AbstractDomainProperties::COLLECTION])
         ) {
             // Flag this object as mutated
             $this->setMutatedState();
         }
 
-        $this->collectionStates[AbstractDomainProperties::COLLECTION] = $domainPropertiesState;
+        $this->collectionStates[AbstractDomainProperties::COLLECTION] = $domainPropsState;
     }
 
     /**

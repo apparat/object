@@ -93,7 +93,8 @@ class Revision implements SerializablePropertyInterface
      *
      * @return Revision Current revision instance
      */
-    public static function current() {
+    public static function current()
+    {
         return new static(self::CURRENT);
     }
 
@@ -143,7 +144,8 @@ class Revision implements SerializablePropertyInterface
      *
      * @return Revision Incremented revision
      */
-    public function increment() {
+    public function increment()
+    {
         return ($this->revision === self::CURRENT) ? $this : new static($this->revision + 1);
     }
 }

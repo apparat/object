@@ -464,8 +464,8 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     public function testRepositoryCreationOverExistingSizeDescriptor()
     {
         $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-        $this->tmpFiles[] = $tempRepoConfigDirectory = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
-        $this->tmpFiles[] = $tempSizeDescriptor = $tempRepoConfigDirectory.DIRECTORY_SEPARATOR.'size.txt';
+        $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
+        $this->tmpFiles[] = $tempSizeDescriptor = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
         @mkdir($tempSizeDescriptor, 0777, true);
         RepositoryFactory::create(
             getenv('REPOSITORY_URL'),

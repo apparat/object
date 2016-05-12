@@ -148,18 +148,18 @@ trait SystemPropertiesTrait
     protected function setSystemProperties(SystemProperties $systemProperties, $overwrite = false)
     {
         $this->systemProperties = $systemProperties;
-        $systemPropertiesState = spl_object_hash($this->systemProperties);
+        $systemPropsState = spl_object_hash($this->systemProperties);
 
         // If the system property collection state has changed
         if (!$overwrite
             && !empty($this->collectionStates[SystemProperties::COLLECTION])
-            && ($systemPropertiesState !== $this->collectionStates[SystemProperties::COLLECTION])
+            && ($systemPropsState !== $this->collectionStates[SystemProperties::COLLECTION])
         ) {
             // Flag this object as mutated
             $this->setDirtyState();
         }
 
-        $this->collectionStates[SystemProperties::COLLECTION] = $systemPropertiesState;
+        $this->collectionStates[SystemProperties::COLLECTION] = $systemPropsState;
     }
 
     /**

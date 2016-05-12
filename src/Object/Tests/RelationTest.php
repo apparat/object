@@ -165,12 +165,12 @@ class RelationTest extends AbstractDisabledAutoconnectorTest
         $relations = $relations->addRelation('http://example.org John Doe', Relation::CONTRIBUTED_BY);
 
         // Retrieve contributed-by relations
-        $contributedByRelations = $relations->getRelations(Relation::CONTRIBUTED_BY);
-        $this->assertEquals(1, count($contributedByRelations));
+        $contributedByRels = $relations->getRelations(Relation::CONTRIBUTED_BY);
+        $this->assertEquals(1, count($contributedByRels));
 
         // Multiple relation deletion
-        $relations = $relations->deleteRelation($contributedByRelations[0]);
-        $relations = $relations->deleteRelation($contributedByRelations[0]);
+        $relations = $relations->deleteRelation($contributedByRels[0]);
+        $relations = $relations->deleteRelation($contributedByRels[0]);
 
         // Add invalid relation
         $relations->addRelation(new \stdClass());

@@ -626,6 +626,4 @@ class ObjectProxy implements ObjectInterface
     {
         return $this->object()->findRelations($criteria);
     }
-
-
 }

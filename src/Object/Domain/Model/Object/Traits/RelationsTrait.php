@@ -63,7 +63,8 @@ trait RelationsTrait
      * @param string|null $relationType Relation type
      * @return ObjectInterface
      */
-    public function addRelation($relation, $relationType = null) {
+    public function addRelation($relation, $relationType = null)
+    {
         $this->setRelations($this->relations->addRelation($relation, $relationType));
         return $this;
     }
@@ -86,18 +87,9 @@ trait RelationsTrait
      * @param string|null $relationType Optional: Relation type
      * @return array Object relations
      */
-    public function getRelations($relationType = null) {
+    public function getRelations($relationType = null)
+    {
         return $this->relations->getRelations($relationType);
-    }
-
-    /**
-     * Find and return particular relations
-     *
-     * @param array $criteria Relation criteria
-     * @return RelationInterface[] Relations
-     */
-    public function findRelations(array $criteria) {
-        return $this->relations->findRelations($criteria);
     }
 
     /**
@@ -121,6 +113,17 @@ trait RelationsTrait
         }
 
         $this->collectionStates[Relations::COLLECTION] = $relationsState;
+    }
+
+    /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria)
+    {
+        return $this->relations->findRelations($criteria);
     }
 
     /**

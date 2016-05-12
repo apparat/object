@@ -170,18 +170,18 @@ abstract class AbstractObject implements ObjectInterface
             !is_array(
                 $propertyData[MetaProperties::COLLECTION]
             )) ? [] : $propertyData[MetaProperties::COLLECTION];
-        /** @var MetaProperties $metaPropertyCollection */
-        $metaPropertyCollection = Kernel::create(MetaProperties::class, [$metaPropertyData, $this]);
-        $this->setMetaProperties($metaPropertyCollection, true);
+        /** @var MetaProperties $metaProperties */
+        $metaProperties = Kernel::create(MetaProperties::class, [$metaPropertyData, $this]);
+        $this->setMetaProperties($metaProperties, true);
 
         // Instantiate the domain properties
         $domainPropertyData = (empty($propertyData[AbstractDomainProperties::COLLECTION]) ||
             !is_array(
                 $propertyData[AbstractDomainProperties::COLLECTION]
             )) ? [] : $propertyData[AbstractDomainProperties::COLLECTION];
-        /** @var AbstractDomainProperties $domainPropertyCollection */
-        $domainPropertyCollection = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
-        $this->setDomainProperties($domainPropertyCollection, true);
+        /** @var AbstractDomainProperties $domainProperties */
+        $domainProperties = Kernel::create($this->domainPropertyCClass, [$domainPropertyData, $this]);
+        $this->setDomainProperties($domainProperties, true);
 
         // Instantiate the processing instructions
         $procInstData = (empty($propertyData[ProcessingInstructions::COLLECTION]) ||
@@ -230,8 +230,10 @@ abstract class AbstractObject implements ObjectInterface
         if (!$revision->isCurrent() &&
             (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))
         ) {
-            throw new OutOfBoundsException(sprintf('Invalid object revision "%s"', $revision->getRevision()),
-                OutOfBoundsException::INVALID_OBJECT_REVISION);
+            throw new OutOfBoundsException(
+                sprintf('Invalid object revision "%s"', $revision->getRevision()),
+                OutOfBoundsException::INVALID_OBJECT_REVISION
+            );
         }
 
         // If the current revision got requested
@@ -358,6 +360,26 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return $this->systemProperties->isDraft() || $this->isPublished();
+    }
+
+    /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished()
+    {
+        return !!($this->state & self::STATE_PUBLISHED);
+    }
+
+    /**
      * Set the object state to published
      */
     protected function setPublishedState()
@@ -394,26 +416,6 @@ abstract class AbstractObject implements ObjectInterface
 
         // Enable the mutated (and dirty) state
         $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
-    }
-
-    /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return $this->systemProperties->isDraft() || $this->isPublished();
-    }
-
-    /**
-     * Return whether the object is in published state
-     *
-     * @return boolean Published state
-     */
-    public function isPublished()
-    {
-        return !!($this->state & self::STATE_PUBLISHED);
     }
 
     /**

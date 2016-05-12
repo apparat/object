@@ -35,6 +35,7 @@
  ***********************************************************************************/
 
 namespace Apparat\Object\Application\Repository;
+
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 
 /**

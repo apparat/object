@@ -339,9 +339,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectRepositoryPath = $object->getRepositoryPath();
 
         // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftResourcePath = $this->absoluteResourcePath($objectRepositoryPath->setDraft(true));
-        if (@file_exists($objectDraftResourcePath)) {
-            unlink($objectDraftResourcePath);
+        $objectDraftResPath = $this->absoluteResourcePath($objectRepositoryPath->setDraft(true));
+        if (@file_exists($objectDraftResPath)) {
+            unlink($objectDraftResPath);
         }
 
         // If it's not the first object revision: Rotate the previous revision resource
@@ -349,18 +349,18 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         if ($objectRevisionNumber > 1) {
             // Build the "current" object repository path
             $currentRevision = Revision::current();
-            $currentObjectResourcePath =
+            $curObjectResPath =
                 $this->absoluteResourcePath($objectRepositoryPath->setRevision($currentRevision));
 
             // Build the previous object repository path
             /** @var Revision $previousRevision */
             $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
-            $previousObjectResourcePath
+            $prevObjectResPath
                 = $this->absoluteResourcePath($objectRepositoryPath->setRevision($previousRevision));
 
             // Rotate the previous revision's resource path
-            if (file_exists($currentObjectResourcePath)) {
-                rename($currentObjectResourcePath, $previousObjectResourcePath);
+            if (file_exists($curObjectResPath)) {
+                rename($curObjectResPath, $prevObjectResPath);
             }
         }
     }
@@ -373,8 +373,11 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function absoluteResourcePath(RepositoryPathInterface $repositoryPath)
     {
-        return $this->root.str_replace('/', DIRECTORY_SEPARATOR,
-            $repositoryPath->withExtension(getenv('OBJECT_RESOURCE_EXTENSION')));
+        return $this->root.str_replace(
+            '/',
+            DIRECTORY_SEPARATOR,
+            $repositoryPath->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        );
     }
 
     /**

@@ -40,15 +40,14 @@ use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Object;
-use Apparat\Object\Ports\Relation;
 
 /**
- * Object relation test
+ * System properties test
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class ObjectRelationTest extends AbstractDisabledAutoconnectorTest
+class SystemPropertiesTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Example object path
@@ -85,19 +84,23 @@ class ObjectRelationTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the addition of an object relation
      *
-     * @expectedException \Apparat\Object\Domain\Model\Relation\OutOfBoundsException
-     * @expectedExceptionCode 1462401333
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1462903252
      */
     public function testObjectAddRelation()
     {
+        $latitude = rand(0, 10000) / 10000;
+        $longitude = rand(0, 10000) / 10000;
+        $elevation = rand(0, 10000);
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
-        $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
-        $this->assertEquals(2, count($article->findRelations([Relation::URL => 'example.com'])));
-        foreach ($article->findRelations([Relation::EMAIL => 'tollwerk.de']) as $relation) {
-            $article->deleteRelation($relation);
-        }
-        $this->assertEquals(2, count($article->getRelations()));
-        $article->addRelation('http://example.com <john@example.com> John Doe', 'invalid');
+        $this->assertEquals($latitude, $article->setLatitude($latitude)->getLatitude());
+
+        // Repeat the assignment to test unchanged returns
+        $this->assertEquals($latitude, $article->setLatitude($latitude)->getLatitude());
+
+        $this->assertEquals($longitude, $article->setLongitude($longitude)->getLongitude());
+        $this->assertEquals($elevation, $article->setElevation($elevation)->getElevation());
+        $article->setLatitude('invalid');
     }
 }

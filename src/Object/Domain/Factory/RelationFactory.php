@@ -135,7 +135,8 @@ class RelationFactory
      * @param string $relationType Relation type
      * @throws InvalidArgumentException If the relation type is invalid
      */
-    public static function validateRelationType($relationType) {
+    public static function validateRelationType($relationType)
+    {
         // If the relation type is invalid
         if (empty($relationType) || empty(self::$relationTypes[$relationType])) {
             throw new OutOfBoundsException(
@@ -156,7 +157,6 @@ class RelationFactory
      */
     protected static function parseRelationString($relation, RepositoryInterface $contextRepository)
     {
-        // TODO: Document exceptions
         $parsed = [
             self::PARSE_URL => null,
             self::PARSE_LABEL => null,
@@ -197,6 +197,13 @@ class RelationFactory
 
                 // Else: Process as label component
             } catch (\Exception $e) {
+                // If it's a repeated URL component
+                if (($e instanceof InvalidArgumentException)
+                    && ($e->getCode() == InvalidArgumentException::REPEATED_RELATION_COMPONENT_NOT_ALLOWED)
+                ) {
+                    throw $e;
+                }
+
                 $parsed[self::PARSE_LABEL] = trim($parsed[self::PARSE_LABEL].' '.$relationComponent);
             }
         }

@@ -37,17 +37,19 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Domain\Factory\RelationFactory;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Relation;
 
 /**
- * Object system properties test
+ * Object relation test
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class ObjectSystemPropertiesTest extends AbstractDisabledAutoconnectorTest
+class RelationTest extends AbstractDisabledAutoconnectorTest
 {
     /**
      * Example object path
@@ -84,19 +86,60 @@ class ObjectSystemPropertiesTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the addition of an object relation
      *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1462903252
+     * @expectedException \Apparat\Object\Domain\Model\Relation\OutOfBoundsException
+     * @expectedExceptionCode 1462401333
      */
     public function testObjectAddRelation()
     {
-        $latitude = rand(0, 10000) / 10000;
-        $longitude = rand(0, 10000) / 10000;
-        $elevation = rand(0, 10000);
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
-        $this->assertEquals($latitude, $article->setLatitude($latitude)->getLatitude());
-        $this->assertEquals($longitude, $article->setLongitude($longitude)->getLongitude());
-        $this->assertEquals($elevation, $article->setElevation($elevation)->getElevation());
-        $article->setLatitude('invalid');
+        $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
+        $this->assertEquals(2, count($article->findRelations([Relation::URL => 'example.com'])));
+        foreach ($article->findRelations([Relation::EMAIL => 'tollwerk.de']) as $relation) {
+            $article->deleteRelation($relation);
+        }
+        $this->assertEquals(2, count($article->getRelations()));
+        $article->addRelation('http://example.com <john@example.com> John Doe', 'invalid');
+    }
+
+    /**
+     * Test a relation construction with repeated email
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Relation\InvalidArgumentException
+     * @expectedExceptionCode 1462395977
+     */
+    public function testInvalidRelationEmail()
+    {
+        RelationFactory::createFromString(Relation::CONTRIBUTED_BY, '<invalid', self::$repository );
+    }
+
+    /**
+     * Test a relation construction with repeated email
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Relation\InvalidArgumentException
+     * @expectedExceptionCode 1462394737
+     */
+    public function testRepeatedRelationEmail()
+    {
+        RelationFactory::createFromString(
+            Relation::CONTRIBUTED_BY,
+            '<test@example.com> <test@example.com>',
+            self::$repository
+        );
+    }
+
+    /**
+     * Test a relation construction with repeated URL
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Relation\InvalidArgumentException
+     * @expectedExceptionCode 1462394737
+     */
+    public function testRepeatedRelationUrl()
+    {
+        RelationFactory::createFromString(
+            Relation::CONTRIBUTED_BY,
+            'http://example.com http://example.com',
+            self::$repository
+        );
     }
 }

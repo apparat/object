@@ -119,7 +119,7 @@ class LocationProperties extends AbstractProperties
     protected function validateLocationProperty($value)
     {
         // If the location property value is not a float
-        if (($value !== null) && !is_float($value)) {
+        if (($value !== null) && !is_numeric($value)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid property location value "%s"', $value),
                 InvalidArgumentException::INVALID_LOCATION_PROPERTY_VALUE

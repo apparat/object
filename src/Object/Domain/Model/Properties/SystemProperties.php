@@ -143,7 +143,7 @@ class SystemProperties extends AbstractProperties
      *
      * @var string
      */
-    protected $hash = '';
+    protected $hash = null;
 
     /**
      * System properties constructor
@@ -196,7 +196,7 @@ class SystemProperties extends AbstractProperties
             || !($this->type instanceof Type)
             || !($this->revision instanceof Revision)
             || !($this->created instanceof \DateTimeImmutable)
-//            || !$this->hasValidHash()
+            || !$this->hasValidHash()
         ) {
             throw new InvalidArgumentException(
                 'Invalid system properties',
@@ -413,6 +413,6 @@ class SystemProperties extends AbstractProperties
      */
     protected function hasValidHash()
     {
-        return preg_match('%[a-fA-F0-9]{40}%', $this->hash);
+        return ($this->hash === null) || preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 }

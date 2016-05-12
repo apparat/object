@@ -51,7 +51,6 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
-use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -294,72 +293,6 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Set the object state to mutated
-     */
-    protected function setMutatedState()
-    {
-        // If this object is not in mutated state yet
-        if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
-            // TODO: Send signal
-            $this->convertToDraft();
-        }
-
-        // Enable the mutated (and dirty) state
-        $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
-    }
-
-    /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return $this->systemProperties->isDraft() || $this->isPublished();
-    }
-
-    /**
-     * Return whether the object is in published state
-     *
-     * @return boolean Published state
-     */
-    public function isPublished()
-    {
-        return !!($this->state & self::STATE_PUBLISHED);
-    }
-
-    /**
-     * Convert this object revision into a draft
-     */
-    protected function convertToDraft()
-    {
-        // Increment the latest revision number
-        $this->latestRevision = $this->latestRevision->increment();
-
-        // Create draft system properties
-        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
-
-        // Adapt the system properties collection state
-        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
-
-        // Set the draft flag on the repository path
-        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
-
-        // If this is not already a draft ...
-        // Recreate the system properties
-        // Copy the object ID
-        // Copy the object type
-        // Set the revision number to latest revision + 1
-        // Set the creation date to now
-        // Set no publication date
-        // Set the draft flag on the repository path
-        // Increase the latest revision by 1
-
-        // Else if this is a draft
-        // No action needed
-    }
-
-    /**
      * Return the absolute object URL
      *
      * @return string
@@ -449,6 +382,72 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Set the object state to mutated
+     */
+    protected function setMutatedState()
+    {
+        // If this object is not in mutated state yet
+        if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
+            // TODO: Send signal
+            $this->convertToDraft();
+        }
+
+        // Enable the mutated (and dirty) state
+        $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
+    }
+
+    /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return $this->systemProperties->isDraft() || $this->isPublished();
+    }
+
+    /**
+     * Return whether the object is in published state
+     *
+     * @return boolean Published state
+     */
+    public function isPublished()
+    {
+        return !!($this->state & self::STATE_PUBLISHED);
+    }
+
+    /**
+     * Convert this object revision into a draft
+     */
+    protected function convertToDraft()
+    {
+        // Increment the latest revision number
+        $this->latestRevision = $this->latestRevision->increment();
+
+        // Create draft system properties
+        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
+
+        // Adapt the system properties collection state
+        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
+
+        // Set the draft flag on the repository path
+        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
+
+        // If this is not already a draft ...
+        // Recreate the system properties
+        // Copy the object ID
+        // Copy the object type
+        // Set the revision number to latest revision + 1
+        // Set the creation date to now
+        // Set no publication date
+        // Set the draft flag on the repository path
+        // Increase the latest revision by 1
+
+        // Else if this is a draft
+        // No action needed
+    }
+
+    /**
      * Set the object state to dirty
      */
     protected function setDirtyState()
@@ -460,49 +459,5 @@ abstract class AbstractObject implements ObjectInterface
 
         // Enable the dirty state
         $this->state |= self::STATE_DIRTY;
-    }
-
-    /**
-     * Add an object relation
-     *
-     * @param string|RelationInterface $relation Serialized or instantiated object relation
-     * @param string|null $relationType Relation type
-     * @return ObjectInterface
-     */
-    public function addRelation($relation, $relationType = null) {
-        $this->setRelations($this->relations->addRelation($relation, $relationType));
-        return $this;
-    }
-
-    /**
-     * Delete an object relation
-     *
-     * @param RelationInterface $relation Object relation
-     * @return ObjectInterface
-     */
-    public function deleteRelation(RelationInterface $relation)
-    {
-        $this->setRelations($this->relations->deleteRelation($relation));
-        return $this;
-    }
-
-    /**
-     * Get all relations (optional: Of a particular type)
-     *
-     * @param string|null $relationType Optional: Relation type
-     * @return array Object relations
-     */
-    public function getRelations($relationType = null) {
-        return $this->relations->getRelations($relationType);
-    }
-
-    /**
-     * Find and return particular relations
-     *
-     * @param array $criteria Relation criteria
-     * @return RelationInterface[] Relations
-     */
-    public function findRelations(array $criteria) {
-        return $this->relations->findRelations($criteria);
     }
 }

@@ -59,13 +59,24 @@ trait RelationsTrait
     /**
      * Add an object relation
      *
-     * @param string $relationType Relation type
      * @param string|RelationInterface $relation Serialized or instantiated object relation
+     * @param string|null $relationType Relation type
      * @return ObjectInterface
      */
-    public function addRelation($relationType, $relation)
+    public function addRelation($relation, $relationType = null) {
+        $this->setRelations($this->relations->addRelation($relation, $relationType));
+        return $this;
+    }
+
+    /**
+     * Delete an object relation
+     *
+     * @param RelationInterface $relation Object relation
+     * @return ObjectInterface
+     */
+    public function deleteRelation(RelationInterface $relation)
     {
-        $this->setRelations($this->relations->addRelation($relationType, $relation));
+        $this->setRelations($this->relations->deleteRelation($relation));
         return $this;
     }
 
@@ -75,9 +86,18 @@ trait RelationsTrait
      * @param string|null $relationType Optional: Relation type
      * @return array Object relations
      */
-    public function getRelations($relationType = null)
-    {
+    public function getRelations($relationType = null) {
         return $this->relations->getRelations($relationType);
+    }
+
+    /**
+     * Find and return particular relations
+     *
+     * @param array $criteria Relation criteria
+     * @return RelationInterface[] Relations
+     */
+    public function findRelations(array $criteria) {
+        return $this->relations->findRelations($criteria);
     }
 
     /**
@@ -101,17 +121,6 @@ trait RelationsTrait
         }
 
         $this->collectionStates[Relations::COLLECTION] = $relationsState;
-    }
-
-    /**
-     * Find and return particular relations
-     *
-     * @param array $criteria Relation criteria
-     * @return RelationInterface[] Relations
-     */
-    public function findRelations(array $criteria)
-    {
-        return $this->relations->findRelations($criteria);
     }
 
     /**

@@ -105,16 +105,6 @@ abstract class AbstractRelation implements RelationInterface
     }
 
     /**
-     * Return the relation type
-     *
-     * @return string Relation type
-     */
-    public function getType()
-    {
-        return static::TYPE;
-    }
-
-    /**
      * Return the URL
      *
      * @return Url URL
@@ -228,6 +218,16 @@ abstract class AbstractRelation implements RelationInterface
                 ? (empty($this->email) ? (empty($this->label) ? '-' : $this->label) : $this->email)
                 : $this->url
         );
+    }
+
+    /**
+     * Return the relation type
+     *
+     * @return string Relation type
+     */
+    public function getType()
+    {
+        return static::TYPE;
     }
 
     /**

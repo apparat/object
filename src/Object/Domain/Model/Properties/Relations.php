@@ -135,7 +135,7 @@ class Relations extends AbstractProperties
      * @return RelationInterface Relation instance
      * @throws InvalidArgumentException If the relation is not a valid relation instance
      */
-    public function getRelationInstance($relation, $relationType = null)
+    protected function getRelationInstance($relation, $relationType = null)
     {
         // Unserialize and instantiate the relation if it's given in serialized form
         if (is_string($relation)) {
@@ -221,6 +221,7 @@ class Relations extends AbstractProperties
                         }
                         break;
                     case RelationInterface::FILTER_URL:
+//                        print_r($relation->getUrl());
                         if (strpos($relation->getUrl(), $value) === false) {
                             return false;
                         }

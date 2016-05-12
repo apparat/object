@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Ports;
 
+use Apparat\Object\Domain\Model\Relation\AbstractRelation;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
 use Apparat\Object\Domain\Model\Relation\ContributesRelation;
 use Apparat\Object\Domain\Model\Relation\EmbeddedByRelation;
@@ -160,4 +161,16 @@ class Relation
      * @var string
      */
     const COUPLING = RelationInterface::FILTER_COUPLING;
+    /**
+     * Loose coupling
+     *
+     * @var int
+     */
+    const LOOSE_COUPLING = AbstractRelation::LOOSE_COUPLING;
+    /**
+     * Tight coupling
+     *
+     * @var int
+     */
+    const TIGHT_COUPLING = AbstractRelation::TIGHT_COUPLING;
 }

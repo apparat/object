@@ -85,7 +85,7 @@ class PropertiesTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the owner object of an abstract properties collection
      */
-    public function testObjectAddRelation()
+    public function testOwnerObject()
     {
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $procInstProperties = Kernel::create(ProcessingInstructions::class, [[], $article]);

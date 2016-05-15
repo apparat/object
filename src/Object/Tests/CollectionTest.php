@@ -177,7 +177,6 @@ class CollectionTest extends AbstractDisabledAutoconnectorTest
         }
 
         if ($article instanceof Article) {
-
             // Add the contact to the collection
             /** @var Collection $collection */
             $collection = $collection->add($contactObject);

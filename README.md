@@ -1,4 +1,4 @@
-# Apparat Objects
+# apparat/object
 
 Purpose of this module:
 
@@ -7,7 +7,7 @@ Purpose of this module:
 	* Creation of resources from new / unpersisted objects
 		* FrontMark resources for text-based objects
 		* Pairs of binary and meta data resources for binary objects
-	* Object ~~deletion~~ unpublication
+	* Object deletion and un-deletion
 	* [Object revision](doc/object-revisions.md) management
 	* Object ID assignment & incrementation
 	* [Object hash](doc/object-hash.md) management
@@ -25,18 +25,9 @@ Purpose of this module:
 	* [Object URL](doc/object-url.md) handling (composition, decomposition)
 	* `aprt://` and `aprts://` URL handling
 
-### Object repositories
+## Documentation
 
-Objects are stored in object repositories.
-
-### Environment variables
-
-Variable                       | Description
--------------------------------|------------------------------------------------------------
-`APPARAT_BASE_URL`             | Absolute base URL of the apparat instance (including optional path component)
-`APPARAT_DOCUMENT_ROOT`        | Absolute root directory in the file system for apparat repositories
-`OBJECT_DATE_PRECISION`        | Precision for creation date encoding in object URLs, ranging from `0` (no dates in URLs) to `6`q ("`Y/m/d/H/i/s`"). Typical would be `3` ("`Y/m/d`").
-`OBJECT_RESOURCE_EXTENSION`    | File extension for object text resources (e.g. "`md`")
+Please find the [project documentation](doc/index.md) in the `doc` directory. I recommend [reading it](http://apparat-object.readthedocs.io/) via *Read the Docs*.
 
 ## Installation
 
@@ -48,6 +39,7 @@ This library requires PHP 5.6 or later. I recommend using the latest available v
 [![Coverage Status](https://coveralls.io/repos/apparat/object/badge.svg?branch=master&service=github)](https://coveralls.io/github/apparat/object?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/apparat/object/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/apparat/object/?branch=master)
 [![Code Climate](https://codeclimate.com/github/apparat/object/badges/gpa.svg)](https://codeclimate.com/github/apparat/object)
+[![Documentation Status](https://readthedocs.org/projects/apparat-object/badge/?version=latest)](http://apparat-object.readthedocs.io/en/latest/?badge=latest)
 
 To run the unit tests at the command line, issue `composer install` and then `phpunit` at the package root. This requires [Composer](http://getcomposer.org/) to be available as `composer`, and [PHPUnit](http://phpunit.de/manual/) to be available as `phpunit`.
 

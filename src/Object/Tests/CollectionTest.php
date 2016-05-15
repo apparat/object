@@ -41,8 +41,6 @@ use Apparat\Object\Application\Model\Object\Contact;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Ports\Repository;
 
 /**
  * Object collection tests
@@ -50,33 +48,8 @@ use Apparat\Object\Ports\Repository;
  * @package Apparat\Kernel
  * @subpackage Apparat\Object\Tests
  */
-class CollectionTest extends AbstractDisabledAutoconnectorTest
+class CollectionTest extends AbstractRepositoryEnabledTest
 {
-    /**
-     * Test repository
-     *
-     * @var \Apparat\Object\Domain\Repository\Repository
-     */
-    protected static $repository = null;
-
-    /**
-     * Setup
-     */
-    public static function setUpBeforeClass()
-    {
-        Repository::register(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-            ]
-        );
-
-        self::$repository = Repository::instance(getenv('REPOSITORY_URL'));
-
-        \date_default_timezone_set('UTC');
-    }
-
     /**
      * Test an object collection
      *

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,28 +34,42 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Ports\Repository;
 
 /**
- * Article object
+ * Abstract repository enabled test
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @package Apparat\Kernel
+ * @subpackage Apparat\Object\Tests
  */
-class Article extends AbstractCommonMarkObject
+abstract class AbstractRepositoryEnabledTest extends AbstractDisabledAutoconnectorTest
 {
     /**
-     * Object type
+     * Test repository
      *
-     * @var string
+     * @var \Apparat\Object\Domain\Repository\Repository
      */
-    const TYPE = Type::ARTICLE;
+    protected static $repository = null;
+
     /**
-     * Domain property collection class
-     *
-     * @var string
+     * Setup
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        Repository::register(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+            ]
+        );
+
+        self::$repository = Repository::instance(getenv('REPOSITORY_URL'));
+
+        \date_default_timezone_set('UTC');
+    }
 }

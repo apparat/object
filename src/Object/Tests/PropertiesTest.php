@@ -38,8 +38,6 @@ namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Object;
 
 /**
@@ -48,7 +46,7 @@ use Apparat\Object\Ports\Object;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class PropertiesTest extends AbstractDisabledAutoconnectorTest
+class PropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
      * Example object path
@@ -56,31 +54,6 @@ class PropertiesTest extends AbstractDisabledAutoconnectorTest
      * @var string
      */
     const OBJECT_PATH = '/2015/12/21/1.article/1';
-
-    /**
-     * Test repository
-     *
-     * @var Repository
-     */
-    protected static $repository = null;
-
-    /**
-     * Setup
-     */
-    public static function setUpBeforeClass()
-    {
-        \Apparat\Object\Ports\Repository::register(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-            ]
-        );
-
-        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
-
-        \date_default_timezone_set('UTC');
-    }
 
     /**
      * Test the owner object of an abstract properties collection

@@ -56,7 +56,7 @@ namespace Apparat\Object\Tests {
      * @package Apparat\Object
      * @subpackage Apparat\Object\Test
      */
-    class ObjectTest extends AbstractDisabledAutoconnectorTest
+    class ObjectTest extends AbstractRepositoryEnabledTest
     {
         /**
          * Example object path
@@ -64,30 +64,6 @@ namespace Apparat\Object\Tests {
          * @var string
          */
         const OBJECT_PATH = '/2015/12/21/1.article/1';
-        /**
-         * Test repository
-         *
-         * @var Repository
-         */
-        protected static $repository = null;
-
-        /**
-         * Setup
-         */
-        public static function setUpBeforeClass()
-        {
-            \Apparat\Object\Ports\Repository::register(
-                getenv('REPOSITORY_URL'),
-                [
-                    'type' => FileAdapterStrategy::TYPE,
-                    'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-                ]
-            );
-
-            self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
-
-            \date_default_timezone_set('UTC');
-        }
 
         /**
          * Tears down the fixture

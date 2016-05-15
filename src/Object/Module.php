@@ -38,6 +38,8 @@ namespace Apparat\Object;
 
 use Apparat\Kernel\Ports\AbstractModule;
 use Apparat\Kernel\Ports\Contract\DependencyInjectionContainerInterface;
+use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
+use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
 use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
@@ -45,6 +47,7 @@ use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
+use Apparat\Object\Infrastructure\Utilities\CommonMarkPayloadProcessor;
 use Dotenv\Dotenv;
 
 /**
@@ -67,30 +70,25 @@ class Module extends AbstractModule
      *******************************************************************************/
 
     /**
-     * Configure the dependency injection container
+     * Validate the environment
      *
-     * @param DependencyInjectionContainerInterface $diContainer Dependency injection container
-     * @return void
+     * @param Dotenv $environment Environment
      */
-    public function configureDependencyInjection(DependencyInjectionContainerInterface $diContainer)
+    protected static function validateEnvironment(Dotenv $environment)
     {
-        parent::configureDependencyInjection($diContainer);
+        parent::validateEnvironment($environment);
 
-        // Configure the repository service
-        $diContainer->register(Service::class, [
-            'shared' => true,
-            'substitutions' => [
-                AutoConnectorInterface::class => [
-                    'instance' => AutoConnector::class,
-                ],
-                AdapterStrategyFactoryInterface::class => [
-                    'instance' => AdapterStrategyFactory::class,
-                ],
-                ManagerInterface::class => [
-                    'instance' => Manager::class,
-                ],
-            ]
-        ]);
+        // Validate the required environment variables
+        $environment->required('APPARAT_BASE_URL')->notEmpty();
+        $environment->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
+        $environment->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
+
+        // In-depth validation of the apparat base URL
+        $apparatBaseUrl = getenv('APPARAT_BASE_URL');
+        self::isAbsoluteBareUrl($apparatBaseUrl);
+
+        // Normalize the apparat base URL
+        putenv('APPARAT_BASE_URL='.rtrim($apparatBaseUrl, '/').'/');
     }
 
     /**
@@ -125,24 +123,39 @@ class Module extends AbstractModule
      *******************************************************************************/
 
     /**
-     * Validate the environment
+     * Configure the dependency injection container
      *
-     * @param Dotenv $environment Environment
+     * @param DependencyInjectionContainerInterface $diContainer Dependency injection container
+     * @return void
      */
-    protected static function validateEnvironment(Dotenv $environment)
+    public function configureDependencyInjection(DependencyInjectionContainerInterface $diContainer)
     {
-        parent::validateEnvironment($environment);
+        parent::configureDependencyInjection($diContainer);
 
-        // Validate the required environment variables
-        $environment->required('APPARAT_BASE_URL')->notEmpty();
-        $environment->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
-        $environment->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
+        // Configure the repository service
+        $diContainer->register(Service::class, [
+            'shared' => true,
+            'substitutions' => [
+                AutoConnectorInterface::class => [
+                    'instance' => AutoConnector::class,
+                ],
+                AdapterStrategyFactoryInterface::class => [
+                    'instance' => AdapterStrategyFactory::class,
+                ],
+                ManagerInterface::class => [
+                    'instance' => Manager::class,
+                ],
+            ]
+        ]);
 
-        // In-depth validation of the apparat base URL
-        $apparatBaseUrl = getenv('APPARAT_BASE_URL');
-        self::isAbsoluteBareUrl($apparatBaseUrl);
-
-        // Normalize the apparat base URL
-        putenv('APPARAT_BASE_URL='.rtrim($apparatBaseUrl, '/').'/');
+        // Configure the CommonMark payload processor
+        $diContainer->register(AbstractCommonMarkObject::class, [
+            'shared' => true,
+            'substitutions' => [
+                CommonMarkPayloadProcessorInterface::class => [
+                    'instance' => CommonMarkPayloadProcessor::class,
+                ],
+            ]
+        ]);
     }
 }

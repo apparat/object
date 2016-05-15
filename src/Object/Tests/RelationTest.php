@@ -42,8 +42,6 @@ use Apparat\Object\Domain\Factory\RelationFactory;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Object;
 use Apparat\Object\Ports\Relation;
 
@@ -53,7 +51,7 @@ use Apparat\Object\Ports\Relation;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class RelationTest extends AbstractDisabledAutoconnectorTest
+class RelationTest extends AbstractRepositoryEnabledTest
 {
     /**
      * Example object path
@@ -61,31 +59,6 @@ class RelationTest extends AbstractDisabledAutoconnectorTest
      * @var string
      */
     const OBJECT_PATH = '/2015/12/21/1.article/1';
-
-    /**
-     * Test repository
-     *
-     * @var Repository
-     */
-    protected static $repository = null;
-
-    /**
-     * Setup
-     */
-    public static function setUpBeforeClass()
-    {
-        \Apparat\Object\Ports\Repository::register(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-            ]
-        );
-
-        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
-
-        \date_default_timezone_set('UTC');
-    }
 
     /**
      * Test the addition of an object relation

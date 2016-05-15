@@ -214,9 +214,9 @@ abstract class AbstractRelation implements RelationInterface
     {
         return md5(
             $this->getType().
-            empty($this->url)
+            (empty($this->url)
                 ? (empty($this->email) ? (empty($this->label) ? '-' : $this->label) : $this->email)
-                : $this->url
+                : $this->url)
         );
     }
 

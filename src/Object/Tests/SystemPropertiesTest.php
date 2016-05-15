@@ -37,8 +37,9 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Ports\Object;
 
 /**
@@ -47,7 +48,7 @@ use Apparat\Object\Ports\Object;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
-class SystemPropertiesTest extends AbstractDisabledAutoconnectorTest
+class SystemPropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
      * Example object path
@@ -57,37 +58,48 @@ class SystemPropertiesTest extends AbstractDisabledAutoconnectorTest
     const OBJECT_PATH = '/2015/12/21/1.article/1';
 
     /**
-     * Test repository
+     * Test the instantiation of system properties
      *
-     * @var Repository
+     * @expectedException \Apparat\Object\Domain\Model\Object\RuntimeException
+     * @expectedExceptionCode 1456520791
      */
-    protected static $repository = null;
-
-    /**
-     * Setup
-     */
-    public static function setUpBeforeClass()
+    public function testSystemProperties()
     {
-        \Apparat\Object\Ports\Repository::register(
-            getenv('REPOSITORY_URL'),
-            [
-                'type' => FileAdapterStrategy::TYPE,
-                'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
-            ]
-        );
-
-        self::$repository = \Apparat\Object\Ports\Repository::instance(getenv('REPOSITORY_URL'));
-
-        \date_default_timezone_set('UTC');
+        $data = [
+            'id' => 1,
+            'type' => 'article',
+            'revision' => 1,
+            'created' => time(),
+            'hash' => sha1(rand()),
+        ];
+        /** @var ObjectInterface $object */
+        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
+        $systemProperties = new SystemProperties($data, $object);
+        $this->assertInstanceOf(SystemProperties::class, $systemProperties);
+        $systemProperties = $systemProperties->publish();
+        $systemProperties->publish();
     }
 
     /**
-     * Test the addition of an object relation
+     * Test the instantiation of invalid system properties
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
+     * @expectedExceptionCode 1456522289
+     */
+    public function testInvalidSystemProperties()
+    {
+        /** @var ObjectInterface $object */
+        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
+        new SystemProperties([], $object);
+    }
+
+    /**
+     * Test setting the object location
      *
      * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
      * @expectedExceptionCode 1462903252
      */
-    public function testObjectAddRelation()
+    public function testObjectSetLocation()
     {
         $latitude = rand(0, 10000) / 10000;
         $longitude = rand(0, 10000) / 10000;

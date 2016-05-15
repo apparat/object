@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Test
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,28 +34,39 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Application\Model\Object\Article;
+use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Relation;
 
 /**
- * Article object
+ * Object payload test
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Tests
  */
-class Article extends AbstractCommonMarkObject
+class PayloadTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Object type
+     * Example object path
      *
      * @var string
      */
-    const TYPE = Type::ARTICLE;
+    const OBJECT_PATH = '/2015/12/21/1.article/1';
+
     /**
-     * Domain property collection class
-     *
-     * @var string
+     * Test setting the object payload
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    public function testObjectSetLocation()
+    {
+        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $this->assertInstanceOf(Article::class, $article);
+
+        // Set the article payload
+        $article->setPayload(file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'.
+            DIRECTORY_SEPARATOR.'commonmark.md'));
+        $this->assertEquals(3, count($article->findRelations([Relation::TYPE => Relation::EMBEDS])));
+        $this->assertEquals(15, count($article->findRelations([Relation::TYPE => Relation::REFERS_TO])));
+    }
 }

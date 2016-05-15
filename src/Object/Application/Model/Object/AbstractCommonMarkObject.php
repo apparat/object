@@ -36,26 +36,58 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
 /**
- * Article object
+ * Abstract CommonMark object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Article extends AbstractCommonMarkObject
+abstract class AbstractCommonMarkObject extends AbstractObject
 {
     /**
-     * Object type
+     * Payload processor
      *
-     * @var string
+     * @var CommonMarkPayloadProcessorInterface
      */
-    const TYPE = Type::ARTICLE;
+    protected $payloadProcessor;
+
     /**
-     * Domain property collection class
+     * Object constructor
      *
-     * @var string
+     * @param CommonMarkPayloadProcessorInterface $payloadProcessor Payload processor
+     * @param RepositoryPathInterface $path Object repository path
+     * @param string $payload Object payload
+     * @param array $propertyData Property data
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    public function __construct(
+        CommonMarkPayloadProcessorInterface $payloadProcessor,
+        RepositoryPathInterface $path,
+        $payload,
+        array $propertyData
+    ) {
+        $this->payloadProcessor = $payloadProcessor;
+        $this->payloadProcessor->setObject($this);
+
+        parent::__construct($path, $payload, $propertyData);
+    }
+
+
+    /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload)
+    {
+        parent::setPayload($payload);
+
+        // Process the payload
+        return $this->payloadProcessor->processPayload();
+    }
 }

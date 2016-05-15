@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Test
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,53 +34,29 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Tests;
+namespace Apparat\Object\Application\Contract;
 
-use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
 
 /**
- * Property tests
+ * Payload processor interface
  *
- * @package Apparat\Kernel
- * @subpackage Apparat\Object\Tests
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Application
  */
-class PropertyTest extends AbstractDisabledAutoconnectorTest
+interface CommonMarkPayloadProcessorInterface
 {
     /**
-     * Test the instantiation of system properties
+     * Associate the processor with the owning CommonMark object
      *
-     * @expectedException \Apparat\Object\Domain\Model\Object\RuntimeException
-     * @expectedExceptionCode 1456520791
+     * @param AbstractCommonMarkObject $object CommonMark object
      */
-    public function testSystemProperties()
-    {
-        $data = [
-            'id' => 1,
-            'type' => 'article',
-            'revision' => 1,
-            'created' => time(),
-            'hash' => sha1(rand()),
-        ];
-        /** @var ObjectInterface $object */
-        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
-        $systemProperties = new SystemProperties($data, $object);
-        $this->assertInstanceOf(SystemProperties::class, $systemProperties);
-        $systemProperties = $systemProperties->publish();
-        $systemProperties->publish();
-    }
+    public function setObject(AbstractCommonMarkObject $object);
 
     /**
-     * Test the instantiation of invalid system properties
+     * Process the payload of a CommonMark object
      *
-     * @expectedException \Apparat\Object\Domain\Model\Properties\InvalidArgumentException
-     * @expectedExceptionCode 1456522289
+     * @return AbstractCommonMarkObject CommonMark object
      */
-    public function testInvalidSystemProperties()
-    {
-        /** @var ObjectInterface $object */
-        $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();
-        new SystemProperties([], $object);
-    }
+    public function processPayload();
 }

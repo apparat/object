@@ -1,4 +1,4 @@
-# apparat/object
+# About apparat/object
 
 Purpose of this module:
 
@@ -25,11 +25,11 @@ Purpose of this module:
 	* [Object URL](object-url.md) handling (composition, decomposition)
 	* `aprt://` and `aprts://` URL handling
 
-### Object repositories
+# Object repositories
 
 Objects are stored in object repositories.
 
-### Environment variables
+# Environment variables
 
 Variable                       | Description
 -------------------------------|------------------------------------------------------------
@@ -38,7 +38,7 @@ Variable                       | Description
 `OBJECT_DATE_PRECISION`        | Precision for creation date encoding in object URLs, ranging from `0` (no dates in URLs) to `6`q ("`Y/m/d/H/i/s`"). Typical would be `3` ("`Y/m/d`").
 `OBJECT_RESOURCE_EXTENSION`    | File extension for object text resources (e.g. "`md`")
 
-## Documentation
+# Documentation
 
 I recommend reading [the project documentation](http://apparat-object.readthedocs.io/) on *Read the Docs*.
 

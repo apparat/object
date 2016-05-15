@@ -6,10 +6,10 @@ docs_dir: doc
 pages:
 - Home: 'index.md'
 - Objects:
-  - Object types: 'object-types.md'
-  - Object properties: 'object-properties.md'
-  - Object revisions: 'object-revisions.md'
-  - Object states: 'object-states.md'
-  - Object URLs: 'object-url.md'
-  - Object hash: 'object-hash.md'
-- To-Do: 'object-todo.md'
+  - Types: 'object-types.md'
+  - Properties: 'object-properties.md'
+  - URLs: 'object-url.md'
+  - Revisions: 'object-revisions.md'
+  - States: 'object-states.md'
+  - Hash: 'object-hash.md'
+- To-Do: 'todo.md'

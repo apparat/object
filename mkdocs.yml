@@ -1,3 +1,8 @@
+site_name: apparat/object
+site_description: Apparat object abstraction layer
+site_author: Joschi Kuphal
+repo_url: https://github.com/apparat/object/
+docs_dir: doc
 pages:
 - Home: 'index.md'
 - Objects:
@@ -8,4 +13,3 @@ pages:
   - Object URLs: 'object-url.md'
   - Object hash: 'object-hash.md'
 - To-Do: 'object-todo.md'
-

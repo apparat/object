@@ -16,8 +16,6 @@ The object content consists of
 * the [Domain properties](object-properties.md#c-domain-properties) and
 * the object payload (if any).
 
-Together these properties result in the [object hash](object-hash.md) which is part of the [System properties](object-properties.md#a-system-properties). Whenever the object hash changes, persistence will result in a new revision (draft or published mode).
-
 Object modes
 ------------
 

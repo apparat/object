@@ -11,5 +11,4 @@ pages:
   - URLs: 'object-url.md'
   - Revisions: 'object-revisions.md'
   - States: 'object-states.md'
-  - Hash: 'object-hash.md'
 - To-Do: 'todo.md'

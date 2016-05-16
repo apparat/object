@@ -7,10 +7,9 @@ Purpose of this module:
 	* Creation of resources from new / unpersisted objects
 		* FrontMark resources for text-based objects
 		* Pairs of binary and meta data resources for binary objects
-	* Object deletion and un-deletion
+	* Object publication, un-publication and re-publication
 	* [Object revision](object-revisions.md) management
 	* Object ID assignment & incrementation
-	* [Object hash](object-hash.md) management
 	* Object localization (?)
 2. **Object API**
     * Implementation of different [object types](object-types.md)

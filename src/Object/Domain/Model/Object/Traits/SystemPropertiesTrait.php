@@ -108,16 +108,6 @@ trait SystemPropertiesTrait
     }
 
     /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash()
-    {
-        return $this->systemProperties->getHash();
-    }
-
-    /**
      * Return the latitude
      *
      * @return float Latitude

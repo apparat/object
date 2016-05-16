@@ -284,16 +284,6 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash()
-    {
-        return $this->object()->getHash();
-    }
-
-    /**
      * Return the object title
      *
      * @return string Object title

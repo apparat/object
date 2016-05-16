@@ -108,6 +108,16 @@ trait SystemPropertiesTrait
     }
 
     /**
+     * Return the language
+     *
+     * @return string Language
+     */
+    public function getLanguage()
+    {
+        return $this->systemProperties->getLanguage();
+    }
+
+    /**
      * Return the latitude
      *
      * @return float Latitude

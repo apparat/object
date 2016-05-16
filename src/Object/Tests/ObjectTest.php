@@ -135,6 +135,7 @@ namespace Apparat\Object\Tests {
             $this->assertFalse($articleObject->isDraft());
             $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
             $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
+            $this->assertEquals('en', $articleObject->getLanguage());
             $this->assertEquals(
                 "# Example article object\n\nThis file is an example for an object of type `\"article\"`.\n",
                 $articleObject->getPayload()

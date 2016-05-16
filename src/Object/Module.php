@@ -82,6 +82,7 @@ class Module extends AbstractModule
         $environment->required('APPARAT_BASE_URL')->notEmpty();
         $environment->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
         $environment->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
+        $environment->required('OBJECT_DEFAULT_LANGUAGE')->notEmpty();
 
         // In-depth validation of the apparat base URL
         $apparatBaseUrl = getenv('APPARAT_BASE_URL');

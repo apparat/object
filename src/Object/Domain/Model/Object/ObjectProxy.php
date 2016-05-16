@@ -411,6 +411,16 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the language
+     *
+     * @return string Language
+     */
+    public function getLanguage()
+    {
+        return $this->object()->getLanguage();
+    }
+
+    /**
      * Return the privacy
      *
      * @return string Privacy

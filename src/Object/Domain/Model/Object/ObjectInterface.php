@@ -273,6 +273,13 @@ interface ObjectInterface
     public function setPayload($payload);
 
     /**
+     * Return the language
+     *
+     * @return string Language
+     */
+    public function getLanguage();
+
+    /**
      * Return the latitude
      *
      * @return float Latitude

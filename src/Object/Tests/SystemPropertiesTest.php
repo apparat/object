@@ -66,10 +66,12 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
     public function testSystemProperties()
     {
         $data = [
-            'id' => 1,
-            'type' => 'article',
-            'revision' => 1,
-            'created' => time(),
+            SystemProperties::PROPERTY_ID => 1,
+            SystemProperties::PROPERTY_TYPE => Article::TYPE,
+            SystemProperties::PROPERTY_REVISION => 1,
+            SystemProperties::PROPERTY_CREATED => time(),
+            SystemProperties::PROPERTY_LANGUAGE => getenv('OBJECT_DEFAULT_LANGUAGE'),
+
         ];
         /** @var ObjectInterface $object */
         $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();

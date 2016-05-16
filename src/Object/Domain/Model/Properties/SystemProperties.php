@@ -91,7 +91,13 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_PUBLISHED = 'published';
     /**
-     * LocationProperties property
+     * Language property
+     *
+     * @var string
+     */
+    const PROPERTY_LANGUAGE = 'language';
+    /**
+     * Location property
      *
      * @var string
      */
@@ -132,6 +138,13 @@ class SystemProperties extends AbstractProperties
      * @var LocationProperties
      */
     protected $location = null;
+    /**
+     * Language (BCP 47 compliant)
+     *
+     * @var string
+     * @see https://tools.ietf.org/html/bcp47
+     */
+    protected $language = null;
 
     /**
      * System properties constructor
@@ -168,6 +181,11 @@ class SystemProperties extends AbstractProperties
             $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
         }
 
+        // Initialize the object language
+        if (array_key_exists(self::PROPERTY_LANGUAGE, $data)) {
+            $this->language = trim($data[self::PROPERTY_LANGUAGE]);
+        }
+
         // Initialize the location
         $this->location = Kernel::create(
             LocationProperties::class,
@@ -179,6 +197,7 @@ class SystemProperties extends AbstractProperties
             || !($this->type instanceof Type)
             || !($this->revision instanceof Revision)
             || !($this->created instanceof \DateTimeImmutable)
+            || !strlen($this->language)
         ) {
             throw new InvalidArgumentException(
                 'Invalid system properties',
@@ -245,6 +264,16 @@ class SystemProperties extends AbstractProperties
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Return the object language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     /**
@@ -333,6 +362,7 @@ class SystemProperties extends AbstractProperties
                 self::PROPERTY_TYPE => $this->type->getType(),
                 self::PROPERTY_REVISION => $draftRevision->getRevision(),
                 self::PROPERTY_CREATED => time(),
+                self::PROPERTY_LANGUAGE => $this->language,
             ],
             $this->object
         );

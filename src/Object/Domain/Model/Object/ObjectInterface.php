@@ -115,13 +115,6 @@ interface ObjectInterface
     public function getCreated();
 
     /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash();
-
-    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable Publication date & time

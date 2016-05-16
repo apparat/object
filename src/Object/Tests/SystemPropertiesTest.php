@@ -70,7 +70,6 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
             'type' => 'article',
             'revision' => 1,
             'created' => time(),
-            'hash' => sha1(rand()),
         ];
         /** @var ObjectInterface $object */
         $object = $this->getMockBuilder(AbstractObject::class)->disableOriginalConstructor()->getMock();

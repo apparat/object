@@ -97,12 +97,6 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_LOCATION = 'location';
     /**
-     * Hash property
-     *
-     * @var string
-     */
-    const PROPERTY_HASH = 'hash';
-    /**
      * Object ID (constant throughout revisions)
      *
      * @var Id
@@ -138,12 +132,6 @@ class SystemProperties extends AbstractProperties
      * @var LocationProperties
      */
     protected $location = null;
-    /**
-     * Object hash of this revision
-     *
-     * @var string
-     */
-    protected $hash = null;
 
     /**
      * System properties constructor
@@ -186,17 +174,11 @@ class SystemProperties extends AbstractProperties
             [empty($data[self::PROPERTY_LOCATION]) ? [] : $data[self::PROPERTY_LOCATION], $this->object]
         );
 
-        // Initialize the object hash
-        if (array_key_exists(self::PROPERTY_HASH, $data)) {
-            $this->hash = $data[self::PROPERTY_HASH];
-        }
-
         // Test if all mandatory properties are set
         if (!($this->uid instanceof Id)
             || !($this->type instanceof Type)
             || !($this->revision instanceof Revision)
             || !($this->created instanceof \DateTimeImmutable)
-            || !$this->hasValidHash()
         ) {
             throw new InvalidArgumentException(
                 'Invalid system properties',
@@ -338,16 +320,6 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
-     * Return the object hash of this revision
-     *
-     * @return string Object hash
-     */
-    public function getHash()
-    {
-        return $this->hash;
-    }
-
-    /**
      * Derive draft system properties
      *
      * @param Revision $draftRevision Draft revision
@@ -402,17 +374,6 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_PUBLISHED => ($this->published instanceof \DateTimeImmutable) ?
                 $this->published->format('c') : null,
             self::PROPERTY_LOCATION => $this->location->toArray(),
-            self::PROPERTY_HASH => $this->hash,
         ]);
-    }
-
-    /**
-     * Test if the object hash is a valid sha1 value
-     *
-     * @return bool The object hash is a valid sha1 value
-     */
-    protected function hasValidHash()
-    {
-        return ($this->hash === null) || preg_match('%[a-fA-F0-9]{40}%', $this->hash);
     }
 }

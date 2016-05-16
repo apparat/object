@@ -146,6 +146,8 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      */
     public function processDocument(Document $document)
     {
+//        print_r($document);
+
         $walker = $document->walker();
         while ($event = $walker->next()) {
             $node = $event->getNode();
@@ -176,7 +178,7 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      */
     protected function addRefersToRelation($url, $label = null)
     {
-        if (!array_key_exists($url, $this->refersTo)) {
+        if (strlen($url) && !array_key_exists($url, $this->refersTo)) {
             $this->refersTo[$url] = true;
             $this->object->addRelation($this->getRelationString($url, $label), Relation::REFERS_TO);
         }
@@ -223,7 +225,7 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      */
     protected function addEmbedsRelation($url, $label = null)
     {
-        if (!array_key_exists($url, $this->embeds)) {
+        if (strlen($url) && !array_key_exists($url, $this->embeds)) {
             $this->embeds[$url] = true;
             $this->object->addRelation($this->getRelationString($url, $label), Relation::EMBEDS);
         }

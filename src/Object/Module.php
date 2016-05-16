@@ -150,7 +150,7 @@ class Module extends AbstractModule
 
         // Configure the CommonMark payload processor
         $diContainer->register(AbstractCommonMarkObject::class, [
-            'shared' => true,
+            'shared' => false,
             'substitutions' => [
                 CommonMarkPayloadProcessorInterface::class => [
                     'instance' => CommonMarkPayloadProcessor::class,

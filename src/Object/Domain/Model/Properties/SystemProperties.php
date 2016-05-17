@@ -97,6 +97,12 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_PUBLISHED = 'published';
     /**
+     * Deleted property
+     *
+     * @var string
+     */
+    const PROPERTY_DELETED = 'deleted';
+    /**
      * Language property
      *
      * @var string
@@ -144,6 +150,12 @@ class SystemProperties extends AbstractProperties
      * @var \DateTimeImmutable
      */
     protected $published = null;
+    /**
+     * Deletion date of this revision
+     *
+     * @var \DateTimeImmutable
+     */
+    protected $deleted = null;
     /**
      * Location
      *
@@ -196,6 +208,11 @@ class SystemProperties extends AbstractProperties
         // Initialize the object publication date
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
             $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
+        }
+
+        // Initialize the object deletion date
+        if (array_key_exists(self::PROPERTY_DELETED, $data)) {
+            $this->deleted = new \DateTimeImmutable('@'.$data[self::PROPERTY_DELETED]);
         }
 
         // Initialize the object language
@@ -292,6 +309,16 @@ class SystemProperties extends AbstractProperties
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Return the deletion date & time of this revision
+     *
+     * @return \DateTimeImmutable|null Deletion date & time
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -424,7 +451,8 @@ class SystemProperties extends AbstractProperties
      *
      * @return SystemProperties System properties
      */
-    public function touch() {
+    public function touch()
+    {
         $systemProperties = clone $this;
         $systemProperties->modified = new \DateTimeImmutable();
         return $systemProperties;
@@ -445,6 +473,8 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_MODIFIED => $this->modified->format('c'),
             self::PROPERTY_PUBLISHED => ($this->published instanceof \DateTimeImmutable) ?
                 $this->published->format('c') : null,
+            self::PROPERTY_DELETED => ($this->deleted instanceof \DateTimeImmutable) ?
+                $this->deleted->format('c') : null,
             self::PROPERTY_LOCATION => $this->location->toArray(),
         ]);
     }

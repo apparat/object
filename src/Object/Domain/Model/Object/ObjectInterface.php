@@ -128,6 +128,12 @@ interface ObjectInterface
      */
     public function getPublished();
 
+    /**
+     * Return the deletion date & time
+     *
+     * @return \DateTimeImmutable Deletion date & time
+     */
+    public function getDeleted();
 
     /**
      * Return the object title

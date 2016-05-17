@@ -118,6 +118,16 @@ trait SystemPropertiesTrait
     }
 
     /**
+     * Return the deletion date & time
+     *
+     * @return \DateTimeImmutable Deletion date & time
+     */
+    public function getDeleted()
+    {
+        return $this->systemProperties->getDeleted();
+    }
+
+    /**
      * Return the language
      *
      * @return string Language

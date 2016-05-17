@@ -274,6 +274,16 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the deletion date & time
+     *
+     * @return \DateTimeImmutable Deletion date & time
+     */
+    public function getDeleted()
+    {
+        return $this->object()->getDeleted();
+    }
+
+    /**
      * Return the modification date & time
      *
      * @return \DateTimeImmutable Modification date & time

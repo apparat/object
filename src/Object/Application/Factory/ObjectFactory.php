@@ -103,6 +103,9 @@ class ObjectFactory
         $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $path->getType()->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $path->getRevision()->getRevision();
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] = $path->getCreationDate()->format('U');
+        if (empty($systemPropertyData[SystemProperties::PROPERTY_LANGUAGE])) {
+            $systemPropertyData[SystemProperties::PROPERTY_LANGUAGE] = getenv('OBJECT_DEFAULT_LANGUAGE');
+        }
         $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
 
         // Instantiate the object

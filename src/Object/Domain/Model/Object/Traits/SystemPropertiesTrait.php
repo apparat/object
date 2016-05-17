@@ -108,13 +108,13 @@ trait SystemPropertiesTrait
     }
 
     /**
-     * Return the object hash
+     * Return the language
      *
-     * @return string Object hash
+     * @return string Language
      */
-    public function getHash()
+    public function getLanguage()
     {
-        return $this->systemProperties->getHash();
+        return $this->systemProperties->getLanguage();
     }
 
     /**

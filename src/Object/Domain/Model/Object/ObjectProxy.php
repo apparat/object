@@ -284,16 +284,6 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash()
-    {
-        return $this->object()->getHash();
-    }
-
-    /**
      * Return the object title
      *
      * @return string Object title
@@ -418,6 +408,16 @@ class ObjectProxy implements ObjectInterface
     public function setLicense($license)
     {
         return $this->object()->setLicense($license);
+    }
+
+    /**
+     * Return the language
+     *
+     * @return string Language
+     */
+    public function getLanguage()
+    {
+        return $this->object()->getLanguage();
     }
 
     /**

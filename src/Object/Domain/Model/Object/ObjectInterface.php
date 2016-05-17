@@ -115,13 +115,6 @@ interface ObjectInterface
     public function getCreated();
 
     /**
-     * Return the object hash
-     *
-     * @return string Object hash
-     */
-    public function getHash();
-
-    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable Publication date & time
@@ -278,6 +271,13 @@ interface ObjectInterface
      * @return ObjectInterface Self reference
      */
     public function setPayload($payload);
+
+    /**
+     * Return the language
+     *
+     * @return string Language
+     */
+    public function getLanguage();
 
     /**
      * Return the latitude

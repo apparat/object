@@ -71,11 +71,11 @@ class RelationTest extends AbstractRepositoryEnabledTest
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
         $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
-        $this->assertEquals(2, count($article->findRelations([Relation::URL => 'example.com'])));
+        $this->assertEquals(3, count($article->findRelations([Relation::URL => 'example.com'])));
         foreach ($article->findRelations([Relation::EMAIL => 'tollwerk.de']) as $relation) {
             $article->deleteRelation($relation);
         }
-        $this->assertEquals(2, count($article->getRelations()));
+        $this->assertEquals(4, count($article->getRelations()));
         $article->addRelation('http://example.com <john@example.com> John Doe', 'invalid');
     }
 

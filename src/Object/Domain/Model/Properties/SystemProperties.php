@@ -85,6 +85,12 @@ class SystemProperties extends AbstractProperties
      */
     const PROPERTY_CREATED = 'created';
     /**
+     * Modified property
+     *
+     * @var string
+     */
+    const PROPERTY_MODIFIED = 'modified';
+    /**
      * Published property
      *
      * @var string
@@ -126,6 +132,12 @@ class SystemProperties extends AbstractProperties
      * @var \DateTimeImmutable
      */
     protected $created = null;
+    /**
+     * Modification date of this revision
+     *
+     * @var \DateTimeImmutable
+     */
+    protected $modified = null;
     /**
      * Publication date of this revision
      *
@@ -176,6 +188,11 @@ class SystemProperties extends AbstractProperties
             $this->created = new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]);
         }
 
+        // Initialize the object modification date
+        if (array_key_exists(self::PROPERTY_MODIFIED, $data)) {
+            $this->modified = new \DateTimeImmutable('@'.$data[self::PROPERTY_MODIFIED]);
+        }
+
         // Initialize the object publication date
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
             $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
@@ -197,6 +214,7 @@ class SystemProperties extends AbstractProperties
             || !($this->type instanceof Type)
             || !($this->revision instanceof Revision)
             || !($this->created instanceof \DateTimeImmutable)
+            || !($this->modified instanceof \DateTimeImmutable)
             || !strlen($this->language)
         ) {
             throw new InvalidArgumentException(
@@ -254,6 +272,16 @@ class SystemProperties extends AbstractProperties
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * Return the modification date & time of this revision
+     *
+     * @return \DateTimeImmutable Modification date & time
+     */
+    public function getModified()
+    {
+        return $this->modified;
     }
 
     /**
@@ -356,12 +384,14 @@ class SystemProperties extends AbstractProperties
      */
     public function createDraft(Revision $draftRevision)
     {
+        $now = time();
         return new static(
             [
                 self::PROPERTY_ID => $this->uid->getId(),
                 self::PROPERTY_TYPE => $this->type->getType(),
                 self::PROPERTY_REVISION => $draftRevision->getRevision(),
-                self::PROPERTY_CREATED => time(),
+                self::PROPERTY_CREATED => $now,
+                self::PROPERTY_MODIFIED => $now,
                 self::PROPERTY_LANGUAGE => $this->language,
             ],
             $this->object
@@ -390,6 +420,17 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Update the object's modification timestamp
+     *
+     * @return SystemProperties System properties
+     */
+    public function touch() {
+        $systemProperties = clone $this;
+        $systemProperties->modified = new \DateTimeImmutable();
+        return $systemProperties;
+    }
+
+    /**
      * Return the property values as array
      *
      * @return array Property values
@@ -401,6 +442,7 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_TYPE => $this->type->getType(),
             self::PROPERTY_REVISION => $this->revision->getRevision(),
             self::PROPERTY_CREATED => $this->created->format('c'),
+            self::PROPERTY_MODIFIED => $this->modified->format('c'),
             self::PROPERTY_PUBLISHED => ($this->published instanceof \DateTimeImmutable) ?
                 $this->published->format('c') : null,
             self::PROPERTY_LOCATION => $this->location->toArray(),

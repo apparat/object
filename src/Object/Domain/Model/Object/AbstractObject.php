@@ -414,8 +414,11 @@ abstract class AbstractObject implements ObjectInterface
             $this->convertToDraft();
         }
 
-        // Enable the mutated (and dirty) state
-        $this->state |= (self::STATE_DIRTY | self::STATE_MUTATED);
+        // Enable the mutated state
+        $this->state |= self::STATE_MUTATED;
+
+        // Enable the dirty state
+        $this->setDirtyState();
     }
 
     /**
@@ -461,5 +464,8 @@ abstract class AbstractObject implements ObjectInterface
 
         // Enable the dirty state
         $this->state |= self::STATE_DIRTY;
+
+        // Update the modification timestamp
+        $this->setSystemProperties($this->systemProperties->touch(), true);
     }
 }

@@ -115,6 +115,13 @@ interface ObjectInterface
     public function getCreated();
 
     /**
+     * Return the modification date & time
+     *
+     * @return \DateTimeImmutable Modification date & time
+     */
+    public function getModified();
+
+    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable Publication date & time

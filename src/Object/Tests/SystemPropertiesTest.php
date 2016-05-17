@@ -65,11 +65,13 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testSystemProperties()
     {
+        $now = time();
         $data = [
             SystemProperties::PROPERTY_ID => 1,
             SystemProperties::PROPERTY_TYPE => Article::TYPE,
             SystemProperties::PROPERTY_REVISION => 1,
-            SystemProperties::PROPERTY_CREATED => time(),
+            SystemProperties::PROPERTY_CREATED => $now,
+            SystemProperties::PROPERTY_MODIFIED => $now,
             SystemProperties::PROPERTY_LANGUAGE => getenv('OBJECT_DEFAULT_LANGUAGE'),
 
         ];

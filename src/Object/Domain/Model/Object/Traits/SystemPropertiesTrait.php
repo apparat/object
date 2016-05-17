@@ -98,6 +98,16 @@ trait SystemPropertiesTrait
     }
 
     /**
+     * Return the modification date & time
+     *
+     * @return \DateTimeImmutable Modification date & time
+     */
+    public function getModified()
+    {
+        return $this->systemProperties->getModified();
+    }
+
+    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable|null Publication date & time

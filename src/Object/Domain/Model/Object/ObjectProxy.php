@@ -274,6 +274,16 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return the modification date & time
+     *
+     * @return \DateTimeImmutable Modification date & time
+     */
+    public function getModified()
+    {
+        return $this->object()->getModified();
+    }
+
+    /**
      * Return the publication date & time
      *
      * @return \DateTimeImmutable Publication date & time

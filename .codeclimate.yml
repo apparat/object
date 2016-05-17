@@ -3,19 +3,9 @@ engines:
     enabled: true
   phpmd:
     enabled: true
-    checks:
-      Controversial/CamelCasePropertyName:
-        enabled: true
-      Controversial/CamelCaseMethodName:
-        enabled: true
-      CleanCode/StaticAccess:
-        enabled: false
-      Design/TooManyMethods:
-        enabled: true
-        maxmethods: 25
-      Design/TooManyPublicMethods:
-        enabled: true
-        maxmethods: 25
+    config:
+      file_extensions: "php"
+      rulesets: "controversial,naming,unusedcode,phpmd.xml"
   phpcodesniffer:
     enabled: true
     config:

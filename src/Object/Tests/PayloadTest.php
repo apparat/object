@@ -58,7 +58,7 @@ class PayloadTest extends AbstractRepositoryEnabledTest
     /**
      * Test setting the object payload
      */
-    public function testObjectSetLocation()
+    public function testObjectSetPayload()
     {
         $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);

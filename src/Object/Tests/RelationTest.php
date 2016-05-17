@@ -75,7 +75,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
         foreach ($article->findRelations([Relation::EMAIL => 'tollwerk.de']) as $relation) {
             $article->deleteRelation($relation);
         }
-        $this->assertEquals(4, count($article->getRelations()));
+        $this->assertEquals(6, count($article->getRelations()));
         $article->addRelation('http://example.com <john@example.com> John Doe', 'invalid');
     }
 

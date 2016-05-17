@@ -5,7 +5,7 @@ engines:
     enabled: true
     config:
       file_extensions: "php"
-      rulesets: "controversial,design,naming,unusedcode,phpmd.xml"
+      rulesets: "controversial,naming,unusedcode,phpmd.xml"
   phpcodesniffer:
     enabled: true
     config:

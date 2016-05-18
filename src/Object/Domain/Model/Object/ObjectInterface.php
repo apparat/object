@@ -403,6 +403,20 @@ interface ObjectInterface
     public function publish();
 
     /**
+     * Delete the object and all its revisions
+     *
+     * @return ObjectInterface Object
+     */
+    public function delete();
+
+    /**
+     * Undelete the object and all its revisions
+     *
+     * @return ObjectInterface Object
+     */
+    public function undelete();
+
+    /**
      * Add an object relation
      *
      * @param string|RelationInterface $relation Serialized or instantiated object relation

@@ -91,6 +91,12 @@ abstract class AbstractObject implements ObjectInterface
      */
     const STATE_PUBLISHED = 4;
     /**
+     * Deleted state
+     *
+     * @var int
+     */
+    const STATE_DELETED = 8;
+    /**
      * Repository path
      *
      * @var RepositoryPathInterface
@@ -394,6 +400,30 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Delete the object and all its revisions
+     *
+     * @return ObjectInterface Object
+     */
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+        $this->setDeletionState(true);
+        return $this;
+    }
+
+    /**
+     * Undelete the object and all its revisions
+     *
+     * @return ObjectInterface Object
+     */
+    public function undelete()
+    {
+        // TODO: Implement undelete() method.
+        $this->setDeletionState(false);
+        return $this;
+    }
+
+    /**
      * Return whether the object is in dirty state
      *
      * @return boolean Dirty state
@@ -467,5 +497,35 @@ abstract class AbstractObject implements ObjectInterface
 
         // Update the modification timestamp
         $this->setSystemProperties($this->systemProperties->touch(), true);
+    }
+
+    /**
+     * Set the object deletion state
+     *
+     * @param boolean $deleted Deletion state
+     */
+    protected function setDeletionState($deleted)
+    {
+        $deleted = boolval($deleted);
+
+        // If this object is not in the requested deltion state yet
+        if ($deleted != boolval($this->state & self::STATE_DELETED)) {
+            // TODO: Send signal
+        }
+
+        // If the object should be deleted
+        if ($deleted) {
+            $this->state |= self::STATE_DELETED;
+
+            // Set the deletion timestamp
+            $this->setSystemProperties($this->systemProperties->delete(), true);
+            return;
+        }
+
+        // Undelete the object
+        $this->state &= ~self::STATE_DELETED;
+
+        // Unset the deletion timestamp
+        $this->setSystemProperties($this->systemProperties->undelete(), true);
     }
 }

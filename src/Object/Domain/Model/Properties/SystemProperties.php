@@ -459,6 +459,30 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Set the object's deletion timestamp
+     *
+     * @return SystemProperties System properties
+     */
+    public function delete()
+    {
+        $systemProperties = clone $this;
+        $systemProperties->deleted = new \DateTimeImmutable();
+        return $systemProperties;
+    }
+
+    /**
+     * Unset the object's deletion timestamp
+     *
+     * @return SystemProperties System properties
+     */
+    public function undelete()
+    {
+        $systemProperties = clone $this;
+        $systemProperties->deleted = null;
+        return $systemProperties;
+    }
+
+    /**
      * Return the property values as array
      *
      * @return array Property values

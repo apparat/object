@@ -282,6 +282,26 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Return the object publication state
+     *
+     * @return boolean Object is published
+     */
+    public function isPublished()
+    {
+        return ($this->published instanceof \DateTimeImmutable);
+    }
+
+    /**
+     * Return the object deletion state
+     *
+     * @return boolean Object is deleted
+     */
+    public function isDeleted()
+    {
+        return ($this->deleted instanceof \DateTimeImmutable);
+    }
+
+    /**
      * Return the creation date & time of this revision
      *
      * @return \DateTimeImmutable Creation date & time

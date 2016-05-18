@@ -108,6 +108,34 @@ interface ObjectInterface
     public function isPublished();
 
     /**
+     * Return whether the object has just been published
+     *
+     * @return boolean Object has just been published
+     */
+    public function hasBeenPublished();
+
+    /**
+     * Return whether the object has been deleted
+     *
+     * @return boolean Object is deleted
+     */
+    public function isDeleted();
+
+    /**
+     * Return whether the object has just been deleted
+     *
+     * @return boolean Object has just been deleted
+     */
+    public function hasBeenDeleted();
+
+    /**
+     * Return whether the object has just been undeleted
+     *
+     * @return boolean Object has just been undeleted
+     */
+    public function hasBeenUndeleted();
+
+    /**
      * Return the creation date & time
      *
      * @return \DateTimeImmutable Creation date & time

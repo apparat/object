@@ -97,6 +97,12 @@ abstract class AbstractObject implements ObjectInterface
      */
     const STATE_DELETED = 8;
     /**
+     * Undeleted state
+     *
+     * @var int
+     */
+    const STATE_UNDELETED = 16;
+    /**
      * Repository path
      *
      * @var RepositoryPathInterface
@@ -332,8 +338,8 @@ abstract class AbstractObject implements ObjectInterface
         // Update the object repository
         $this->path->getRepository()->updateObject($this);
 
-        // Reset state
-        $this->state = self::STATE_CLEAN;
+        // Reset to a clean state
+        $this->state &= self::STATE_CLEAN;
 
         return $this;
     }
@@ -345,21 +351,18 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function publish()
     {
-        // If this is a draft
-        if ($this->isDraft()) {
+        // If this is an unpublished draft
+        if ($this->isDraft() & !($this->state & self::STATE_PUBLISHED)) {
             // TODO: Send signal
 
-            // Create draft system properties
-            $this->systemProperties = $this->systemProperties->publish();
+            // Update system properties
+            $this->setSystemProperties($this->systemProperties->publish(), true);
 
-            // Adapt the system properties collection state
-            $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
-
-            // Set the draft flag on the repository path
+            // Remove the draft flag from the repository path
             $this->path = $this->path->setDraft(false);
 
-            // Flag this object as dirty
-            $this->setPublishedState();
+            // Enable the dirty & published state
+            $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
         }
 
         return $this;
@@ -372,7 +375,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function isDraft()
     {
-        return $this->systemProperties->isDraft() || $this->isPublished();
+        return $this->systemProperties->isDraft() || $this->hasBeenPublished();
     }
 
     /**
@@ -382,21 +385,17 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function isPublished()
     {
-        return !!($this->state & self::STATE_PUBLISHED);
+        return $this->systemProperties->isPublished();
     }
 
     /**
-     * Set the object state to published
+     * Return whether the object has just been published
+     *
+     * @return boolean Object has just been published
      */
-    protected function setPublishedState()
+    public function hasBeenPublished()
     {
-        // If this object is not in dirty state yet
-        if (!($this->state & self::STATE_PUBLISHED)) {
-            // TODO: Send signal
-        }
-
-        // Enable the dirty state
-        $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
+        return !!($this->state & self::STATE_PUBLISHED);
     }
 
     /**
@@ -406,9 +405,43 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function delete()
     {
-        // TODO: Implement delete() method.
-        $this->setDeletionState(true);
+        // If this object is not already deleted
+        if (!$this->isDeleted() && !$this->hasBeenDeleted()) {
+            // TODO: Send delete signal
+
+            // Update system properties
+            $this->setSystemProperties($this->systemProperties->delete(), true);
+
+            // TODO: Modify the object path so that it's deleted
+
+            // Flag the object as just deleted
+            $this->state |= self::STATE_DIRTY;
+            $this->state |= self::STATE_DELETED;
+            $this->state &= ~self::STATE_UNDELETED;
+        }
+
         return $this;
+
+    }
+
+    /**
+     * Return whether the object has been deleted
+     *
+     * @return boolean Object is deleted
+     */
+    public function isDeleted()
+    {
+        return $this->systemProperties->isDeleted();
+    }
+
+    /**
+     * Return whether the object has just been deleted
+     *
+     * @return boolean Object has just been deleted
+     */
+    public function hasBeenDeleted()
+    {
+        return !!($this->state & self::STATE_DELETED);
     }
 
     /**
@@ -418,9 +451,30 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function undelete()
     {
-        // TODO: Implement undelete() method.
-        $this->setDeletionState(false);
-        return $this;
+        // If this object is already deleted
+        if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
+            // TODO: Send undelete signal
+
+            // Update system properties
+            $this->setSystemProperties($this->systemProperties->undelete(), true);
+
+            // TODO: Modify the object path so that it's not deleted
+
+            // Flag the object as just undeleted
+            $this->state |= self::STATE_DIRTY;
+            $this->state |= self::STATE_UNDELETED;
+            $this->state &= ~self::STATE_DELETED;
+        }
+    }
+
+    /**
+     * Return whether the object has just been undeleted
+     *
+     * @return boolean Object has just been undeleted
+     */
+    public function hasBeenUndeleted()
+    {
+        return !!($this->state & self::STATE_UNDELETED);
     }
 
     /**
@@ -497,35 +551,5 @@ abstract class AbstractObject implements ObjectInterface
 
         // Update the modification timestamp
         $this->setSystemProperties($this->systemProperties->touch(), true);
-    }
-
-    /**
-     * Set the object deletion state
-     *
-     * @param boolean $deleted Deletion state
-     */
-    protected function setDeletionState($deleted)
-    {
-        $deleted = boolval($deleted);
-
-        // If this object is not in the requested deltion state yet
-        if ($deleted != boolval($this->state & self::STATE_DELETED)) {
-            // TODO: Send signal
-        }
-
-        // If the object should be deleted
-        if ($deleted) {
-            $this->state |= self::STATE_DELETED;
-
-            // Set the deletion timestamp
-            $this->setSystemProperties($this->systemProperties->delete(), true);
-            return;
-        }
-
-        // Undelete the object
-        $this->state &= ~self::STATE_DELETED;
-
-        // Unset the deletion timestamp
-        $this->setSystemProperties($this->systemProperties->undelete(), true);
     }
 }

@@ -124,7 +124,8 @@ class Repository implements RepositoryInterface
      */
     public function deleteObject(ObjectInterface $object)
     {
-        // TODO: Implement deleteObject() method.
+        $this->adapterStrategy->persistObject($object->delete());
+        return true;
     }
 
     /**

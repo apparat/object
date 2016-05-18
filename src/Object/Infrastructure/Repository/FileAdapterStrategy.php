@@ -307,25 +307,21 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function persistObject(ObjectInterface $object)
     {
-        // If the object has just been published
-        if ($object->isPublished()) {
+        // If the object has just been deleted
+        if ($object->hasBeenDeleted()) {
+            return $this->deleteObject($object);
+
+            // Elseif the object has just been undeleted
+        } elseif ($object->hasBeenUndeleted()) {
+            return $this->undeleteObject($object);
+
+            // If the object has just been published
+        } elseif ($object->hasBeenPublished()) {
             $this->publishObject($object);
         }
 
-        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
-        $objectResource = ResourceFactory::createFromObject($object);
-
-        // Create the absolute object resource path
-        $objectResourcePath = $this->absoluteResourcePath($object->getRepositoryPath());
-
-        /** @var Writer $fileWriter */
-        $fileWriter = Kernel::create(
-            Writer::class,
-            [$objectResourcePath, Writer::FILE_CREATE | Writer::FILE_CREATE_DIRS | Writer::FILE_OVERWRITE]
-        );
-        $objectResource->dump($fileWriter);
-
-        return $this;
+        // Persist the object resource
+        return $this->persistObjectResource($object);
     }
 
     /**
@@ -380,6 +376,30 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
+     * Persist an object resource in the repository
+     *
+     * @param ObjectInterface $object Object
+     * @return AdapterStrategyInterface Self reference
+     */
+    protected function persistObjectResource(ObjectInterface $object)
+    {
+        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
+        $objectResource = ResourceFactory::createFromObject($object);
+
+        // Create the absolute object resource path
+        $objectResourcePath = $this->absoluteResourcePath($object->getRepositoryPath());
+
+        /** @var Writer $fileWriter */
+        $fileWriter = Kernel::create(
+            Writer::class,
+            [$objectResourcePath, Writer::FILE_CREATE | Writer::FILE_CREATE_DIRS | Writer::FILE_OVERWRITE]
+        );
+        $objectResource->dump($fileWriter);
+
+        return $this;
+    }
+
+    /**
      * Return the repository size (number of objects in the repository)
      *
      * @return int Repository size
@@ -392,5 +412,33 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             $repositorySize = intval(file_get_contents($this->configDir.'size.txt'));
         }
         return $repositorySize;
+    }
+
+    /**
+     * Delete all revisions of an object
+     *
+     * @param ObjectInterface $object Object
+     * @return ObjectInterface Object
+     */
+    protected function deleteObject(ObjectInterface $object)
+    {
+        // TODO Implement object deletion
+
+        // Persist the object resource
+        return $this->persistObjectResource($object);
+    }
+
+    /**
+     * Undelete all revisions of an object
+     *
+     * @param ObjectInterface $object Object
+     * @return ObjectInterface Object
+     */
+    protected function undeleteObject(ObjectInterface $object)
+    {
+        // TODO Implement object undeletion
+
+        // Persist the object resource
+        return $this->persistObjectResource($object);
     }
 }

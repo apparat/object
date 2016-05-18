@@ -591,6 +591,47 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
+     * Return whether the object has just been published
+     *
+     * @return boolean Object has just been published
+     */
+    public function hasBeenPublished()
+    {
+        return $this->object()->hasBeenPublished();
+    }
+
+    /**
+     * Return whether the object has been deleted
+     *
+     * @return boolean Object is deleted
+     */
+    public function isDeleted()
+    {
+        return $this->object()->isDeleted();
+    }
+
+    /**
+     * Return whether the object has just been deleted
+     *
+     * @return boolean Object has just been deleted
+     */
+    public function hasBeenDeleted()
+    {
+        return $this->object()->hasBeenDeleted();
+    }
+
+    /**
+     * Return whether the object has just been undeleted
+     *
+     * @return boolean Object has just been undeleted
+     */
+    public function hasBeenUndeleted()
+    {
+        return $this->object()->hasBeenUndeleted();
+    }
+
+
+    /**
      * Publish the current object revision
      *
      * @return ObjectInterface Object

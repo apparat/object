@@ -176,7 +176,7 @@ trait SystemPropertiesTrait
             && ($systemPropsState !== $this->collectionStates[SystemProperties::COLLECTION])
         ) {
             // Flag this object as mutated
-            $this->setDirtyState();
+            $this->setModifiedState();
         }
 
         $this->collectionStates[SystemProperties::COLLECTION] = $systemPropsState;
@@ -227,7 +227,7 @@ trait SystemPropertiesTrait
     }
 
     /**
-     * Set the object state to dirty
+     * Set the object state to modified
      */
-    abstract protected function setDirtyState();
+    abstract protected function setModifiedState();
 }

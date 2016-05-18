@@ -87,18 +87,18 @@ interface ObjectInterface
     public function isDraft();
 
     /**
-     * Return whether the object is in dirty state
+     * Return whether the object is in modified state
      *
-     * @return boolean Dirty state
+     * @return boolean Modified state
      */
-    public function isDirty();
+    public function hasBeenModified();
 
     /**
      * Return whether the object is in mutated state
      *
      * @return boolean Mutated state
      */
-    public function isMutated();
+    public function hasBeenMutated();
 
     /**
      * Return whether the object is in published state

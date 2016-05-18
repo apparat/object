@@ -73,11 +73,11 @@ abstract class AbstractObject implements ObjectInterface
      */
     const STATE_CLEAN = 0;
     /**
-     * Dirty state
+     * Modified state
      *
      * @var int
      */
-    const STATE_DIRTY = 1;
+    const STATE_MODIFIED = 1;
     /**
      * Mutated state
      *
@@ -222,7 +222,7 @@ abstract class AbstractObject implements ObjectInterface
      *
      * @return boolean Mutated state
      */
-    public function isMutated()
+    public function hasBeenMutated()
     {
         return !!($this->state & self::STATE_MUTATED);
     }
@@ -361,8 +361,8 @@ abstract class AbstractObject implements ObjectInterface
             // Remove the draft flag from the repository path
             $this->path = $this->path->setDraft(false);
 
-            // Enable the dirty & published state
-            $this->state |= (self::STATE_DIRTY | self::STATE_PUBLISHED);
+            // Enable the modified & published state
+            $this->state |= (self::STATE_MODIFIED | self::STATE_PUBLISHED);
         }
 
         return $this;
@@ -415,7 +415,7 @@ abstract class AbstractObject implements ObjectInterface
             // TODO: Modify the object path so that it's deleted
 
             // Flag the object as just deleted
-            $this->state |= self::STATE_DIRTY;
+            $this->state |= self::STATE_MODIFIED;
             $this->state |= self::STATE_DELETED;
             $this->state &= ~self::STATE_UNDELETED;
         }
@@ -461,7 +461,7 @@ abstract class AbstractObject implements ObjectInterface
             // TODO: Modify the object path so that it's not deleted
 
             // Flag the object as just undeleted
-            $this->state |= self::STATE_DIRTY;
+            $this->state |= self::STATE_MODIFIED;
             $this->state |= self::STATE_UNDELETED;
             $this->state &= ~self::STATE_DELETED;
         }
@@ -478,13 +478,13 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Return whether the object is in dirty state
+     * Return whether the object is in modified state
      *
-     * @return boolean Dirty state
+     * @return boolean Modified state
      */
-    public function isDirty()
+    public function hasBeenModified()
     {
-        return !!($this->state & self::STATE_DIRTY);
+        return !!($this->state & self::STATE_MODIFIED);
     }
 
     /**
@@ -501,8 +501,8 @@ abstract class AbstractObject implements ObjectInterface
         // Enable the mutated state
         $this->state |= self::STATE_MUTATED;
 
-        // Enable the dirty state
-        $this->setDirtyState();
+        // Enable the modified state
+        $this->setModifiedState();
     }
 
     /**
@@ -537,17 +537,17 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
-     * Set the object state to dirty
+     * Set the object state to modified
      */
-    protected function setDirtyState()
+    protected function setModifiedState()
     {
-        // If this object is not in dirty state yet
-        if (!($this->state & self::STATE_DIRTY)) {
+        // If this object is not in modified state yet
+        if (!($this->state & self::STATE_MODIFIED)) {
             // TODO: Send signal
         }
 
-        // Enable the dirty state
-        $this->state |= self::STATE_DIRTY;
+        // Enable the modified state
+        $this->state |= self::STATE_MODIFIED;
 
         // Update the modification timestamp
         $this->setSystemProperties($this->systemProperties->touch(), true);

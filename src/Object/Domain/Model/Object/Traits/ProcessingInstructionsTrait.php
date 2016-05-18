@@ -96,15 +96,15 @@ trait ProcessingInstructionsTrait
             && !empty($this->collectionStates[ProcessingInstructions::COLLECTION])
             && ($procInstState !== $this->collectionStates[ProcessingInstructions::COLLECTION])
         ) {
-            // Flag this object as dirty
-            $this->setDirtyState();
+            // Flag this object as modified
+            $this->setModifiedState();
         }
 
         $this->collectionStates[ProcessingInstructions::COLLECTION] = $procInstState;
     }
 
     /**
-     * Set the object state to dirty
+     * Set the object state to modified
      */
-    abstract protected function setDirtyState();
+    abstract protected function setModifiedState();
 }

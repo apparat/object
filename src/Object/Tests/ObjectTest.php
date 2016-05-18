@@ -287,8 +287,8 @@ namespace Apparat\Object\Tests {
             $object->setCategories($object->getCategories());
             $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
-            $this->assertTrue($object->isDirty());
-            $this->assertTrue($object->isMutated());
+            $this->assertTrue($object->hasBeenModified());
+            $this->assertTrue($object->hasBeenMutated());
             $this->assertEquals('MIT', $object->getLicense());
             $this->assertEquals(Object::PRIVACY_PRIVATE, $object->getPrivacy());
             $this->assertEquals(Object::PRIVACY_PUBLIC, $object->setPrivacy(Object::PRIVACY_PUBLIC)->getPrivacy());
@@ -307,8 +307,8 @@ namespace Apparat\Object\Tests {
             $object->setDomainProperty('a:b:c', 'mutated');
             $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
-            $this->assertTrue($object->isDirty());
-            $this->assertTrue($object->isMutated());
+            $this->assertTrue($object->hasBeenModified());
+            $this->assertTrue($object->hasBeenMutated());
         }
 
         /**
@@ -323,8 +323,8 @@ namespace Apparat\Object\Tests {
             $object->setProcessingInstruction('css', 'other-style.css');
             $this->assertEquals($objectUrl, $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision(), $object->getRevision()->getRevision());
-            $this->assertTrue($object->isDirty());
-            $this->assertFalse($object->isMutated());
+            $this->assertTrue($object->hasBeenModified());
+            $this->assertFalse($object->hasBeenMutated());
         }
 
         /**

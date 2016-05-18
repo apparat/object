@@ -108,8 +108,8 @@ trait RelationsTrait
             && !empty($this->collectionStates[Relations::COLLECTION])
             && ($relationsState !== $this->collectionStates[Relations::COLLECTION])
         ) {
-            // Flag this object as dirty
-            $this->setDirtyState();
+            // Flag this object as modified
+            $this->setModifiedState();
         }
 
         $this->collectionStates[Relations::COLLECTION] = $relationsState;
@@ -127,7 +127,7 @@ trait RelationsTrait
     }
 
     /**
-     * Set the object state to dirty
+     * Set the object state to modified
      */
-    abstract protected function setDirtyState();
+    abstract protected function setModifiedState();
 }

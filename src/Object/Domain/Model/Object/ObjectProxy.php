@@ -244,13 +244,13 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Return whether the object is in dirty state
+     * Return whether the object is in modified state
      *
-     * @return boolean Dirty state
+     * @return boolean Modified state
      */
-    public function isDirty()
+    public function hasBeenModified()
     {
-        return $this->object()->isDirty();
+        return $this->object()->hasBeenModified();
     }
 
     /**
@@ -258,9 +258,9 @@ class ObjectProxy implements ObjectInterface
      *
      * @return boolean Mutated state
      */
-    public function isMutated()
+    public function hasBeenMutated()
     {
-        return $this->object()->isMutated();
+        return $this->object()->hasBeenMutated();
     }
 
     /**

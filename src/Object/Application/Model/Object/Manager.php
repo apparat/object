@@ -70,7 +70,7 @@ class Manager implements ManagerInterface
         // Construct a creation closure
         $creationClosure = function (Id $uid) use ($repository, $type, $payload, $propertyData) {
             /** @var Revision $revision */
-            $revision = Kernel::create(Revision::class, [1]);
+            $revision = Kernel::create(Revision::class, [1, true]);
 
             /** @var RepositoryPath $repositoryPath */
             $repositoryPath = Kernel::create(RepositoryPath::class, [$repository]);
@@ -78,7 +78,6 @@ class Manager implements ManagerInterface
             $repositoryPath = $repositoryPath->setRevision($revision);
             $repositoryPath = $repositoryPath->setType($type);
             $repositoryPath = $repositoryPath->setCreationDate(new \DateTimeImmutable());
-            $repositoryPath = $repositoryPath->setDraft(true);
 
             return ObjectFactory::createFromParams($repositoryPath, $payload, $propertyData);
         };
@@ -120,5 +119,16 @@ class Manager implements ManagerInterface
         return $path->getRepository()->getAdapterStrategy()->getObjectResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
+    }
+
+    /**
+     * Test whether an object resource exists
+     *
+     * @param RepositoryPathInterface $path
+     * @return boolean Object resource exists
+     */
+    public function objectResourceExists(RepositoryPathInterface $path)
+    {
+        // TODO: Implement objectResourceExists() method.
     }
 }

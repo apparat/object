@@ -66,6 +66,14 @@ interface AdapterStrategyInterface
     public function getObjectResource($resourcePath);
 
     /**
+     * Test if an object resource exists
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return boolean Object resource exists
+     */
+    public function hasObjectResource($resourcePath);
+
+    /**
      * Allocate an object ID and create an object resource
      *
      * @param \Closure $creator Object creation closure

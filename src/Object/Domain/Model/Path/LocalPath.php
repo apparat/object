@@ -86,12 +86,6 @@ class LocalPath implements PathInterface
      * @var Revision
      */
     protected $revision = null;
-    /**
-     * Object draft mode
-     *
-     * @var boolean
-     */
-    protected $draft = false;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -182,11 +176,8 @@ class LocalPath implements PathInterface
             // Set the revision
             $this->revision = Kernel::create(
                 Revision::class,
-                [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision'])]
+                [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']), !empty($pathParts['draft'])]
             );
-
-            // Set the draft mode
-            $this->draft = !empty($pathParts['draft']);
         }
     }
 
@@ -210,7 +201,7 @@ class LocalPath implements PathInterface
 
         // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
-        $path[] = $this->draft ? $uid.'+' : rtrim($uid.'-'.$this->revision->getRevision(), '-');
+        $path[] = $this->revision->isDraft() ? $uid.'+' : rtrim($uid.'-'.$this->revision->getRevision(), '-');
 
         return '/'.implode('/', $path);
     }
@@ -304,29 +295,6 @@ class LocalPath implements PathInterface
     {
         $path = clone $this;
         $path->revision = $revision;
-        return $path;
-    }
-
-    /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return $this->draft;
-    }
-
-    /**
-     * Set the object draft mode
-     *
-     * @param boolean $draft Object draft mode
-     * @return PathInterface|LocalPath New object path
-     */
-    public function setDraft($draft)
-    {
-        $path = clone $this;
-        $path->draft = (boolean)$draft;
         return $path;
     }
 }

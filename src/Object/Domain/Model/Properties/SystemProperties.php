@@ -190,11 +190,6 @@ class SystemProperties extends AbstractProperties
             $this->type = Type::unserialize($data[self::PROPERTY_TYPE]);
         }
 
-        // Initialize the object revision
-        if (array_key_exists(self::PROPERTY_REVISION, $data)) {
-            $this->revision = Revision::unserialize($data[self::PROPERTY_REVISION]);
-        }
-
         // Initialize the object creation date
         if (array_key_exists(self::PROPERTY_CREATED, $data)) {
             $this->created = new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]);
@@ -225,6 +220,11 @@ class SystemProperties extends AbstractProperties
             LocationProperties::class,
             [empty($data[self::PROPERTY_LOCATION]) ? [] : $data[self::PROPERTY_LOCATION], $this->object]
         );
+
+        // Initialize the object revision
+        if (array_key_exists(self::PROPERTY_REVISION, $data)) {
+            $this->revision = Revision::unserialize($data[self::PROPERTY_REVISION])->setDraft($this->isDraft());
+        }
 
         // Test if all mandatory properties are set
         if (!($this->uid instanceof Id)
@@ -463,6 +463,7 @@ class SystemProperties extends AbstractProperties
 
         $systemProperties = clone $this;
         $systemProperties->published = new \DateTimeImmutable();
+        $systemProperties->revision = $this->revision->setDraft(false);
         return $systemProperties;
     }
 
@@ -520,6 +521,7 @@ class SystemProperties extends AbstractProperties
             self::PROPERTY_DELETED => ($this->deleted instanceof \DateTimeImmutable) ?
                 $this->deleted->format('c') : null,
             self::PROPERTY_LOCATION => $this->location->toArray(),
+            self::PROPERTY_LANGUAGE => $this->language,
         ]);
     }
 }

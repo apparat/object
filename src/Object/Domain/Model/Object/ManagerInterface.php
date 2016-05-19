@@ -73,4 +73,12 @@ interface ManagerInterface
      * @return ResourceInterface Object resource
      */
     public function loadObjectResource(RepositoryPathInterface $path);
+
+    /**
+     * Test whether an object resource exists
+     *
+     * @param RepositoryPathInterface $path
+     * @return boolean Object resource exists
+     */
+    public function objectResourceExists(RepositoryPathInterface $path);
 }

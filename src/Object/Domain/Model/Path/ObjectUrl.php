@@ -243,7 +243,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function isDraft()
     {
-        return $this->localPath->isDraft();
+        return $this->localPath->getRevision()->isDraft();
     }
 
     /**
@@ -254,7 +254,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function setDraft($draft)
     {
-        $this->localPath = $this->localPath->setDraft($draft);
+        $this->localPath = $this->localPath->setRevision($this->localPath->getRevision()->setDraft($draft));
         return $this;
     }
 

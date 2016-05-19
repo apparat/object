@@ -89,14 +89,6 @@ interface RepositoryPathInterface extends PathInterface
     public function setRevision(Revision $revision);
 
     /**
-     * Set the object draft mode
-     *
-     * @param boolean $draft Object draft mode
-     * @return RepositoryPathInterface New object path
-     */
-    public function setDraft($draft);
-
-    /**
      * Return the repository relative object path with a file extension
      *
      * @param string $extension File extension

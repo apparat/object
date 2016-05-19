@@ -34,85 +34,86 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Object\Traits;
 
-use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * Object path interface
+ * Iterable trait
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @package Apparat\Object\Domain
+ * @property Revision $currentRevision
+ * @property AbstractObject $this
  */
-interface PathInterface
+trait IterableTrait
 {
+    /**
+     * Return the current revision
+     *
+     * @return ObjectInterface Self reference
+     */
+    public function current()
+    {
+        echo "current\n";
+        /** @var Revision $currentRevision */
+        $currentRevision = Kernel::create(Revision::class, [$this->currentRevision->getRevision()]);
+        return $this->useRevision($currentRevision);
+    }
 
     /**
-     * Create and return the object URL path
-     *
-     * @return string Object path
+     * Forward to the next revision
      */
-    public function __toString();
+    public function next()
+    {
+        echo "next\n";
+        $this->currentRevision = $this->currentRevision->increment();
+    }
 
     /**
-     * Return the object's creation date
+     * Return the current revision number
      *
-     * @return \DateTimeImmutable Object creation date
+     * @return int Current revision
      */
-    public function getCreationDate();
+    public function key()
+    {
+        echo "key\n";
+        return $this->currentRevision;
+    }
 
     /**
-     * Set the object's creation date
+     * Return whether the current revision is valid
      *
-     * @param \DateTimeImmutable $creationDate
-     * @return PathInterface New object path
+     * @return bool Current revision is valid
      */
-    public function setCreationDate(\DateTimeImmutable $creationDate);
+    public function valid()
+    {
+        echo "valud\n";
+        /** AbstractObject $this */
+        return $this->currentRevision->getRevision() <= count($this);
+    }
 
     /**
-     * Return the object type
-     *
-     * @return Type Object type
+     * Rewind to the first revision
      */
-    public function getType();
+    public function rewind()
+    {
+        echo "rewind\n";
+        /** @var Revision $firstRevision */
+        $firstRevision = Kernel::create(Revision::class, [1]);
+        $this->useRevision($firstRevision);
+    }
 
     /**
-     * Set the object type
+     * Return the number of available revisions
      *
-     * @param Type $type Object type
-     * @return PathInterface New object path
+     * @return int Number of available revisions
      */
-    public function setType(Type $type);
-
-    /**
-     * Return the object ID
-     *
-     * @return Id Object ID
-     */
-    public function getId();
-
-    /**
-     * Set the object ID
-     *
-     * @param Id $uid Object ID
-     * @return PathInterface New object path
-     */
-    public function setId(Id $uid);
-
-    /**
-     * Return the object revision
-     *
-     * @return Revision Object revision
-     */
-    public function getRevision();
-
-    /**
-     * Set the object revision
-     *
-     * @param Revision $revision Object revision
-     * @return PathInterface New object path
-     */
-    public function setRevision(Revision $revision);
+    public function count()
+    {
+        /** AbstractObject $this */
+        return $this->latestRevision->getRevision();
+    }
 }

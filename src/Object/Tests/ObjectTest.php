@@ -400,19 +400,28 @@ namespace Apparat\Object\Tests {
             $article->setPayload('Revision 2');
             $article->persist();
 
+            /*
             // Publish and persist a third object draft revision
             $article->setPayload('Revision 3 draft');
             $article->persist();
 
             // Wait for 2 seconds, modify and re-persist the object
-            $now = time();
-            sleep(2);
+//            $now = time();
+//            sleep(2);
             $article->setPayload('Revision 3 draft (delayed modification)');
             $article->persist();
-            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
+//            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
+
+            echo $tempRepoDirectory;
+
+//            echo 'DELETED'.PHP_EOL;
+
+            // Delete the object (and all it's revisions)
+//            $article->delete()->persist();
 
             // Delete temporary repository
-            $this->deleteRecursive($tempRepoDirectory);
+//            $this->deleteRecursive($tempRepoDirectory);
+            */
         }
 
         /**

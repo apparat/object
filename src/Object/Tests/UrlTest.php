@@ -194,7 +194,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     {
         $path = new LocalPath(self::DRAFT_PATH);
         $this->assertInstanceOf(LocalPath::class, $path);
-        $this->assertTrue($path->isDraft());
+        $this->assertTrue($path->getRevision()->isDraft());
     }
 
     /**

@@ -58,13 +58,20 @@ class Revision implements SerializablePropertyInterface
      * @var int
      */
     protected $revision = null;
+    /**
+     * Draft revision
+     *
+     * @var bool
+     */
+    protected $draft = false;
 
     /**
      * Revision constructor
      *
      * @param int $revision Object revision number
+     * @param bool $draft Draft revision
      */
-    public function __construct($revision)
+    public function __construct($revision, $draft = false)
     {
         // If the revision number is invalid
         if (!self::isValidRevision($revision)) {
@@ -75,6 +82,7 @@ class Revision implements SerializablePropertyInterface
         }
 
         $this->revision = $revision;
+        $this->draft = boolval($draft);
     }
 
     /**
@@ -91,11 +99,12 @@ class Revision implements SerializablePropertyInterface
     /**
      * Return a current revision instance
      *
+     * @param boolean $draft Draft mode
      * @return Revision Current revision instance
      */
-    public static function current()
+    public static function current($draft = false)
     {
-        return new static(self::CURRENT);
+        return new static(self::CURRENT, $draft);
     }
 
     /**
@@ -147,5 +156,28 @@ class Revision implements SerializablePropertyInterface
     public function increment()
     {
         return ($this->revision === self::CURRENT) ? $this : new static($this->revision + 1);
+    }
+
+    /**
+     * Return whether this is a draft revision
+     *
+     * @return bool Draft revision
+     */
+    public function isDraft() {
+        return $this->draft;
+    }
+
+    /**
+     * Enable / disable the draft flag
+     *
+     * @param boolean $draft Enable / disable the draft flag
+     * @return Revision Self reference
+     */
+    public function setDraft($draft) {
+        $draft = boolval($draft);
+        if ($draft !== $this->draft) {
+            return new static($this->revision, $draft);
+        }
+        return $this;
     }
 }

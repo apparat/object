@@ -229,6 +229,18 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
+     * Test if an object resource exists
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return boolean Object resource exists
+     */
+    public function hasObjectResource($resourcePath)
+    {
+//        echo 'testing '.$this->root.$resourcePath;
+        return is_file($this->root.$resourcePath);
+    }
+
+    /**
      * Find and return an object resource
      *
      * @param string $resourcePath Repository relative resource path
@@ -334,9 +346,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectRepositoryPath = $object->getRepositoryPath();
 
         // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftResPath = $this->absoluteResourcePath($objectRepositoryPath->setDraft(true));
-        if (@file_exists($objectDraftResPath)) {
-            unlink($objectDraftResPath);
+        $objectDraftPath = $objectRepositoryPath->setRevision($objectRepositoryPath->getRevision()->setDraft(false));
+        $absObjectDraftPath = $this->absoluteResourcePath($objectDraftPath);
+        if (@file_exists($absObjectDraftPath)) {
+            unlink($absObjectDraftPath);
         }
 
         // If it's not the first object revision: Rotate the previous revision resource
@@ -423,6 +436,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function deleteObject(ObjectInterface $object)
     {
         // TODO Implement object deletion
+        /** @var ObjectInterface $objectRevision */
+        foreach ($object as $objectRevision) {
+            echo get_class($objectRevision).PHP_EOL;
+        }
 
         // Persist the object resource
         return $this->persistObjectResource($object);

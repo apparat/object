@@ -38,6 +38,7 @@ namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Traits\DomainPropertiesTrait;
+use Apparat\Object\Domain\Model\Object\Traits\IterableTrait;
 use Apparat\Object\Domain\Model\Object\Traits\MetaPropertiesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\PayloadTrait;
 use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
@@ -59,13 +60,13 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractObject implements ObjectInterface
+abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
 {
     /**
      * Use traits
      */
     use SystemPropertiesTrait, MetaPropertiesTrait, DomainPropertiesTrait, RelationsTrait,
-        ProcessingInstructionsTrait, PayloadTrait;
+        ProcessingInstructionsTrait, PayloadTrait, IterableTrait;
     /**
      * Clean state
      *
@@ -109,7 +110,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected $path;
     /**
-     * Latest revision index
+     * Latest revision
      *
      * @var Revision
      */
@@ -151,13 +152,15 @@ abstract class AbstractObject implements ObjectInterface
         }
 
         // Right after instantiation it's always the current revision
-        $this->path = $path->setRevision(Revision::current());
+        $this->path = $path->setRevision(Revision::current($path->getRevision()->isDraft()));
 
         // Load the current revision data
         $this->loadRevisionData($payload, $propertyData);
 
-        // Save the latest revision index
-        $this->latestRevision = $this->getRevision();
+        // Determine the latest revision number (considering a possible draft)
+        $this->latestRevision = $this->hasDraft()
+            ? Kernel::create(Revision::class, [$this->getRevision()->getRevision() + 1, true])
+            : $this->getRevision();
     }
 
     /**
@@ -256,6 +259,7 @@ abstract class AbstractObject implements ObjectInterface
 
         // If the requested revision is not already used
         if ($revision != $this->getRevision()) {
+
             /** @var ManagerInterface $objectManager */
             $objectManager = Kernel::create(Service::class)->getObjectManager();
 
@@ -264,7 +268,13 @@ abstract class AbstractObject implements ObjectInterface
             $newRevision = $isCurrentRevision ? Revision::current() : $revision;
             /** @var RepositoryPath $newRevisionPath */
             $newRevisionPath = $this->path->setRevision($newRevision);
-            $revisionResource = $objectManager->loadObject($newRevisionPath);
+//print_r($newRevisionPath);
+//            echo get_class($this->path).$this->path.' <-> '.$newRevisionPath.PHP_EOL;
+
+            $revisionResource = $objectManager->loadObjectResource($newRevisionPath);
+
+//            echo 'RESOURCE DATA '.$newRevisionPath.PHP_EOL;
+//            print_r($revisionResource->getPropertyData());
 
             // Load the revision resource data
             $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
@@ -324,7 +334,7 @@ abstract class AbstractObject implements ObjectInterface
     public function persist()
     {
         // If this is not the latest revision
-        if ($this->getRevision() != $this->latestRevision) {
+        if ($this->getRevision()->getRevision() != $this->latestRevision->getRevision()) {
             throw new RuntimeException(
                 sprintf(
                     'Cannot persist revision %s/%s',
@@ -335,11 +345,20 @@ abstract class AbstractObject implements ObjectInterface
             );
         }
 
+//        echo $this->path.PHP_EOL;
+
         // Update the object repository
         $this->path->getRepository()->updateObject($this);
 
         // Reset to a clean state
         $this->state &= self::STATE_CLEAN;
+        $this->latestRevision = $this->getRevision();
+        $this->path = $this->path->setRevision(Revision::current($this->latestRevision->isDraft()));
+
+//        echo 'persisted: '.PHP_EOL;
+//        print_r($this->getRevision());
+//        echo $this->path;
+//        echo PHP_EOL.'---------------'.PHP_EOL;
 
         return $this;
     }
@@ -359,7 +378,7 @@ abstract class AbstractObject implements ObjectInterface
             $this->setSystemProperties($this->systemProperties->publish(), true);
 
             // Remove the draft flag from the repository path
-            $this->path = $this->path->setDraft(false);
+            $this->path = $this->path->setRevision(Revision::current());
 
             // Enable the modified & published state
             $this->state |= (self::STATE_MODIFIED | self::STATE_PUBLISHED);
@@ -492,8 +511,8 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected function setMutatedState()
     {
-        // If this object is not in mutated state yet
-        if (!($this->state & self::STATE_MUTATED) && !$this->isDraft()) {
+        // Make this object a draft if not already the case
+        if (!$this->isDraft()) {
             // TODO: Send signal
             $this->convertToDraft();
         }
@@ -506,34 +525,34 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return whether this object already has a draft revision
+     */
+    protected function hasDraft()
+    {
+        /** @var ManagerInterface $objectManager */
+        $objectManager = Kernel::create(Service::class)->getObjectManager();
+        $draftPath = $this->path->setRevision(Revision::current(true));
+        return $objectManager->objectResourceExists($draftPath);
+    }
+
+    /**
      * Convert this object revision into a draft
      */
     protected function convertToDraft()
     {
-        // Increment the latest revision number
-        $this->latestRevision = $this->latestRevision->increment();
+        // Set the current revision to the latest revision
+        $draftRevision = $this->latestRevision;
+        
+        // If that's not a draft revision: Increment and enable draft mode
+        if (!$draftRevision->isDraft()) {
+            $draftRevision = $this->latestRevision = $draftRevision->increment()->setDraft(true);
+        }
 
-        // Create draft system properties
-        $this->systemProperties = $this->systemProperties->createDraft($this->latestRevision);
-
-        // Adapt the system properties collection state
-        $this->collectionStates[SystemProperties::COLLECTION] = spl_object_hash($this->systemProperties);
+        // Set the system properties to draft mode
+        $this->setSystemProperties($this->systemProperties->createDraft($draftRevision), true);
 
         // Set the draft flag on the repository path
-        $this->path = $this->path->setDraft(true)->setRevision(Revision::current());
-
-        // If this is not already a draft ...
-        // Recreate the system properties
-        // Copy the object ID
-        // Copy the object type
-        // Set the revision number to latest revision + 1
-        // Set the creation date to now
-        // Set no publication date
-        // Set the draft flag on the repository path
-        // Increase the latest revision by 1
-
-        // Else if this is a draft
-        // No action needed
+        $this->path = $this->path->setRevision($draftRevision);
     }
 
     /**

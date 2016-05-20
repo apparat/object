@@ -44,3 +44,31 @@ Drafts
 ------
 
 It is possible to modify an object without immediately publishing it. For this purpose, exactly one **unpublished draft** of the object may exist. A draft's revision number is always one higher than the last published object revision and the draft may be accessed with `+` as revision identifier. Every time an object is updated, *apparat* is looking for an existing draft and updates that on in case it exists.
+
+
+Revision flow
+-------------
+
+![Object revisions & paths](object-revisions.png)
+
+https://www.websequencediagrams.com/
+
+```
+note left of Draft
+    Object path has
+    draft indicator
+end note
+loop
+    Draft-->Draft: Modification\nPersisting
+end
+Draft->Draft: Publication
+Draft->Current: Persisting
+note over Current
+    Object path is current
+    (skips revision number)
+end note
+loop
+    Current-->Current: Modification\nPersisting
+end
+Current->Current:Mutation
+```

@@ -9,16 +9,16 @@ Revisioning basics — a simple text object
 
 Imagine the **initial publication** of a note. An object file `123.md` is created with its `revision` system property set to `1`. Because it's published, this revision is considered **immutable**.
 
-When the note gets updated afterwards, it depends on the affected properties whether the object falls into **draft mode** or not (see [object states](object-states.md) for details). When a draft gets spawned and persisted without being published at the same time, a `+` symbol will be added to the object resource name to indicate that this is an unpublished new revision. The draft will be saved as `123+.md`, with its `revision` system property incremented to `2`, while the canonical object URL will still reference the latest published revision.
+When the note gets updated, it depends on the affected properties whether the object falls into **draft mode** or not (see [object states](object-states.md) for details). When a draft gets spawned and persisted without being published at the same time, a `.` will be prepended to the object resource name to indicate that this is an unpublished / hidden new revision. The draft will be saved as `.123-2.md`, with its `revision` system property incremented to `2`, while the canonical object URL will still reference the latest published ("current") revision.
 
-When the draft gets finally published,
+When the draft finally gets published,
 
 1. a revision number is added to the resource name of the latest published revision (e.g. `123-1.md`) and the resource file is renamed accordingly.
-2. the draft resource gets renamed to `123.md`, so that it's now referenced by the canonical object URL. It looses it's draft state and is considered immutable again.
+2. the draft resource gets renamed to `123.md`, so that it's now referenced by the canonical object URL. Its draft state is reset and the object is considered immutable again.
 
-This way the most recent published object revision is always accessible under the very same canonical URL, with each instance having a complete list of its predecessors stored in its meta data.
+This way the most recent published object revision ("current" revision) is always accessible under the very same canonical URL.
 
-A specific object revision may be retrieved by inserting the desired revision number into the canonical URL. By inserting the `+` symbol one can explicitly create-retrieve the current draft revision.
+A specific object revision may be retrieved by inserting the desired revision number into the canonical URL. By prepending the `.` one can explicitly create-retrieve the current draft revision.
 
 
 Object cross references

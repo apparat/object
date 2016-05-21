@@ -1,425 +1,435 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="694.25px" height="1252.5px" viewBox="0 0 694.25 1252.5" enable-background="new 0 0 694.25 1252.5" xml:space="preserve">
-<defs>
-    <style type="text/css">
-      <![CDATA[
-        svg {
-        	font-family: sans-serif;
-        }
-      ]]>
-    </style>
-  </defs>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+        <!ENTITY st0 "font-family:sans-serif;">
+        <!ENTITY st1 "fill:#B3B3B3;">
+        <!ENTITY st2 "fill:none;stroke:#B3B3B3;stroke-miterlimit:10;">
+        <!ENTITY st3 "fill:#F0F0F0;">
+        <!ENTITY st4 "font-family:sans-serif;">
+        <!ENTITY st5 "fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:1,1;">
+        <!ENTITY st6 "fill:none;stroke:#000000;stroke-miterlimit:10;stroke-dasharray:0.9859,0.9859;">
+        <!ENTITY st7 "font-size:9;">
+        <!ENTITY st8 "fill:#FF0000;">
+        <!ENTITY st9 "fill:none;stroke:#000000;stroke-miterlimit:10;">
+        <!ENTITY st10 "fill:#FF931E;">
+        <!ENTITY st11 "fill:#FFBE78;">
+        <!ENTITY st12 "fill:#FFFFFF;">
+        <!ENTITY st13 "fill:none;">
+        <!ENTITY st14 "font-family:sans-serif;font-weight:bold;">
+        <!ENTITY st15 "font-size:12;">
+        <!ENTITY st16 "fill:none;stroke:#B3B3B3;stroke-miterlimit:10;stroke-dasharray:1,1;">
+        ]>
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" width="654.259px" height="1212.5px" viewBox="0 0 654.259 1212.5" style="enable-background:new 0 0 654.259 1212.5;"
+	 xml:space="preserve">
+<g>
 	<g>
-	<g>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="294.75" y1="20" x2="294.75" y2="21"/>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" stroke-dasharray="1,1" x1="294.75" y1="22" x2="294.75" y2="1231"/>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="294.75" y1="1232" x2="294.75" y2="1232"/>
+		<line style="&st2;" x1="274.759" y1="0" x2="274.759" y2="1"/>
+		<line style="&st16;" x1="274.759" y1="2" x2="274.759" y2="1211"/>
+		<line style="&st2;" x1="274.759" y1="1212" x2="274.759" y2="1212"/>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="432.75" y1="20" x2="432.75" y2="21"/>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" stroke-dasharray="1,1" x1="432.75" y1="22" x2="432.75" y2="1231"/>
-		<line fill="none" stroke="#B3B3B3" stroke-miterlimit="10" x1="432.75" y1="1232" x2="432.75" y2="1232"/>
+		<line style="&st2;" x1="412.759" y1="0" x2="412.759" y2="1"/>
+		<line style="&st16;" x1="412.759" y1="2" x2="412.759" y2="1211"/>
+		<line style="&st2;" x1="412.759" y1="1212" x2="412.759" y2="1212"/>
 	</g>
 </g>
 <g>
-	<rect x="191.25" y="54" fill="#F0F0F0" width="68" height="68"/>
-	<path d="M259.25,54v67h-67V54H259.25 M260.25,53h-69v69h69V53L260.25,53z"/>
+	<rect x="171.259" y="34" style="&st3;" width="68" height="68"/>
+	<path d="M239.259,34v67h-67V34H239.259 M240.259,33h-69v69h69V33L240.259,33z"/>
 </g>
-<rect x="191.25" y="26" fill="none" width="69" height="27"/>
-<text transform="matrix(1 0 0 1 213.1621 34.52)" fill="#B3B3B3" font-size="12">Draft</text>
-<text transform="matrix(1 0 0 1 212.1001 91.022)" font-size="12">.x.md</text>
+<rect x="171.259" y="6" style="&st13;" width="69" height="27"/>
+<text transform="matrix(1 0 0 1 193.1709 14.52)" style="&st1; &st0; &st15;">Draft</text>
+<text transform="matrix(1 0 0 1 192.1089 71.022)" style="&st4; &st15;">.x.md</text>
 <g>
-	<rect x="329.25" y="387" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,387v67h-67v-67H397.25 M398.25,386h-69v69h69V386L398.25,386z"/>
+	<rect x="309.259" y="367" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,367v67h-67v-67H377.259 M378.259,366h-69v69h69V366L378.259,366z"/>
 </g>
-<rect x="329.25" y="26" fill="none" width="69" height="27"/>
-<text transform="matrix(1 0 0 1 344.7183 34.52)" fill="#B3B3B3" font-size="12">Current</text>
-<text transform="matrix(1 0 0 1 351.3423 424.022)" fill="#FFFFFF" font-size="12">x.md</text>
-<rect x="467.25" y="26" fill="none" width="69" height="27"/>
-<text transform="matrix(1 0 0 1 482.8027 34.52)" fill="#B3B3B3" font-size="12">Archive</text>
-<text transform="matrix(1 0 0 1 20.25 78.8091)"><tspan x="0" y="0" font-weight="bold" font-size="12">1. Draft creation</tspan><tspan x="0" y="14.8" font-size="9">Draft objects are persisted as </tspan><tspan x="0" y="25.6" font-size="9">soon as they are created</tspan></text>
+<rect x="309.259" y="6" style="&st13;" width="69" height="27"/>
+<text transform="matrix(1 0 0 1 324.7271 14.52)" style="&st1; &st0; &st15;">Current</text>
+<text transform="matrix(1 0 0 1 331.3511 404.022)" style="&st12; &st4; &st15;">x.md</text>
+<rect x="447.259" y="6" style="&st13;" width="69" height="27"/>
+<text transform="matrix(1 0 0 1 462.8115 14.52)" style="&st1; &st0; &st15;">Archive</text>
+<text transform="matrix(1 0 0 1 0.2588 53.1973)"><tspan x="0" y="0" style="&st14; &st15;">1. Draft creation</tspan><tspan x="0" y="14.8" style="&st0; &st7;">Draft objects are persisted as soon as </tspan><tspan x="0" y="25.6" style="&st0; &st7;">they are created. The resource file is </tspan><tspan x="0" y="36.4" style="&st0; &st7;">hidden in the file system (”dot file”).</tspan></text>
 <g>
-	<rect x="191.25" y="275" fill="#F0F0F0" width="69" height="69"/>
-	<path d="M260.25,275h-1v1l0,0v1h1V275L260.25,275z M258.25,275h-1v1h1V275L258.25,275z M256.25,275h-1v1h1V275L256.25,275z
-		 M254.25,275h-1v1h1V275L254.25,275z M252.25,275h-1v1h1V275L252.25,275z M250.25,275h-1v1h1V275L250.25,275z M248.25,275h-1v1h1
-		V275L248.25,275z M246.25,275h-1v1h1V275L246.25,275z M244.25,275h-1v1h1V275L244.25,275z M242.25,275h-1v1h1V275L242.25,275z
-		 M240.25,275h-1v1h1V275L240.25,275z M238.25,275h-1v1h1V275L238.25,275z M236.25,275h-1v1h1V275L236.25,275z M234.25,275h-1v1h1
-		V275L234.25,275z M232.25,275h-1v1h1V275L232.25,275z M230.25,275h-1v1h1V275L230.25,275z M228.25,275h-1v1h1V275L228.25,275z
-		 M226.25,275h-1v1h1V275L226.25,275z M224.25,275h-1v1h1V275L224.25,275z M222.25,275h-1v1h1V275L222.25,275z M220.25,275h-1v1h1
-		V275L220.25,275z M218.25,275h-1v1h1V275L218.25,275z M216.25,275h-1v1h1V275L216.25,275z M214.25,275h-1v1h1V275L214.25,275z
-		 M212.25,275h-1v1h1V275L212.25,275z M210.25,275h-1v1h1V275L210.25,275z M208.25,275h-1v1h1V275L208.25,275z M206.25,275h-1v1h1
-		V275L206.25,275z M204.25,275h-1v1h1V275L204.25,275z M202.25,275h-1v1h1V275L202.25,275z M200.25,275h-1v1h1V275L200.25,275z
-		 M198.25,275h-1v1h1V275L198.25,275z M196.25,275h-1v1h1V275L196.25,275z M194.25,275h-1v1h1V275L194.25,275z M192.25,275h-1v1l0,0
-		v1h1v-1l0,0V275L192.25,275z M192.25,278h-1v1h1V278L192.25,278z M192.25,280h-1v1h1V280L192.25,280z M192.25,282h-1v1h1V282
-		L192.25,282z M192.25,284h-1v1h1V284L192.25,284z M192.25,286h-1v1h1V286L192.25,286z M192.25,288h-1v1h1V288L192.25,288z
-		 M192.25,290h-1v1h1V290L192.25,290z M192.25,292h-1v1h1V292L192.25,292z M192.25,294h-1v1h1V294L192.25,294z M192.25,296h-1v1h1
-		V296L192.25,296z M192.25,298h-1v1h1V298L192.25,298z M192.25,300h-1v1h1V300L192.25,300z M192.25,302h-1v1h1V302L192.25,302z
-		 M192.25,304h-1v1h1V304L192.25,304z M192.25,306h-1v1h1V306L192.25,306z M192.25,308h-1v1h1V308L192.25,308z M192.25,310h-1v1h1
-		V310L192.25,310z M192.25,312h-1v1h1V312L192.25,312z M192.25,314h-1v1h1V314L192.25,314z M192.25,316h-1v1h1V316L192.25,316z
-		 M192.25,318h-1v1h1V318L192.25,318z M192.25,320h-1v1h1V320L192.25,320z M192.25,322h-1v1h1V322L192.25,322z M192.25,324h-1v1h1
-		V324L192.25,324z M192.25,326h-1v1h1V326L192.25,326z M192.25,328h-1v1h1V328L192.25,328z M192.25,330h-1v1h1V330L192.25,330z
-		 M192.25,332h-1v1h1V332L192.25,332z M192.25,334h-1v1h1V334L192.25,334z M192.25,336h-1v1h1V336L192.25,336z M192.25,338h-1v1h1
-		V338L192.25,338z M192.25,340h-1v1h1V340L192.25,340z M192.25,342h-1v1l0,0v1h1v-1l0,0V342L192.25,342z M194.25,343h-1v1h1V343
-		L194.25,343z M196.25,343h-1v1h1V343L196.25,343z M198.25,343h-1v1h1V343L198.25,343z M200.25,343h-1v1h1V343L200.25,343z
-		 M202.25,343h-1v1h1V343L202.25,343z M204.25,343h-1v1h1V343L204.25,343z M206.25,343h-1v1h1V343L206.25,343z M208.25,343h-1v1h1
-		V343L208.25,343z M210.25,343h-1v1h1V343L210.25,343z M212.25,343h-1v1h1V343L212.25,343z M214.25,343h-1v1h1V343L214.25,343z
-		 M216.25,343h-1v1h1V343L216.25,343z M218.25,343h-1v1h1V343L218.25,343z M220.25,343h-1v1h1V343L220.25,343z M222.25,343h-1v1h1
-		V343L222.25,343z M224.25,343h-1v1h1V343L224.25,343z M226.25,343h-1v1h1V343L226.25,343z M228.25,343h-1v1h1V343L228.25,343z
-		 M230.25,343h-1v1h1V343L230.25,343z M232.25,343h-1v1h1V343L232.25,343z M234.25,343h-1v1h1V343L234.25,343z M236.25,343h-1v1h1
-		V343L236.25,343z M238.25,343h-1v1h1V343L238.25,343z M240.25,343h-1v1h1V343L240.25,343z M242.25,343h-1v1h1V343L242.25,343z
-		 M244.25,343h-1v1h1V343L244.25,343z M246.25,343h-1v1h1V343L246.25,343z M248.25,343h-1v1h1V343L248.25,343z M250.25,343h-1v1h1
-		V343L250.25,343z M252.25,343h-1v1h1V343L252.25,343z M254.25,343h-1v1h1V343L254.25,343z M256.25,343h-1v1h1V343L256.25,343z
-		 M258.25,343h-1v1h1V343L258.25,343z M260.25,343h-1v1h1V343L260.25,343z M260.25,342h-1v1h1V342L260.25,342z M260.25,340h-1v1h1
-		V340L260.25,340z M260.25,338h-1v1h1V338L260.25,338z M260.25,336h-1v1h1V336L260.25,336z M260.25,334h-1v1h1V334L260.25,334z
-		 M260.25,332h-1v1h1V332L260.25,332z M260.25,330h-1v1h1V330L260.25,330z M260.25,328h-1v1h1V328L260.25,328z M260.25,326h-1v1h1
-		V326L260.25,326z M260.25,324h-1v1h1V324L260.25,324z M260.25,322h-1v1h1V322L260.25,322z M260.25,320h-1v1h1V320L260.25,320z
-		 M260.25,318h-1v1h1V318L260.25,318z M260.25,316h-1v1h1V316L260.25,316z M260.25,314h-1v1h1V314L260.25,314z M260.25,312h-1v1h1
-		V312L260.25,312z M260.25,310h-1v1h1V310L260.25,310z M260.25,308h-1v1h1V308L260.25,308z M260.25,306h-1v1h1V306L260.25,306z
-		 M260.25,304h-1v1h1V304L260.25,304z M260.25,302h-1v1h1V302L260.25,302z M260.25,300h-1v1h1V300L260.25,300z M260.25,298h-1v1h1
-		V298L260.25,298z M260.25,296h-1v1h1V296L260.25,296z M260.25,294h-1v1h1V294L260.25,294z M260.25,292h-1v1h1V292L260.25,292z
-		 M260.25,290h-1v1h1V290L260.25,290z M260.25,288h-1v1h1V288L260.25,288z M260.25,286h-1v1h1V286L260.25,286z M260.25,284h-1v1h1
-		V284L260.25,284z M260.25,282h-1v1h1V282L260.25,282z M260.25,280h-1v1h1V280L260.25,280z M260.25,278h-1v1h1V278L260.25,278z"/>
+	<rect x="171.259" y="255" style="&st3;" width="69" height="69"/>
+	<path style="&st8;" d="M240.259,255h-1v1l0,0v1h1V255L240.259,255z M238.259,255h-1v1h1V255L238.259,255z M236.259,255h-1v1h1V255
+		L236.259,255z M234.259,255h-1v1h1V255L234.259,255z M232.259,255h-1v1h1V255L232.259,255z M230.259,255h-1v1h1V255L230.259,255z
+		 M228.259,255h-1v1h1V255L228.259,255z M226.259,255h-1v1h1V255L226.259,255z M224.259,255h-1v1h1V255L224.259,255z M222.259,255
+		h-1v1h1V255L222.259,255z M220.259,255h-1v1h1V255L220.259,255z M218.259,255h-1v1h1V255L218.259,255z M216.259,255h-1v1h1V255
+		L216.259,255z M214.259,255h-1v1h1V255L214.259,255z M212.259,255h-1v1h1V255L212.259,255z M210.259,255h-1v1h1V255L210.259,255z
+		 M208.259,255h-1v1h1V255L208.259,255z M206.259,255h-1v1h1V255L206.259,255z M204.259,255h-1v1h1V255L204.259,255z M202.259,255
+		h-1v1h1V255L202.259,255z M200.259,255h-1v1h1V255L200.259,255z M198.259,255h-1v1h1V255L198.259,255z M196.259,255h-1v1h1V255
+		L196.259,255z M194.259,255h-1v1h1V255L194.259,255z M192.259,255h-1v1h1V255L192.259,255z M190.259,255h-1v1h1V255L190.259,255z
+		 M188.259,255h-1v1h1V255L188.259,255z M186.259,255h-1v1h1V255L186.259,255z M184.259,255h-1v1h1V255L184.259,255z M182.259,255
+		h-1v1h1V255L182.259,255z M180.259,255h-1v1h1V255L180.259,255z M178.259,255h-1v1h1V255L178.259,255z M176.259,255h-1v1h1V255
+		L176.259,255z M174.259,255h-1v1h1V255L174.259,255z M172.259,255h-1v1l0,0v1h1v-1l0,0V255L172.259,255z M172.259,258h-1v1h1V258
+		L172.259,258z M172.259,260h-1v1h1V260L172.259,260z M172.259,262h-1v1h1V262L172.259,262z M172.259,264h-1v1h1V264L172.259,264z
+		 M172.259,266h-1v1h1V266L172.259,266z M172.259,268h-1v1h1V268L172.259,268z M172.259,270h-1v1h1V270L172.259,270z M172.259,272
+		h-1v1h1V272L172.259,272z M172.259,274h-1v1h1V274L172.259,274z M172.259,276h-1v1h1V276L172.259,276z M172.259,278h-1v1h1V278
+		L172.259,278z M172.259,280h-1v1h1V280L172.259,280z M172.259,282h-1v1h1V282L172.259,282z M172.259,284h-1v1h1V284L172.259,284z
+		 M172.259,286h-1v1h1V286L172.259,286z M172.259,288h-1v1h1V288L172.259,288z M172.259,290h-1v1h1V290L172.259,290z M172.259,292
+		h-1v1h1V292L172.259,292z M172.259,294h-1v1h1V294L172.259,294z M172.259,296h-1v1h1V296L172.259,296z M172.259,298h-1v1h1V298
+		L172.259,298z M172.259,300h-1v1h1V300L172.259,300z M172.259,302h-1v1h1V302L172.259,302z M172.259,304h-1v1h1V304L172.259,304z
+		 M172.259,306h-1v1h1V306L172.259,306z M172.259,308h-1v1h1V308L172.259,308z M172.259,310h-1v1h1V310L172.259,310z M172.259,312
+		h-1v1h1V312L172.259,312z M172.259,314h-1v1h1V314L172.259,314z M172.259,316h-1v1h1V316L172.259,316z M172.259,318h-1v1h1V318
+		L172.259,318z M172.259,320h-1v1h1V320L172.259,320z M172.259,322h-1v1l0,0v1h1v-1l0,0V322L172.259,322z M174.259,323h-1v1h1V323
+		L174.259,323z M176.259,323h-1v1h1V323L176.259,323z M178.259,323h-1v1h1V323L178.259,323z M180.259,323h-1v1h1V323L180.259,323z
+		 M182.259,323h-1v1h1V323L182.259,323z M184.259,323h-1v1h1V323L184.259,323z M186.259,323h-1v1h1V323L186.259,323z M188.259,323
+		h-1v1h1V323L188.259,323z M190.259,323h-1v1h1V323L190.259,323z M192.259,323h-1v1h1V323L192.259,323z M194.259,323h-1v1h1V323
+		L194.259,323z M196.259,323h-1v1h1V323L196.259,323z M198.259,323h-1v1h1V323L198.259,323z M200.259,323h-1v1h1V323L200.259,323z
+		 M202.259,323h-1v1h1V323L202.259,323z M204.259,323h-1v1h1V323L204.259,323z M206.259,323h-1v1h1V323L206.259,323z M208.259,323
+		h-1v1h1V323L208.259,323z M210.259,323h-1v1h1V323L210.259,323z M212.259,323h-1v1h1V323L212.259,323z M214.259,323h-1v1h1V323
+		L214.259,323z M216.259,323h-1v1h1V323L216.259,323z M218.259,323h-1v1h1V323L218.259,323z M220.259,323h-1v1h1V323L220.259,323z
+		 M222.259,323h-1v1h1V323L222.259,323z M224.259,323h-1v1h1V323L224.259,323z M226.259,323h-1v1h1V323L226.259,323z M228.259,323
+		h-1v1h1V323L228.259,323z M230.259,323h-1v1h1V323L230.259,323z M232.259,323h-1v1h1V323L232.259,323z M234.259,323h-1v1h1V323
+		L234.259,323z M236.259,323h-1v1h1V323L236.259,323z M238.259,323h-1v1h1V323L238.259,323z M240.259,323h-1v1h1V323L240.259,323z
+		 M240.259,322h-1v1h1V322L240.259,322z M240.259,320h-1v1h1V320L240.259,320z M240.259,318h-1v1h1V318L240.259,318z M240.259,316
+		h-1v1h1V316L240.259,316z M240.259,314h-1v1h1V314L240.259,314z M240.259,312h-1v1h1V312L240.259,312z M240.259,310h-1v1h1V310
+		L240.259,310z M240.259,308h-1v1h1V308L240.259,308z M240.259,306h-1v1h1V306L240.259,306z M240.259,304h-1v1h1V304L240.259,304z
+		 M240.259,302h-1v1h1V302L240.259,302z M240.259,300h-1v1h1V300L240.259,300z M240.259,298h-1v1h1V298L240.259,298z M240.259,296
+		h-1v1h1V296L240.259,296z M240.259,294h-1v1h1V294L240.259,294z M240.259,292h-1v1h1V292L240.259,292z M240.259,290h-1v1h1V290
+		L240.259,290z M240.259,288h-1v1h1V288L240.259,288z M240.259,286h-1v1h1V286L240.259,286z M240.259,284h-1v1h1V284L240.259,284z
+		 M240.259,282h-1v1h1V282L240.259,282z M240.259,280h-1v1h1V280L240.259,280z M240.259,278h-1v1h1V278L240.259,278z M240.259,276
+		h-1v1h1V276L240.259,276z M240.259,274h-1v1h1V274L240.259,274z M240.259,272h-1v1h1V272L240.259,272z M240.259,270h-1v1h1V270
+		L240.259,270z M240.259,268h-1v1h1V268L240.259,268z M240.259,266h-1v1h1V266L240.259,266z M240.259,264h-1v1h1V264L240.259,264z
+		 M240.259,262h-1v1h1V262L240.259,262z M240.259,260h-1v1h1V260L240.259,260z M240.259,258h-1v1h1V258L240.259,258z"/>
 </g>
-<text transform="matrix(1 0 0 1 212.1001 313.022)" font-size="12">.x.md</text>
-<text transform="matrix(1 0 0 1 20.25 295.1533)"><tspan x="0" y="0" font-weight="bold" font-size="12">3. Draft publication</tspan><tspan x="0" y="14.8" font-size="9">Once published, the draft is </tspan><tspan x="0" y="25.6" font-size="9">scheduled for persistence as </tspan><tspan x="0" y="36.4" font-size="9">current revision</tspan></text>
+<text transform="matrix(1 0 0 1 192.1089 293.022)" style="&st4; &st15;">.x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 275.1533)"><tspan x="0" y="0" style="&st14; &st15;">3. Draft publication</tspan><tspan x="0" y="14.8" style="&st0; &st7;">Once published, the draft is </tspan><tspan x="0" y="25.6" style="&st0; &st7;">scheduled for persistence as </tspan><tspan x="0" y="36.4" style="&st0; &st7;">current revision.</tspan></text>
 <g>
-	<rect x="191.25" y="165" fill="#F0F0F0" width="68" height="68"/>
-	<path d="M259.25,165v67h-67v-67H259.25 M260.25,164h-69v69h69V164L260.25,164z"/>
+	<rect x="171.259" y="145" style="&st3;" width="68" height="68"/>
+	<path d="M239.259,145v67h-67v-67H239.259 M240.259,144h-69v69h69V144L240.259,144z"/>
 </g>
-<text transform="matrix(1 0 0 1 212.1001 202.022)" font-size="12">.x.md</text>
-<text transform="matrix(1 0 0 1 20.25 189.897)"><tspan x="0" y="0" font-weight="bold" font-size="12">2. Draft modification</tspan><tspan x="0" y="14.8" font-size="9">Drafts may be modified and </tspan><tspan x="0" y="25.6" font-size="9">persisted any number of times</tspan></text>
-<text transform="matrix(1 0 0 1 20.25 411.5972)"><tspan x="0" y="0" font-weight="bold" font-size="12">4. Conversion to current revision</tspan><tspan x="0" y="14.8" font-size="9">When converted to the current revision, the </tspan><tspan x="0" y="25.6" font-size="9">draft resource is renamed and unhidden</tspan></text>
+<text transform="matrix(1 0 0 1 192.1089 182.022)" style="&st4; &st15;">.x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 169.897)"><tspan x="0" y="0" style="&st14; &st15;">2. Draft modification</tspan><tspan x="0" y="14.8" style="&st0; &st7;">The draft may be modified and </tspan><tspan x="0" y="25.6" style="&st0; &st7;">persisted any number of times.</tspan></text>
+<text transform="matrix(1 0 0 1 0.2588 386.1968)"><tspan x="0" y="0" style="&st14; &st15;">4. Deploying as current revision</tspan><tspan x="0" y="14.8" style="&st0; &st7;">When persisted as the current revision, the draft resource is </tspan><tspan x="0" y="25.6" style="&st0; &st7;">renamed and unhidden. The leading dot is removed from </tspan><tspan x="0" y="36.4" style="&st0; &st7;">the resource name, exposing the canonical object name.</tspan></text>
 <g>
-	<rect x="329.25" y="498" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,498v67h-67v-67H397.25 M398.25,497h-69v69h69V497L398.25,497z"/>
+	<rect x="309.259" y="478" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,478v67h-67v-67H377.259 M378.259,477h-69v69h69V477L378.259,477z"/>
 </g>
-<text transform="matrix(1 0 0 1 351.3423 535.0215)" fill="#FFFFFF" font-size="12">x.md</text>
-<text transform="matrix(1 0 0 1 20.25 522.5977)"><tspan x="0" y="0" font-weight="bold" font-size="12">5. Object modification</tspan><tspan x="0" y="14.799" font-size="9">Objects may be modified* and persisted </tspan><tspan x="0" y="25.6" font-size="9">any number of times</tspan></text>
+<text transform="matrix(1 0 0 1 331.3511 515.0215)" style="&st12; &st4; &st15;">x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 502.5977)"><tspan x="0" y="0" style="&st14; &st15;">5. Object modification</tspan><tspan x="0" y="14.799" style="&st0; &st7;">The current revision may be modified and persisted any </tspan><tspan x="0" y="25.6" style="&st0; &st7;">number of times, as long as the object content doesn’t change.</tspan></text>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="226.75" y1="128" x2="226.75" y2="154"/>
+		<line style="&st9;" x1="206.759" y1="108" x2="206.759" y2="134"/>
 		<g>
-			<polygon points="223.775,153 226.767,158.181 229.758,153 			"/>
+			<polygon points="203.784,133 206.775,138.181 209.767,133 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="226.75" y1="239" x2="226.75" y2="265"/>
+		<line style="&st9;" x1="206.759" y1="219" x2="206.759" y2="245"/>
 		<g>
-			<polygon points="223.775,264 226.767,269.181 229.758,264 			"/>
+			<polygon points="203.784,244 206.775,249.181 209.767,244 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="364.75" y1="461" x2="364.75" y2="487"/>
+		<line style="&st9;" x1="344.759" y1="441" x2="344.759" y2="467"/>
 		<g>
-			<polygon points="361.775,486 364.767,491.182 367.758,486 			"/>
+			<polygon points="341.784,466 344.775,471.182 347.767,466 			"/>
 		</g>
 	</g>
 </g>
 <g>
-	<rect x="329.25" y="609" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,609v67h-67v-67H397.25 M398.25,608h-69v69h69V608L398.25,608z"/>
+	<rect x="309.259" y="589" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,589v67h-67v-67H377.259 M378.259,588h-69v69h69V588L378.259,588z"/>
 </g>
-<text transform="matrix(1 0 0 1 351.3423 646.0215)" fill="#FFFFFF" font-size="12">x.md</text>
+<text transform="matrix(1 0 0 1 331.3511 626.0215)" style="&st12; &st4; &st15;">x.md</text>
 <g>
-	<rect x="329.25" y="831" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,831v67h-67v-67H397.25 M398.25,830h-69v69h69V830L398.25,830z"/>
+	<rect x="309.259" y="811" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,811v67h-67v-67H377.259 M378.259,810h-69v69h69V810L378.259,810z"/>
 </g>
-<text transform="matrix(1 0 0 1 351.3423 868.0215)" fill="#FFFFFF" font-size="12">x.md</text>
-<text transform="matrix(1 0 0 1 20.25 622.8984)"><tspan x="0" y="0" font-weight="bold" font-size="12">6. Object mutation</tspan><tspan x="0" y="14.8" font-size="9">When the object content </tspan><tspan x="0" y="25.6" font-size="9">changes, the current revision </tspan><tspan x="0" y="36.4" font-size="9">gets locked and a new draft</tspan><tspan x="0" y="47.2" font-size="9">is spawned</tspan></text>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="364.75" y1="572" x2="364.75" y2="598"/>
-		<g>
-			<polygon points="361.775,597 364.767,602.182 367.758,597 			"/>
-		</g>
-	</g>
-</g>
+<text transform="matrix(1 0 0 1 331.3511 848.0215)" style="&st12; &st4; &st15;">x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 602.8984)"><tspan x="0" y="0" style="&st14; &st15;">6. Object mutation</tspan><tspan x="0" y="14.8" style="&st0; &st7;">When the object content </tspan><tspan x="0" y="25.6" style="&st0; &st7;">changes, the current revision </tspan><tspan x="0" y="36.4" style="&st0; &st7;">is locked and a new draft</tspan><tspan x="0" y="47.2" style="&st0; &st7;">gets spawned again.</tspan></text>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="364.75" y1="683" x2="364.75" y2="820"/>
+		<line style="&st9;" x1="344.759" y1="552" x2="344.759" y2="578"/>
 		<g>
-			<polygon points="361.775,819 364.767,824.182 367.758,819 			"/>
+			<polygon points="341.784,577 344.775,582.182 347.767,577 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="266.25" y1="347" x2="319.609" y2="380.701"/>
+		<line style="&st9;" x1="344.759" y1="663" x2="344.759" y2="800"/>
 		<g>
-			<polygon points="317.281,382.749 323.259,382.986 320.476,377.69 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<rect x="329.25" y="942" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,942v67h-67v-67H397.25 M398.25,941h-69v69h69V941L398.25,941z"/>
-</g>
-<text transform="matrix(1 0 0 1 351.3423 979.0215)" fill="#FFFFFF" font-size="12">x.md</text>
-<g>
-	<rect x="191.25" y="830" fill="#F0F0F0" width="69" height="69"/>
-	<path d="M260.25,830h-1v1l0,0v1h1V830L260.25,830z M258.25,830h-1v1h1V830L258.25,830z M256.25,830h-1v1h1V830L256.25,830z
-		 M254.25,830h-1v1h1V830L254.25,830z M252.25,830h-1v1h1V830L252.25,830z M250.25,830h-1v1h1V830L250.25,830z M248.25,830h-1v1h1
-		V830L248.25,830z M246.25,830h-1v1h1V830L246.25,830z M244.25,830h-1v1h1V830L244.25,830z M242.25,830h-1v1h1V830L242.25,830z
-		 M240.25,830h-1v1h1V830L240.25,830z M238.25,830h-1v1h1V830L238.25,830z M236.25,830h-1v1h1V830L236.25,830z M234.25,830h-1v1h1
-		V830L234.25,830z M232.25,830h-1v1h1V830L232.25,830z M230.25,830h-1v1h1V830L230.25,830z M228.25,830h-1v1h1V830L228.25,830z
-		 M226.25,830h-1v1h1V830L226.25,830z M224.25,830h-1v1h1V830L224.25,830z M222.25,830h-1v1h1V830L222.25,830z M220.25,830h-1v1h1
-		V830L220.25,830z M218.25,830h-1v1h1V830L218.25,830z M216.25,830h-1v1h1V830L216.25,830z M214.25,830h-1v1h1V830L214.25,830z
-		 M212.25,830h-1v1h1V830L212.25,830z M210.25,830h-1v1h1V830L210.25,830z M208.25,830h-1v1h1V830L208.25,830z M206.25,830h-1v1h1
-		V830L206.25,830z M204.25,830h-1v1h1V830L204.25,830z M202.25,830h-1v1h1V830L202.25,830z M200.25,830h-1v1h1V830L200.25,830z
-		 M198.25,830h-1v1h1V830L198.25,830z M196.25,830h-1v1h1V830L196.25,830z M194.25,830h-1v1h1V830L194.25,830z M192.25,830h-1v1l0,0
-		v1h1v-1l0,0V830L192.25,830z M192.25,833h-1v1h1V833L192.25,833z M192.25,835h-1v1h1V835L192.25,835z M192.25,837h-1v1h1V837
-		L192.25,837z M192.25,839h-1v1h1V839L192.25,839z M192.25,841h-1v1h1V841L192.25,841z M192.25,843h-1v1h1V843L192.25,843z
-		 M192.25,845h-1v1h1V845L192.25,845z M192.25,847h-1v1h1V847L192.25,847z M192.25,849h-1v1h1V849L192.25,849z M192.25,851h-1v1h1
-		V851L192.25,851z M192.25,853h-1v1h1V853L192.25,853z M192.25,855h-1v1h1V855L192.25,855z M192.25,857h-1v1h1V857L192.25,857z
-		 M192.25,859h-1v1h1V859L192.25,859z M192.25,861h-1v1h1V861L192.25,861z M192.25,863h-1v1h1V863L192.25,863z M192.25,865h-1v1h1
-		V865L192.25,865z M192.25,867h-1v1h1V867L192.25,867z M192.25,869h-1v1h1V869L192.25,869z M192.25,871h-1v1h1V871L192.25,871z
-		 M192.25,873h-1v1h1V873L192.25,873z M192.25,875h-1v1h1V875L192.25,875z M192.25,877h-1v1h1V877L192.25,877z M192.25,879h-1v1h1
-		V879L192.25,879z M192.25,881h-1v1h1V881L192.25,881z M192.25,883h-1v1h1V883L192.25,883z M192.25,885h-1v1h1V885L192.25,885z
-		 M192.25,887h-1v1h1V887L192.25,887z M192.25,889h-1v1h1V889L192.25,889z M192.25,891h-1v1h1V891L192.25,891z M192.25,893h-1v1h1
-		V893L192.25,893z M192.25,895h-1v1h1V895L192.25,895z M192.25,897h-1v1l0,0v1h1v-1l0,0V897L192.25,897z M194.25,898h-1v1h1V898
-		L194.25,898z M196.25,898h-1v1h1V898L196.25,898z M198.25,898h-1v1h1V898L198.25,898z M200.25,898h-1v1h1V898L200.25,898z
-		 M202.25,898h-1v1h1V898L202.25,898z M204.25,898h-1v1h1V898L204.25,898z M206.25,898h-1v1h1V898L206.25,898z M208.25,898h-1v1h1
-		V898L208.25,898z M210.25,898h-1v1h1V898L210.25,898z M212.25,898h-1v1h1V898L212.25,898z M214.25,898h-1v1h1V898L214.25,898z
-		 M216.25,898h-1v1h1V898L216.25,898z M218.25,898h-1v1h1V898L218.25,898z M220.25,898h-1v1h1V898L220.25,898z M222.25,898h-1v1h1
-		V898L222.25,898z M224.25,898h-1v1h1V898L224.25,898z M226.25,898h-1v1h1V898L226.25,898z M228.25,898h-1v1h1V898L228.25,898z
-		 M230.25,898h-1v1h1V898L230.25,898z M232.25,898h-1v1h1V898L232.25,898z M234.25,898h-1v1h1V898L234.25,898z M236.25,898h-1v1h1
-		V898L236.25,898z M238.25,898h-1v1h1V898L238.25,898z M240.25,898h-1v1h1V898L240.25,898z M242.25,898h-1v1h1V898L242.25,898z
-		 M244.25,898h-1v1h1V898L244.25,898z M246.25,898h-1v1h1V898L246.25,898z M248.25,898h-1v1h1V898L248.25,898z M250.25,898h-1v1h1
-		V898L250.25,898z M252.25,898h-1v1h1V898L252.25,898z M254.25,898h-1v1h1V898L254.25,898z M256.25,898h-1v1h1V898L256.25,898z
-		 M258.25,898h-1v1h1V898L258.25,898z M260.25,898h-1v1h1V898L260.25,898z M260.25,897h-1v1h1V897L260.25,897z M260.25,895h-1v1h1
-		V895L260.25,895z M260.25,893h-1v1h1V893L260.25,893z M260.25,891h-1v1h1V891L260.25,891z M260.25,889h-1v1h1V889L260.25,889z
-		 M260.25,887h-1v1h1V887L260.25,887z M260.25,885h-1v1h1V885L260.25,885z M260.25,883h-1v1h1V883L260.25,883z M260.25,881h-1v1h1
-		V881L260.25,881z M260.25,879h-1v1h1V879L260.25,879z M260.25,877h-1v1h1V877L260.25,877z M260.25,875h-1v1h1V875L260.25,875z
-		 M260.25,873h-1v1h1V873L260.25,873z M260.25,871h-1v1h1V871L260.25,871z M260.25,869h-1v1h1V869L260.25,869z M260.25,867h-1v1h1
-		V867L260.25,867z M260.25,865h-1v1h1V865L260.25,865z M260.25,863h-1v1h1V863L260.25,863z M260.25,861h-1v1h1V861L260.25,861z
-		 M260.25,859h-1v1h1V859L260.25,859z M260.25,857h-1v1h1V857L260.25,857z M260.25,855h-1v1h1V855L260.25,855z M260.25,853h-1v1h1
-		V853L260.25,853z M260.25,851h-1v1h1V851L260.25,851z M260.25,849h-1v1h1V849L260.25,849z M260.25,847h-1v1h1V847L260.25,847z
-		 M260.25,845h-1v1h1V845L260.25,845z M260.25,843h-1v1h1V843L260.25,843z M260.25,841h-1v1h1V841L260.25,841z M260.25,839h-1v1h1
-		V839L260.25,839z M260.25,837h-1v1h1V837L260.25,837z M260.25,835h-1v1h1V835L260.25,835z M260.25,833h-1v1h1V833L260.25,833z"/>
-</g>
-<text transform="matrix(1 0 0 1 212.1001 868.0215)" font-size="12">.x.md</text>
-<text transform="matrix(1 0 0 1 20.25 850.1533)"><tspan x="0" y="0" font-weight="bold" font-size="12">8. Draft publication</tspan><tspan x="0" y="14.8" font-size="9">Once published, the draft is </tspan><tspan x="0" y="25.601" font-size="9">scheduled for persistence as </tspan><tspan x="0" y="36.399" font-size="9">current revision</tspan></text>
-<text transform="matrix(1 0 0 1 20.25 961.8965)"><tspan x="0" y="0" font-weight="bold" font-size="12">9. Persistence as current revision</tspan><tspan x="0" y="14.801" font-size="9">When the published draft is persisted, the former current</tspan><tspan x="0" y="25.601" font-size="9">revision gets archived. The revision number becomes </tspan><tspan x="0" y="36.4" font-size="9">part of the archive resource.</tspan></text>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="226.75" y1="794" x2="226.75" y2="820"/>
-		<g>
-			<polygon points="223.775,819 226.767,824.182 229.758,819 			"/>
+			<polygon points="341.784,799 344.775,804.182 347.767,799 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="266.25" y1="902" x2="319.609" y2="935.701"/>
+		<line style="&st9;" x1="246.259" y1="327" x2="299.618" y2="360.701"/>
 		<g>
-			<polygon points="317.281,937.748 323.259,937.986 320.476,932.689 			"/>
+			<polygon points="297.29,362.749 303.268,362.986 300.484,357.69 			"/>
 		</g>
 	</g>
 </g>
 <g>
-	<rect x="467.25" y="942" fill="#FF931E" width="68" height="68"/>
-	<path d="M535.25,942v67h-67v-67H535.25 M536.25,941h-69v69h69V941L536.25,941z"/>
+	<rect x="309.259" y="922" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,922v67h-67v-67H377.259 M378.259,921h-69v69h69V921L378.259,921z"/>
 </g>
-<text transform="matrix(1 0 0 1 484.4219 979.0215)" font-size="12">x-1.md</text>
+<text transform="matrix(1 0 0 1 331.3511 959.0215)" style="&st12; &st4; &st15;">x.md</text>
+<g>
+	<rect x="171.259" y="810" style="&st3;" width="69" height="69"/>
+	<path d="M240.259,810h-1v1l0,0v1h1V810L240.259,810z M238.259,810h-1v1h1V810L238.259,810z M236.259,810h-1v1h1V810L236.259,810z
+		 M234.259,810h-1v1h1V810L234.259,810z M232.259,810h-1v1h1V810L232.259,810z M230.259,810h-1v1h1V810L230.259,810z M228.259,810
+		h-1v1h1V810L228.259,810z M226.259,810h-1v1h1V810L226.259,810z M224.259,810h-1v1h1V810L224.259,810z M222.259,810h-1v1h1V810
+		L222.259,810z M220.259,810h-1v1h1V810L220.259,810z M218.259,810h-1v1h1V810L218.259,810z M216.259,810h-1v1h1V810L216.259,810z
+		 M214.259,810h-1v1h1V810L214.259,810z M212.259,810h-1v1h1V810L212.259,810z M210.259,810h-1v1h1V810L210.259,810z M208.259,810
+		h-1v1h1V810L208.259,810z M206.259,810h-1v1h1V810L206.259,810z M204.259,810h-1v1h1V810L204.259,810z M202.259,810h-1v1h1V810
+		L202.259,810z M200.259,810h-1v1h1V810L200.259,810z M198.259,810h-1v1h1V810L198.259,810z M196.259,810h-1v1h1V810L196.259,810z
+		 M194.259,810h-1v1h1V810L194.259,810z M192.259,810h-1v1h1V810L192.259,810z M190.259,810h-1v1h1V810L190.259,810z M188.259,810
+		h-1v1h1V810L188.259,810z M186.259,810h-1v1h1V810L186.259,810z M184.259,810h-1v1h1V810L184.259,810z M182.259,810h-1v1h1V810
+		L182.259,810z M180.259,810h-1v1h1V810L180.259,810z M178.259,810h-1v1h1V810L178.259,810z M176.259,810h-1v1h1V810L176.259,810z
+		 M174.259,810h-1v1h1V810L174.259,810z M172.259,810h-1v1l0,0v1h1v-1l0,0V810L172.259,810z M172.259,813h-1v1h1V813L172.259,813z
+		 M172.259,815h-1v1h1V815L172.259,815z M172.259,817h-1v1h1V817L172.259,817z M172.259,819h-1v1h1V819L172.259,819z M172.259,821
+		h-1v1h1V821L172.259,821z M172.259,823h-1v1h1V823L172.259,823z M172.259,825h-1v1h1V825L172.259,825z M172.259,827h-1v1h1V827
+		L172.259,827z M172.259,829h-1v1h1V829L172.259,829z M172.259,831h-1v1h1V831L172.259,831z M172.259,833h-1v1h1V833L172.259,833z
+		 M172.259,835h-1v1h1V835L172.259,835z M172.259,837h-1v1h1V837L172.259,837z M172.259,839h-1v1h1V839L172.259,839z M172.259,841
+		h-1v1h1V841L172.259,841z M172.259,843h-1v1h1V843L172.259,843z M172.259,845h-1v1h1V845L172.259,845z M172.259,847h-1v1h1V847
+		L172.259,847z M172.259,849h-1v1h1V849L172.259,849z M172.259,851h-1v1h1V851L172.259,851z M172.259,853h-1v1h1V853L172.259,853z
+		 M172.259,855h-1v1h1V855L172.259,855z M172.259,857h-1v1h1V857L172.259,857z M172.259,859h-1v1h1V859L172.259,859z M172.259,861
+		h-1v1h1V861L172.259,861z M172.259,863h-1v1h1V863L172.259,863z M172.259,865h-1v1h1V865L172.259,865z M172.259,867h-1v1h1V867
+		L172.259,867z M172.259,869h-1v1h1V869L172.259,869z M172.259,871h-1v1h1V871L172.259,871z M172.259,873h-1v1h1V873L172.259,873z
+		 M172.259,875h-1v1h1V875L172.259,875z M172.259,877h-1v1l0,0v1h1v-1l0,0V877L172.259,877z M174.259,878h-1v1h1V878L174.259,878z
+		 M176.259,878h-1v1h1V878L176.259,878z M178.259,878h-1v1h1V878L178.259,878z M180.259,878h-1v1h1V878L180.259,878z M182.259,878
+		h-1v1h1V878L182.259,878z M184.259,878h-1v1h1V878L184.259,878z M186.259,878h-1v1h1V878L186.259,878z M188.259,878h-1v1h1V878
+		L188.259,878z M190.259,878h-1v1h1V878L190.259,878z M192.259,878h-1v1h1V878L192.259,878z M194.259,878h-1v1h1V878L194.259,878z
+		 M196.259,878h-1v1h1V878L196.259,878z M198.259,878h-1v1h1V878L198.259,878z M200.259,878h-1v1h1V878L200.259,878z M202.259,878
+		h-1v1h1V878L202.259,878z M204.259,878h-1v1h1V878L204.259,878z M206.259,878h-1v1h1V878L206.259,878z M208.259,878h-1v1h1V878
+		L208.259,878z M210.259,878h-1v1h1V878L210.259,878z M212.259,878h-1v1h1V878L212.259,878z M214.259,878h-1v1h1V878L214.259,878z
+		 M216.259,878h-1v1h1V878L216.259,878z M218.259,878h-1v1h1V878L218.259,878z M220.259,878h-1v1h1V878L220.259,878z M222.259,878
+		h-1v1h1V878L222.259,878z M224.259,878h-1v1h1V878L224.259,878z M226.259,878h-1v1h1V878L226.259,878z M228.259,878h-1v1h1V878
+		L228.259,878z M230.259,878h-1v1h1V878L230.259,878z M232.259,878h-1v1h1V878L232.259,878z M234.259,878h-1v1h1V878L234.259,878z
+		 M236.259,878h-1v1h1V878L236.259,878z M238.259,878h-1v1h1V878L238.259,878z M240.259,878h-1v1h1V878L240.259,878z M240.259,877
+		h-1v1h1V877L240.259,877z M240.259,875h-1v1h1V875L240.259,875z M240.259,873h-1v1h1V873L240.259,873z M240.259,871h-1v1h1V871
+		L240.259,871z M240.259,869h-1v1h1V869L240.259,869z M240.259,867h-1v1h1V867L240.259,867z M240.259,865h-1v1h1V865L240.259,865z
+		 M240.259,863h-1v1h1V863L240.259,863z M240.259,861h-1v1h1V861L240.259,861z M240.259,859h-1v1h1V859L240.259,859z M240.259,857
+		h-1v1h1V857L240.259,857z M240.259,855h-1v1h1V855L240.259,855z M240.259,853h-1v1h1V853L240.259,853z M240.259,851h-1v1h1V851
+		L240.259,851z M240.259,849h-1v1h1V849L240.259,849z M240.259,847h-1v1h1V847L240.259,847z M240.259,845h-1v1h1V845L240.259,845z
+		 M240.259,843h-1v1h1V843L240.259,843z M240.259,841h-1v1h1V841L240.259,841z M240.259,839h-1v1h1V839L240.259,839z M240.259,837
+		h-1v1h1V837L240.259,837z M240.259,835h-1v1h1V835L240.259,835z M240.259,833h-1v1h1V833L240.259,833z M240.259,831h-1v1h1V831
+		L240.259,831z M240.259,829h-1v1h1V829L240.259,829z M240.259,827h-1v1h1V827L240.259,827z M240.259,825h-1v1h1V825L240.259,825z
+		 M240.259,823h-1v1h1V823L240.259,823z M240.259,821h-1v1h1V821L240.259,821z M240.259,819h-1v1h1V819L240.259,819z M240.259,817
+		h-1v1h1V817L240.259,817z M240.259,815h-1v1h1V815L240.259,815z M240.259,813h-1v1h1V813L240.259,813z"/>
+</g>
+<text transform="matrix(1 0 0 1 192.1089 848.0215)" style="&st4; &st15;">.x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 830.1533)"><tspan x="0" y="0" style="&st14; &st15;">8. Draft publication</tspan><tspan x="0" y="14.8" style="&st0; &st7;">Once published, the draft is </tspan><tspan x="0" y="25.601" style="&st0; &st7;">scheduled for persistence as </tspan><tspan x="0" y="36.399" style="&st0; &st7;">current revision</tspan></text>
+<text transform="matrix(1 0 0 1 0.2588 941.8965)"><tspan x="0" y="0" style="&st14; &st15;">9. Deploying as current revision</tspan><tspan x="0" y="14.801" style="&st0; &st7;">When the draft is published  and persisted, the former </tspan><tspan x="0" y="25.601" style="&st0; &st7;">current revision gets archived. The revision number </tspan><tspan x="0" y="36.4" style="&st0; &st7;">becomes part of the archived resource.</tspan></text>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="404.25" y1="902" x2="457.609" y2="935.701"/>
+		<line style="&st9;" x1="206.759" y1="774" x2="206.759" y2="800"/>
 		<g>
-			<polygon points="455.281,937.748 461.259,937.986 458.476,932.689 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<rect x="329.25" y="1053" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,1053v67h-67v-67H397.25 M398.25,1052h-69v69h69V1052L398.25,1052z"/>
-</g>
-<text transform="matrix(1 0 0 1 351.3423 1090.0215)" fill="#FFFFFF" font-size="12">x.md</text>
-<g>
-	<rect x="329.25" y="1164" fill="#FF0000" width="68" height="68"/>
-	<path d="M397.25,1164v67h-67v-67H397.25 M398.25,1163h-69v69h69V1163L398.25,1163z"/>
-</g>
-<text transform="matrix(1 0 0 1 351.3423 1201.0215)" fill="#FFFFFF" font-size="12">x.md</text>
-<g>
-	<rect x="191.25" y="1052" fill="#F0F0F0" width="69" height="69"/>
-	<path d="M260.25,1052h-1v1l0,0v1h1V1052L260.25,1052z M258.25,1052h-1v1h1V1052L258.25,1052z M256.25,1052h-1v1h1V1052L256.25,1052
-		z M254.25,1052h-1v1h1V1052L254.25,1052z M252.25,1052h-1v1h1V1052L252.25,1052z M250.25,1052h-1v1h1V1052L250.25,1052z
-		 M248.25,1052h-1v1h1V1052L248.25,1052z M246.25,1052h-1v1h1V1052L246.25,1052z M244.25,1052h-1v1h1V1052L244.25,1052z
-		 M242.25,1052h-1v1h1V1052L242.25,1052z M240.25,1052h-1v1h1V1052L240.25,1052z M238.25,1052h-1v1h1V1052L238.25,1052z
-		 M236.25,1052h-1v1h1V1052L236.25,1052z M234.25,1052h-1v1h1V1052L234.25,1052z M232.25,1052h-1v1h1V1052L232.25,1052z
-		 M230.25,1052h-1v1h1V1052L230.25,1052z M228.25,1052h-1v1h1V1052L228.25,1052z M226.25,1052h-1v1h1V1052L226.25,1052z
-		 M224.25,1052h-1v1h1V1052L224.25,1052z M222.25,1052h-1v1h1V1052L222.25,1052z M220.25,1052h-1v1h1V1052L220.25,1052z
-		 M218.25,1052h-1v1h1V1052L218.25,1052z M216.25,1052h-1v1h1V1052L216.25,1052z M214.25,1052h-1v1h1V1052L214.25,1052z
-		 M212.25,1052h-1v1h1V1052L212.25,1052z M210.25,1052h-1v1h1V1052L210.25,1052z M208.25,1052h-1v1h1V1052L208.25,1052z
-		 M206.25,1052h-1v1h1V1052L206.25,1052z M204.25,1052h-1v1h1V1052L204.25,1052z M202.25,1052h-1v1h1V1052L202.25,1052z
-		 M200.25,1052h-1v1h1V1052L200.25,1052z M198.25,1052h-1v1h1V1052L198.25,1052z M196.25,1052h-1v1h1V1052L196.25,1052z
-		 M194.25,1052h-1v1h1V1052L194.25,1052z M192.25,1052h-1v1l0,0v1h1v-1l0,0V1052L192.25,1052z M192.25,1055h-1v1h1V1055L192.25,1055
-		z M192.25,1057h-1v1h1V1057L192.25,1057z M192.25,1059h-1v1h1V1059L192.25,1059z M192.25,1061h-1v1h1V1061L192.25,1061z
-		 M192.25,1063h-1v1h1V1063L192.25,1063z M192.25,1065h-1v1h1V1065L192.25,1065z M192.25,1067h-1v1h1V1067L192.25,1067z
-		 M192.25,1069h-1v1h1V1069L192.25,1069z M192.25,1071h-1v1h1V1071L192.25,1071z M192.25,1073h-1v1h1V1073L192.25,1073z
-		 M192.25,1075h-1v1h1V1075L192.25,1075z M192.25,1077h-1v1h1V1077L192.25,1077z M192.25,1079h-1v1h1V1079L192.25,1079z
-		 M192.25,1081h-1v1h1V1081L192.25,1081z M192.25,1083h-1v1h1V1083L192.25,1083z M192.25,1085h-1v1h1V1085L192.25,1085z
-		 M192.25,1087h-1v1h1V1087L192.25,1087z M192.25,1089h-1v1h1V1089L192.25,1089z M192.25,1091h-1v1h1V1091L192.25,1091z
-		 M192.25,1093h-1v1h1V1093L192.25,1093z M192.25,1095h-1v1h1V1095L192.25,1095z M192.25,1097h-1v1h1V1097L192.25,1097z
-		 M192.25,1099h-1v1h1V1099L192.25,1099z M192.25,1101h-1v1h1V1101L192.25,1101z M192.25,1103h-1v1h1V1103L192.25,1103z
-		 M192.25,1105h-1v1h1V1105L192.25,1105z M192.25,1107h-1v1h1V1107L192.25,1107z M192.25,1109h-1v1h1V1109L192.25,1109z
-		 M192.25,1111h-1v1h1V1111L192.25,1111z M192.25,1113h-1v1h1V1113L192.25,1113z M192.25,1115h-1v1h1V1115L192.25,1115z
-		 M192.25,1117h-1v1h1V1117L192.25,1117z M192.25,1119h-1v1l0,0v1h1v-1l0,0V1119L192.25,1119z M194.25,1120h-1v1h1V1120L194.25,1120
-		z M196.25,1120h-1v1h1V1120L196.25,1120z M198.25,1120h-1v1h1V1120L198.25,1120z M200.25,1120h-1v1h1V1120L200.25,1120z
-		 M202.25,1120h-1v1h1V1120L202.25,1120z M204.25,1120h-1v1h1V1120L204.25,1120z M206.25,1120h-1v1h1V1120L206.25,1120z
-		 M208.25,1120h-1v1h1V1120L208.25,1120z M210.25,1120h-1v1h1V1120L210.25,1120z M212.25,1120h-1v1h1V1120L212.25,1120z
-		 M214.25,1120h-1v1h1V1120L214.25,1120z M216.25,1120h-1v1h1V1120L216.25,1120z M218.25,1120h-1v1h1V1120L218.25,1120z
-		 M220.25,1120h-1v1h1V1120L220.25,1120z M222.25,1120h-1v1h1V1120L222.25,1120z M224.25,1120h-1v1h1V1120L224.25,1120z
-		 M226.25,1120h-1v1h1V1120L226.25,1120z M228.25,1120h-1v1h1V1120L228.25,1120z M230.25,1120h-1v1h1V1120L230.25,1120z
-		 M232.25,1120h-1v1h1V1120L232.25,1120z M234.25,1120h-1v1h1V1120L234.25,1120z M236.25,1120h-1v1h1V1120L236.25,1120z
-		 M238.25,1120h-1v1h1V1120L238.25,1120z M240.25,1120h-1v1h1V1120L240.25,1120z M242.25,1120h-1v1h1V1120L242.25,1120z
-		 M244.25,1120h-1v1h1V1120L244.25,1120z M246.25,1120h-1v1h1V1120L246.25,1120z M248.25,1120h-1v1h1V1120L248.25,1120z
-		 M250.25,1120h-1v1h1V1120L250.25,1120z M252.25,1120h-1v1h1V1120L252.25,1120z M254.25,1120h-1v1h1V1120L254.25,1120z
-		 M256.25,1120h-1v1h1V1120L256.25,1120z M258.25,1120h-1v1h1V1120L258.25,1120z M260.25,1120h-1v1h1V1120L260.25,1120z
-		 M260.25,1119h-1v1h1V1119L260.25,1119z M260.25,1117h-1v1h1V1117L260.25,1117z M260.25,1115h-1v1h1V1115L260.25,1115z
-		 M260.25,1113h-1v1h1V1113L260.25,1113z M260.25,1111h-1v1h1V1111L260.25,1111z M260.25,1109h-1v1h1V1109L260.25,1109z
-		 M260.25,1107h-1v1h1V1107L260.25,1107z M260.25,1105h-1v1h1V1105L260.25,1105z M260.25,1103h-1v1h1V1103L260.25,1103z
-		 M260.25,1101h-1v1h1V1101L260.25,1101z M260.25,1099h-1v1h1V1099L260.25,1099z M260.25,1097h-1v1h1V1097L260.25,1097z
-		 M260.25,1095h-1v1h1V1095L260.25,1095z M260.25,1093h-1v1h1V1093L260.25,1093z M260.25,1091h-1v1h1V1091L260.25,1091z
-		 M260.25,1089h-1v1h1V1089L260.25,1089z M260.25,1087h-1v1h1V1087L260.25,1087z M260.25,1085h-1v1h1V1085L260.25,1085z
-		 M260.25,1083h-1v1h1V1083L260.25,1083z M260.25,1081h-1v1h1V1081L260.25,1081z M260.25,1079h-1v1h1V1079L260.25,1079z
-		 M260.25,1077h-1v1h1V1077L260.25,1077z M260.25,1075h-1v1h1V1075L260.25,1075z M260.25,1073h-1v1h1V1073L260.25,1073z
-		 M260.25,1071h-1v1h1V1071L260.25,1071z M260.25,1069h-1v1h1V1069L260.25,1069z M260.25,1067h-1v1h1V1067L260.25,1067z
-		 M260.25,1065h-1v1h1V1065L260.25,1065z M260.25,1063h-1v1h1V1063L260.25,1063z M260.25,1061h-1v1h1V1061L260.25,1061z
-		 M260.25,1059h-1v1h1V1059L260.25,1059z M260.25,1057h-1v1h1V1057L260.25,1057z M260.25,1055h-1v1h1V1055L260.25,1055z"/>
-</g>
-<text transform="matrix(1 0 0 1 212.1001 1090.0215)" font-size="12">.x.md</text>
-<text transform="matrix(1 0 0 1 20.25 1066.7969)"><tspan x="0" y="0" font-weight="bold" font-size="12">10. Repetition</tspan><tspan x="0" y="14.801" font-size="9">Objects may be modified* </tspan><tspan x="0" y="25.601" font-size="9">and persisted any number of </tspan><tspan x="0" y="36.4" font-size="9">times. Content changes </tspan><tspan x="0" y="47.201" font-size="9">spawn a new draft.</tspan></text>
-<text transform="matrix(1 0 0 1 20.25 1183.8965)"><tspan x="0" y="0" font-weight="bold" font-size="12">11. Repeated archivings</tspan><tspan x="0" y="14.801" font-size="9">Additional archive revisions get their respective </tspan><tspan x="0" y="25.601" font-size="9">revision numbers appended to their resource name.</tspan></text>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="364.75" y1="1016" x2="364.75" y2="1017"/>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="1,1" x1="364.75" y1="1017" x2="364.75" y2="1041"/>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="364.75" y1="1041" x2="364.75" y2="1042"/>
-		<g>
-			<polygon points="361.775,1041 364.767,1046.182 367.758,1041 			"/>
+			<polygon points="203.784,799 206.775,804.182 209.767,799 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="266.25" y1="1124" x2="319.609" y2="1157.701"/>
+		<line style="&st9;" x1="246.259" y1="882" x2="299.618" y2="915.701"/>
 		<g>
-			<polygon points="317.281,1159.748 323.259,1159.986 320.476,1154.689 			"/>
+			<polygon points="297.29,917.748 303.268,917.986 300.484,912.689 			"/>
 		</g>
 	</g>
 </g>
 <g>
-	<rect x="467.25" y="1164" fill="#FF931E" width="68" height="68"/>
-	<path d="M535.25,1164v67h-67v-67H535.25 M536.25,1163h-69v69h69V1163L536.25,1163z"/>
+	<rect x="447.259" y="922" style="&st10;" width="68" height="68"/>
+	<path d="M515.259,922v67h-67v-67H515.259 M516.259,921h-69v69h69V921L516.259,921z"/>
 </g>
-<text transform="matrix(1 0 0 1 484.4219 1201.0215)" font-size="12">x-2.md</text>
+<text transform="matrix(1 0 0 1 464.4307 959.0215)" style="&st4; &st15;">x-1.md</text>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="404.25" y1="1124" x2="457.609" y2="1157.701"/>
+		<line style="&st9;" x1="384.259" y1="882" x2="437.618" y2="915.701"/>
 		<g>
-			<polygon points="455.281,1159.748 461.259,1159.986 458.476,1154.689 			"/>
+			<polygon points="435.29,917.748 441.268,917.986 438.484,912.689 			"/>
 		</g>
 	</g>
 </g>
 <g>
-	<rect x="467.25" y="1053" fill="#FF931E" width="68" height="68"/>
-	<path d="M535.25,1053v67h-67v-67H535.25 M536.25,1052h-69v69h69V1052L536.25,1052z"/>
+	<rect x="309.259" y="1033" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,1033v67h-67v-67H377.259 M378.259,1032h-69v69h69V1032L378.259,1032z"/>
 </g>
-<text transform="matrix(1 0 0 1 484.4219 1090.0215)" font-size="12">x-1.md</text>
+<text transform="matrix(1 0 0 1 331.3511 1070.0215)" style="&st12; &st4; &st15;">x.md</text>
+<g>
+	<rect x="309.259" y="1144" style="&st8;" width="68" height="68"/>
+	<path d="M377.259,1144v67h-67v-67H377.259 M378.259,1143h-69v69h69V1143L378.259,1143z"/>
+</g>
+<text transform="matrix(1 0 0 1 331.3511 1181.0215)" style="&st12; &st4; &st15;">x.md</text>
+<g>
+	<rect x="171.259" y="1032" style="&st3;" width="69" height="69"/>
+	<path d="M240.259,1032h-1v1l0,0v1h1V1032L240.259,1032z M238.259,1032h-1v1h1V1032L238.259,1032z M236.259,1032h-1v1h1V1032
+		L236.259,1032z M234.259,1032h-1v1h1V1032L234.259,1032z M232.259,1032h-1v1h1V1032L232.259,1032z M230.259,1032h-1v1h1V1032
+		L230.259,1032z M228.259,1032h-1v1h1V1032L228.259,1032z M226.259,1032h-1v1h1V1032L226.259,1032z M224.259,1032h-1v1h1V1032
+		L224.259,1032z M222.259,1032h-1v1h1V1032L222.259,1032z M220.259,1032h-1v1h1V1032L220.259,1032z M218.259,1032h-1v1h1V1032
+		L218.259,1032z M216.259,1032h-1v1h1V1032L216.259,1032z M214.259,1032h-1v1h1V1032L214.259,1032z M212.259,1032h-1v1h1V1032
+		L212.259,1032z M210.259,1032h-1v1h1V1032L210.259,1032z M208.259,1032h-1v1h1V1032L208.259,1032z M206.259,1032h-1v1h1V1032
+		L206.259,1032z M204.259,1032h-1v1h1V1032L204.259,1032z M202.259,1032h-1v1h1V1032L202.259,1032z M200.259,1032h-1v1h1V1032
+		L200.259,1032z M198.259,1032h-1v1h1V1032L198.259,1032z M196.259,1032h-1v1h1V1032L196.259,1032z M194.259,1032h-1v1h1V1032
+		L194.259,1032z M192.259,1032h-1v1h1V1032L192.259,1032z M190.259,1032h-1v1h1V1032L190.259,1032z M188.259,1032h-1v1h1V1032
+		L188.259,1032z M186.259,1032h-1v1h1V1032L186.259,1032z M184.259,1032h-1v1h1V1032L184.259,1032z M182.259,1032h-1v1h1V1032
+		L182.259,1032z M180.259,1032h-1v1h1V1032L180.259,1032z M178.259,1032h-1v1h1V1032L178.259,1032z M176.259,1032h-1v1h1V1032
+		L176.259,1032z M174.259,1032h-1v1h1V1032L174.259,1032z M172.259,1032h-1v1l0,0v1h1v-1l0,0V1032L172.259,1032z M172.259,1035h-1v1
+		h1V1035L172.259,1035z M172.259,1037h-1v1h1V1037L172.259,1037z M172.259,1039h-1v1h1V1039L172.259,1039z M172.259,1041h-1v1h1
+		V1041L172.259,1041z M172.259,1043h-1v1h1V1043L172.259,1043z M172.259,1045h-1v1h1V1045L172.259,1045z M172.259,1047h-1v1h1V1047
+		L172.259,1047z M172.259,1049h-1v1h1V1049L172.259,1049z M172.259,1051h-1v1h1V1051L172.259,1051z M172.259,1053h-1v1h1V1053
+		L172.259,1053z M172.259,1055h-1v1h1V1055L172.259,1055z M172.259,1057h-1v1h1V1057L172.259,1057z M172.259,1059h-1v1h1V1059
+		L172.259,1059z M172.259,1061h-1v1h1V1061L172.259,1061z M172.259,1063h-1v1h1V1063L172.259,1063z M172.259,1065h-1v1h1V1065
+		L172.259,1065z M172.259,1067h-1v1h1V1067L172.259,1067z M172.259,1069h-1v1h1V1069L172.259,1069z M172.259,1071h-1v1h1V1071
+		L172.259,1071z M172.259,1073h-1v1h1V1073L172.259,1073z M172.259,1075h-1v1h1V1075L172.259,1075z M172.259,1077h-1v1h1V1077
+		L172.259,1077z M172.259,1079h-1v1h1V1079L172.259,1079z M172.259,1081h-1v1h1V1081L172.259,1081z M172.259,1083h-1v1h1V1083
+		L172.259,1083z M172.259,1085h-1v1h1V1085L172.259,1085z M172.259,1087h-1v1h1V1087L172.259,1087z M172.259,1089h-1v1h1V1089
+		L172.259,1089z M172.259,1091h-1v1h1V1091L172.259,1091z M172.259,1093h-1v1h1V1093L172.259,1093z M172.259,1095h-1v1h1V1095
+		L172.259,1095z M172.259,1097h-1v1h1V1097L172.259,1097z M172.259,1099h-1v1l0,0v1h1v-1l0,0V1099L172.259,1099z M174.259,1100h-1v1
+		h1V1100L174.259,1100z M176.259,1100h-1v1h1V1100L176.259,1100z M178.259,1100h-1v1h1V1100L178.259,1100z M180.259,1100h-1v1h1
+		V1100L180.259,1100z M182.259,1100h-1v1h1V1100L182.259,1100z M184.259,1100h-1v1h1V1100L184.259,1100z M186.259,1100h-1v1h1V1100
+		L186.259,1100z M188.259,1100h-1v1h1V1100L188.259,1100z M190.259,1100h-1v1h1V1100L190.259,1100z M192.259,1100h-1v1h1V1100
+		L192.259,1100z M194.259,1100h-1v1h1V1100L194.259,1100z M196.259,1100h-1v1h1V1100L196.259,1100z M198.259,1100h-1v1h1V1100
+		L198.259,1100z M200.259,1100h-1v1h1V1100L200.259,1100z M202.259,1100h-1v1h1V1100L202.259,1100z M204.259,1100h-1v1h1V1100
+		L204.259,1100z M206.259,1100h-1v1h1V1100L206.259,1100z M208.259,1100h-1v1h1V1100L208.259,1100z M210.259,1100h-1v1h1V1100
+		L210.259,1100z M212.259,1100h-1v1h1V1100L212.259,1100z M214.259,1100h-1v1h1V1100L214.259,1100z M216.259,1100h-1v1h1V1100
+		L216.259,1100z M218.259,1100h-1v1h1V1100L218.259,1100z M220.259,1100h-1v1h1V1100L220.259,1100z M222.259,1100h-1v1h1V1100
+		L222.259,1100z M224.259,1100h-1v1h1V1100L224.259,1100z M226.259,1100h-1v1h1V1100L226.259,1100z M228.259,1100h-1v1h1V1100
+		L228.259,1100z M230.259,1100h-1v1h1V1100L230.259,1100z M232.259,1100h-1v1h1V1100L232.259,1100z M234.259,1100h-1v1h1V1100
+		L234.259,1100z M236.259,1100h-1v1h1V1100L236.259,1100z M238.259,1100h-1v1h1V1100L238.259,1100z M240.259,1100h-1v1h1V1100
+		L240.259,1100z M240.259,1099h-1v1h1V1099L240.259,1099z M240.259,1097h-1v1h1V1097L240.259,1097z M240.259,1095h-1v1h1V1095
+		L240.259,1095z M240.259,1093h-1v1h1V1093L240.259,1093z M240.259,1091h-1v1h1V1091L240.259,1091z M240.259,1089h-1v1h1V1089
+		L240.259,1089z M240.259,1087h-1v1h1V1087L240.259,1087z M240.259,1085h-1v1h1V1085L240.259,1085z M240.259,1083h-1v1h1V1083
+		L240.259,1083z M240.259,1081h-1v1h1V1081L240.259,1081z M240.259,1079h-1v1h1V1079L240.259,1079z M240.259,1077h-1v1h1V1077
+		L240.259,1077z M240.259,1075h-1v1h1V1075L240.259,1075z M240.259,1073h-1v1h1V1073L240.259,1073z M240.259,1071h-1v1h1V1071
+		L240.259,1071z M240.259,1069h-1v1h1V1069L240.259,1069z M240.259,1067h-1v1h1V1067L240.259,1067z M240.259,1065h-1v1h1V1065
+		L240.259,1065z M240.259,1063h-1v1h1V1063L240.259,1063z M240.259,1061h-1v1h1V1061L240.259,1061z M240.259,1059h-1v1h1V1059
+		L240.259,1059z M240.259,1057h-1v1h1V1057L240.259,1057z M240.259,1055h-1v1h1V1055L240.259,1055z M240.259,1053h-1v1h1V1053
+		L240.259,1053z M240.259,1051h-1v1h1V1051L240.259,1051z M240.259,1049h-1v1h1V1049L240.259,1049z M240.259,1047h-1v1h1V1047
+		L240.259,1047z M240.259,1045h-1v1h1V1045L240.259,1045z M240.259,1043h-1v1h1V1043L240.259,1043z M240.259,1041h-1v1h1V1041
+		L240.259,1041z M240.259,1039h-1v1h1V1039L240.259,1039z M240.259,1037h-1v1h1V1037L240.259,1037z M240.259,1035h-1v1h1V1035
+		L240.259,1035z"/>
+</g>
+<text transform="matrix(1 0 0 1 192.1089 1070.0215)" style="&st4; &st15;">.x.md</text>
+<text transform="matrix(1 0 0 1 0.2588 1046.7969)"><tspan x="0" y="0" style="&st14; &st15;">10. Repetition</tspan><tspan x="0" y="14.801" style="&st0; &st7;">Again, changing the content of the </tspan><tspan x="0" y="25.601" style="&st0; &st7;">current revision results in a new </tspan><tspan x="0" y="36.4" style="&st0; &st7;">draft being spawned.</tspan></text>
+<text transform="matrix(1 0 0 1 0.2588 1163.8965)"><tspan x="0" y="0" style="&st14; &st15;">11. Repeated archivings</tspan><tspan x="0" y="14.801" style="&st0; &st7;">Additional archive revisions get their respective </tspan><tspan x="0" y="25.601" style="&st0; &st7;">revision numbers appended to their resource name.</tspan></text>
 <g>
 	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="502.75" y1="1016" x2="502.75" y2="1017"/>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="1,1" x1="502.75" y1="1017" x2="502.75" y2="1041"/>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="502.75" y1="1041" x2="502.75" y2="1042"/>
+		<line style="&st9;" x1="344.759" y1="996" x2="344.759" y2="997"/>
+		<line style="&st5;" x1="344.759" y1="997" x2="344.759" y2="1021"/>
+		<line style="&st9;" x1="344.759" y1="1021" x2="344.759" y2="1022"/>
 		<g>
-			<polygon points="499.775,1041 502.767,1046.182 505.758,1041 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<rect x="605.25" y="1164" fill="#FFBE78" width="68" height="68"/>
-	<path d="M673.25,1164v67h-67v-67H673.25 M674.25,1163h-69v69h69V1163L674.25,1163z"/>
-</g>
-<text transform="matrix(1 0 0 1 622.4219 1201.0215)" font-size="12">x-1.md</text>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="542.25" y1="1124" x2="595.609" y2="1157.701"/>
-		<g>
-			<polygon points="593.281,1159.748 599.259,1159.986 596.476,1154.689 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="269.891" y1="602.701" x2="323.25" y2="569"/>
-		<g>
-			<polygon points="272.219,604.748 266.241,604.986 269.024,599.689 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="269.891" y1="1046.701" x2="270.313" y2="1046.434"/>
-
-			<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="0.9859,0.9859" x1="271.147" y1="1045.907" x2="322.411" y2="1013.53"/>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="322.827" y1="1013.267" x2="323.25" y2="1013"/>
-		<g>
-			<polygon points="272.219,1048.748 266.241,1048.986 269.024,1043.689 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<g>
-		<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M266.25,218c10.77,0,19.5-8.73,19.5-19.5
-			c0-9.297-6.507-17.075-15.215-19.028"/>
-		<g>
-			<polygon points="271.776,176.729 266.248,179.016 270.993,182.661 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<rect x="191.25" y="609" fill="#F0F0F0" width="68" height="68"/>
-	<path d="M259.25,609v67h-67v-67H259.25 M260.25,608h-69v69h69V608L260.25,608z"/>
-</g>
-<text transform="matrix(1 0 0 1 211.8501 646.0215)" font-size="12">.x.md</text>
-<g>
-	<rect x="191.25" y="720" fill="#F0F0F0" width="68" height="68"/>
-	<path d="M259.25,720v67h-67v-67H259.25 M260.25,719h-69v69h69V719L260.25,719z"/>
-</g>
-<text transform="matrix(1 0 0 1 211.8501 757.0215)" font-size="12">.x.md</text>
-<text transform="matrix(1 0 0 1 20 744.8965)"><tspan x="0" y="0" font-weight="bold" font-size="12">7. Draft modification</tspan><tspan x="0" y="14.801" font-size="9">Drafts may be modified and </tspan><tspan x="0" y="25.601" font-size="9">persisted any number of times</tspan></text>
-<g>
-	<g>
-		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="226.75" y1="683" x2="226.75" y2="709"/>
-		<g>
-			<polygon points="223.525,708 226.517,713.182 229.508,708 			"/>
-		</g>
-	</g>
-</g>
-<g>
-	<g>
-		<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M266,773c10.77,0,19.5-8.73,19.5-19.5
-			c0-9.298-6.507-17.075-15.215-19.027"/>
-		<g>
-			<polygon points="271.526,731.729 265.998,734.017 270.743,737.661 			"/>
+			<polygon points="341.784,1021 344.775,1026.182 347.767,1021 			"/>
 		</g>
 	</g>
 </g>
 <g>
 	<g>
-		<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M404.25,554c10.77,0,19.5-8.73,19.5-19.5
-			c0-9.298-6.507-17.075-15.216-19.027"/>
+		<line style="&st9;" x1="246.259" y1="1104" x2="299.618" y2="1137.701"/>
 		<g>
-			<polygon points="409.776,512.729 404.248,515.017 408.992,518.661 			"/>
+			<polygon points="297.29,1139.748 303.268,1139.986 300.484,1134.689 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="447.259" y="1144" style="&st10;" width="68" height="68"/>
+	<path d="M515.259,1144v67h-67v-67H515.259 M516.259,1143h-69v69h69V1143L516.259,1143z"/>
+</g>
+<text transform="matrix(1 0 0 1 464.4307 1181.0215)" style="&st4; &st15;">x-2.md</text>
+<g>
+	<g>
+		<line style="&st9;" x1="384.259" y1="1104" x2="437.618" y2="1137.701"/>
+		<g>
+			<polygon points="435.29,1139.748 441.268,1139.986 438.484,1134.689 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="447.259" y="1033" style="&st10;" width="68" height="68"/>
+	<path d="M515.259,1033v67h-67v-67H515.259 M516.259,1032h-69v69h69V1032L516.259,1032z"/>
+</g>
+<text transform="matrix(1 0 0 1 464.4307 1070.0215)" style="&st4; &st15;">x-1.md</text>
+<g>
+	<g>
+		<line style="&st9;" x1="482.759" y1="996" x2="482.759" y2="997"/>
+		<line style="&st5;" x1="482.759" y1="997" x2="482.759" y2="1021"/>
+		<line style="&st9;" x1="482.759" y1="1021" x2="482.759" y2="1022"/>
+		<g>
+			<polygon points="479.784,1021 482.775,1026.182 485.767,1021 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="585.259" y="1144" style="&st11;" width="68" height="68"/>
+	<path d="M653.259,1144v67h-67v-67H653.259 M654.259,1143h-69v69h69V1143L654.259,1143z"/>
+</g>
+<text transform="matrix(1 0 0 1 602.4307 1181.0215)" style="&st4; &st15;">x-1.md</text>
+<g>
+	<g>
+		<line style="&st9;" x1="522.259" y1="1104" x2="575.618" y2="1137.701"/>
+		<g>
+			<polygon points="573.29,1139.748 579.268,1139.986 576.484,1134.689 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line style="&st9;" x1="249.899" y1="582.701" x2="303.259" y2="549"/>
+		<g>
+			<polygon points="252.228,584.748 246.25,584.986 249.033,579.689 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line style="&st9;" x1="249.899" y1="1026.701" x2="250.322" y2="1026.434"/>
+		<line style="&st6;" x1="251.156" y1="1025.907" x2="302.419" y2="993.53"/>
+		<line style="&st9;" x1="302.836" y1="993.267" x2="303.259" y2="993"/>
+		<g>
+			<polygon points="252.228,1028.748 246.25,1028.986 249.033,1023.689 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path style="&st9;" d="M246.259,198c10.77,0,19.5-8.73,19.5-19.5c0-9.297-6.507-17.075-15.215-19.028"/>
+		<g>
+			<polygon points="251.785,156.729 246.257,159.016 251.001,162.661 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="171.259" y="589" style="&st3;" width="68" height="68"/>
+	<path d="M239.259,589v67h-67v-67H239.259 M240.259,588h-69v69h69V588L240.259,588z"/>
+</g>
+<text transform="matrix(1 0 0 1 191.8589 626.0215)" style="&st4; &st15;">.x.md</text>
+<g>
+	<rect x="171.259" y="700" style="&st3;" width="68" height="68"/>
+	<path d="M239.259,700v67h-67v-67H239.259 M240.259,699h-69v69h69V699L240.259,699z"/>
+</g>
+<text transform="matrix(1 0 0 1 191.8589 737.0215)" style="&st4; &st15;">.x.md</text>
+<text transform="matrix(1 0 0 1 0.0088 719.1973)"><tspan x="0" y="0" style="&st14; &st15;">7. Draft modification</tspan><tspan x="0" y="14.8" style="&st0; &st7;">The draft may again be modified </tspan><tspan x="0" y="25.6" style="&st0; &st7;">(without limitations) and persisted </tspan><tspan x="0" y="36.4" style="&st0; &st7;">any number of times.</tspan></text>
+<g>
+	<g>
+		<line style="&st9;" x1="206.759" y1="663" x2="206.759" y2="689"/>
+		<g>
+			<polygon points="203.534,688 206.525,693.182 209.517,688 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path style="&st9;" d="M246.009,753c10.77,0,19.5-8.73,19.5-19.5c0-9.298-6.507-17.075-15.215-19.027"/>
+		<g>
+			<polygon points="251.535,711.729 246.007,714.017 250.751,717.661 			"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<path style="&st9;" d="M384.259,534c10.77,0,19.5-8.73,19.5-19.5c0-9.298-6.507-17.075-15.216-19.027"/>
+		<g>
+			<polygon points="389.785,492.729 384.257,495.017 389.001,498.661 			"/>
 		</g>
 	</g>
 </g>

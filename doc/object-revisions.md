@@ -49,26 +49,4 @@ It is possible to modify an object without immediately publishing it. For this p
 Revision flow
 -------------
 
-![Object revisions & paths](object-revisions.png)
-
-https://www.websequencediagrams.com/
-
-```
-note left of Draft
-    Object path has
-    draft indicator
-end note
-loop
-    Draft-->Draft: Modification\nPersisting
-end
-Draft->Draft: Publication
-Draft->Current: Persisting
-note over Current
-    Object path is current
-    (skips revision number)
-end note
-loop
-    Current-->Current: Modification\nPersisting
-end
-Current->Current:Mutation
-```
+![Object revisions & paths](object-revisions.svg)

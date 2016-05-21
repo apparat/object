@@ -49,4 +49,4 @@ It is possible to modify an object without immediately publishing it. For this p
 Revision flow
 -------------
 
-![Object revision life cycle](object-revisions.svg)
+![Object revision life cycle](https://cdn.rawgit.com/apparat/object/master/doc/object-revisions.svg)

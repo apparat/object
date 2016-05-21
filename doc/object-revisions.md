@@ -49,4 +49,4 @@ It is possible to modify an object without immediately publishing it. For this p
 Revision flow
 -------------
 
-<img src="object-revisions.md" alt="Object revision life cycle" width="695" height="1253"/>
+![Object revision life cycle](object-revisions.svg)

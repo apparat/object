@@ -346,7 +346,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectRepositoryPath = $object->getRepositoryPath();
 
         // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftPath = $objectRepositoryPath->setRevision($objectRepositoryPath->getRevision()->setDraft(false));
+        $objectDraftPath = $objectRepositoryPath->setRevision($objectRepositoryPath->getRevision()->setDraft(true));
         $absObjectDraftPath = $this->absoluteResourcePath($objectDraftPath);
         if (@file_exists($absObjectDraftPath)) {
             unlink($absObjectDraftPath);

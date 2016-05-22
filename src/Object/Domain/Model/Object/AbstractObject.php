@@ -105,8 +105,8 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
             );
         }
 
-        // Right after instantiation it's always the current revision
-        $this->path = $path->setRevision(Revision::current($path->getRevision()->isDraft()));
+        // Save the original object path
+        $this->path = $path;
 
         // Load the current revision data
         $this->loadRevisionData($payload, $propertyData);
@@ -115,6 +115,9 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         $this->latestRevision = $this->hasDraft()
             ? Kernel::create(Revision::class, [$this->getRevision()->getRevision() + 1, true])
             : $this->getRevision();
+
+        // Update the object path
+        $this->updatePath();
     }
 
     /**
@@ -179,10 +182,39 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      */
     protected function hasDraft()
     {
+        // Create the object draft resource path
+        $draftPath = $this->path->setRevision(Revision::current(true));
+
+        // Use the object manager to look for a draft resource
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
-        $draftPath = $this->path->setRevision(Revision::current(true));
         return $objectManager->objectResourceExists($draftPath);
+    }
+
+    /**
+     * Update the object path
+     */
+    protected function updatePath()
+    {
+        $revision = $this->getRevision();
+        $this->path = $this->path->setRevision(
+            ($this->getCurrentRevision()->getRevision() == $revision->getRevision())
+                ? Revision::current($revision->isDraft())
+                : $revision
+        );
+    }
+
+    /**
+     * Return this object's current revision
+     *
+     * @return Revision Current revision
+     */
+    protected function getCurrentRevision()
+    {
+        if ($this->latestRevision->isDraft() && ($this->latestRevision->getRevision() > 1)) {
+            return Kernel::create(Revision::class, [$this->latestRevision->getRevision() - 1, false]);
+        }
+        return $this->latestRevision;
     }
 
     /**
@@ -190,52 +222,43 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      *
      * @param Revision $revision Revision to be used
      * @return ObjectInterface Object
-     * @throws OutOfBoundsException If the requested revision is invalid
+     * @throws OutOfBoundsException If a revision beyond the latest one is requested
      */
     public function useRevision(Revision $revision)
     {
-        $isCurrentRevision = false;
-
-        // If the requested revision is invalid
-        if (!$revision->isCurrent() &&
-            (($revision->getRevision() < 1) || ($revision->getRevision() > $this->latestRevision->getRevision()))
-        ) {
+        // If a revision beyond the latest one is requested
+        if (!$revision->isCurrent() && ($revision->getRevision() > $this->latestRevision->getRevision())) {
             throw new OutOfBoundsException(
                 sprintf('Invalid object revision "%s"', $revision->getRevision()),
                 OutOfBoundsException::INVALID_OBJECT_REVISION
             );
         }
 
-        // If the current revision was requested
-        if ($revision->isCurrent()) {
-            $isCurrentRevision = true;
-            $revision = $this->latestRevision;
+        // Determine whether the current revision was requested
+        $currentRevision = $this->getCurrentRevision();
+        $isCurrentRevision = $revision->isCurrent() || $currentRevision->equals($revision);
+        if ($isCurrentRevision) {
+            $revision = $currentRevision;
         }
 
         // If the requested revision is not already used
-        if ($revision != $this->getRevision()) {
+        if (!$this->getRevision()->equals($revision)) {
 
             /** @var ManagerInterface $objectManager */
             $objectManager = Kernel::create(Service::class)->getObjectManager();
-
-            // Load the requested object revision resource
             /** @var Revision $newRevision */
             $newRevision = $isCurrentRevision ? Revision::current() : $revision;
             /** @var RepositoryPath $newRevisionPath */
             $newRevisionPath = $this->path->setRevision($newRevision);
-//print_r($newRevisionPath);
-//            echo get_class($this->path).$this->path.' <-> '.$newRevisionPath.PHP_EOL;
 
+            // Instantiate the requested revision resource
             $revisionResource = $objectManager->loadObjectResource($newRevisionPath);
-
-//            echo 'RESOURCE DATA '.$newRevisionPath.PHP_EOL;
-//            print_r($revisionResource->getPropertyData());
 
             // Load the revision resource data
             $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
 
-            // Set the current revision path
-            $this->path = $newRevisionPath;
+            // Update the object path
+            $this->updatePath();
         }
 
         return $this;
@@ -248,7 +271,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      */
     public function getRepositoryPath()
     {
-        // TODO Update path to reflect the active revision
         return $this->path;
     }
 
@@ -290,7 +312,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     public function persist()
     {
         // If this is not the latest revision
-        if ($this->getRevision()->getRevision() != $this->latestRevision->getRevision()) {
+        if ($this->getRevision()->getRevision() !== $this->latestRevision->getRevision()) {
             throw new RuntimeException(
                 sprintf(
                     'Cannot persist revision %s/%s',
@@ -301,20 +323,13 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
             );
         }
 
-//        echo $this->path.PHP_EOL;
-
         // Update the object repository
         $this->path->getRepository()->updateObject($this);
 
         // Reset to a clean state
         $this->resetState();
         $this->latestRevision = $this->getRevision();
-        $this->path = $this->path->setRevision(Revision::current($this->latestRevision->isDraft()));
-
-//        echo 'persisted: '.PHP_EOL;
-//        print_r($this->getRevision());
-//        echo $this->path;
-//        echo PHP_EOL.'---------------'.PHP_EOL;
+        $this->updatePath();
 
         return $this;
     }
@@ -327,17 +342,10 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     public function publish()
     {
         // If this is an unpublished draft
-        if ($this->isDraft() & !($this->state & self::STATE_PUBLISHED)) {
-            // TODO: Send signal
-
-            // Update system properties
-            $this->setSystemProperties($this->systemProperties->publish(), true);
-
-            // Remove the draft flag from the repository path
-            $this->path = $this->path->setRevision(Revision::current());
-
-            // Enable the modified & published state
-            $this->state |= (self::STATE_MODIFIED | self::STATE_PUBLISHED);
+        if ($this->isDraft() & !$this->hasBeenPublished()) {
+            $this->setPublishedState();
+            $this->latestRevision = $this->latestRevision->setDraft(false);
+            $this->updatePath();
         }
 
         return $this;
@@ -352,9 +360,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         // If this object is not already deleted
         if (!$this->isDeleted() && !$this->hasBeenDeleted()) {
-            // TODO: Modify the object path so that it's deleted
-
-            // Flag the object as just deleted
             $this->setDeletedState();
         }
 
@@ -371,9 +376,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         // If this object is already deleted
         if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
-            // TODO: Modify the object path so that it's not deleted
-
-            // Flag the object as just undeleted
             $this->setUndeletedState();
         }
     }
@@ -383,18 +385,18 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      */
     protected function convertToDraft()
     {
-        // Set the current revision to the latest revision
+        // Assume the latest revision as draft revision
         $draftRevision = $this->latestRevision;
 
-        // If that's not a draft revision: Increment and enable draft mode
-        if (!$draftRevision->isDraft()) {
+        // If it equals the current revision: Spawn a draft
+        if ($draftRevision->equals($this->getCurrentRevision())) {
             $draftRevision = $this->latestRevision = $draftRevision->increment()->setDraft(true);
         }
 
         // Set the system properties to draft mode
         $this->setSystemProperties($this->systemProperties->createDraft($draftRevision), true);
 
-        // Set the draft flag on the repository path
-        $this->path = $this->path->setRevision($draftRevision);
+        // Update the object path
+        $this->updatePath();
     }
 }

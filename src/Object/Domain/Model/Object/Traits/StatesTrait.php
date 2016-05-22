@@ -125,8 +125,8 @@ trait StatesTrait
      */
     protected function setMutatedState()
     {
-        // Make this object a draft if not already the case
-        if (!$this->isDraft()) {
+        // Make this object a draft if not already the case and not just
+        if (!$this->isDraft() && !$this->hasBeenPublished()) {
             // TODO: Send signal
             $this->convertToDraft();
         }
@@ -183,9 +183,6 @@ trait StatesTrait
         // If this object is not in deleted state yet
         if (!($this->state & self::STATE_DELETED)) {
             // TODO: Send signal
-
-            // Set the modification flag
-            $this->state |= self::STATE_MODIFIED;
         }
 
         // Enable the deleted state
@@ -194,6 +191,7 @@ trait StatesTrait
 
         // Update system properties
         $this->setSystemProperties($this->systemProperties->delete(), true);
+        $this->setModifiedState();
     }
 
     /**
@@ -204,9 +202,6 @@ trait StatesTrait
         // If this object is in deleted state
         if ($this->state & self::STATE_DELETED) {
             // TODO: Send signal
-
-            // Set the modification flag
-            $this->state |= self::STATE_MODIFIED;
         }
 
         // Disable the deleted state
@@ -215,6 +210,25 @@ trait StatesTrait
 
         // Update system properties
         $this->setSystemProperties($this->systemProperties->undelete(), true);
+        $this->setModifiedState();
+    }
+
+    /**
+     * Set the object state to published
+     */
+    protected function setPublishedState()
+    {
+        // If this object is not in published state yet
+        if (!($this->state & self::STATE_PUBLISHED)) {
+            // TODO: Send signal
+        }
+
+        // Set the published flag
+        $this->state |= self::STATE_PUBLISHED;
+
+        // Update system properties
+        $this->setSystemProperties($this->systemProperties->publish(), true);
+        $this->setModifiedState();
     }
 
     /**

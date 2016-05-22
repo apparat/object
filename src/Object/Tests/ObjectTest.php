@@ -285,7 +285,7 @@ namespace Apparat\Object\Tests {
             $object->setLicense(ltrim($object->getLicense().', ', ', ').'MIT');
             $object->setKeywords(array_merge($object->getKeywords(), ['mutated']));
             $object->setCategories($object->getCategories());
-            $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
+            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1', $objectUrl), $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
             $this->assertTrue($object->hasBeenModified());
             $this->assertTrue($object->hasBeenMutated());
@@ -305,7 +305,7 @@ namespace Apparat\Object\Tests {
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
             $object->setDomainProperty('a:b:c', 'mutated');
-            $this->assertEquals($objectUrl.'+', $object->getAbsoluteUrl());
+            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1', $objectUrl), $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
             $this->assertTrue($object->hasBeenModified());
             $this->assertTrue($object->hasBeenMutated());
@@ -400,28 +400,28 @@ namespace Apparat\Object\Tests {
             $article->setPayload('Revision 2');
             $article->persist();
 
-            /*
             // Publish and persist a third object draft revision
             $article->setPayload('Revision 3 draft');
             $article->persist();
 
             // Wait for 2 seconds, modify and re-persist the object
-//            $now = time();
-//            sleep(2);
+            $now = time();
+            sleep(2);
             $article->setPayload('Revision 3 draft (delayed modification)');
             $article->persist();
-//            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
+            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
 
-            echo $tempRepoDirectory;
+            /*
+           echo $tempRepoDirectory;
 
 //            echo 'DELETED'.PHP_EOL;
 
-            // Delete the object (and all it's revisions)
+           // Delete the object (and all it's revisions)
 //            $article->delete()->persist();
 
-            // Delete temporary repository
+           // Delete temporary repository
 //            $this->deleteRecursive($tempRepoDirectory);
-            */
+           */
         }
 
         /**

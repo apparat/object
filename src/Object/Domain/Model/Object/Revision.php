@@ -159,6 +159,17 @@ class Revision implements SerializablePropertyInterface
     }
 
     /**
+     * Compare this revision to a given one
+     *
+     * @param Revision $revision Comparison revision
+     * @return bool This revision equals the given one
+     */
+    public function equals(Revision $revision)
+    {
+        return ($this->revision == $revision->getRevision()) && ($this->draft == $revision->isDraft());
+    }
+
+    /**
      * Return whether this is a draft revision
      *
      * @return bool Draft revision

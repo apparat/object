@@ -163,7 +163,8 @@ class Revision implements SerializablePropertyInterface
      *
      * @return bool Draft revision
      */
-    public function isDraft() {
+    public function isDraft()
+    {
         return $this->draft;
     }
 
@@ -173,7 +174,8 @@ class Revision implements SerializablePropertyInterface
      * @param boolean $draft Enable / disable the draft flag
      * @return Revision Self reference
      */
-    public function setDraft($draft) {
+    public function setDraft($draft)
+    {
         $draft = boolval($draft);
         if ($draft !== $this->draft) {
             return new static($this->revision, $draft);

@@ -47,6 +47,42 @@ use Apparat\Object\Domain\Model\Relation\RelationInterface;
 interface ObjectInterface
 {
     /**
+     * Clean state
+     *
+     * @var int
+     */
+    const STATE_CLEAN = 0;
+    /**
+     * Modified state
+     *
+     * @var int
+     */
+    const STATE_MODIFIED = 1;
+    /**
+     * Mutated state
+     *
+     * @var int
+     */
+    const STATE_MUTATED = 2;
+    /**
+     * Published state
+     *
+     * @var int
+     */
+    const STATE_PUBLISHED = 4;
+    /**
+     * Deleted state
+     *
+     * @var int
+     */
+    const STATE_DELETED = 8;
+    /**
+     * Undeleted state
+     *
+     * @var int
+     */
+    const STATE_UNDELETED = 16;
+    /**
      * Object constructor
      *
      * The constructor is not part of the interface as the object proxy class also implements it

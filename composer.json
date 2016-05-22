@@ -45,10 +45,5 @@
       "src/Object/Module.php",
       "src/Object/Autorun.php"
     ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "ApparatTest\\": "src/Object/Framework/Test"
-    }
   }
 }

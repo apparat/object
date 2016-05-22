@@ -43,6 +43,7 @@ use Apparat\Object\Domain\Model\Object\Traits\MetaPropertiesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\PayloadTrait;
 use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\RelationsTrait;
+use Apparat\Object\Domain\Model\Object\Traits\StatesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\SystemPropertiesTrait;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
@@ -66,43 +67,8 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      * Use traits
      */
     use SystemPropertiesTrait, MetaPropertiesTrait, DomainPropertiesTrait, RelationsTrait,
-        ProcessingInstructionsTrait, PayloadTrait, IterableTrait;
-    /**
-     * Clean state
-     *
-     * @var int
-     */
-    const STATE_CLEAN = 0;
-    /**
-     * Modified state
-     *
-     * @var int
-     */
-    const STATE_MODIFIED = 1;
-    /**
-     * Mutated state
-     *
-     * @var int
-     */
-    const STATE_MUTATED = 2;
-    /**
-     * Published state
-     *
-     * @var int
-     */
-    const STATE_PUBLISHED = 4;
-    /**
-     * Deleted state
-     *
-     * @var int
-     */
-    const STATE_DELETED = 8;
-    /**
-     * Undeleted state
-     *
-     * @var int
-     */
-    const STATE_UNDELETED = 16;
+        ProcessingInstructionsTrait, PayloadTrait, IterableTrait, StatesTrait;
+
     /**
      * Repository path
      *
@@ -115,18 +81,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      * @var Revision
      */
     protected $latestRevision;
-    /**
-     * Object state
-     *
-     * @var int
-     */
-    protected $state = self::STATE_CLEAN;
-    /**
-     * Property collection states
-     *
-     * @var array
-     */
-    protected $collectionStates = [];
 
     /**
      * Object constructor
@@ -221,13 +175,14 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     }
 
     /**
-     * Return whether the object is in mutated state
-     *
-     * @return boolean Mutated state
+     * Return whether this object already has a draft revision
      */
-    public function hasBeenMutated()
+    protected function hasDraft()
     {
-        return !!($this->state & self::STATE_MUTATED);
+        /** @var ManagerInterface $objectManager */
+        $objectManager = Kernel::create(Service::class)->getObjectManager();
+        $draftPath = $this->path->setRevision(Revision::current(true));
+        return $objectManager->objectResourceExists($draftPath);
     }
 
     /**
@@ -388,36 +343,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     }
 
     /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return $this->systemProperties->isDraft() || $this->hasBeenPublished();
-    }
-
-    /**
-     * Return whether the object is in published state
-     *
-     * @return boolean Published state
-     */
-    public function isPublished()
-    {
-        return $this->systemProperties->isPublished();
-    }
-
-    /**
-     * Return whether the object has just been published
-     *
-     * @return boolean Object has just been published
-     */
-    public function hasBeenPublished()
-    {
-        return !!($this->state & self::STATE_PUBLISHED);
-    }
-
-    /**
      * Delete the object and all its revisions
      *
      * @return ObjectInterface Object
@@ -426,41 +351,14 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         // If this object is not already deleted
         if (!$this->isDeleted() && !$this->hasBeenDeleted()) {
-            // TODO: Send delete signal
-
-            // Update system properties
-            $this->setSystemProperties($this->systemProperties->delete(), true);
-
             // TODO: Modify the object path so that it's deleted
 
             // Flag the object as just deleted
-            $this->state |= self::STATE_MODIFIED;
-            $this->state |= self::STATE_DELETED;
-            $this->state &= ~self::STATE_UNDELETED;
+            $this->setDeletedState();
         }
 
         return $this;
 
-    }
-
-    /**
-     * Return whether the object has been deleted
-     *
-     * @return boolean Object is deleted
-     */
-    public function isDeleted()
-    {
-        return $this->systemProperties->isDeleted();
-    }
-
-    /**
-     * Return whether the object has just been deleted
-     *
-     * @return boolean Object has just been deleted
-     */
-    public function hasBeenDeleted()
-    {
-        return !!($this->state & self::STATE_DELETED);
     }
 
     /**
@@ -472,67 +370,11 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         // If this object is already deleted
         if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
-            // TODO: Send undelete signal
-
-            // Update system properties
-            $this->setSystemProperties($this->systemProperties->undelete(), true);
-
             // TODO: Modify the object path so that it's not deleted
 
             // Flag the object as just undeleted
-            $this->state |= self::STATE_MODIFIED;
-            $this->state |= self::STATE_UNDELETED;
-            $this->state &= ~self::STATE_DELETED;
+            $this->setUndeletedState();
         }
-    }
-
-    /**
-     * Return whether the object has just been undeleted
-     *
-     * @return boolean Object has just been undeleted
-     */
-    public function hasBeenUndeleted()
-    {
-        return !!($this->state & self::STATE_UNDELETED);
-    }
-
-    /**
-     * Return whether the object is in modified state
-     *
-     * @return boolean Modified state
-     */
-    public function hasBeenModified()
-    {
-        return !!($this->state & self::STATE_MODIFIED);
-    }
-
-    /**
-     * Set the object state to mutated
-     */
-    protected function setMutatedState()
-    {
-        // Make this object a draft if not already the case
-        if (!$this->isDraft()) {
-            // TODO: Send signal
-            $this->convertToDraft();
-        }
-
-        // Enable the mutated state
-        $this->state |= self::STATE_MUTATED;
-
-        // Enable the modified state
-        $this->setModifiedState();
-    }
-
-    /**
-     * Return whether this object already has a draft revision
-     */
-    protected function hasDraft()
-    {
-        /** @var ManagerInterface $objectManager */
-        $objectManager = Kernel::create(Service::class)->getObjectManager();
-        $draftPath = $this->path->setRevision(Revision::current(true));
-        return $objectManager->objectResourceExists($draftPath);
     }
 
     /**
@@ -542,7 +384,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         // Set the current revision to the latest revision
         $draftRevision = $this->latestRevision;
-        
+
         // If that's not a draft revision: Increment and enable draft mode
         if (!$draftRevision->isDraft()) {
             $draftRevision = $this->latestRevision = $draftRevision->increment()->setDraft(true);
@@ -553,22 +395,5 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
 
         // Set the draft flag on the repository path
         $this->path = $this->path->setRevision($draftRevision);
-    }
-
-    /**
-     * Set the object state to modified
-     */
-    protected function setModifiedState()
-    {
-        // If this object is not in modified state yet
-        if (!($this->state & self::STATE_MODIFIED)) {
-            // TODO: Send signal
-        }
-
-        // Enable the modified state
-        $this->state |= self::STATE_MODIFIED;
-
-        // Update the modification timestamp
-        $this->setSystemProperties($this->systemProperties->touch(), true);
     }
 }

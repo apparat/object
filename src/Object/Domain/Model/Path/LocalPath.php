@@ -201,7 +201,8 @@ class LocalPath implements PathInterface
 
         // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
-        $path[] = $this->revision->isDraft() ? '.'.$uid : rtrim($uid.'-'.$this->revision->getRevision(), '-');
+//        $path[] = $this->revision->isDraft() ? '.'.$uid : rtrim($uid.'-'.$this->revision->getRevision(), '-');
+        $path[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
 
         return '/'.implode('/', $path);
     }

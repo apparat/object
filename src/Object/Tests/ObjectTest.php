@@ -285,7 +285,7 @@ namespace Apparat\Object\Tests {
             $object->setLicense(ltrim($object->getLicense().', ', ', ').'MIT');
             $object->setKeywords(array_merge($object->getKeywords(), ['mutated']));
             $object->setCategories($object->getCategories());
-            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1', $objectUrl), $object->getAbsoluteUrl());
+            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1-2', $objectUrl), $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
             $this->assertTrue($object->hasBeenModified());
             $this->assertTrue($object->hasBeenMutated());
@@ -305,7 +305,7 @@ namespace Apparat\Object\Tests {
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
             $object->setDomainProperty('a:b:c', 'mutated');
-            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1', $objectUrl), $object->getAbsoluteUrl());
+            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1-2', $objectUrl), $object->getAbsoluteUrl());
             $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
             $this->assertTrue($object->hasBeenModified());
             $this->assertTrue($object->hasBeenMutated());
@@ -411,17 +411,12 @@ namespace Apparat\Object\Tests {
             $article->persist();
             $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
 
-            /*
-           echo $tempRepoDirectory;
 
-//            echo 'DELETED'.PHP_EOL;
-
-           // Delete the object (and all it's revisions)
+            // Delete the object (and all it's revisions)
 //            $article->delete()->persist();
 
-           // Delete temporary repository
+            // Delete temporary repository
 //            $this->deleteRecursive($tempRepoDirectory);
-           */
         }
 
         /**

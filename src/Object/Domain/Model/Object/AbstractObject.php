@@ -198,7 +198,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
     {
         $revision = $this->getRevision();
         $this->path = $this->path->setRevision(
-            ($this->getCurrentRevision()->getRevision() == $revision->getRevision())
+            !$revision->isDraft() && ($this->getCurrentRevision()->getRevision() == $revision->getRevision())
                 ? Revision::current($revision->isDraft())
                 : $revision
         );

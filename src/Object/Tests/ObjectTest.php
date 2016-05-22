@@ -400,7 +400,7 @@ namespace Apparat\Object\Tests {
             $article->setPayload('Revision 2');
             $article->persist();
 
-            // Publish and persist a third object draft revision
+            // Modify and persist a third object draft revision
             $article->setPayload('Revision 3 draft');
             $article->persist();
 
@@ -411,6 +411,8 @@ namespace Apparat\Object\Tests {
             $article->persist();
             $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
 
+            // Publish and persist a third object draft revision
+            $article->publish()->persist();
 
             // Delete the object (and all it's revisions)
 //            $article->delete()->persist();

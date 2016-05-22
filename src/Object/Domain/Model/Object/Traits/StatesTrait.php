@@ -145,7 +145,7 @@ trait StatesTrait
      */
     public function isDraft()
     {
-        return $this->systemProperties->isDraft() || $this->hasBeenPublished();
+        return $this->systemProperties->isDraft();
     }
 
     /**
@@ -215,5 +215,18 @@ trait StatesTrait
 
         // Update system properties
         $this->setSystemProperties($this->systemProperties->undelete(), true);
+    }
+
+    /**
+     * Reset the object state
+     */
+    protected function resetState()
+    {
+        // If this object is not clean
+        if ($this->state != self::STATE_CLEAN) {
+            // TODO: Send signal
+        }
+
+        $this->state = self::STATE_CLEAN;
     }
 }

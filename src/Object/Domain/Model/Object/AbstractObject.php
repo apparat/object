@@ -170,8 +170,8 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         $relationCollection = Kernel::create(Relations::class, [$relationData, $this]);
         $this->setRelations($relationCollection, true);
 
-        // Reset the object state to clean
-        $this->state = self::STATE_CLEAN;
+        // Reset the object state
+        $this->resetState();
     }
 
     /**
@@ -206,7 +206,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
             );
         }
 
-        // If the current revision got requested
+        // If the current revision was requested
         if ($revision->isCurrent()) {
             $isCurrentRevision = true;
             $revision = $this->latestRevision;
@@ -248,6 +248,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
      */
     public function getRepositoryPath()
     {
+        // TODO Update path to reflect the active revision
         return $this->path;
     }
 
@@ -306,7 +307,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         $this->path->getRepository()->updateObject($this);
 
         // Reset to a clean state
-        $this->state &= self::STATE_CLEAN;
+        $this->resetState();
         $this->latestRevision = $this->getRevision();
         $this->path = $this->path->setRevision(Revision::current($this->latestRevision->isDraft()));
 

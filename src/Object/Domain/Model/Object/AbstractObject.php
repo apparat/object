@@ -364,7 +364,6 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         }
 
         return $this;
-
     }
 
     /**
@@ -378,6 +377,8 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
             $this->setUndeletedState();
         }
+
+        return $this;
     }
 
     /**

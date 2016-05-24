@@ -192,22 +192,26 @@ class SystemProperties extends AbstractProperties
 
         // Initialize the object creation date
         if (array_key_exists(self::PROPERTY_CREATED, $data)) {
-            $this->created = new \DateTimeImmutable('@'.$data[self::PROPERTY_CREATED]);
+            // Dumb fix for https://github.com/symfony/symfony/issues/18859
+            $this->created = new \DateTimeImmutable((preg_match('%^\d+$%', $data[self::PROPERTY_CREATED]) ? '@' : '').$data[self::PROPERTY_CREATED]);
         }
 
         // Initialize the object modification date
         if (array_key_exists(self::PROPERTY_MODIFIED, $data)) {
-            $this->modified = new \DateTimeImmutable('@'.$data[self::PROPERTY_MODIFIED]);
+            // Dumb fix for https://github.com/symfony/symfony/issues/18859
+            $this->modified = new \DateTimeImmutable((preg_match('%^\d+$%', $data[self::PROPERTY_MODIFIED]) ? '@' : '').$data[self::PROPERTY_MODIFIED]);
         }
 
         // Initialize the object publication date
         if (array_key_exists(self::PROPERTY_PUBLISHED, $data)) {
-            $this->published = new \DateTimeImmutable('@'.$data[self::PROPERTY_PUBLISHED]);
+            // Dumb fix for https://github.com/symfony/symfony/issues/18859
+            $this->published = new \DateTimeImmutable((preg_match('%^\d+$%', $data[self::PROPERTY_PUBLISHED]) ? '@' : '').$data[self::PROPERTY_PUBLISHED]);
         }
 
         // Initialize the object deletion date
         if (array_key_exists(self::PROPERTY_DELETED, $data)) {
-            $this->deleted = new \DateTimeImmutable('@'.$data[self::PROPERTY_DELETED]);
+            // Dumb fix for https://github.com/symfony/symfony/issues/18859
+            $this->deleted = new \DateTimeImmutable((preg_match('%^\d+$%', $data[self::PROPERTY_DELETED]) ? '@' : '').$data[self::PROPERTY_DELETED]);
         }
 
         // Initialize the object language

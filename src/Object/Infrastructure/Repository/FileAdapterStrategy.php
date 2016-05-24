@@ -435,14 +435,15 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function deleteObject(ObjectInterface $object)
     {
-        // TODO Implement object deletion
+        // Delete all object revisions
         /** @var ObjectInterface $objectRevision */
         foreach ($object as $objectRevision) {
-            echo get_class($objectRevision).PHP_EOL;
+            $this->persistObjectResource($objectRevision->delete());
         }
 
-        // Persist the object resource
-        return $this->persistObjectResource($object);
+        // TODO: Delete object resource directory
+
+        return $this;
     }
 
     /**
@@ -453,9 +454,14 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function undeleteObject(ObjectInterface $object)
     {
-        // TODO Implement object undeletion
+        // Undelete all object revisions
+        /** @var ObjectInterface $objectRevision */
+        foreach ($object as $objectRevision) {
+            $this->persistObjectResource($objectRevision->undelete());
+        }
 
-        // Persist the object resource
-        return $this->persistObjectResource($object);
+        // TODO: Undelete object resource directory
+
+        return $this;
     }
 }

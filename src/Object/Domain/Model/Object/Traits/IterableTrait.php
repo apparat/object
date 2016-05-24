@@ -46,10 +46,18 @@ use Apparat\Object\Domain\Model\Object\Revision;
  *
  * @package Apparat\Object\Domain
  * @property Revision $currentRevision
- * @property AbstractObject $this
+ * @property Revision $latestRevision
+ * @property AbstractObject|\Countable $this
  */
 trait IterableTrait
 {
+    /**
+     * Revision iterator
+     *
+     * @var Revision
+     */
+    protected $nextRevision;
+
     /**
      * Return the current revision
      *
@@ -57,10 +65,7 @@ trait IterableTrait
      */
     public function current()
     {
-        echo "current\n";
-        /** @var Revision $currentRevision */
-        $currentRevision = Kernel::create(Revision::class, [$this->currentRevision->getRevision()]);
-        return $this->useRevision($currentRevision);
+        return $this->useRevision($this->nextRevision);
     }
 
     /**
@@ -68,8 +73,10 @@ trait IterableTrait
      */
     public function next()
     {
-        echo "next\n";
-        $this->currentRevision = $this->currentRevision->increment();
+        $this->nextRevision = $this->nextRevision->increment();
+        if ($this->nextRevision->getRevision() == $this->latestRevision->getRevision()) {
+            $this->nextRevision = $this->nextRevision->setDraft($this->latestRevision->isDraft());
+        }
     }
 
     /**
@@ -79,7 +86,6 @@ trait IterableTrait
      */
     public function key()
     {
-        echo "key\n";
         return $this->currentRevision;
     }
 
@@ -90,9 +96,8 @@ trait IterableTrait
      */
     public function valid()
     {
-        echo "valud\n";
-        /** AbstractObject $this */
-        return $this->currentRevision->getRevision() <= count($this);
+        /** @var AbstractObject $this */
+        return $this->nextRevision->getRevision() <= count($this);
     }
 
     /**
@@ -100,10 +105,9 @@ trait IterableTrait
      */
     public function rewind()
     {
-        echo "rewind\n";
-        /** @var Revision $firstRevision */
-        $firstRevision = Kernel::create(Revision::class, [1]);
-        $this->useRevision($firstRevision);
+        $this->nextRevision = ($this->latestRevision->getRevision() > 1) ?
+            Kernel::create(Revision::class, [1]) : $this->latestRevision;
+        $this->useRevision($this->nextRevision);
     }
 
     /**
@@ -113,7 +117,6 @@ trait IterableTrait
      */
     public function count()
     {
-        /** AbstractObject $this */
         return $this->latestRevision->getRevision();
     }
 }

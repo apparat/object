@@ -39,6 +39,7 @@ namespace Apparat\Object\Tests;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * Selector tests
@@ -54,6 +55,18 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      * @var string
      */
     const SELECTOR = '/2015/10/01/36704.event/36704-1';
+    /**
+     * Example selector with hidden object
+     *
+     * @var string
+     */
+    const HIDDEN_SELECTOR = '/2015/10/01/.36704.event/36704-1';
+    /**
+     * Example selector with optionally hidden object
+     *
+     * @var string
+     */
+    const OPTIONAL_HIDDEN_SELECTOR = '/2015/10/01/{.,}36704.event/36704-1';
 
     /**
      * Test a valid full-fledged selector
@@ -71,6 +84,25 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals(36704, $selector->getId());
         $this->assertEquals('event', $selector->getType());
         $this->assertEquals(1, $selector->getRevision());
+        $this->assertEquals(SelectorInterface::VISIBLE, $selector->getVisibility());
+    }
+
+    /**
+     * Test a valid selector with hidden object
+     */
+    public function testFactoryHiddenSelector()
+    {
+        $selector = SelectorFactory::createFromString(self::HIDDEN_SELECTOR);
+        $this->assertEquals(SelectorInterface::HIDDEN, $selector->getVisibility());
+    }
+
+    /**
+     * Test a valid selector with optionally hidden object
+     */
+    public function testFactoryOptionallyHiddenSelector()
+    {
+        $selector = SelectorFactory::createFromString(self::OPTIONAL_HIDDEN_SELECTOR);
+        $this->assertEquals(SelectorInterface::ALL, $selector->getVisibility());
     }
 
     /**
@@ -81,14 +113,14 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
         $datePrecision = getenv('OBJECT_DATE_PRECISION');
         putenv('OBJECT_DATE_PRECISION=6');
         $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*');
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getHour());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMinute());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getSecond());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getYear());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getMonth());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getDay());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getHour());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getMinute());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getSecond());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getId());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getType());
         $this->assertEquals(Revision::CURRENT, $selector->getRevision());
         putenv('OBJECT_DATE_PRECISION='.$datePrecision);
     }
@@ -99,14 +131,14 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
     public function testFactoryMinimalSelector()
     {
         $selector = SelectorFactory::createFromString('/*');
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getYear());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getMonth());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getDay());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getYear());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getMonth());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getDay());
         $this->assertEquals(null, $selector->getHour());
         $this->assertEquals(null, $selector->getMinute());
         $this->assertEquals(null, $selector->getSecond());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getId());
-        $this->assertEquals(RepositorySelector::WILDCARD, $selector->getType());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getId());
+        $this->assertEquals(SelectorInterface::WILDCARD, $selector->getType());
         $this->assertEquals(Revision::CURRENT, $selector->getRevision());
     }
 
@@ -116,7 +148,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
      * @expectedExceptionCode 1449961609
      */
-    public function testFactoryInvaldiSelector()
+    public function testFactoryInvalidSelector()
     {
         SelectorFactory::createFromString('invalid');
     }

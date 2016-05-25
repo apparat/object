@@ -86,6 +86,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @var string
      */
     protected $configDir = null;
+    /**
+     * Glob visibilities
+     *
+     * @var array
+     */
+    protected static $globVisibilities = [
+        SelectorInterface::VISIBLE => '',
+        SelectorInterface::HIDDEN => '.',
+        SelectorInterface::ALL => '{.,}',
+    ];
 
     /**
      * Adapter strategy constructor
@@ -208,14 +218,15 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             $glob .= '/'.$second;
         }
 
+        $visibility = $selector->getVisibility();
         $uid = $selector->getId();
         $type = $selector->getType();
         if (($uid !== null) || ($type !== null)) {
-            $glob .= '/'.($uid ?: Selector::WILDCARD).'.'.($type ?: Selector::WILDCARD);
+            $glob .= '/'.($uid ?: SelectorInterface::WILDCARD).'.'.($type ?: SelectorInterface::WILDCARD);
 
             $revision = $selector->getRevision();
             if ($revision !== null) {
-                $glob .= '/'.($uid ?: Selector::WILDCARD).'-'.$revision;
+                $glob .= '/'.self::$globVisibilities[$visibility].($uid ?: SelectorInterface::WILDCARD).'-'.$revision;
                 $globFlags &= ~GLOB_ONLYDIR;
             }
         }

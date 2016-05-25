@@ -86,6 +86,12 @@ class LocalPath implements PathInterface
      * @var Revision
      */
     protected $revision = null;
+    /**
+     * Hidden object
+     *
+     * @var boolean
+     */
+    protected $hidden = false;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -98,7 +104,6 @@ class LocalPath implements PathInterface
      * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
      *     URLs)]
      * @param string $leader Leading base path
-     * @throws InvalidArgumentException If the date precision is invalid
      * @throws InvalidArgumentException If the object URL path is invalid
      */
     public function __construct($path = null, $datePrecision = null, &$leader = '')
@@ -109,38 +114,10 @@ class LocalPath implements PathInterface
                 $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
             }
 
-            $pathPattern = null;
+            // Build the regular expression for matching a local path
+            $pathPattern = $this->buildPathRegex($datePrecision);
 
-            // If a valid integer date precision is given
-            if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-                $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
-                    implode(
-                        '/',
-                        array_slice(self::$datePattern, 0, $datePrecision)
-                    ).($datePrecision ? '/' : '');
-
-                // Else if the date precision may be arbitrary
-            } elseif ($datePrecision === true) {
-                $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
-                $pathPattern .= str_repeat(')?', count(self::$datePattern));
-                $pathPattern .= '/';
-            }
-
-            // If the date precision is invalid
-            if ($pathPattern === null) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Invalid date precision "%s" (%s)',
-                        strval($datePrecision),
-                        gettype($datePrecision)
-                    ),
-                    InvalidArgumentException::INVALID_DATE_PRECISION
-                );
-            }
-
-            $pathPattern .= '(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
-            $pathPattern .= '<id>(?:(?P<draft>\+)|(?:-(?P<revision>\d+)))?(?P<extension>\.[a-z0-9]+)?)?$%';
-
+            // Match the local path
             if (!preg_match($pathPattern, $path, $pathParts)) {
                 throw new InvalidArgumentException(
                     sprintf('Invalid object URL path "%s"', $path),
@@ -166,8 +143,10 @@ class LocalPath implements PathInterface
                 strlen($path) - strlen($pathParts[0])
             ) : $pathParts['leader'];
 
-            // Set the ID
+            // Set the hidden state
+            $this->hidden = !empty($pathParts['hidden']);
 
+            // Set the ID
             $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
 
             // Set the type
@@ -176,7 +155,10 @@ class LocalPath implements PathInterface
             // Set the revision
             $this->revision = Kernel::create(
                 Revision::class,
-                [empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']), !empty($pathParts['draft'])]
+                [
+                    empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']),
+                    !empty($pathParts['draft'])
+                ]
             );
         }
     }
@@ -197,11 +179,10 @@ class LocalPath implements PathInterface
         }
 
         // Add the object ID and type
-        $path[] = $this->uid->getId().'.'.$this->type->getType();
+        $path[] = ($this->hidden ? '.' : '').$this->uid->getId().'.'.$this->type->getType();
 
         // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
-//        $path[] = $this->revision->isDraft() ? '.'.$uid : rtrim($uid.'-'.$this->revision->getRevision(), '-');
         $path[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
 
         return '/'.implode('/', $path);
@@ -297,5 +278,73 @@ class LocalPath implements PathInterface
         $path = clone $this;
         $path->revision = $revision;
         return $path;
+    }
+
+    /**
+     * Return the object hidden state
+     *
+     * @return boolean Object hidden state
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * Set the object hidden state
+     *
+     * @param boolean $hidden Object hidden state
+     * @return PathInterface|LocalPath New object path
+     */
+    public function setHidden($hidden)
+    {
+        $path = clone $this;
+        $path->hidden = !!$hidden;
+        return $path;
+    }
+
+    /**
+     * Build the regular expression for matching a local object path
+     *
+     * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
+     *     URLs)]
+     * @return string Regular expression for matching a local object path
+     * @throws InvalidArgumentException If the date precision is invalid
+     */
+    protected function buildPathRegex($datePrecision)
+    {
+        $pathPattern = null;
+
+        // If a valid integer date precision is given
+        if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
+            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
+                implode(
+                    '/',
+                    array_slice(self::$datePattern, 0, $datePrecision)
+                ).($datePrecision ? '/' : '');
+
+            // Else if the date precision may be arbitrary
+        } elseif ($datePrecision === true) {
+            $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
+            $pathPattern .= str_repeat(')?', count(self::$datePattern));
+            $pathPattern .= '/';
+        }
+
+        // If the date precision is invalid
+        if ($pathPattern === null) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid date precision "%s" (%s)',
+                    strval($datePrecision),
+                    gettype($datePrecision)
+                ),
+                InvalidArgumentException::INVALID_DATE_PRECISION
+            );
+        }
+
+        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
+        $pathPattern .= '<id>(?:(?P<draft>\+)|(?:-(?P<revision>\d+)))?(?P<extension>\.[a-z0-9]+)?)?$%';
+
+        return $pathPattern;
     }
 }

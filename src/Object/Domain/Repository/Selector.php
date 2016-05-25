@@ -48,12 +48,6 @@ use Apparat\Object\Domain\Model\Object\Type;
 class Selector implements SelectorInterface
 {
     /**
-     * Wildcard
-     *
-     * @var string
-     */
-    const WILDCARD = '*';
-    /**
      * Year component
      *
      * @var int
@@ -107,6 +101,12 @@ class Selector implements SelectorInterface
      * @var int
      */
     private $revision = null;
+    /**
+     * Object visibility
+     *
+     * @var int
+     */
+    private $visibility = SelectorInterface::VISIBLE;
 
     /**
      * Repository selector constructor
@@ -120,6 +120,7 @@ class Selector implements SelectorInterface
      * @param string|int|NULL $uid Object ID
      * @param string|NULL $type Object type
      * @param int|NULL $revision
+     * @param int $visibility
      * @throws InvalidArgumentException If any of the components isn't valid
      */
     public function __construct(
@@ -131,7 +132,8 @@ class Selector implements SelectorInterface
         $second = self::WILDCARD,
         $uid = self::WILDCARD,
         $type = self::WILDCARD,
-        $revision = Revision::CURRENT
+        $revision = Revision::CURRENT,
+        $visibility = SelectorInterface::VISIBLE
     ) {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
@@ -204,6 +206,20 @@ class Selector implements SelectorInterface
             );
         }
         $this->revision = $revision;
+
+        // If the object visibility isn't valid
+        if (!self::isValidVisibility($visibility)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid repository selector visibility "%s"',
+                    $visibility
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'visibility'
+            );
+        }
+        $this->visibility = $visibility;
     }
 
     /**
@@ -294,5 +310,28 @@ class Selector implements SelectorInterface
     public function getRevision()
     {
         return $this->revision;
+    }
+
+    /**
+     * Return the object visibility
+     *
+     * @return int Object visibility
+     */
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * Test if the given argument is a valid object visibility
+     *
+     * @param int $visibility Object visibility
+     * @return boolean Valid visibility
+     */
+    public static function isValidVisibility($visibility)
+    {
+        return ($visibility === SelectorInterface::VISIBLE)
+        || ($visibility === SelectorInterface::HIDDEN)
+        || ($visibility === SelectorInterface::ALL);
     }
 }

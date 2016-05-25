@@ -44,5 +44,36 @@ namespace Apparat\Object\Domain\Repository;
  */
 interface SelectorInterface
 {
+    /**
+     * Wildcard
+     *
+     * @var string
+     */
+    const WILDCARD = '*';
+    /**
+     * Visible objects only
+     *
+     * @var string
+     */
+    const VISIBLE = 1;
+    /**
+     * Hidden objects only
+     *
+     * @var string
+     */
+    const HIDDEN = 2;
+    /**
+     * All objects
+     *
+     * @var string
+     */
+    const ALL = 3;
 
+    /**
+     * Test if the given argument is a valid object visibility
+     *
+     * @param int $visibility Object visibility
+     * @return boolean Valid visibility
+     */
+    public static function isValidVisibility($visibility);
 }

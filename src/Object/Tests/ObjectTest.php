@@ -77,6 +77,7 @@ namespace Apparat\Object\Tests {
         public function tearDown()
         {
             putenv('MOCK_FLOCK');
+            putenv('MOCK_RENAME');
             TestType::removeInvalidType();
             parent::tearDown();
         }
@@ -391,22 +392,10 @@ namespace Apparat\Object\Tests {
          */
         public function testCreateAndPublishArticleObject()
         {
-            // Create a temporary repository
+            // Create a temporary repository & article
             $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-            $fileRepository = RepositoryFactory::create(
-                getenv('REPOSITORY_URL'),
-                [
-                    'type' => FileAdapterStrategy::TYPE,
-                    'root' => $tempRepoDirectory,
-                ]
-            );
-            $this->assertInstanceOf(Repository::class, $fileRepository);
-            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
-
-            // Create a new article in the temporary repository
             $payload = 'Revision 1 draft';
-            /** @var Article $article */
-            $article = $fileRepository->createObject(Type::ARTICLE, $payload);
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, $payload);
             $this->assertInstanceOf(Article::class, $article);
             $this->assertEquals($payload, $article->getPayload());
             $this->assertFileExists($tempRepoDirectory.
@@ -436,23 +425,77 @@ namespace Apparat\Object\Tests {
             $article->persist();
 
             // Wait for 2 seconds, modify and re-persist the object
-//            $now = time();
-//            sleep(2);
-//            $article->setPayload('Revision 3 draft (delayed modification)');
-//            $article->persist();
-//            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
+            $now = time();
+            sleep(2);
+            $article->setPayload('Revision 3 draft (delayed modification)');
+            $article->persist();
+            $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
 
             // Publish and persist a third object draft revision
-//            $article->publish()->persist();
+            $article->publish()->persist();
 
             // Delete the object (and all it's revisions)
             $article->delete()->persist();
 
             // Undelete the object (and all it's revisions)
-//            $article->undelete()->persist();
+            $article->undelete()->persist();
 
             // Delete temporary repository
-//            $this->deleteRecursive($tempRepoDirectory);
+            $this->deleteRecursive($tempRepoDirectory);
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
+         * @expectedExceptionCode 1464269155
+         */
+        public function testDeleteArticleObjectImpossible()
+        {
+            putenv('MOCK_RENAME=1');
+            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
+            $this->deleteRecursive($tempRepoDirectory);
+            $article->delete()->persist();
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
+         * @expectedExceptionCode 1464269179
+         */
+        public function testUndeleteArticleObjectImpossible()
+        {
+            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
+            $article->delete()->persist();
+            $this->deleteRecursive($tempRepoDirectory);
+            putenv('MOCK_RENAME=1');
+            $article->undelete()->persist();
+        }
+
+        /**
+         * Create a temporary repository and article object
+         *
+         * @param string $tempRepoDirectory Repository directory
+         * @param string $payload Article payload
+         * @return Article Article object
+         */
+        protected function createRepositoryAndArticleObject($tempRepoDirectory, $payload)
+        {
+            $fileRepository = RepositoryFactory::create(
+                getenv('REPOSITORY_URL'),
+                [
+                    'type' => FileAdapterStrategy::TYPE,
+                    'root' => $tempRepoDirectory,
+                ]
+            );
+            $this->assertInstanceOf(Repository::class, $fileRepository);
+            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
+
+            // Create a new article in the temporary repository
+            return $fileRepository->createObject(Type::ARTICLE, $payload);
         }
 
         /**
@@ -492,5 +535,17 @@ namespace Apparat\Object\Infrastructure\Repository {
     function flock($handle, $operation, &$wouldblock = null)
     {
         return (getenv('MOCK_FLOCK') != 1) ? \flock($handle, $operation, $wouldblock) : false;
+    }
+
+    /**
+     * Mocked version of the native rename() function
+     *
+     * @param string $oldname The old name. The wrapper used in oldname must match the wrapper used in newname.
+     * @param @param string $newname The new name.
+     * @return bool true on success or false on failure.
+     */
+    function rename($oldname, $newname)
+    {
+        return (getenv('MOCK_RENAME') != 1) ? \rename($oldname, $newname) : false;
     }
 }

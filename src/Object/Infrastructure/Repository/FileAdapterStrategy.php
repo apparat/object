@@ -51,6 +51,7 @@ use Apparat\Object\Domain\Repository\RuntimeException;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
+use Apparat\Object\Infrastructure\Repository\RuntimeException as RepositoryRuntimeException;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
 
@@ -446,13 +447,26 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function deleteObject(ObjectInterface $object)
     {
+        // Hide object directory
+        $objectContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objectContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objectPublicContainer = $objectContainerDir.DIRECTORY_SEPARATOR.$objectContainerName;
+        $objectHiddenContainer = $objectContainerDir.DIRECTORY_SEPARATOR.'.'.$objectContainerName;
+        if (file_exists($objectPublicContainer)
+            && is_dir($objectPublicContainer)
+            && !rename($objectPublicContainer, $objectHiddenContainer)
+        ) {
+            throw new RepositoryRuntimeException(
+                sprintf('Cannot hide object container "%s"', $objectContainerName),
+                RepositoryRuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
+            );
+        }
+
         // Delete all object revisions
         /** @var ObjectInterface $objectRevision */
         foreach ($object as $objectRevision) {
             $this->persistObjectResource($objectRevision->delete());
         }
-
-        // TODO: Delete object resource directory
 
         return $this;
     }
@@ -465,13 +479,26 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function undeleteObject(ObjectInterface $object)
     {
+        // Hide object directory
+        $objectContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objectContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objectPublicContainer = $objectContainerDir.DIRECTORY_SEPARATOR.$objectContainerName;
+        $objectHiddenContainer = $objectContainerDir.DIRECTORY_SEPARATOR.'.'.$objectContainerName;
+        if (file_exists($objectHiddenContainer)
+            && is_dir($objectHiddenContainer)
+            && !rename($objectHiddenContainer, $objectPublicContainer)
+        ) {
+            throw new RepositoryRuntimeException(
+                sprintf('Cannot unhide object container "%s"', $objectContainerName),
+                RepositoryRuntimeException::CANNOT_UNHIDE_OBJECT_CONTAINER
+            );
+        }
+
         // Undelete all object revisions
         /** @var ObjectInterface $objectRevision */
         foreach ($object as $objectRevision) {
             $this->persistObjectResource($objectRevision->undelete());
         }
-
-        // TODO: Undelete object resource directory
 
         return $this;
     }

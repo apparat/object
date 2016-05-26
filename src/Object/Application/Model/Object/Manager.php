@@ -100,6 +100,29 @@ class Manager implements ManagerInterface
      */
     public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL)
     {
+        // Create the current revision path
+        /** @var RepositoryPathInterface $currentPath */
+        $currentPath = $path->setRevision(Revision::current());
+
+        // Load the object resource respecting visibility constraints
+        $objectResource = $this->loadObjectResource($currentPath, $visibility);
+
+        // Instantiate the object
+        $object = ObjectFactory::createFromResource($currentPath, $objectResource);
+
+        // Use and return the requested object revision
+        return $object->useRevision($path->getRevision());
+    }
+
+    /**
+     * Load and return an object resource respecting visibility constraints
+     *
+     * @param RepositoryPathInterface $currentPath
+     * @param int $visibility Object visibility
+     * @return ResourceInterface Object resource
+     */
+    public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL)
+    {
         // If the visibility requirement is invalid
         if (!Selector::isValidVisibility($visibility)) {
             throw new InvalidArgumentException(
@@ -115,10 +138,6 @@ class Manager implements ManagerInterface
 
         $objectResource = null;
 
-        // Create the current revision path
-        /** @var RepositoryPathInterface $currentPath */
-        $currentPath = $path->setRevision(Revision::current());
-
         // Create the current revision paths (visible and hidden)
         /** @var RepositoryPathInterface[] $currentPaths */
         $currentPaths = array_filter([
@@ -130,7 +149,7 @@ class Manager implements ManagerInterface
         foreach ($currentPaths as $currentPathIndex => $currentPath) {
             try {
                 // Load the current object resource
-                $objectResource = $this->loadObjectResource($currentPath);
+                $objectResource = $this->getObjectResource($currentPath);
                 break;
 
                 // In case of an error
@@ -144,20 +163,16 @@ class Manager implements ManagerInterface
             }
         }
 
-        // Instantiate the object
-        $object = ObjectFactory::createFromResource($currentPath, $objectResource);
-
-        // Use and return the requested object revision
-        return $object->useRevision($path->getRevision());
+        return $objectResource;
     }
 
     /**
-     * Load and return an object resource
+     * Instantiate object resource
      *
      * @param RepositoryPathInterface $path
      * @return ResourceInterface Object resource
      */
-    public function loadObjectResource(RepositoryPathInterface $path)
+    public function getObjectResource(RepositoryPathInterface $path)
     {
         return $path->getRepository()->getAdapterStrategy()->getObjectResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))

@@ -53,6 +53,7 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -201,7 +202,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
             !$revision->isDraft() && ($this->getCurrentRevision()->getRevision() == $revision->getRevision())
                 ? Revision::current($revision->isDraft())
                 : $revision
-        );
+        )->setHidden($this->isDeleted());
     }
 
     /**
@@ -252,7 +253,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
             $newRevisionPath = $this->path->setRevision($newRevision);
 
             // Instantiate the requested revision resource
-            $revisionResource = $objectManager->loadObjectResource($newRevisionPath);
+            $revisionResource = $objectManager->loadObjectResource($newRevisionPath, SelectorInterface::ALL);
 
             // Load the revision resource data
             $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
@@ -361,6 +362,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         // If this object is not already deleted
         if (!$this->isDeleted() && !$this->hasBeenDeleted()) {
             $this->setDeletedState();
+            $this->updatePath();
         }
 
         return $this;
@@ -376,6 +378,7 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         // If this object is already deleted
         if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
             $this->setUndeletedState();
+            $this->updatePath();
         }
 
         return $this;

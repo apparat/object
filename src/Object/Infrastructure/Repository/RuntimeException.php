@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,54 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
-
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
-use Apparat\Object\Domain\Repository\RepositoryInterface;
-use Apparat\Object\Domain\Repository\SelectorInterface;
+namespace Apparat\Object\Infrastructure\Repository;
 
 /**
- * Object manager interface
+ * Repository runtime exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Infrastructure
  */
-interface ManagerInterface
+class RuntimeException extends \RuntimeException
 {
     /**
-     * Create and return a new object
+     * Cannot hide object container
      *
-     * @param RepositoryInterface $repository Repository to create the object in
-     * @param Type $type Object type
-     * @param string $payload Object payload
-     * @param array $propertyData Object property data
-     * @return ObjectInterface Object
+     * @var int
      */
-    public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = []);
-
+    const CANNOT_HIDE_OBJECT_CONTAINER = 1464269155;
     /**
-     * Load an object from a repository
+     * Cannot unhide object container
      *
-     * @param RepositoryPathInterface $path Repository object path
-     * @param int $visibility Object visibility
-     * @return ObjectInterface Object
+     * @var int
      */
-    public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL);
-
-    /**
-     * Load and return an object resource respecting visibility constraints
-     *
-     * @param RepositoryPathInterface $currentPath
-     * @param int $visibility Object visibility
-     * @return ResourceInterface Object resource
-     */
-    public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL);
-
-    /**
-     * Test whether an object resource exists
-     *
-     * @param RepositoryPathInterface $path
-     * @return boolean Object resource exists
-     */
-    public function objectResourceExists(RepositoryPathInterface $path);
+    const CANNOT_UNHIDE_OBJECT_CONTAINER = 1464269179;
 }

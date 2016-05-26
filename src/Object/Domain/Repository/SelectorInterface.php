@@ -53,19 +53,19 @@ interface SelectorInterface
     /**
      * Visible objects only
      *
-     * @var string
+     * @var int
      */
     const VISIBLE = 1;
     /**
      * Hidden objects only
      *
-     * @var string
+     * @var int
      */
     const HIDDEN = 2;
     /**
      * All objects
      *
-     * @var string
+     * @var int
      */
     const ALL = 3;
 

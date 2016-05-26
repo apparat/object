@@ -46,7 +46,11 @@ use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Repository\InvalidArgumentException;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\Selector;
+use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Resource\Ports\InvalidReaderArgumentException;
 
 /**
  * Object manager
@@ -90,19 +94,58 @@ class Manager implements ManagerInterface
      * Load an object from a repository
      *
      * @param RepositoryPathInterface $path Repository object path
+     * @param int $visibility Object visibility
      * @return ObjectInterface Object
+     * @throws InvalidArgumentException If the visibility requirement is invalid
      */
-    public function loadObject(RepositoryPathInterface $path)
+    public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL)
     {
+        // If the visibility requirement is invalid
+        if (!Selector::isValidVisibility($visibility)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid repository selector visibility "%s"',
+                    $visibility
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'visibility'
+            );
+        }
+
+        $objectResource = null;
+
         // Create the current revision path
         /** @var RepositoryPathInterface $currentPath */
         $currentPath = $path->setRevision(Revision::current());
 
-        // Load the current object resource
-        $objectResource = $this->loadObjectResource($currentPath);
+        // Create the current revision paths (visible and hidden)
+        /** @var RepositoryPathInterface[] $currentPaths */
+        $currentPaths = array_filter([
+            ($visibility & SelectorInterface::VISIBLE) ? $currentPath->setHidden(false) : null,
+            ($visibility & SelectorInterface::HIDDEN) ? $currentPath->setHidden(true) : null,
+        ]);
+
+        // Run through the possible revision paths
+        foreach ($currentPaths as $currentPathIndex => $currentPath) {
+            try {
+                // Load the current object resource
+                $objectResource = $this->loadObjectResource($currentPath);
+                break;
+
+                // In case of an error
+            } catch (InvalidReaderArgumentException $e) {
+                // If it's not an error about the resource not existing or if it's the last possible option
+                if (($e->getCode() != InvalidReaderArgumentException::RESOURCE_DOES_NOT_EXIST)
+                    || ($currentPathIndex >= (count($currentPaths) - 1))
+                ) {
+                    throw $e;
+                }
+            }
+        }
 
         // Instantiate the object
-        $object = ObjectFactory::createFromResource($path, $objectResource);
+        $object = ObjectFactory::createFromResource($currentPath, $objectResource);
 
         // Use and return the requested object revision
         return $object->useRevision($path->getRevision());

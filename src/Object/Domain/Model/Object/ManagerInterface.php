@@ -38,6 +38,7 @@ namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * Object manager interface
@@ -62,9 +63,10 @@ interface ManagerInterface
      * Load an object from a repository
      *
      * @param RepositoryPathInterface $path Repository object path
+     * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryPathInterface $path);
+    public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL);
 
     /**
      * Load and return an object resource

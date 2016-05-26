@@ -76,9 +76,10 @@ interface RepositoryInterface extends SearchableRepositoryInterface
      * Load an object from this repository
      *
      * @param PathInterface $path Object path
+     * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(PathInterface $path);
+    public function loadObject(PathInterface $path, $visibility = SelectorInterface::ALL);
 
     /**
      * Return the repository's adapter strategy

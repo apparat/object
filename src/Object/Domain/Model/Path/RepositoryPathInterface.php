@@ -95,4 +95,19 @@ interface RepositoryPathInterface extends PathInterface
      * @return string Repository relative object path with extension
      */
     public function withExtension($extension);
+
+    /**
+     * Return the object hidden state
+     *
+     * @return boolean Object hidden state
+     */
+    public function isHidden();
+
+    /**
+     * Set the object hidden state
+     *
+     * @param boolean $hidden Object hidden state
+     * @return PathInterface|LocalPath New object path
+     */
+    public function setHidden($hidden);
 }

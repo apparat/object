@@ -144,9 +144,10 @@ class Repository implements RepositoryInterface
      * Load an object from this repository
      *
      * @param PathInterface $path Object path
+     * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(PathInterface $path)
+    public function loadObject(PathInterface $path, $visibility = SelectorInterface::ALL)
     {
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
@@ -155,7 +156,7 @@ class Repository implements RepositoryInterface
         $repositoryPath = Kernel::create(RepositoryPath::class, [$this, $path]);
 
         // Load and return the object
-        return $objectManager->loadObject($repositoryPath);
+        return $objectManager->loadObject($repositoryPath, $visibility);
     }
 
     /**

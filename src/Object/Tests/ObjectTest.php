@@ -64,6 +64,12 @@ namespace Apparat\Object\Tests {
          * @var string
          */
         const OBJECT_PATH = '/2015/12/21/1-article/1';
+        /**
+         * Example hidden object path
+         *
+         * @var string
+         */
+        const HIDDEN_OBJECT_PATH = '/2016/05/26/6-article/6';
 
         /**
          * Tears down the fixture
@@ -109,7 +115,19 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Load an article object and test basic properties
+         * Load an article object with an invalid visibility requirement
+         *
+         * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+         * @expectedExceptionCode 1449999646
+         */
+        public function testLoadArticleObjectInvalidVisibility()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            self::$repository->loadObject($articleObjectPath, 0);
+        }
+
+        /**
+         * Load an article object
          */
         public function testLoadArticleObject()
         {
@@ -119,6 +137,19 @@ namespace Apparat\Object\Tests {
                 getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
                 $articleObject->getAbsoluteUrl()
             );
+            $this->assertFalse($articleObject->isDeleted());
+            $this->assertFalse($articleObject->getRepositoryPath()->isHidden());
+        }
+
+        /**
+         * Load a hidden article object
+         */
+        public function testLoadHiddenArticleObject()
+        {
+            $articleObjectPath = new RepositoryPath(self::$repository, self::HIDDEN_OBJECT_PATH);
+            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $this->assertTrue($articleObject->isDeleted());
+            $this->assertTrue($articleObject->getRepositoryPath()->isHidden());
         }
 
         /**
@@ -214,7 +245,7 @@ namespace Apparat\Object\Tests {
         /**
          * Test the object facade with an invalid relative object URL
          *
-         * @expectedException \Apparat\Resource\Infrastructure\Io\File\InvalidArgumentException
+         * @expectedException \Apparat\Resource\Ports\InvalidReaderArgumentException
          * @expectedExceptionCode 1447616824
          */
         public function testObjectFacadeRelativeInvalid()

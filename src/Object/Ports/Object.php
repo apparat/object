@@ -40,6 +40,7 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * Object facade
@@ -62,19 +63,39 @@ class Object
      */
     const PRIVACY_PUBLIC = MetaProperties::PRIVACY_PUBLIC;
     /**
+     * Visible
+     *
+     * @var int
+     */
+    const VISIBILITY_VISIBLE = SelectorInterface::VISIBLE;
+    /**
+     * Hidden
+     *
+     * @var int
+     */
+    const VISIBILITY_HIDDEN = SelectorInterface::HIDDEN;
+    /**
+     * Visible and hidden
+     *
+     * @var int
+     */
+    const VISIBILITY_ALL = SelectorInterface::ALL;
+
+    /**
      * Instantiate and return an object
      *
      * @param string $url Object URL (relative or absolute including the apparat base URL)
+     * @param int $visibility Object visibility
      * @return ObjectInterface Object
      * @api
      */
-    public static function instance($url)
+    public static function instance($url, $visibility = self::VISIBILITY_ALL)
     {
         // Instantiate the object URL
         /** @var ObjectUrl $objectUrl */
         $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
 
         // Instantiate the local object repository, load and return the object
-        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl);
+        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
     }
 }

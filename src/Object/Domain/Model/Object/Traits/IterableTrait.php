@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Model\Object\Traits;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\AbstractObject;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\OutOfBoundsException;
 use Apparat\Object\Domain\Model\Object\Revision;
 
 /**
@@ -119,4 +120,13 @@ trait IterableTrait
     {
         return $this->latestRevision->getRevision();
     }
+
+    /**
+     * Use a specific object revision
+     *
+     * @param Revision $revision Revision to be used
+     * @return ObjectInterface Object
+     * @throws OutOfBoundsException If a revision beyond the latest one is requested
+     */
+    abstract public function useRevision(Revision $revision);
 }

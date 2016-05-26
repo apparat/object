@@ -47,11 +47,10 @@ use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
-use Apparat\Object\Domain\Repository\RuntimeException;
+use Apparat\Object\Domain\Repository\RuntimeException as DomainRepositoryRuntimeException;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
-use Apparat\Object\Infrastructure\Repository\RuntimeException as RepositoryRuntimeException;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
 
@@ -146,8 +145,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * Initialize the repository
      *
      * @return boolean Success
-     * @throws RuntimeException If the repository cannot be initialized
-     * @throws RuntimeException If the repository size descriptor can not be created
+     * @throws DomainRepositoryRuntimeException If the repository cannot be initialized
+     * @throws DomainRepositoryRuntimeException If the repository size descriptor can not be created
      */
     public function initializeRepository()
     {
@@ -156,7 +155,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         foreach ($repoDirectories as $repoDirectory) {
             // If the repository cannot be initialized
             if (file_exists($repoDirectory) ? !is_dir($repoDirectory) : !mkdir($repoDirectory, 0777, true)) {
-                throw new RuntimeException('Could not initialize repository', RuntimeException::REPO_NOT_INITIALIZED);
+                throw new DomainRepositoryRuntimeException('Could not initialize repository', DomainRepositoryRuntimeException::REPO_NOT_INITIALIZED);
             }
         }
 
@@ -165,9 +164,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         if ((file_exists($configDir.'size.txt') && !is_file($configDir.'size.txt'))
             || !file_put_contents($configDir.'size.txt', '0')
         ) {
-            throw new RuntimeException(
+            throw new DomainRepositoryRuntimeException(
                 'Could not create repository size descriptor',
-                RuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED
+                DomainRepositoryRuntimeException::REPO_SIZE_DESCRIPTOR_NOT_CREATED
             );
         }
 
@@ -267,7 +266,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @param \Closure $creator Object creation closure
      * @return ObjectInterface Object
-     * @throws RuntimeException If no object could be created
+     * @throws DomainRepositoryRuntimeException If no object could be created
      * @throws \Exception If another error occurs
      */
     public function createObjectResource(\Closure $creator)
@@ -305,9 +304,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             }
 
             // If no object could be created
-            throw new RuntimeException(
+            throw new DomainRepositoryRuntimeException(
                 'The repository size descriptor is unlockable',
-                RuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE
+                DomainRepositoryRuntimeException::REPO_SIZE_DESCRIPTOR_UNLOCKABLE
             );
 
             // If any exception is thrown
@@ -455,9 +454,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             && is_dir($objPublicContainer)
             && !rename($objPublicContainer, $objHiddenContainer)
         ) {
-            throw new RepositoryRuntimeException(
+            throw new RuntimeException(
                 sprintf('Cannot hide object container "%s"', $objContainerName),
-                RepositoryRuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
+                RuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
             );
         }
 
@@ -487,9 +486,9 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             && is_dir($objHiddenContainer)
             && !rename($objHiddenContainer, $objPublicContainer)
         ) {
-            throw new RepositoryRuntimeException(
+            throw new RuntimeException(
                 sprintf('Cannot unhide object container "%s"', $objContainerName),
-                RepositoryRuntimeException::CANNOT_UNHIDE_OBJECT_CONTAINER
+                RuntimeException::CANNOT_UNHIDE_OBJECT_CONTAINER
             );
         }
 

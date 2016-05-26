@@ -82,11 +82,11 @@ trait IterableTrait
     /**
      * Return the current revision number
      *
-     * @return int Current revision
+     * @return Revision Current (next) revision
      */
     public function key()
     {
-        return $this->currentRevision;
+        return $this->nextRevision;
     }
 
     /**

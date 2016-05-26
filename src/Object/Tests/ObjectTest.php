@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests {
 
+    use Apparat\Kernel\Ports\Kernel;
     use Apparat\Object\Application\Factory\ObjectFactory;
     use Apparat\Object\Application\Model\Object\Article;
     use Apparat\Object\Domain\Model\Object\AbstractObject;
@@ -49,6 +50,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Ports\Object;
     use Apparat\Object\Ports\Repository as RepositoryFactory;
+    use Prophecy\Prophecy\Revealer;
 
     /**
      * Object tests
@@ -129,6 +131,9 @@ namespace Apparat\Object\Tests {
 
         /**
          * Load an article object
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Object\OutOfBoundsException
+         * @expectedExceptionCode 1461619783
          */
         public function testLoadArticleObject()
         {
@@ -140,6 +145,10 @@ namespace Apparat\Object\Tests {
             );
             $this->assertFalse($articleObject->isDeleted());
             $this->assertFalse($articleObject->getRepositoryPath()->isHidden());
+
+            /** @var Revision $invalidRevision */
+            $invalidRevision = Kernel::create(Revision::class, [99]);
+            $articleObject->useRevision($invalidRevision);
         }
 
         /**
@@ -165,6 +174,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals(new Type(Type::ARTICLE), $articleObject->getType());
             $this->assertEquals(new Revision(1), $articleObject->getRevision());
             $this->assertFalse($articleObject->isDraft());
+            $this->assertTrue($articleObject->isPublished());
             $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:30:00'), $articleObject->getCreated());
             $this->assertEquals(new \DateTimeImmutable('2015-12-21T22:45:00'), $articleObject->getPublished());
             $this->assertNull($articleObject->getDeleted());
@@ -389,6 +399,9 @@ namespace Apparat\Object\Tests {
 
         /**
          * Test the creation and persisting of an article object
+         *
+         * @expectedException \Apparat\Object\Domain\Model\Object\RuntimeException
+         * @expectedExceptionCode 1462124874
          */
         public function testCreateAndPublishArticleObject()
         {
@@ -431,6 +444,12 @@ namespace Apparat\Object\Tests {
             $article->persist();
             $this->assertGreaterThanOrEqual($now + 2, $article->getModified()->format('U'));
 
+            // Iterate through all object revisions
+            foreach ($article as $articleRevisionIndex => $articleRevision) {
+                $this->assertInstanceOf(Article::class, $articleRevision);
+                $this->assertInstanceOf(Revision::class, $articleRevisionIndex);
+            }
+
             // Publish and persist a third object draft revision
             $article->publish()->persist();
 
@@ -440,8 +459,13 @@ namespace Apparat\Object\Tests {
             // Undelete the object (and all it's revisions)
             $article->undelete()->persist();
 
+            // Use the first revision
+            $article->rewind();
+
             // Delete temporary repository
             $this->deleteRecursive($tempRepoDirectory);
+
+            $article->persist();
         }
 
         /**
@@ -469,7 +493,7 @@ namespace Apparat\Object\Tests {
         {
             $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
             $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
-            $article->delete()->persist();
+            $article->getRepositoryPath()->getRepository()->deleteObject($article);
             $this->deleteRecursive($tempRepoDirectory);
             putenv('MOCK_RENAME=1');
             $article->undelete()->persist();

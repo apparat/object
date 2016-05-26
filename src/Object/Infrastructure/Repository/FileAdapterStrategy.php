@@ -248,7 +248,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     public function hasObjectResource($resourcePath)
     {
-//        echo 'testing '.$this->root.$resourcePath;
         return is_file($this->root.$resourcePath);
     }
 

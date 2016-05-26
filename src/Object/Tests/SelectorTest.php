@@ -200,4 +200,16 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
     {
         new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', 'invalid');
     }
+
+    /**
+     * Test an invalid object visibility
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %visibility%
+     */
+    public function testInvalidVisibilityComponent()
+    {
+        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', Revision::CURRENT, 0);
+    }
 }

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,14 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Ports;
 
 /**
- * CommonMark payload processor interface
+ * Invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Ports
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
+    /**
+     * Invalid binary payload source
+     *
+     * @var int
+     */
+    const INVALID_BINARY_PAYLOAD_SOURCE = 1464296678;
 }

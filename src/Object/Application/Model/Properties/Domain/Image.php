@@ -34,14 +34,17 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Application\Model\Properties\Domain;
+
+use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 
 /**
- * CommonMark payload processor interface
+ * Image object domain properties
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+class Image extends AbstractDomainProperties
 {
+
 }

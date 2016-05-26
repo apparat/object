@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,14 +34,24 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Infrastructure\Utilities;
 
 /**
- * CommonMark payload processor interface
+ * File utilities
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Infrastructure
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+class File
 {
+    /**
+     * Calculate and return an 8 char file hash
+     *
+     * @param string $file File path
+     * @return string Hash
+     */
+    public static function hash($file)
+    {
+        return substr(md5_file($file), 0, 8);
+    }
 }

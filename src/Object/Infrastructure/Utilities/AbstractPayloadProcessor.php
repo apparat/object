@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,14 +34,35 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Infrastructure\Utilities;
+
+use Apparat\Object\Application\Contract\PayloadProcessorInterface;
+use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
 
 /**
- * CommonMark payload processor interface
+ * Abstract payload processor
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Infrastructure
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+abstract class AbstractPayloadProcessor implements PayloadProcessorInterface
 {
+    /**
+     * Owning CommonMark object
+     *
+     * @var AbstractCommonMarkObject
+     */
+    protected $object;
+
+    /**
+     * Associate the processor with the owning object
+     *
+     * @param AbstractObject $object Owning object
+     */
+    public function setObject(AbstractObject $object)
+    {
+        $this->object = $object;
+    }
+
 }

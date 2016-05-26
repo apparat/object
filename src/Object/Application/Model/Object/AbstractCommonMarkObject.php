@@ -37,8 +37,6 @@
 namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
-use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
 /**
@@ -47,7 +45,7 @@ use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractCommonMarkObject extends AbstractObject
+abstract class AbstractCommonMarkObject extends AbstractProcessedPayloadObject
 {
     /**
      * Payload processor
@@ -74,20 +72,5 @@ abstract class AbstractCommonMarkObject extends AbstractObject
         $this->payloadProcessor->setObject($this);
 
         parent::__construct($path, $payload, $propertyData);
-    }
-
-
-    /**
-     * Set the payload
-     *
-     * @param string $payload Payload
-     * @return ObjectInterface Self reference
-     */
-    public function setPayload($payload)
-    {
-        parent::setPayload($payload);
-
-        // Process the payload
-        return $this->payloadProcessor->processPayload();
     }
 }

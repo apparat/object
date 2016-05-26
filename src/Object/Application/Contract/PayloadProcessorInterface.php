@@ -36,12 +36,28 @@
 
 namespace Apparat\Object\Application\Contract;
 
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+
 /**
- * CommonMark payload processor interface
+ * Payload processor interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+interface PayloadProcessorInterface
 {
+    /**
+     * Associate the processor with the owning object
+     *
+     * @param AbstractObject $object Owning object
+     */
+    public function setObject(AbstractObject $object);
+
+    /**
+     * Process the payload of an object
+     *
+     * @param string $payload Payload
+     * @return string Processed payload
+     */
+    public function processPayload($payload);
 }

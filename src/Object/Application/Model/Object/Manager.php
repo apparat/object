@@ -198,7 +198,7 @@ class Manager implements ManagerInterface
      */
     public function objectResourceExists(RepositoryPathInterface $path)
     {
-        return $path->getRepository()->getAdapterStrategy()->hasObjectResource(
+        return $path->getRepository()->getAdapterStrategy()->hasResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
     }

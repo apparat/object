@@ -34,14 +34,28 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Application\Model\Object;
+
+use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * CommonMark payload processor interface
+ * Image object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+class Image extends AbstractBinaryObject
 {
+    /**
+     * Object type
+     *
+     * @var string
+     */
+    const TYPE = Type::IMAGE;
+    /**
+     * Domain property collection class
+     *
+     * @var string
+     */
+    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Image::class;
 }

@@ -38,7 +38,9 @@ namespace Apparat\Object;
 
 use Apparat\Kernel\Ports\AbstractModule;
 use Apparat\Kernel\Ports\Contract\DependencyInjectionContainerInterface;
+use Apparat\Object\Application\Contract\BinaryPayloadProcessorInterface;
 use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
+use Apparat\Object\Application\Model\Object\AbstractBinaryObject;
 use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
 use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
@@ -47,6 +49,7 @@ use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
+use Apparat\Object\Infrastructure\Utilities\BinaryPayloadProcessor;
 use Apparat\Object\Infrastructure\Utilities\CommonMarkPayloadProcessor;
 use Dotenv\Dotenv;
 
@@ -155,6 +158,16 @@ class Module extends AbstractModule
             'substitutions' => [
                 CommonMarkPayloadProcessorInterface::class => [
                     'instance' => CommonMarkPayloadProcessor::class,
+                ],
+            ]
+        ]);
+
+        // Configure the binary payload processor
+        $diContainer->register(AbstractBinaryObject::class, [
+            'shared' => false,
+            'substitutions' => [
+                BinaryPayloadProcessorInterface::class => [
+                    'instance' => BinaryPayloadProcessor::class,
                 ],
             ]
         ]);

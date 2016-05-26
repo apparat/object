@@ -53,6 +53,7 @@ use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
+use Apparat\Object\Infrastructure\Utilities\File;
 
 /**
  * File adapter strategy
@@ -245,9 +246,32 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @param string $resourcePath Repository relative resource path
      * @return boolean Object resource exists
      */
-    public function hasObjectResource($resourcePath)
+    public function hasResource($resourcePath)
     {
         return is_file($this->root.$resourcePath);
+    }
+
+    /**
+     * Return an individual hash for a resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return string|null Resource hash
+     */
+    public function getResourceHash($resourcePath)
+    {
+        return $this->hasResource($this->root.$resourcePath) ? File::hash($this->root.$resourcePath) : null;
+    }
+
+    /**
+     * Import a resource into this repository
+     *
+     * @param string $source Source resource
+     * @param string $target Repository relative target resource path
+     * @return boolean Success
+     */
+    public function importResource($source, $target)
+    {
+        return copy($source, $this->root.$target);
     }
 
     /**

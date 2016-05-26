@@ -37,11 +37,11 @@
 namespace Apparat\Object\Application\Contract;
 
 /**
- * CommonMark payload processor interface
+ * Binary payload processor interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+interface BinaryPayloadProcessorInterface extends PayloadProcessorInterface
 {
 }

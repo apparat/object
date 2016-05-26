@@ -53,7 +53,8 @@ use League\CommonMark\Inline\Element\Link;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Infrastructure
  */
-class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface, DocumentProcessorInterface
+class CommonMarkPayloadProcessor extends AbstractPayloadProcessor
+    implements CommonMarkPayloadProcessorInterface, DocumentProcessorInterface
 {
     /**
      * Mailto URL scheme
@@ -61,12 +62,6 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      * @var string
      */
     const SCHEME_MAILTO = 'mailto';
-    /**
-     * Owning CommonMark object
-     *
-     * @var AbstractCommonMarkObject
-     */
-    protected $object;
     /**
      * List of refers-to relation URLs
      *
@@ -79,23 +74,20 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      * @var array
      */
     protected $embeds;
+    /**
+     * Owning CommonMark object
+     *
+     * @var AbstractCommonMarkObject
+     */
+    protected $object;
 
     /**
-     * Associate the processor with the owning CommonMark object
+     * Process the payload of an object
      *
-     * @param AbstractCommonMarkObject $object CommonMark object
+     * @param string $payload Payload
+     * @return string Processed payload
      */
-    public function setObject(AbstractCommonMarkObject $object)
-    {
-        $this->object = $object;
-    }
-
-    /**
-     * Process the payload of a CommonMark object
-     *
-     * @return AbstractCommonMarkObject CommonMark object
-     */
-    public function processPayload()
+    public function processPayload($payload)
     {
         // Reset all relevant relations
         $this->resetRefersToRelations();
@@ -107,9 +99,9 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
         // Parse and process the object payload
         /** @var DocParser $docParser */
         $docParser = Kernel::create(DocParser::class, [$env]);
-        $docParser->parse($this->object->getPayload());
+        $docParser->parse($payload);
 
-        return $this->object;
+        return $payload;
     }
 
     /**
@@ -146,8 +138,6 @@ class CommonMarkPayloadProcessor implements CommonMarkPayloadProcessorInterface,
      */
     public function processDocument(Document $document)
     {
-//        print_r($document);
-
         $walker = $document->walker();
         while ($event = $walker->next()) {
             $node = $event->getNode();

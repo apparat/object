@@ -34,14 +34,36 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Application\Model\Object;
+
+use Apparat\Object\Application\Contract\PayloadProcessorInterface;
+use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
- * CommonMark payload processor interface
+ * Abstract processed payload object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+abstract class AbstractProcessedPayloadObject extends AbstractObject
 {
+    /**
+     * Payload processor
+     *
+     * @var PayloadProcessorInterface
+     */
+    protected $payloadProcessor;
+
+    /**
+     * Set the payload
+     *
+     * @param string $payload Payload
+     * @return ObjectInterface Self reference
+     */
+    public function setPayload($payload)
+    {
+        parent::setPayload($this->payloadProcessor->processPayload($payload));
+        return $this;
+    }
 }

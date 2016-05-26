@@ -71,7 +71,24 @@ interface AdapterStrategyInterface
      * @param string $resourcePath Repository relative resource path
      * @return boolean Object resource exists
      */
-    public function hasObjectResource($resourcePath);
+    public function hasResource($resourcePath);
+
+    /**
+     * Return an individual hash for a resource
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return string|null Resource hash
+     */
+    public function getResourceHash($resourcePath);
+
+    /**
+     * Import a resource into this repository
+     *
+     * @param string $source Source resource
+     * @param string $target Repository relative target resource path
+     * @return boolean Success
+     */
+    public function importResource($source, $target);
 
     /**
      * Allocate an object ID and create an object resource

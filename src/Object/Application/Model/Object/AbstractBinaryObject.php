@@ -34,14 +34,43 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Contract;
+namespace Apparat\Object\Application\Model\Object;
+
+use Apparat\Object\Application\Contract\BinaryPayloadProcessorInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
 /**
- * CommonMark payload processor interface
+ * Abstract binary object
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-interface CommonMarkPayloadProcessorInterface extends PayloadProcessorInterface
+abstract class AbstractBinaryObject extends AbstractProcessedPayloadObject
 {
+    /**
+     * Payload processor
+     *
+     * @var BinaryPayloadProcessorInterface
+     */
+    protected $payloadProcessor;
+
+    /**
+     * Object constructor
+     *
+     * @param BinaryPayloadProcessorInterface $payloadProcessor Payload processor
+     * @param RepositoryPathInterface $path Object repository path
+     * @param string $payload Object payload
+     * @param array $propertyData Property data
+     */
+    public function __construct(
+        BinaryPayloadProcessorInterface $payloadProcessor,
+        RepositoryPathInterface $path,
+        $payload,
+        array $propertyData
+    ) {
+        $this->payloadProcessor = $payloadProcessor;
+        $this->payloadProcessor->setObject($this);
+
+        parent::__construct($path, $payload, $propertyData);
+    }
 }

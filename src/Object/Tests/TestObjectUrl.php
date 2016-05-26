@@ -57,7 +57,7 @@ class TestObjectUrl extends ObjectUrl
             'host' => 'another.host',
             'port' => 443,
             'path' => '/path/prefix',
-            'object' => '/2015/10/01/36704.event/36704-2',
+            'object' => '/2015/10/01/36704-event/36704-2',
             'query' => ['param2' => 'value2'],
             'fragment' => 'fragment2',
         ];

@@ -24,18 +24,18 @@ There's no really compelling reason to distribute the entirety of objects over a
 
 A typical *apparat* object URL looks like this:
 
-	https://apparat.tools/2015/10/01/36704.event/36704
+	https://apparat.tools/2015/10/01/36704-event/36704
 
 It consists of
 
 1. a [base URL](#base-url) associated with the *apparat* instance as a whole (`https://apparat.tools/`),
 2. a [repository URL](#repository-url) identifying the repository the object belongs to (might be empty),
 3. up to six nested subdirectories denoting the object's [creation date (and time)](#creation-date), configurable from `YYYY/MM/DD` to `YYYY/MM/DD/HH/II/SS` and consisting of digits only,
-4. a directory named after the [object ID](#object-ids) and the [object type](#object-types.md) (separated by a dot), serving as container for all object related resources,
+4. a directory named after the [object ID](#object-ids) and the [object type](#object-types.md) (separated by a dash), serving as container for all object related resources,
 5. and finally the [object name](#object-names) itself, consisting of the original **object file name** ([media objects](#media-objects) only), the **object ID** and potentially the [object revision](#object-revisioning) number.
 
 ```
-https://apparat.tools  /  blog  /  2015/10/01  /  36704  .  image  /  36704  -  2
+https://apparat.tools  /  blog  /  2015/10/01  /  36704  -  image  /  36704  -  2
            ^               ^           ^            ^         ^         ^       ^
         base URL      repository    creation     object    object    object   object
                           URL         date         ID       type       ID    revision
@@ -91,7 +91,7 @@ An example could be `myphoto.36704-2`. The media file will be saved with its **o
 When an object gets modified and re-published, *apparat* saves a copy of the previous instance instead of simply overwriting it with the updated revision. The latest instance will always be accessible under the canonical object URL, with the current revision number being part of the object system properties (this way, it's a very straightforward task to find out the number of revisions available). Previous revisions may be explicitly retrieved by appending a **revision number** into the object URL (as a suffix to the object ID, separated by a minus):
 
 ```
-https://apparat.tools/2015/10/01/36704.event/36704-1.md
+https://apparat.tools/2015/10/01/36704-event/36704-1.md
                         Identifier for revision 1 ^^
 ```
 
@@ -102,7 +102,7 @@ Also, an object may have **[draft status](object-states.md)**, which will also r
 Object resources use the [object name](#object-names) as first part of their file name, followed by a [lower-case file extension](#file-extensions).
 
 ```
-/2015/10/01/36704.image/  36704  -  2  .  md
+/2015/10/01/36704-image/  36704  -  2  .  md
                             ^       ^     ^
                          object  object   file
                            ID   revision  extension
@@ -126,6 +126,6 @@ In general, localized object versions are considered as completely separate obje
 Some properties support *apparat* object references as values (e.g. `meta.authors`). References to objects
 
 * within the same *apparat* instance take the form of root relative URLs, e.g.
-  * `/2015/10/01/36704.event/36704` for an object in the same repository or
-  * `/repo/2015/10/01/36704.event/36704` for an object in another registered repository (with the repository URL `repo` in this case)
-* of remote *apparat* instances use the custom protocol `aprt` (respectively `aprts`) to distiguish them from regular HTTP URLs and trigger object instantiation (e.g. `aprts://apparat.tools/2015/10/01/36704.event/36704`).
+  * `/2015/10/01/36704-event/36704` for an object in the same repository or
+  * `/repo/2015/10/01/36704-event/36704` for an object in another registered repository (with the repository URL `repo` in this case)
+* of remote *apparat* instances use the custom protocol `aprt` (respectively `aprts`) to distiguish them from regular HTTP URLs and trigger object instantiation (e.g. `aprts://apparat.tools/2015/10/01/36704-event/36704`).

@@ -58,7 +58,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
      */
     public function testObjectCollection()
     {
-        $selector = SelectorFactory::createFromString('/2015/*/*/*.article');
+        $selector = SelectorFactory::createFromString('/2015/*/*/*-article');
         $collection = self::$repository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
         $this->assertTrue(is_int(count($collection)));
@@ -74,7 +74,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
         $this->assertInstanceOf(Article::class, $collection[$uid]);
 
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2.contact/2');
+        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
         $collection[$uid] = $contactObject;
@@ -88,7 +88,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
      */
     public function testObjectCollectionUnset()
     {
-        $selector = SelectorFactory::createFromString('/2015/*/*/*.article');
+        $selector = SelectorFactory::createFromString('/2015/*/*/*-article');
         $collection = self::$repository->findObjects($selector);
         unset($collection[0]);
     }
@@ -102,12 +102,12 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionAdd()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2.contact/2');
+        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
 
         // Load a collection
-        $selector = SelectorFactory::createFromString('/2015/*/*/*.article');
+        $selector = SelectorFactory::createFromString('/2015/*/*/*-article');
         $collection = self::$repository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
         $articleCount = count($collection);
@@ -118,7 +118,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
 
         // Add another object by repository path
         /** @var Collection $collection */
-        $collection = $collection->add(new RepositoryPath(self::$repository, '/2016/02/07/3.article/3'));
+        $collection = $collection->add(new RepositoryPath(self::$repository, '/2016/02/07/3-article/3'));
         $this->assertEquals($articleCount + 2, count($collection));
 
         // Add invalid object
@@ -134,12 +134,12 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionRemove()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2.contact/2');
+        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
 
         // Load a collection
-        $selector = SelectorFactory::createFromString('/2015/*/*/*.article');
+        $selector = SelectorFactory::createFromString('/2015/*/*/*-article');
         $collection = self::$repository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
         $articleCount = count($collection);
@@ -174,7 +174,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionAppend()
     {
         // Load an article collection
-        $articles = self::$repository->findObjects(SelectorFactory::createFromString('/2015/*/*/*.article'));
+        $articles = self::$repository->findObjects(SelectorFactory::createFromString('/2015/*/*/*-article'));
         $articleCount = count($articles);
         $article = null;
         foreach ($articles as $article) {

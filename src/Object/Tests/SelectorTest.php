@@ -54,19 +54,19 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const SELECTOR = '/2015/10/01/36704.event/36704-1';
+    const SELECTOR = '/2015/10/01/36704-event/36704-1';
     /**
      * Example selector with hidden object
      *
      * @var string
      */
-    const HIDDEN_SELECTOR = '/2015/10/01/.36704.event/36704-1';
+    const HIDDEN_SELECTOR = '/2015/10/01/.36704-event/36704-1';
     /**
      * Example selector with optionally hidden object
      *
      * @var string
      */
-    const OPTIONAL_HIDDEN_SELECTOR = '/2015/10/01/{.,}36704.event/36704-1';
+    const OPTIONAL_HIDDEN_SELECTOR = '/2015/10/01/{.,}36704-event/36704-1';
 
     /**
      * Test a valid full-fledged selector
@@ -112,7 +112,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
     {
         $datePrecision = getenv('OBJECT_DATE_PRECISION');
         putenv('OBJECT_DATE_PRECISION=6');
-        $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*');
+        $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*-*/*');
         $this->assertEquals(SelectorInterface::WILDCARD, $selector->getYear());
         $this->assertEquals(SelectorInterface::WILDCARD, $selector->getMonth());
         $this->assertEquals(SelectorInterface::WILDCARD, $selector->getDay());

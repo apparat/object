@@ -179,7 +179,7 @@ class LocalPath implements PathInterface
         }
 
         // Add the object ID and type
-        $path[] = ($this->hidden ? '.' : '').$this->uid->getId().'.'.$this->type->getType();
+        $path[] = ($this->hidden ? '.' : '').$this->uid->getId().'-'.$this->type->getType();
 
         // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
@@ -342,7 +342,7 @@ class LocalPath implements PathInterface
             );
         }
 
-        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\.(?P<type>[a-z]+)(?:/(.*\.)?\\k';
+        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(.*\.)?\\k';
         $pathPattern .= '<id>(?:(?P<draft>\+)|(?:-(?P<revision>\d+)))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
         return $pathPattern;

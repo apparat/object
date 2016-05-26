@@ -133,7 +133,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                         ++self::$globTypes[$type];
                         ++self::$globRevisions[$revision];
                         self::$globDirs[] =
-                        $objectDir = $secondDir.DIRECTORY_SEPARATOR.$index.'.'.$type;
+                        $objectDir = $secondDir.DIRECTORY_SEPARATOR.$index.'-'.$type;
                         mkdir($objectDir);
                         self::$globFiles[] =
                         $objectFile = $objectDir.DIRECTORY_SEPARATOR.$index.$revision;
@@ -395,7 +395,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
 
-        $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*.*/*-1');
+        $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*-*/*-1');
         $collection = $fileRepository->findObjects($selector);
         $this->assertInstanceOf(Collection::class, $collection);
         $this->assertEquals(self::$globRevisions['-1'], count($collection));
@@ -414,7 +414,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             ]
         );
         $fileRepository = RepositoryFactory::instance(getenv('REPOSITORY_URL'));
-        $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704.event/36704-1');
+        $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704-event/36704-1');
         $this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
         $this->assertEquals($fileRepository, $repositoryPath->getRepository());
     }

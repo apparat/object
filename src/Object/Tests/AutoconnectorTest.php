@@ -56,7 +56,7 @@ namespace Apparat\Object\Tests {
          *
          * @var string
          */
-        const OBJECT_PATH = '/2016/01/08/2.contact/2';
+        const OBJECT_PATH = '/2016/01/08/2-contact/2';
 
         /**
          * Setup

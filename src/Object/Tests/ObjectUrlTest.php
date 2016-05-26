@@ -67,13 +67,13 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const PATH = '/2015/10/01/36704.event/36704-1';
+    const PATH = '/2015/10/01/36704-event/36704-1';
     /**
      * Example path (draft mode)
      *
      * @var string
      */
-    const DRAFT_PATH = '/2015/10/01/36704.event/36704+';
+    const DRAFT_PATH = '/2015/10/01/36704-event/36704+';
     /**
      * Example URL
      *
@@ -248,7 +248,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     {
         $url = new TestObjectUrl(self::URL);
         $this->assertEquals(
-            'https://user:password@another.host:443/path/prefix/2015/10/01/36704.event/36704-2?param2=value2#fragment2',
+            'https://user:password@another.host:443/path/prefix/2015/10/01/36704-event/36704-2?param2=value2#fragment2',
             $url->getUrlOverride()
         );
     }
@@ -300,42 +300,42 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertFalse(
             (
             new ObjectUrl(
-                'http://example.com/2015/10/01/36704.event/36704-1',
+                'http://example.com/2015/10/01/36704-event/36704-1',
                 true
             )
-            )->matches(new ObjectUrl('https://example.com/2015/10/01/36704.event/36704-1', true))
+            )->matches(new ObjectUrl('https://example.com/2015/10/01/36704-event/36704-1', true))
         );
         $this->assertFalse(
             (
             new ObjectUrl(
-                'http://example.com/2015/10/01/36704.event/36704-1',
+                'http://example.com/2015/10/01/36704-event/36704-1',
                 true
             )
-            )->matches(new ObjectUrl('http://example.com/2016/10/01/36704.event/36704-1', true))
+            )->matches(new ObjectUrl('http://example.com/2016/10/01/36704-event/36704-1', true))
         );
         $this->assertFalse(
             (
             new ObjectUrl(
-                'http://example.com/2015/10/01/36704.event/36704-1',
+                'http://example.com/2015/10/01/36704-event/36704-1',
                 true
             )
-            )->matches(new ObjectUrl('http://example.com/2015/10/01/36705.event/36705-1', true))
+            )->matches(new ObjectUrl('http://example.com/2015/10/01/36705-event/36705-1', true))
         );
         $this->assertFalse(
             (
             new ObjectUrl(
-                'http://example.com/2015/10/01/36704.event/36704-1',
+                'http://example.com/2015/10/01/36704-event/36704-1',
                 true
             )
-            )->matches(new ObjectUrl('http://example.com/2015/10/01/36704.article/36704-1', true))
+            )->matches(new ObjectUrl('http://example.com/2015/10/01/36704-article/36704-1', true))
         );
         $this->assertFalse(
             (
             new ObjectUrl(
-                'http://example.com/2015/10/01/36704.event/36704-1',
+                'http://example.com/2015/10/01/36704-event/36704-1',
                 true
             )
-            )->matches(new ObjectUrl('http://example.com/2015/10/01/36704.event/36704-2', true))
+            )->matches(new ObjectUrl('http://example.com/2015/10/01/36704-event/36704-2', true))
         );
         $this->assertTrue((new ObjectUrl(self::REMOTE_URL, true))->matches(new ObjectUrl(self::REMOTE_URL, true)));
     }

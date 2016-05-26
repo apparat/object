@@ -53,7 +53,7 @@ class PropertiesTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1.article/1';
+    const OBJECT_PATH = '/2015/12/21/1-article/1';
 
     /**
      * Test the owner object of an abstract properties collection

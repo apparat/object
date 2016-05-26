@@ -58,7 +58,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1.article/1';
+    const OBJECT_PATH = '/2015/12/21/1-article/1';
 
     /**
      * Test the addition of an object relation
@@ -159,7 +159,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
         /** @var Relations $relations */
         $relations = Kernel::create(Relations::class, [[Relation::CONTRIBUTED_BY => []], $article]);
         $relations = $relations->addRelation(
-            '!/repo/2016/01/08/2.contact/2 <john@example.com> John Doe',
+            '!/repo/2016/01/08/2-contact/2 <john@example.com> John Doe',
             Relation::CONTRIBUTED_BY
         );
 

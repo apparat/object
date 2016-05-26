@@ -250,7 +250,7 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object draft mode
      *
      * @param boolean $draft Object draft mode
-     * @return PathInterface|LocalPath New object path
+     * @return PathInterface|ObjectUrl New object path
      */
     public function setDraft($draft)
     {

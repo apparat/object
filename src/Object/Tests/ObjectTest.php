@@ -63,7 +63,7 @@ namespace Apparat\Object\Tests {
          *
          * @var string
          */
-        const OBJECT_PATH = '/2015/12/21/1.article/1';
+        const OBJECT_PATH = '/2015/12/21/1-article/1';
 
         /**
          * Tears down the fixture
@@ -219,7 +219,7 @@ namespace Apparat\Object\Tests {
          */
         public function testObjectFacadeRelativeInvalid()
         {
-            $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2.article/2');
+            $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2-article/2');
             $this->assertInstanceOf(Article::class, $object);
         }
 
@@ -235,7 +235,7 @@ namespace Apparat\Object\Tests {
 
             $resource = $this->getMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-            $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5.invalid/5');
+            $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5-invalid/5');
 
             /** @var ResourceInterface $resource */
             ObjectFactory::createFromResource($articleObjectPath, $resource);

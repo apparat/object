@@ -75,7 +75,7 @@ class SelectorFactory
     public static function createFromString($selector)
     {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-        $selectorPattern = '/(?P<visibility>(?:\{\.,\})|\.)?(?P<id>(?:\d+)|\*)\.(?P<type>(?:[a-z]+)|\*)(?:/\\k<id>(?:-(?P<revision>\d+))?)?';
+        $selectorPattern = '/(?P<visibility>(?:\{\.,\})|\.)?(?P<id>(?:\d+)|\*)\-(?P<type>(?:[a-z]+)|\*)(?:/\\k<id>(?:-(?P<revision>\d+))?)?';
 
         // If the creation date is used as selector component
         if ($datePrecision) {

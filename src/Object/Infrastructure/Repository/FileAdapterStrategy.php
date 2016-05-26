@@ -222,7 +222,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $uid = $selector->getId();
         $type = $selector->getType();
         if (($uid !== null) || ($type !== null)) {
-            $glob .= '/'.($uid ?: SelectorInterface::WILDCARD).'.'.($type ?: SelectorInterface::WILDCARD);
+            $glob .= '/'.($uid ?: SelectorInterface::WILDCARD).'-'.($type ?: SelectorInterface::WILDCARD);
 
             $revision = $selector->getRevision();
             if ($revision !== null) {

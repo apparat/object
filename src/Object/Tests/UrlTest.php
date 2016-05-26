@@ -68,13 +68,13 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const PATH = '/2015/10/01/36704.event/36704-1';
+    const PATH = '/2015/10/01/36704-event/36704-1';
     /**
      * Example path (draft mode)
      *
      * @var string
      */
-    const DRAFT_PATH = '/2015/10/01/36704.event/36704+';
+    const DRAFT_PATH = '/2015/10/01/36704-event/36704+';
     /**
      * Example URL
      *

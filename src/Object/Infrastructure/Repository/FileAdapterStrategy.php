@@ -447,16 +447,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function deleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objectContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
-        $objectContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
-        $objectPublicContainer = $objectContainerDir.DIRECTORY_SEPARATOR.$objectContainerName;
-        $objectHiddenContainer = $objectContainerDir.DIRECTORY_SEPARATOR.'.'.$objectContainerName;
-        if (file_exists($objectPublicContainer)
-            && is_dir($objectPublicContainer)
-            && !rename($objectPublicContainer, $objectHiddenContainer)
+        $objContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
+        $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
+        if (file_exists($objPublicContainer)
+            && is_dir($objPublicContainer)
+            && !rename($objPublicContainer, $objHiddenContainer)
         ) {
             throw new RepositoryRuntimeException(
-                sprintf('Cannot hide object container "%s"', $objectContainerName),
+                sprintf('Cannot hide object container "%s"', $objContainerName),
                 RepositoryRuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
             );
         }
@@ -479,16 +479,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function undeleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objectContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
-        $objectContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
-        $objectPublicContainer = $objectContainerDir.DIRECTORY_SEPARATOR.$objectContainerName;
-        $objectHiddenContainer = $objectContainerDir.DIRECTORY_SEPARATOR.'.'.$objectContainerName;
-        if (file_exists($objectHiddenContainer)
-            && is_dir($objectHiddenContainer)
-            && !rename($objectHiddenContainer, $objectPublicContainer)
+        $objContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
+        $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
+        if (file_exists($objHiddenContainer)
+            && is_dir($objHiddenContainer)
+            && !rename($objHiddenContainer, $objPublicContainer)
         ) {
             throw new RepositoryRuntimeException(
-                sprintf('Cannot unhide object container "%s"', $objectContainerName),
+                sprintf('Cannot unhide object container "%s"', $objContainerName),
                 RepositoryRuntimeException::CANNOT_UNHIDE_OBJECT_CONTAINER
             );
         }

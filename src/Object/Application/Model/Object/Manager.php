@@ -123,18 +123,8 @@ class Manager implements ManagerInterface
      */
     public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL)
     {
-        // If the visibility requirement is invalid
-        if (!Selector::isValidVisibility($visibility)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid repository selector visibility "%s"',
-                    $visibility
-                ),
-                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
-                null,
-                'visibility'
-            );
-        }
+        // Validate the object visibility
+        $this->validateVisibility($visibility);
 
         $objectResource = null;
 
@@ -164,6 +154,27 @@ class Manager implements ManagerInterface
         }
 
         return $objectResource;
+    }
+
+    /**
+     * Validate a given object visibility
+     *
+     * @param int $visibility Object visibility
+     * @throw InvalidArgumentException If the visibility requirement is invalid
+     */
+    protected function validateVisibility($visibility) {
+        // If the visibility requirement is invalid
+        if (!Selector::isValidVisibility($visibility)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid repository selector visibility "%s"',
+                    $visibility
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'visibility'
+            );
+        }
     }
 
     /**

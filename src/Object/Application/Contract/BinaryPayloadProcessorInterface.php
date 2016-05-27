@@ -44,4 +44,10 @@ namespace Apparat\Object\Application\Contract;
  */
 interface BinaryPayloadProcessorInterface extends PayloadProcessorInterface
 {
+    /**
+     * Post persistence callback
+     *
+     * @return void
+     */
+    public function persist();
 }

@@ -55,6 +55,12 @@ class BinaryPayloadProcessor extends AbstractPayloadProcessor implements BinaryP
      * @var AbstractBinaryObject
      */
     protected $object;
+    /**
+     * Persistence queue
+     *
+     * @var array
+     */
+    protected $persistQueue = [];
 
     /**
      * Process the payload of an object
@@ -77,23 +83,46 @@ class BinaryPayloadProcessor extends AbstractPayloadProcessor implements BinaryP
         $adapterStrategy = $this->object->getRepositoryPath()->getRepository()->getAdapterStrategy();
         $currentPayload = $this->object->getPayload();
         $currentPayloadHash = strlen($currentPayload) ? $adapterStrategy->getResourceHash($currentPayload) : null;
+        $payloadHash = File::hash($payload);
 
-        // If there is no payload yet or it's different from the current one
-        if (($currentPayloadHash === null) || ($currentPayloadHash !== File::hash($payload))) {
+        // If there is no payload yet or if it's different from the current one
+        if (($currentPayloadHash === null) || ($currentPayloadHash !== $payloadHash)) {
             $payloadFileExt = pathinfo($payload, PATHINFO_EXTENSION);
-            $currentPayload = $this->object->getId()->getId().'-'.File::hash($payload);
+            $currentPayload = $this->object->getId()->getId().'.'.$payloadHash;
             $currentPayload .= strlen($payloadFileExt) ? '.'.$payloadFileExt : '';
-            $curPayloadRepoPath = dirname(strval($this->object->getRepositoryPath())).'/'.$currentPayload;
 
-            // If the payload resource cannot be imported
-            if (!$adapterStrategy->importResource($payload, $curPayloadRepoPath)) {
-                throw new RuntimeException(
-                    sprintf('Cannot import binary resource "%s"', $payload),
-                    RuntimeException::CANNOT_IMPORT_BINARY_RESOURCE
-                );
-            }
+            // Register the resource in the persistence queue
+            $this->persistQueue[$payload] = $currentPayload;
         }
 
         return $currentPayload;
+    }
+
+    /**
+     * Post persistence callback
+     *
+     * @return void
+     */
+    public function persist()
+    {
+        // If there are entries in the persistence queue
+        if (count($this->persistQueue)) {
+            $adapterStrategy = $this->object->getRepositoryPath()->getRepository()->getAdapterStrategy();
+            $containerPath = dirname(strval($this->object->getRepositoryPath())).DIRECTORY_SEPARATOR;
+
+            // Run through all resources in the persistence queue
+            foreach ($this->persistQueue as $source => $target) {
+                // If the payload resource cannot be imported
+                if (!$adapterStrategy->importResource($source, $containerPath.$target)) {
+                    throw new RuntimeException(
+                        sprintf('Cannot import binary resource "%s"', $source),
+                        RuntimeException::CANNOT_IMPORT_BINARY_RESOURCE
+                    );
+                }
+            }
+
+            // Reset the persistence queue
+            $this->persistQueue = [];
+        }
     }
 }

@@ -73,4 +73,17 @@ abstract class AbstractBinaryObject extends AbstractProcessedPayloadObject
 
         parent::__construct($path, $payload, $propertyData);
     }
+
+    /**
+     * Post persistence hook
+     *
+     * @return void
+     */
+    protected function postPersist()
+    {
+        parent::postPersist();
+
+        // Call the payload processor post persistence callback
+        $this->payloadProcessor->persist();
+    }
 }

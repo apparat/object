@@ -36,9 +36,11 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Object\Application\Model\Object\Image;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Infrastructure\Utilities\File;
 use Apparat\Object\Ports\Repository as RepositoryFactory;
 
 /**
@@ -65,32 +67,37 @@ class ImageObjectTest extends AbstractRepositoryEnabledTest
     {
         // Create a temporary repository
         $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+        $fixtureDirectory = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'.DIRECTORY_SEPARATOR;
         $repository = $this->createRepository($tempRepoDirectory);
-        $source = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'.DIRECTORY_SEPARATOR.
-            'MuehlenbergDerwitz.jpg';
+        $payloadFileName1 = '1.'.File::hash($fixtureDirectory.'MuehlenbergDerwitz.jpg').'.jpg';
+        $payloadFileName2 = '1.'.File::hash($fixtureDirectory.'Normalsegelapparat1895.jpg').'.jpg';
 
-        $repository->createObject(Type::IMAGE, $source);
+        // Create and persist an image object
+        $image = $repository->createObject(Type::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
+        $this->assertInstanceOf(Image::class, $image);
+        $this->assertEquals($payloadFileName1, $image->getPayload());
+        $this->assertFileExists($tempRepoDirectory.
+            dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+            DIRECTORY_SEPARATOR.$payloadFileName1
+        );
 
-//echo $tempRepoDirectory;
-//        $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, $payload);
-//        $this->assertInstanceOf(Article::class, $article);
-//        $this->assertEquals($payload, $article->getPayload());
-//        $this->assertFileExists($tempRepoDirectory.
-//            str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
-//                ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
+        // Publish and persist the image
+        $image->publish()->persist();
 
-        // Alter and persist the object
-//        $article->setPayload('Revision 1 draft (updated)');
-//        $article->persist();
-//
-//        // Publish and persist the first object revision
-//        $article->setPayload('Revision 1');
-//        $article->publish();
-//        $article->persist();
+        // Add content relevant properties, publish & persist
+        $image->setDomainProperty('license', 'gemeinfrei')->publish()->persist();
+
+        // Alter the payload
+        $image->setPayload($fixtureDirectory.'Normalsegelapparat1895.jpg')->persist();
+        $this->assertEquals('gemeinfrei', $image->getDomainProperty('license'));
+        $this->assertEquals($payloadFileName2, $image->getPayload());
+        $this->assertFileExists($tempRepoDirectory.
+            dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+            DIRECTORY_SEPARATOR.$payloadFileName2
+        );
 
         // Delete temporary repository
-//        $this->deleteRecursive($tempRepoDirectory);
-//        $article->persist();
+        $this->deleteRecursive($tempRepoDirectory);
     }
 
     /**

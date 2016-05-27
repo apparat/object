@@ -332,7 +332,19 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
         $this->latestRevision = $this->getRevision();
         $this->updatePath();
 
+        // Post persistence hook
+        $this->postPersist();
+
         return $this;
+    }
+
+    /**
+     * Post persistence hook
+     *
+     * @return void
+     */
+    protected function postPersist()
+    {
     }
 
     /**

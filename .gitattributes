@@ -10,5 +10,5 @@
 /CHANGELOG.md export-ignore
 /phpunit.php export-ignore
 /phpunit.xml.dist export-ignore
-/src/Resource/Tests export-ignore
+/src/Object/Tests export-ignore
 /README.md export-ignore

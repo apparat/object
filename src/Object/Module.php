@@ -68,10 +68,6 @@ class Module extends AbstractModule
      */
     const NAME = 'object';
 
-    /*******************************************************************************
-     * PUBLIC METHODS
-     *******************************************************************************/
-
     /**
      * Validate the environment
      *
@@ -121,10 +117,6 @@ class Module extends AbstractModule
 
         return true;
     }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
 
     /**
      * Configure the dependency injection container

@@ -302,7 +302,7 @@ class Url implements UriInterface
     /**
      * Set the URL query
      *
-     * @param array $query URL query
+     * @param string $query URL query
      * @return Url New URL
      */
     public function setQuery($query)

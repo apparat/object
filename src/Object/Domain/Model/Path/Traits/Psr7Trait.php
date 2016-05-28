@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Path\Url;
  * PSR-7 URI trait
  *
  * @package Apparat\Object\Domain\Model\Path\Traits
- * @method Url setUser()
+ * @property array $urlParts
  */
 trait Psr7Trait
 {
@@ -207,4 +207,68 @@ trait Psr7Trait
     {
         return $this->setFragment($fragment);
     }
+
+    /**
+     * Return the a complete serialized URL
+     *
+     * @param array $override Override components
+     * @return string Serialized URL
+     */
+    abstract protected function getUrlInternal(array &$override = []);
+
+    /**
+     * Set the URL scheme
+     *
+     * @param string $scheme URL scheme
+     * @return Url New URL
+     */
+    abstract public function setScheme($scheme);
+
+    /**
+     * Set the URL user
+     *
+     * @param string|NULL $user URL user
+     * @return Url New URL
+     */
+    abstract public function setUser($user);
+
+    /**
+     * Set the URL host
+     *
+     * @param string $host URL host
+     * @return Url New URL
+     */
+    abstract public function setHost($host);
+
+    /**
+     * Set the URL port
+     *
+     * @param int|null $port URL port
+     * @return Url New URL
+     */
+    abstract public function setPort($port);
+
+    /**
+     * Set the URL path
+     *
+     * @param string $path URL path
+     * @return Url New URL
+     */
+    abstract public function setPath($path);
+
+    /**
+     * Set the URL query
+     *
+     * @param string $query URL query
+     * @return Url New URL
+     */
+    abstract public function setQuery($query);
+
+    /**
+     * Set the URL fragment
+     *
+     * @param string $fragment URL fragment
+     * @return Url New URL
+     */
+    abstract public function setFragment($fragment);
 }

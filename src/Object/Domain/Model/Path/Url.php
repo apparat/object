@@ -36,14 +36,20 @@
 namespace Apparat\Object\Domain\Model\Path;
 
 use Apparat\Object\Application\Utility\ArrayUtility;
+use Apparat\Object\Domain\Model\Path\Traits\Psr7Trait;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Object URL
  *
  * @package Apparat\Object\Domain\Model
  */
-class Url
+class Url implements UriInterface
 {
+    /**
+     * Use PSR-7 method
+     */
+    use Psr7Trait;
     /**
      * HTTP-Schema
      *
@@ -68,10 +74,6 @@ class Url
      * @var array
      */
     protected $urlParts = null;
-
-    /*******************************************************************************
-     * PUBLIC METHODS
-     *******************************************************************************/
 
     /**
      * URL constructor
@@ -192,16 +194,6 @@ class Url
     }
 
     /**
-     * Return the URL scheme
-     *
-     * @return string URL scheme
-     */
-    public function getScheme()
-    {
-        return isset($this->urlParts['scheme']) ? $this->urlParts['scheme'] : null;
-    }
-
-    /**
      * Return the URL user
      *
      * @return string|NULL URL user
@@ -222,33 +214,17 @@ class Url
     }
 
     /**
-     * Return the URL host
+     * Return the URL query parameters as list
      *
-     * @return string URL host
+     * @return array URL query parameters
      */
-    public function getHost()
+    public function getQueryParams()
     {
-        return isset($this->urlParts['host']) ? $this->urlParts['host'] : null;
-    }
-
-    /**
-     * Return the URL port
-     *
-     * @return int URL port
-     */
-    public function getPort()
-    {
-        return isset($this->urlParts['port']) ? $this->urlParts['port'] : null;
-    }
-
-    /**
-     * Return the URL fragment
-     *
-     * @return string URL fragment
-     */
-    public function getFragment()
-    {
-        return isset($this->urlParts['fragment']) ? $this->urlParts['fragment'] : null;
+        $query = [];
+        if (isset($this->urlParts['query']) && !empty($this->urlParts['query'])) {
+            parse_str($this->urlParts['query'], $query);
+        }
+        return ArrayUtility::sortRecursiveByKey((array)$query);
     }
 
     /**
@@ -278,14 +254,14 @@ class Url
     /**
      * Set the URL port
      *
-     * @param int $port URL port
+     * @param int|null $port URL port
      * @return Url New URL
      * @throws InvalidArgumentException If the URL port is invalid
      */
     public function setPort($port)
     {
         // If the URL port is invalid
-        if (!is_int($port) || ($port < 0) || ($port > 65535)) {
+        if (is_int($port) ? (($port < 0) || ($port > 65535)) : ($port !== null)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid URL port "%s"', $port),
                 InvalidArgumentException::INVALID_URL_PORT
@@ -329,7 +305,20 @@ class Url
      * @param array $query URL query
      * @return Url New URL
      */
-    public function setQuery(array $query)
+    public function setQuery($query)
+    {
+        $url = clone $this;
+        $url->urlParts['query'] = trim($query);
+        return $url;
+    }
+
+    /**
+     * Set the URL query parameters
+     *
+     * @param array $query URL query parameters
+     * @return Url New URL
+     */
+    public function setQueryParams(array $query)
     {
         $url = clone $this;
         $url->urlParts['query'] = http_build_query($query);
@@ -390,16 +379,6 @@ class Url
     }
 
     /**
-     * Return the URL path
-     *
-     * @return string URL path
-     */
-    public function getPath()
-    {
-        return $this->urlParts['path'];
-    }
-
-    /**
      * Set the URL path
      *
      * @param string $path URL path
@@ -424,7 +403,7 @@ class Url
     public function setScheme($scheme)
     {
         // If the URL scheme is not valid
-        if (strlen($scheme) && !array_key_exists($scheme, static::$schemes)) {
+        if (strlen($scheme) && !array_key_exists(strtolower($scheme), static::$schemes)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid URL scheme "%s"', $scheme),
                 InvalidArgumentException::INVALID_URL_SCHEME
@@ -432,7 +411,7 @@ class Url
         }
 
         $url = clone $this;
-        $url->urlParts['scheme'] = $scheme;
+        $url->urlParts['scheme'] = $scheme ? strtolower($scheme) : null;
         return $url;
     }
 
@@ -494,23 +473,5 @@ class Url
         }
 
         return true;
-    }
-
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
-
-    /**
-     * Return the URL query
-     *
-     * @return array URL query
-     */
-    public function getQuery()
-    {
-        $query = [];
-        if (isset($this->urlParts['query']) && !empty($this->urlParts['query'])) {
-            parse_str($this->urlParts['query'], $query);
-        }
-        return ArrayUtility::sortRecursiveByKey((array)$query);
     }
 }

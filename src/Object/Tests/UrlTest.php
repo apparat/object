@@ -82,11 +82,17 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
     /**
+     * Example remote repository authority
+     *
+     * @var string
+     */
+    const REMOTE_REPOSITORY_AUTHORITY = 'apparat:tools@apparat.tools:80';
+    /**
      * Example remote repository URL
      *
      * @var string
      */
-    const REMOTE_REPOSITORY_URL = 'http://apparat:tools@apparat.tools:80';
+    const REMOTE_REPOSITORY_URL = 'http://'.self::REMOTE_REPOSITORY_AUTHORITY;
     /**
      * Example remote URL
      *
@@ -217,5 +223,22 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
             self::REPOSITORY_URL.self::PATH,
             Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::PATH)
         );
+    }
+
+    /**
+     * Test the remaining PSR-7 methods
+     */
+    public function testPSR7methods() {
+        $url = new Url(self::REMOTE_URL);
+        $this->assertEquals(self::REMOTE_REPOSITORY_AUTHORITY, $url->getAuthority());
+        $this->assertEquals('apparat:tools', $url->getUserInfo());
+        $this->assertEquals('https://'.self::REMOTE_REPOSITORY_AUTHORITY.self::PATH.self::QUERY_FRAGMENT, strval($url->withScheme('HTTPS')));
+        $this->assertEquals('http://test@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT, strval($url->withUserInfo('test')));
+        $this->assertEquals('http://apparat:tools@test.com:80'.self::PATH.self::QUERY_FRAGMENT, strval($url->withHost('test.com')));
+        $this->assertEquals('http://apparat:tools@apparat.tools:443'.self::PATH.self::QUERY_FRAGMENT, strval($url->withPort(443)));
+        $this->assertEquals('http://apparat:tools@apparat.tools'.self::PATH.self::QUERY_FRAGMENT, strval($url->withPort(null)));
+        $this->assertEquals('http://apparat:tools@apparat.tools:80/test/path'.self::QUERY_FRAGMENT, strval($url->withPath('test/path')));
+        $this->assertEquals('http://apparat:tools@apparat.tools:80'.self::PATH.'?param2=value2#fragment', strval($url->withQuery('param2=value2')));
+        $this->assertEquals('http://apparat:tools@apparat.tools:80'.self::PATH.'?param=value#fragment2', strval($url->withFragment('fragment2')));
     }
 }

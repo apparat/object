@@ -118,7 +118,8 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals('apparat.tools', $url->getHost());
         $this->assertEquals(80, $url->getPort());
         $this->assertEquals('', $url->getPath());
-        $this->assertEquals(['param' => 'value'], $url->getQuery());
+        $this->assertEquals(['param' => 'value'], $url->getQueryParams());
+        $this->assertEquals('param=value', $url->getQuery());
         $this->assertEquals('fragment', $url->getFragment());
         $this->assertInstanceOf(\DateTimeImmutable::class, $url->getCreationDate());
         $this->assertEquals('2015-10-01', $url->getCreationDate()->format('Y-m-d'));
@@ -226,7 +227,8 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals('password', $url->setPassword('password')->getPassword());
         $this->assertEquals(null, $url->setPassword(null)->getPassword());
         $this->assertEquals('/path/prefix', $url->setPath('/path/prefix')->getPath());
-        $this->assertEquals(['param2' => 'value2'], $url->setQuery(['param2' => 'value2'])->getQuery());
+        $this->assertEquals(['param2' => 'value2'], $url->setQueryParams(['param2' => 'value2'])->getQueryParams());
+        $this->assertEquals('param=value', $url->setQuery('param=value')->getQuery());
         $this->assertEquals('fragment2', $url->setFragment('fragment2')->getFragment());
 
         $this->assertEquals(

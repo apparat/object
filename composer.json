@@ -14,7 +14,8 @@
     "apparat/resource": "^0.1.3",
     "apparat/kernel": "@dev",
     "dominicsayers/isemail": "@dev",
-    "league/commonmark": "^0.13"
+    "league/commonmark": "^0.13",
+    "psr/http-message": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.3"

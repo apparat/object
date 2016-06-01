@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 
 /**
@@ -44,134 +45,14 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class Type implements SerializablePropertyInterface
+class Type implements SerializablePropertyInterface, ObjectTypesInterface
 {
-    /**
-     * Article
-     *
-     * @var string
-     */
-    const ARTICLE = 'article';
-    /**
-     * Audio
-     *
-     * @var string
-     */
-    const AUDIO = 'audio';
-    /**
-     * Bookmark
-     *
-     * @var string
-     */
-    const BOOKMARK = 'bookmark';
-    /**
-     * Checkin
-     *
-     * @var string
-     */
-    const CHECKIN = 'checkin';
-    /**
-     * Cite
-     *
-     * @var string
-     */
-    const CITE = 'cite';
-    /**
-     * Code
-     *
-     * @var string
-     */
-    const CODE = 'code';
-    /**
-     * Contact
-     *
-     * @var string
-     */
-    const CONTACT = 'contact';
-    /**
-     * Event
-     *
-     * @var string
-     */
-    const EVENT = 'event';
-    /**
-     * Favourite
-     *
-     * @var string
-     */
-    const FAVOURITE = 'favourite';
-    /**
-     * Geo
-     *
-     * @var string
-     */
-    const GEO = 'geo';
-    /**
-     * Image
-     *
-     * @var string
-     */
-    const IMAGE = 'image';
-    /**
-     * Item
-     *
-     * @var string
-     */
-    const ITEM = 'item';
-    /**
-     * Like
-     *
-     * @var string
-     */
-    const LIKE = 'like';
-    /**
-     * Note
-     *
-     * @var string
-     */
-    const NOTE = 'note';
-    /**
-     * Project
-     *
-     * @var string
-     */
-    const PROJECT = 'project';
-    /**
-     * Reply
-     *
-     * @var string
-     */
-    const REPLY = 'reply';
-    /**
-     * Review
-     *
-     * @var string
-     */
-    const REVIEW = 'review';
-    /**
-     * Rsvp
-     *
-     * @var string
-     */
-    const RSVP = 'rsvp';
-    /**
-     * Venue
-     *
-     * @var string
-     */
-    const VENUE = 'venue';
-    /**
-     * Video
-     *
-     * @var string
-     */
-    const VIDEO = 'video';
     /**
      * Type list
      *
      * @var array
      */
-    protected static $types = [
+    public static $types = [
         self::ARTICLE => true,
         self::AUDIO => true,
         self::BOOKMARK => true,

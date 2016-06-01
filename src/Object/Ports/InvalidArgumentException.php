@@ -50,4 +50,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_BINARY_PAYLOAD_SOURCE = 1464296678;
+    /**
+     * Invalid object type
+     *
+     * @var int
+     */
+    const INVALID_OBJECT_TYPE = 1464810106;
 }

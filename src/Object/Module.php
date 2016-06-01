@@ -51,6 +51,7 @@ use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
 use Apparat\Object\Infrastructure\Utilities\BinaryPayloadProcessor;
 use Apparat\Object\Infrastructure\Utilities\CommonMarkPayloadProcessor;
+use Apparat\Object\Ports\Object;
 use Dotenv\Dotenv;
 
 /**
@@ -82,6 +83,7 @@ class Module extends AbstractModule
         $environment->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
         $environment->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
         $environment->required('OBJECT_DEFAULT_LANGUAGE')->notEmpty();
+        $environment->required('OBJECT_ENABLE_TYPES')->notEmpty();
 
         // In-depth validation of the apparat base URL
         $apparatBaseUrl = getenv('APPARAT_BASE_URL');
@@ -89,6 +91,9 @@ class Module extends AbstractModule
 
         // Normalize the apparat base URL
         putenv('APPARAT_BASE_URL='.rtrim($apparatBaseUrl, '/').'/');
+
+        // Enable the configured object types
+        array_map([Object::class, 'enableType'], explode(',', getenv('OBJECT_ENABLE_TYPES')));
     }
 
     /**

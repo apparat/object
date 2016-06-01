@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Object\Ports\Object;
 use Apparat\Resource\Module;
 
 /**
@@ -53,5 +54,34 @@ class ModuleTest extends AbstractDisabledAutoconnectorTest
     {
         include dirname(__DIR__).DIRECTORY_SEPARATOR.'Autorun.php';
         $this->assertEquals(Module::NAME, (new Module())->getName());
+    }
+
+    /**
+     * Test enabling an object type
+     */
+    public function testEnableObjectType()
+    {
+        Object::enableType(Object::EVENT);
+        $this->assertEquals(
+            [
+                Object::ARTICLE => Object::ARTICLE,
+                Object::CONTACT => Object::CONTACT,
+                Object::EVENT => Object::EVENT
+            ],
+            Object::getSupportedTypes()
+        );
+        $this->assertTrue(Object::supportsType(Object::EVENT));
+        $this->assertFalse(Object::supportsType('invalid'));
+    }
+
+    /**
+     * Test enabling an invalid object type
+     *
+     * @expectedException \Apparat\Object\Ports\InvalidArgumentException
+     * @expectedExceptionCode 1464810106
+     */
+    public function testEnableInvalidType()
+    {
+        Object::enableType('invalid');
     }
 }

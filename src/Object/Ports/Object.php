@@ -37,7 +37,9 @@
 namespace Apparat\Object\Ports;
 
 use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Repository\SelectorInterface;
@@ -48,8 +50,14 @@ use Apparat\Object\Domain\Repository\SelectorInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Ports
  */
-class Object
+class Object implements ObjectTypesInterface
 {
+    /**
+     * Supported object types
+     *
+     * @var array
+     */
+    protected static $supportedTypes = [];
     /**
      * Private
      *
@@ -97,5 +105,47 @@ class Object
 
         // Instantiate the local object repository, load and return the object
         return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
+    }
+
+    /**
+     * Enable an object type
+     *
+     * @param string $type Object type
+     * @throws InvalidArgumentException If the object type is invalid
+     */
+    public static function enableType($type)
+    {
+        $type = trim($type);
+
+        // If the object type is invalid
+        if (!strlen($type) || !array_key_exists($type, Type::$types)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid object type "%s"', $type),
+                InvalidArgumentException::INVALID_OBJECT_TYPE
+            );
+        }
+        self::$supportedTypes[$type] = $type;
+    }
+
+    /**
+     * Return whether a particular object type is supported
+     *
+     * @param string $type Object type
+     * @return bool Object type is supported
+     */
+    public static function supportsType($type)
+    {
+        $type = trim($type);
+        return strlen($type) && array_key_exists($type, self::$supportedTypes);
+    }
+
+    /**
+     * Return all supported object types
+     *
+     * @return array Supported object types
+     */
+    public static function getSupportedTypes()
+    {
+        return self::$supportedTypes;
     }
 }

@@ -36,6 +36,7 @@ Variable                       | Description
 `APPARAT_DOCUMENT_ROOT`        | Absolute root directory in the file system for apparat repositories
 `OBJECT_DATE_PRECISION`        | Precision for creation date encoding in object URLs, ranging from `0` (no dates in URLs) to `6`q ("`Y/m/d/H/i/s`"). Typical would be `3` ("`Y/m/d`").
 `OBJECT_RESOURCE_EXTENSION`    | File extension for object text resources (e.g. "`md`")
+`OBJECT_ENABLE_TYPES`          | Enabled object types (e.g. "`article,contact`")
 
 # Documentation
 

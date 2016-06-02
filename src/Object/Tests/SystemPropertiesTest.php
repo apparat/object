@@ -65,7 +65,7 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testSystemProperties()
     {
-        $now = time();
+        $now = new \DateTimeImmutable('now');
         $data = [
             SystemProperties::PROPERTY_ID => 1,
             SystemProperties::PROPERTY_TYPE => Article::TYPE,

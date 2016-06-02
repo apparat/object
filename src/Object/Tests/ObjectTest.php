@@ -182,7 +182,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals(
                 "# Example article object\n\nThis file is an example for an object of type `\"article\"`. ".
                 "It has a link to [Joschi Kuphal's website](https://jkphl.is) and features his avatar:\n".
-                "![Joschi Kuphal](https://jkphl.is/avatar.jpg)\n",
+                "![Joschi Kuphal](https://jkphl.is/avatar.jpg)",
                 $articleObject->getPayload()
             );
         }

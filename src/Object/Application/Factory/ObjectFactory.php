@@ -125,7 +125,7 @@ class ObjectFactory
         $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $path->getType()->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $path->getRevision()->getRevision();
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] =
-        $systemPropertyData[SystemProperties::PROPERTY_MODIFIED] = $path->getCreationDate()->format('U');
+        $systemPropertyData[SystemProperties::PROPERTY_MODIFIED] = $path->getCreationDate();
         if (empty($systemPropertyData[SystemProperties::PROPERTY_LANGUAGE])) {
             $systemPropertyData[SystemProperties::PROPERTY_LANGUAGE] = getenv('OBJECT_DEFAULT_LANGUAGE');
         }

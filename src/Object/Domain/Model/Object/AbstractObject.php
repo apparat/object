@@ -180,6 +180,8 @@ abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
 
     /**
      * Return whether this object already has a draft revision
+     *
+     * @return bool Whether this object has a draft revision
      */
     protected function hasDraft()
     {

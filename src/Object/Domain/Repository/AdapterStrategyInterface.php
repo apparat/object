@@ -39,6 +39,7 @@ namespace Apparat\Object\Domain\Repository;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
 
 /**
  * Repository adapter strategy interface
@@ -126,4 +127,12 @@ interface AdapterStrategyInterface
      * @return boolean Success
      */
     public function initializeRepository();
+
+    /**
+     * Build an absolute repository resource path
+     *
+     * @param RepositoryPathInterface $repositoryPath Repository path
+     * @return string Absolute repository resource path
+     */
+    public function getAbsoluteResourcePath(RepositoryPathInterface $repositoryPath);
 }

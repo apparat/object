@@ -342,8 +342,8 @@ class LocalPath implements PathInterface
             );
         }
 
-        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(.*\.)?\\k';
-        $pathPattern .= '<id>(?:(?P<draft>\+)|(?:-(?P<revision>\d+)))?(?P<extension>\.[a-z0-9]+)?)?$%';
+        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(?P<draft>\.)?(.*\.)?';
+        $pathPattern .= '\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
         return $pathPattern;
     }

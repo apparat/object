@@ -381,7 +381,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         // If the object had been persisted as a draft: Remove the draft resource
         $objectDraftPath = $objectRepositoryPath->setRevision($object->getRevision()->setDraft(true));
-        $absObjectDraftPath = $this->absoluteResourcePath($objectDraftPath);
+        $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftPath);
         if (@file_exists($absObjectDraftPath)) {
             unlink($absObjectDraftPath);
         }
@@ -392,13 +392,13 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             // Build the "current" object repository path
             $currentRevision = Revision::current();
             $curObjectResPath =
-                $this->absoluteResourcePath($objectRepositoryPath->setRevision($currentRevision));
+                $this->getAbsoluteResourcePath($objectRepositoryPath->setRevision($currentRevision));
 
             // Build the previous object repository path
             /** @var Revision $previousRevision */
             $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
             $prevObjectResPath
-                = $this->absoluteResourcePath($objectRepositoryPath->setRevision($previousRevision));
+                = $this->getAbsoluteResourcePath($objectRepositoryPath->setRevision($previousRevision));
 
             // Rotate the previous revision's resource path
             if (file_exists($curObjectResPath)) {
@@ -413,7 +413,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @param RepositoryPathInterface $repositoryPath Repository path
      * @return string Absolute repository resource path
      */
-    protected function absoluteResourcePath(RepositoryPathInterface $repositoryPath)
+    public function getAbsoluteResourcePath(RepositoryPathInterface $repositoryPath)
     {
         return $this->root.str_replace(
             '/',
@@ -434,7 +434,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectResource = ResourceFactory::createFromObject($object);
 
         // Create the absolute object resource path
-        $objectResourcePath = $this->absoluteResourcePath($object->getRepositoryPath());
+        $objectResourcePath = $this->getAbsoluteResourcePath($object->getRepositoryPath());
 
         /** @var Writer $fileWriter */
         $fileWriter = Kernel::create(
@@ -470,7 +470,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function deleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryPath())));
         $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
@@ -502,7 +502,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function undeleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objContainerDir = dirname(dirname($this->absoluteResourcePath($object->getRepositoryPath())));
+        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryPath())));
         $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;

@@ -55,9 +55,16 @@ interface ManagerInterface
      * @param Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
+     * @param \DateTimeInterface $creationDate Object creation date
      * @return ObjectInterface Object
      */
-    public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = []);
+    public function createObject(
+        RepositoryInterface $repository,
+        Type $type,
+        $payload = '',
+        array $propertyData = [],
+        \DateTimeInterface $creationDate = null
+    );
 
     /**
      * Load an object from a repository

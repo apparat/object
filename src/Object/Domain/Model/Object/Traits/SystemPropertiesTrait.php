@@ -90,7 +90,7 @@ trait SystemPropertiesTrait
     /**
      * Return the creation date & time
      *
-     * @return \DateTimeImmutable Creation date & time
+     * @return \DateTimeInterface Creation date & time
      */
     public function getCreated()
     {
@@ -100,7 +100,7 @@ trait SystemPropertiesTrait
     /**
      * Return the modification date & time
      *
-     * @return \DateTimeImmutable Modification date & time
+     * @return \DateTimeInterface Modification date & time
      */
     public function getModified()
     {
@@ -110,7 +110,7 @@ trait SystemPropertiesTrait
     /**
      * Return the publication date & time
      *
-     * @return \DateTimeImmutable|null Publication date & time
+     * @return \DateTimeInterface|null Publication date & time
      */
     public function getPublished()
     {
@@ -120,7 +120,7 @@ trait SystemPropertiesTrait
     /**
      * Return the deletion date & time
      *
-     * @return \DateTimeImmutable Deletion date & time
+     * @return \DateTimeInterface Deletion date & time
      */
     public function getDeleted()
     {

@@ -65,7 +65,7 @@ class LocalPath implements PathInterface
     /**
      * Creation date
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     protected $creationDate = null;
     /**
@@ -191,7 +191,7 @@ class LocalPath implements PathInterface
     /**
      * Return the object's creation date
      *
-     * @return \DateTimeImmutable Object creation date
+     * @return \DateTimeInterface Object creation date
      */
     public function getCreationDate()
     {
@@ -201,10 +201,10 @@ class LocalPath implements PathInterface
     /**
      * Set the object's creation date
      *
-     * @param \DateTimeImmutable $creationDate
+     * @param \DateTimeInterface $creationDate
      * @return PathInterface|LocalPath New object path
      */
-    public function setCreationDate(\DateTimeImmutable $creationDate)
+    public function setCreationDate(\DateTimeInterface $creationDate)
     {
         $path = clone $this;
         $path->creationDate = $creationDate;

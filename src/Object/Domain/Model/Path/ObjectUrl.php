@@ -102,10 +102,10 @@ class ObjectUrl extends Url implements PathInterface
     /**
      * Set the object's creation date
      *
-     * @param \DateTimeImmutable $creationDate
+     * @param \DateTimeInterface $creationDate
      * @return PathInterface|ObjectUrl New object path
      */
-    public function setCreationDate(\DateTimeImmutable $creationDate)
+    public function setCreationDate(\DateTimeInterface $creationDate)
     {
         $this->localPath = $this->localPath->setCreationDate($creationDate);
         return $this;
@@ -189,7 +189,7 @@ class ObjectUrl extends Url implements PathInterface
     /**
      * Return the object's creation date
      *
-     * @return \DateTimeImmutable Object creation date
+     * @return \DateTimeInterface Object creation date
      */
     public function getCreationDate()
     {

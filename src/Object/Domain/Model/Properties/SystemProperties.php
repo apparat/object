@@ -135,25 +135,25 @@ class SystemProperties extends AbstractProperties
     /**
      * Creation date of this revision
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     protected $created = null;
     /**
      * Modification date of this revision
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     protected $modified = null;
     /**
      * Publication date of this revision
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     protected $published = null;
     /**
      * Deletion date of this revision
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     protected $deleted = null;
     /**
@@ -304,7 +304,7 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the creation date & time of this revision
      *
-     * @return \DateTimeImmutable Creation date & time
+     * @return \DateTimeInterface Creation date & time
      */
     public function getCreated()
     {
@@ -314,7 +314,7 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the modification date & time of this revision
      *
-     * @return \DateTimeImmutable Modification date & time
+     * @return \DateTimeInterface Modification date & time
      */
     public function getModified()
     {
@@ -324,7 +324,7 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the publication date & time of this revision
      *
-     * @return \DateTimeImmutable|null Publication date & time
+     * @return \DateTimeInterface|null Publication date & time
      */
     public function getPublished()
     {
@@ -334,7 +334,7 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the deletion date & time of this revision
      *
-     * @return \DateTimeImmutable|null Deletion date & time
+     * @return \DateTimeInterface|null Deletion date & time
      */
     public function getDeleted()
     {

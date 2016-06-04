@@ -266,7 +266,7 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the creation date & time
      *
-     * @return \DateTimeImmutable Creation date & time
+     * @return \DateTimeInterface Creation date & time
      */
     public function getCreated()
     {
@@ -276,7 +276,7 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the deletion date & time
      *
-     * @return \DateTimeImmutable Deletion date & time
+     * @return \DateTimeInterface Deletion date & time
      */
     public function getDeleted()
     {
@@ -286,7 +286,7 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the modification date & time
      *
-     * @return \DateTimeImmutable Modification date & time
+     * @return \DateTimeInterface Modification date & time
      */
     public function getModified()
     {
@@ -296,7 +296,7 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the publication date & time
      *
-     * @return \DateTimeImmutable Publication date & time
+     * @return \DateTimeInterface Publication date & time
      */
     public function getPublished()
     {

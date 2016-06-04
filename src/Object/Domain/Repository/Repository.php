@@ -99,10 +99,15 @@ class Repository implements RepositoryInterface
      * @param string|Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
+     * @param \DateTimeInterface $creationDate Object creation date
      * @return ObjectInterface Object
      */
-    public function createObject($type, $payload = '', array $propertyData = [])
-    {
+    public function createObject(
+        $type,
+        $payload = '',
+        array $propertyData = [],
+        \DateTimeInterface $creationDate = null
+    ) {
         // Instantiate the object type
         if (!($type instanceof Type)) {
             /** @var Type $type */
@@ -113,7 +118,7 @@ class Repository implements RepositoryInterface
         $objectManager = Kernel::create(Service::class)->getObjectManager();
 
         // Create and return the object
-        return $objectManager->createObject($this, $type, $payload, $propertyData);
+        return $objectManager->createObject($this, $type, $payload, $propertyData, $creationDate);
     }
 
     /**

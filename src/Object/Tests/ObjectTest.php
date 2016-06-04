@@ -410,12 +410,14 @@ namespace Apparat\Object\Tests {
             // Create a temporary repository & article
             $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
             $payload = 'Revision 1 draft';
-            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, $payload);
+            $creationDate = new \DateTimeImmutable('yesterday');
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, $payload, $creationDate);
             $this->assertInstanceOf(Article::class, $article);
             $this->assertEquals($payload, $article->getPayload());
             $this->assertFileExists($tempRepoDirectory.
                 str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
                     ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
+            $this->assertEquals($creationDate, $article->getCreated());
 
             // Alter and persist the object
             $article->setPayload('Revision 1 draft (updated)');
@@ -506,10 +508,14 @@ namespace Apparat\Object\Tests {
          *
          * @param string $tempRepoDirectory Repository directory
          * @param string $payload Article payload
+         * @param \DateTimeInterface $creationDate Article creation date
          * @return Article Article object
          */
-        protected function createRepositoryAndArticleObject($tempRepoDirectory, $payload)
-        {
+        protected function createRepositoryAndArticleObject(
+            $tempRepoDirectory,
+            $payload,
+            \DateTimeInterface $creationDate = null
+        ) {
             $fileRepository = RepositoryFactory::create(
                 getenv('REPOSITORY_URL'),
                 [
@@ -521,7 +527,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
 
             // Create a new article in the temporary repository
-            return $fileRepository->createObject(Type::ARTICLE, $payload);
+            return $fileRepository->createObject(Type::ARTICLE, $payload, [], $creationDate);
         }
 
         /**

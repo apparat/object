@@ -67,12 +67,23 @@ class Manager implements ManagerInterface
      * @param Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
+     * @param \DateTimeInterface $creationDate Object creation date
      * @return ObjectInterface Object
      */
-    public function createObject(RepositoryInterface $repository, Type $type, $payload = '', array $propertyData = [])
-    {
+    public function createObject(
+        RepositoryInterface $repository,
+        Type $type,
+        $payload = '',
+        array $propertyData = [],
+        \DateTimeInterface $creationDate = null
+    ) {
+        // Set the creation date to now if empty
+        if ($creationDate === null) {
+            $creationDate = new \DateTimeImmutable('now');
+        }
+
         // Construct a creation closure
-        $creationClosure = function (Id $uid) use ($repository, $type, $payload, $propertyData) {
+        $creationClosure = function (Id $uid) use ($repository, $type, $payload, $propertyData, $creationDate) {
             /** @var Revision $revision */
             $revision = Kernel::create(Revision::class, [1, true]);
 
@@ -81,7 +92,7 @@ class Manager implements ManagerInterface
             $repositoryPath = $repositoryPath->setId($uid);
             $repositoryPath = $repositoryPath->setRevision($revision);
             $repositoryPath = $repositoryPath->setType($type);
-            $repositoryPath = $repositoryPath->setCreationDate(new \DateTimeImmutable());
+            $repositoryPath = $repositoryPath->setCreationDate($creationDate);
 
             return ObjectFactory::createFromParams($repositoryPath, $payload, $propertyData);
         };
@@ -162,7 +173,8 @@ class Manager implements ManagerInterface
      * @param int $visibility Object visibility
      * @throw InvalidArgumentException If the visibility requirement is invalid
      */
-    protected function validateVisibility($visibility) {
+    protected function validateVisibility($visibility)
+    {
         // If the visibility requirement is invalid
         if (!Selector::isValidVisibility($visibility)) {
             throw new InvalidArgumentException(

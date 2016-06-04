@@ -59,10 +59,10 @@ interface RepositoryPathInterface extends PathInterface
     /**
      * Set the object's creation date
      *
-     * @param \DateTimeImmutable $creationDate
+     * @param \DateTimeInterface $creationDate
      * @return RepositoryPathInterface New object path
      */
-    public function setCreationDate(\DateTimeImmutable $creationDate);
+    public function setCreationDate(\DateTimeInterface $creationDate);
 
     /**
      * Set the object type

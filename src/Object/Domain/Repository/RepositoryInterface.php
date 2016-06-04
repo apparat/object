@@ -52,9 +52,15 @@ interface RepositoryInterface extends SearchableRepositoryInterface
      * @param string|Type $type Object type
      * @param string $payload Object payload
      * @param array $propertyData Object property data
+     * @param \DateTimeInterface $creationDate Object creation date
      * @return ObjectInterface Object
      */
-    public function createObject($type, $payload = '', array $propertyData = []);
+    public function createObject(
+        $type,
+        $payload = '',
+        array $propertyData = [],
+        \DateTimeInterface $creationDate = null
+    );
 
     /**
      * Delete and object from the repository

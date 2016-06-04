@@ -92,7 +92,7 @@ namespace Apparat\Object\Tests {
          */
         public function testUndefinedObjectType()
         {
-            $resource = $this->getMock(ResourceInterface::class);
+            $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([]);
             $repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
 
@@ -109,7 +109,7 @@ namespace Apparat\Object\Tests {
          */
         public function testInvalidObjectType()
         {
-            $resource = $this->getMock(ResourceInterface::class);
+            $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
             $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
 
@@ -277,7 +277,7 @@ namespace Apparat\Object\Tests {
         {
             TestType::addInvalidType();
 
-            $resource = $this->getMock(ResourceInterface::class);
+            $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
             $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5-invalid/5');
 

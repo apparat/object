@@ -37,7 +37,7 @@
 namespace Apparat\Object\Tests {
 
     use Apparat\Kernel\Ports\Kernel;
-    use Apparat\Kernel\Tests\AbstractTest;
+    use Apparat\Dev\Tests\AbstractTest;
     use Apparat\Object\Application\Model\Object\Contact;
     use Apparat\Object\Domain\Repository\Service;
     use Apparat\Object\Infrastructure\Repository\AutoConnector;

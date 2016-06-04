@@ -45,7 +45,7 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Kernel
  * @subpackage Apparat\Object\Tests
  */
-abstract class AbstractDisabledAutoconnectorTest extends \Apparat\Kernel\Tests\AbstractTest
+abstract class AbstractDisabledAutoconnectorTest extends \Apparat\Dev\Tests\AbstractTest
 {
     /**
      * Setup

@@ -12,15 +12,16 @@
   "require": {
     "php": ">=5.6.0",
     "apparat/resource": "^0.1.3",
-    "apparat/kernel": "@dev",
-    "dominicsayers/isemail": "@dev",
+    "apparat/kernel": "dev-master",
+    "dominicsayers/isemail": "dev-master",
     "league/commonmark": "^0.13",
-    "psr/http-message": "~1.0",
-    "satooshi/php-coveralls": "^1.0",
-    "codeclimate/php-test-reporter": "dev-master"
+    "psr/http-message": "~1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.3"
+    "phpunit/phpunit": "^5.3",
+    "apparat/dev": "dev-master",
+    "satooshi/php-coveralls": "^1.0",
+    "codeclimate/php-test-reporter": "dev-master"
   },
   "repositories": [
     {
@@ -31,6 +32,11 @@
     {
       "type": "vcs",
       "url": "git@github.com:apparat/kernel.git",
+      "reference": "master"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:apparat/dev.git",
       "reference": "master"
     },
     {

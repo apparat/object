@@ -74,7 +74,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const DRAFT_PATH = '/2015/10/01/36704-event/36704+';
+    const DRAFT_PATH = '/2015/10/01/36704-event/.36704';
     /**
      * Example URL
      *

@@ -84,4 +84,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_URL_PORT = 1449925885;
+    /**
+     * Invalid GEO URL
+     *
+     * @var int
+     */
+    const INVALID_GEO_URL = 1465153737;
 }

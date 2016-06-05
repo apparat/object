@@ -52,14 +52,21 @@ abstract class AbstractDatatype implements DatatypeInterface
      * @var ObjectInterface
      */
     protected $object;
+    /**
+     * Filter
+     *
+     * @var array
+     */
+    protected $filter;
 
     /**
      * Constructor
      *
      * @param ObjectInterface $object Owning object
      */
-    public function __construct(ObjectInterface $object)
+    public function __construct(ObjectInterface $object, array $filter)
     {
         $this->object = $object;
+        $this->filter = $filter;
     }
 }

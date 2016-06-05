@@ -34,140 +34,111 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Contract;
+namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Object types interface
+ * Geo URI
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface ObjectTypesInterface
+class GeoUri extends Uri
 {
     /**
-     * Article
+     * Latitude
      *
-     * @var string
+     * @var float
      */
-    const ARTICLE = 'article';
+    protected $latitude;
     /**
-     * Audio
+     * Longitude
      *
-     * @var string
+     * @var float
      */
-    const AUDIO = 'audio';
+    protected $longitude;
     /**
-     * Bookmark
+     * Altitude
      *
-     * @var string
+     * @var float
      */
-    const BOOKMARK = 'bookmark';
+    protected $altitude;
     /**
-     * Checkin
+     * Geo schema
      *
      * @var string
      */
-    const CHECKIN = 'checkin';
+    const SCHEME_GEO = 'geo';
     /**
-     * Cite
+     * Regular expression for matching the Geo coordinates
      *
      * @var string
      */
-    const CITE = 'cite';
+    const GEO_REGEX = '(?P<latitude>-?\d(?:\.\d+)*),(?P<longitude>-?\d(?:\.\d+)*)(?:,(?P<altitude>-?\d(?:\.\d+)*))?';
+
     /**
-     * Code
+     * Constructor
      *
-     * @var string
+     * @param string $uri Geo URI
+     * @throws InvalidArgumentException If the Geo URI doesn't suffice RFC 5870
      */
-    const CODE = 'code';
+    public function __construct($uri)
+    {
+        parent::__construct($uri);
+
+        // If the Geo URI doesn't suffice RFC 5870
+        if (!preg_match('%^'.self::SCHEME_GEO.':'.self::GEO_REGEX.'$%', $this->uri, $geoParts)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid RFC 5870 GEO URL "%s"', $this->uri),
+                InvalidArgumentException::INVALID_GEO_URL
+            );
+        }
+
+        $this->latitude = floatval($geoParts['latitude']);
+        $this->longitude = floatval($geoParts['longitude']);
+        $this->altitude = empty($geoParts['altitude']) ? null : floatval($geoParts['altitude']);
+    }
+
     /**
-     * Contact
+     * Return the latitude
      *
-     * @var string
+     * @return float latitude
      */
-    const CONTACT = 'contact';
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
     /**
-     * Address
+     * Return the longitude
      *
-     * @var string
+     * @return float Longitude
      */
-    const ADDRESS = 'address';
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
     /**
-     * Event
+     * Return the altitude
      *
-     * @var string
+     * @return float Altitude
      */
-    const EVENT = 'event';
+    public function getAltitude()
+    {
+        return $this->altitude;
+    }
+
     /**
-     * Favourite
+     * Serialize the Geo URI
      *
-     * @var string
+     * @return string
      */
-    const FAVOURITE = 'favourite';
-    /**
-     * Geo
-     *
-     * @var string
-     */
-    const GEO = 'geo';
-    /**
-     * Image
-     *
-     * @var string
-     */
-    const IMAGE = 'image';
-    /**
-     * Item
-     *
-     * @var string
-     */
-    const ITEM = 'item';
-    /**
-     * Like
-     *
-     * @var string
-     */
-    const LIKE = 'like';
-    /**
-     * Note
-     *
-     * @var string
-     */
-    const NOTE = 'note';
-    /**
-     * Project
-     *
-     * @var string
-     */
-    const PROJECT = 'project';
-    /**
-     * Reply
-     *
-     * @var string
-     */
-    const REPLY = 'reply';
-    /**
-     * Review
-     *
-     * @var string
-     */
-    const REVIEW = 'review';
-    /**
-     * Rsvp
-     *
-     * @var string
-     */
-    const RSVP = 'rsvp';
-    /**
-     * Venue
-     *
-     * @var string
-     */
-    const VENUE = 'venue';
-    /**
-     * Video
-     *
-     * @var string
-     */
-    const VIDEO = 'video';
+    public function __toString()
+    {
+        $geoUri = self::SCHEME_GEO.':'.$this->latitude.','.$this->longitude;
+        if ($this->altitude !== null) {
+            $geoUri .= ','.$this->altitude;
+        }
+        return $geoUri;
+    }
 }

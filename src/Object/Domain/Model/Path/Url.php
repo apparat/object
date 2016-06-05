@@ -44,20 +44,20 @@ use Psr\Http\Message\UriInterface;
  *
  * @package Apparat\Object\Domain\Model
  */
-class Url implements UriInterface
+class Url extends Uri implements UriInterface
 {
     /**
      * Use PSR-7 method
      */
     use Psr7Trait;
     /**
-     * HTTP-Schema
+     * HTTP scheme
      *
      * @var string
      */
     const SCHEME_HTTP = 'http';
     /**
-     * HTTPS-Schema
+     * HTTPS schema
      *
      * @var string
      */
@@ -83,6 +83,7 @@ class Url implements UriInterface
      */
     public function __construct($url)
     {
+        parent::__construct($url);
 
         // Parse the URL
         $this->urlParts = @parse_url($url);

@@ -179,7 +179,6 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
 
         // Run through all sub-properties
         foreach ($propertyPath as $property) {
-
             // If the sub-property doesn't exist
             if (!array_key_exists($property, $data)) {
                 $data[$property] = [];

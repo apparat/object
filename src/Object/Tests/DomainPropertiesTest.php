@@ -102,11 +102,13 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
     {
         $object = Object::instance(getenv('REPOSITORY_URL').self::CONTACT_PATH);
         $object->setDomainProperty('givenName', 'John');
+        $object->setDomainProperty('givenName', 'John'); // Intentional re-set!
         $object->setDomainProperty('familyName', 'Doe');
         $object->setDomainProperty('nickname', 'Houdini');
         $object->setDomainProperty('email', ['john.doe@example.com', 'john@test.com']);
         $object->setDomainProperty('logo', ['logo.jpg', '/2016/06/05/2-image']);
-//        print_r($object->getPropertyData());
+        $object->setDomainProperty('org', '/2016/06/05/2-contact');
+        print_r($object->getPropertyData());
     }
 
     /**

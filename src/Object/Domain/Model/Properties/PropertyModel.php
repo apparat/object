@@ -54,13 +54,18 @@ class PropertyModel
      * @var boolean
      */
     protected $multivalue;
-
     /**
      * Allowed datatypes
      *
      * @var array
      */
     protected $datatypes;
+    /**
+     * Datatype filter
+     *
+     * @var array
+     */
+    protected $filter;
     /**
      * Owning object
      *
@@ -74,14 +79,16 @@ class PropertyModel
      * @param ObjectInterface $object Owning object
      * @param bool $multivalue Multivalue property
      * @param array $datatypes Allowed datatypes
+     * @param array $filter Datatype filters
      * @throws InvalidArgumentException If no datatypes are allowed
      * @throws InvalidArgumentException If the datatype is invalid
      */
-    public function __construct(ObjectInterface $object, $multivalue, array $datatypes)
+    public function __construct(ObjectInterface $object, $multivalue, array $datatypes, array $filter = [])
     {
         $this->object = $object;
         $this->multivalue = boolval($multivalue);
         $this->datatypes = $datatypes;
+        $this->filter = $filter;
 
         // If no datatypes are allowed
         if (!count($this->datatypes)) {
@@ -104,7 +111,10 @@ class PropertyModel
                 );
             }
 
-            $this->datatypes[$datatypeIndex] = Kernel::create($datatype, [$this->object]);
+            $this->datatypes[$datatypeIndex] = Kernel::create(
+                $datatype,
+                [$this->object, empty($this->filter[$datatype]) ? [] : (array)$this->filter[$datatype]]
+            );
         }
     }
 
@@ -150,6 +160,8 @@ class PropertyModel
                 return $datatype->match($value);
             } catch (DomainException $e) {
                 continue;
+            } catch (\Exception $e) {
+                break;
             }
         }
 

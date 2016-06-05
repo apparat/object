@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat/object
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @subpackage  Apparat\Object\Infrastructure
+ * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,46 +34,40 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Datatype;
+namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Properties\DomainException;
+use Apparat\Object\Domain\Model\Path\GeoUri;
 
 /**
- * Apparat URL
+ * Geo URI test
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage ApparatTest
  */
-class ApparatUrl extends Url
+class GeoUriTest extends AbstractDisabledAutoconnectorTest
 {
     /**
-     * Match a value against this datatype
-     *
-     * @param mixed $value Value
-     * @return mixed Matched and processed value
-     * @throws DomainException If the value is not a valid URL
+     * Test a valid Geo URI
      */
-    public function match($value)
+    public function testGeoUri()
     {
-        try {
-            /** @var \Apparat\Object\Domain\Model\Path\ApparatUrl $apparatUrl */
-            $apparatUrl = Kernel::create(
-                \Apparat\Object\Domain\Model\Path\ApparatUrl::class,
-                [$value, true, $this->object->getRepositoryPath()->getRepository()]
-            );
+        /** @var GeoUri $geo */
+        $geo = Kernel::create(GeoUri::class, ['geo:1.23,-9.87']);
+        $this->assertInstanceOf(GeoUri::class, $geo);
+        $this->assertEquals(1.23, $geo->getLatitude());
+        $this->assertEquals(-9.87, $geo->getLongitude());
+        $this->assertNull($geo->getAltitude());
+    }
 
-            // If the apparat URL needs to be filtered
-            if (count($this->filter) && !in_array($apparatUrl->getType()->getType(), $this->filter)) {
-                throw new DomainException;
-            }
-        } catch (DomainException $e) {
-            throw new \InvalidArgumentException;
-
-        } catch (\Exception $e) {
-            throw new DomainException;
-        }
-
-        return $apparatUrl;
+    /**
+     * Test an invalid Geo URI
+     *
+     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedExceptionCode 1465153737
+     */
+    public function testInvalidGeoUri()
+    {
+        Kernel::create(GeoUri::class, ['geo:1.23,abc']);
     }
 }

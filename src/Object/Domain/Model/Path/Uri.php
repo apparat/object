@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,46 +34,40 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Datatype;
-
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Properties\DomainException;
+namespace Apparat\Object\Domain\Model\Path;
 
 /**
- * Apparat URL
+ * Abstract URI base class
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
-class ApparatUrl extends Url
+abstract class Uri
 {
     /**
-     * Match a value against this datatype
+     * URI
      *
-     * @param mixed $value Value
-     * @return mixed Matched and processed value
-     * @throws DomainException If the value is not a valid URL
+     * @var string
      */
-    public function match($value)
+    protected $uri;
+
+    /**
+     * Constructor
+     *
+     * @param string $uri URI
+     */
+    public function __construct($uri)
     {
-        try {
-            /** @var \Apparat\Object\Domain\Model\Path\ApparatUrl $apparatUrl */
-            $apparatUrl = Kernel::create(
-                \Apparat\Object\Domain\Model\Path\ApparatUrl::class,
-                [$value, true, $this->object->getRepositoryPath()->getRepository()]
-            );
+        $this->uri = $uri;
+    }
 
-            // If the apparat URL needs to be filtered
-            if (count($this->filter) && !in_array($apparatUrl->getType()->getType(), $this->filter)) {
-                throw new DomainException;
-            }
-        } catch (DomainException $e) {
-            throw new \InvalidArgumentException;
-
-        } catch (\Exception $e) {
-            throw new DomainException;
-        }
-
-        return $apparatUrl;
+    /**
+     * Return the serialized URL
+     *
+     * @return string Serialized URL
+     */
+    public function __toString()
+    {
+        return $this->uri;
     }
 }

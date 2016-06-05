@@ -143,7 +143,7 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
     /**
      * Test the reduction of arrays
      */
-    function testReduceArray()
+    public function testReduceArray()
     {
         $object = new \stdClass();
         $this->assertEquals(

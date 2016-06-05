@@ -37,10 +37,14 @@
 namespace Apparat\Object\Application\Model\Properties\Domain\Traits;
 
 use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
+use Apparat\Object\Application\Model\Properties\Datatype\Datetime;
 use Apparat\Object\Application\Model\Properties\Datatype\Email;
 use Apparat\Object\Application\Model\Properties\Datatype\Sentence;
+use Apparat\Object\Application\Model\Properties\Datatype\Text;
+use Apparat\Object\Application\Model\Properties\Datatype\Token;
 use Apparat\Object\Application\Model\Properties\Datatype\Url;
 use Apparat\Object\Application\Model\Properties\Domain\Contact;
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException;
 
@@ -53,6 +57,10 @@ use Apparat\Object\Domain\Model\Properties\InvalidArgumentException;
  */
 trait ContactPropertiesModelTrait
 {
+    /**
+     * Use the address properties model
+     */
+    use AddressPropertiesModelTrait;
     /**
      * Property model: Name
      *
@@ -113,6 +121,82 @@ trait ContactPropertiesModelTrait
      * @var array
      */
     protected $pmLogo = [true, [ApparatUrl::class, Url::class]];
+    /**
+     * Property model: URL
+     *
+     * @var array
+     */
+    protected $pmUrl = [true, [Url::class]];
+    /**
+     * Property model: Address
+     *
+     * @var array
+     */
+    protected $pmAdr = [true, [ApparatUrl::class, Text::class]];
+    /**
+     * Property model: Telephone number
+     *
+     * @var array
+     */
+    protected $pmTel = [true, [Sentence::class]];
+    /**
+     * Property model: Note
+     *
+     * @var array
+     */
+    protected $pmNote = [true, [Text::class]];
+    /**
+     * Property model: Birthday
+     *
+     * @var array
+     */
+    protected $pmBday = [false, [Datetime::class]];
+    /**
+     * Property model: Cryptographic public key
+     *
+     * @var array
+     */
+    protected $pmKey = [true, [Url::class]];
+    /**
+     * Property model: Organization
+     *
+     * @var array
+     */
+    protected $pmOrg = [
+        true,
+        [ApparatUrl::class, Sentence::class],
+        [ApparatUrl::class => [ObjectTypesInterface::CONTACT]]
+    ];
+    /**
+     * Property model: Job title
+     *
+     * @var array
+     */
+    protected $pmJobTitle = [true, [Sentence::class]];
+    /**
+     * Property model: Instant messaging
+     *
+     * @var array
+     */
+    protected $pmImpp = [true, [Url::class]];
+    /**
+     * Property model: Biological sex
+     *
+     * @var array
+     */
+    protected $pmSex = [false, [Token::class]];
+    /**
+     * Property model: Gender identity
+     *
+     * @var array
+     */
+    protected $pmGenderIdentity = [false, [Sentence::class]];
+    /**
+     * Property model: Anniversary
+     *
+     * @var array
+     */
+    protected $pmAnniversary = [true, [Datetime::class]];
 
     /**
      * Set the given name

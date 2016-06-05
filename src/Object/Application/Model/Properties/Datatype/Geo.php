@@ -40,40 +40,28 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Properties\DomainException;
 
 /**
- * Apparat URL
+ * Geo URI
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class ApparatUrl extends Url
+class Geo extends Token
 {
     /**
      * Match a value against this datatype
      *
      * @param mixed $value Value
      * @return mixed Matched and processed value
-     * @throws DomainException If the value is not a valid URL
+     * @throws DomainException If the value is not a valid Geo URI
      */
     public function match($value)
     {
         try {
-            /** @var \Apparat\Object\Domain\Model\Path\ApparatUrl $apparatUrl */
-            $apparatUrl = Kernel::create(
-                \Apparat\Object\Domain\Model\Path\ApparatUrl::class,
-                [$value, true, $this->object->getRepositoryPath()->getRepository()]
-            );
-
-            // If the apparat URL needs to be filtered
-            if (count($this->filter) && !in_array($apparatUrl->getType()->getType(), $this->filter)) {
-                throw new DomainException;
-            }
-        } catch (DomainException $e) {
-            throw new \InvalidArgumentException;
-
+            $geo = Kernel::create(\Apparat\Object\Domain\Model\Path\GeoUri::class, [$value]);
         } catch (\Exception $e) {
             throw new DomainException;
         }
 
-        return $apparatUrl;
+        return $geo;
     }
 }

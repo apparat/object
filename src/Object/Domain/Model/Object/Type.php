@@ -60,6 +60,7 @@ class Type implements SerializablePropertyInterface, ObjectTypesInterface
         self::CITE => true,
         self::CODE => true,
         self::CONTACT => true,
+        self::ADDRESS => true,
         self::EVENT => true,
         self::FAVOURITE => true,
         self::GEO => true,

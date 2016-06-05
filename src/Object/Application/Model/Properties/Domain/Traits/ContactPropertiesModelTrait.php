@@ -58,7 +58,7 @@ use Apparat\Object\Domain\Model\Properties\InvalidArgumentException;
 trait ContactPropertiesModelTrait
 {
     /**
-     * Use the address properties model
+     * Use the external property models
      */
     use AddressPropertiesModelTrait;
     /**
@@ -120,7 +120,13 @@ trait ContactPropertiesModelTrait
      *
      * @var array
      */
-    protected $pmLogo = [true, [ApparatUrl::class, Url::class]];
+    protected $pmLogo = [true, [ApparatUrl::class, Url::class], [ApparatUrl::class => [ObjectTypesInterface::IMAGE]]];
+    /**
+     * Property model: Photo
+     *
+     * @var array
+     */
+    protected $pmPhoto = [true, [ApparatUrl::class, Url::class], [ApparatUrl::class => [ObjectTypesInterface::IMAGE]]];
     /**
      * Property model: URL
      *

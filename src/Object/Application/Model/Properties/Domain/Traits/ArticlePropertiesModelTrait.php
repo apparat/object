@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @package     Apparat\Server
+ * @subpackage  Apparat\Object\Application\Model\Properties\Domain\Traits
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,21 +34,57 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Domain;
+namespace Apparat\Object\Application\Model\Properties\Domain\Traits;
 
-use Apparat\Object\Application\Model\Properties\Domain\Traits\ArticlePropertiesModelTrait;
-use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
+use Apparat\Object\Application\Model\Properties\Datatype\Sentence;
+use Apparat\Object\Application\Model\Properties\Datatype\Text;
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
- * Article object domain properties
+ * Article properties model trait
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
+ * @method ObjectInterface getObject()
  */
-class Article extends AbstractDomainProperties
+trait ArticlePropertiesModelTrait
 {
     /**
-     * Use the article properties model
+     * Property model: Location
+     *
+     * @var array
      */
-    use ArticlePropertiesModelTrait;
+    protected $pmLocation = [
+        false,
+        [ApparatUrl::class, Sentence::class],
+        [ApparatUrl::class => [ObjectTypesInterface::ADDRESS, ObjectTypesInterface::GEO]]
+    ];
+    /**
+     * Property model: RSVP
+     *
+     * @var array
+     */
+    protected $pmRsvp = [false, [Token::class]];
+    /**
+     * Property model: Comment
+     *
+     * @var array
+     */
+    protected $pmComment = [
+        true,
+        [ApparatUrl::class, Text::class],
+        [ApparatUrl::class => [ObjectTypesInterface::CITE]]
+    ];
+    /**
+     * Property model: Featured
+     *
+     * @var array
+     */
+    protected $pmFeatured = [
+        false,
+        [ApparatUrl::class, Url::class],
+        [ApparatUrl::class => [ObjectTypesInterface::IMAGE]]
+    ];
 }

@@ -44,6 +44,7 @@ use Apparat\Object\Application\Model\Object\AbstractBinaryObject;
 use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
 use Apparat\Object\Application\Model\Object\Manager;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
+use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 use Apparat\Object\Domain\Repository\Service;
@@ -82,6 +83,7 @@ class Module extends AbstractModule
         $environment->required('APPARAT_BASE_URL')->notEmpty();
         $environment->required('OBJECT_RESOURCE_EXTENSION')->notEmpty();
         $environment->required('OBJECT_DATE_PRECISION')->isInteger()->allowedValues([0, 1, 2, 3, 4, 5, 6]);
+        $environment->required('OBJECT_DEFAULT_PRIVACY')->notEmpty()->allowedValues(MetaProperties::$privacyLevels);
         $environment->required('OBJECT_DEFAULT_LANGUAGE')->notEmpty();
         $environment->required('OBJECT_ENABLE_TYPES')->notEmpty();
 

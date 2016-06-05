@@ -165,7 +165,7 @@ class MetaProperties extends AbstractProperties
      *
      * @var array
      */
-    protected static $privacyLevels = [
+    public static $privacyLevels = [
         self::PRIVACY_PRIVATE,
         self::PRIVACY_PUBLIC,
     ];
@@ -212,6 +212,11 @@ class MetaProperties extends AbstractProperties
         // Initialize the categories
         if (array_key_exists(self::PROPERTY_CATEGORIES, $data)) {
             $this->categories = $this->normalizeSortedPropertyValues((array)$data[self::PROPERTY_CATEGORIES]);
+        }
+
+        // Initialize the privacy
+        if (array_key_exists(self::PROPERTY_PRIVACY, $data)) {
+            $this->privacy = $data[self::PROPERTY_PRIVACY];
         }
     }
 

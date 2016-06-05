@@ -45,6 +45,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Object\Revision;
     use Apparat\Object\Domain\Model\Object\Type;
     use Apparat\Object\Domain\Model\Path\RepositoryPath;
+    use Apparat\Object\Domain\Model\Properties\MetaProperties;
     use Apparat\Object\Domain\Model\Properties\SystemProperties;
     use Apparat\Object\Domain\Repository\Repository;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
@@ -397,6 +398,7 @@ namespace Apparat\Object\Tests {
             $creationDate = new \DateTimeImmutable('yesterday');
             $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, $payload, $creationDate);
             $this->assertInstanceOf(Article::class, $article);
+            $this->assertEquals(MetaProperties::PRIVACY_PUBLIC, $article->getPrivacy());
             $this->assertEquals($payload, $article->getPayload());
             $this->assertFileExists($tempRepoDirectory.
                 str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()

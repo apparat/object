@@ -41,6 +41,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
 /**
@@ -130,6 +131,14 @@ class ObjectFactory
             $systemPropertyData[SystemProperties::PROPERTY_LANGUAGE] = getenv('OBJECT_DEFAULT_LANGUAGE');
         }
         $propertyData[SystemProperties::COLLECTION] = $systemPropertyData;
+
+        // Prepare the meta properties collection
+        $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) ||
+            !is_array(
+                $propertyData[MetaProperties::COLLECTION]
+            )) ? [] : $propertyData[MetaProperties::COLLECTION];
+        $metaPropertyData[MetaProperties::PROPERTY_PRIVACY] = getenv('OBJECT_DEFAULT_PRIVACY');
+        $propertyData[MetaProperties::COLLECTION] = $metaPropertyData;
 
         // Instantiate the object
         /** @var ObjectInterface $object */

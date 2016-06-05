@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Properties;
 
+use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
@@ -126,29 +127,91 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     {
         $propertyPath = $this->buildPropertyPath($property);
 
-        // Traverse the property tree
-        $mutated = false;
-        $propertyPathSteps = [];
-        $dataRoot = $this->data;
-        $data =& $dataRoot;
-        foreach ($propertyPath as $property) {
-            $propertyPathSteps[] = $property;
+        // Traverse the property tree and find the property node to set
+        $created = false;
+        $propertyTree = $this->data;
+        $propertyModel = null;
+        $data =& $this->findPropertyNode($propertyPath, $propertyTree, $created, $propertyModel);
 
-            // If the property name step is invalid
+        // If a new property is created with a non-empty value or an existing property is altered: Mutate
+        if ($created ? !empty($value) : !$this->assertEquals($data, $value)) {
+            $this->setPropertyValue($data, $value, $propertyPath, $propertyModel);
+            return new static($propertyTree, $this->object);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set a property value
+     *
+     * @param mixed $property Property
+     * @param mixed $value Value
+     * @param array $propertyPath Property path
+     * @param PropertyModel $propertyModel Property model
+     */
+    protected function setPropertyValue(
+        &$property,
+        $value,
+        array $propertyPath = null,
+        PropertyModel $propertyModel = null
+    ) {
+        $property = $value;
+    }
+
+    /**
+     * Traverse the property tree and return a node
+     *
+     * @param array $propertyPath Property name path
+     * @param array $propertyTree Copy of the current property tree
+     * @param boolean $created Property has been created
+     * @param PropertyModel $propertyModel Property model
+     * @return mixed Property node
+     */
+    protected function &findPropertyNode(
+        array $propertyPath,
+        array &$propertyTree,
+        &$created,
+        PropertyModel &$propertyModel = null
+    ) {
+        $propertyModel = null;
+        $data =& $propertyTree;
+
+        // Run through all sub-properties
+        foreach ($propertyPath as $property) {
+
+            // If the sub-property doesn't exist
             if (!array_key_exists($property, $data)) {
                 $data[$property] = [];
-                $mutated = true;
+                $created = true;
             }
 
             $data =& $data[$property];
         }
 
-        // If a new property is created with a non-empty value or an existing property is altered: Mutate
-        if ($mutated ? !empty($value) : ($value !== $data)) {
-            $data = $value;
-            return new static($dataRoot, $this->object);
+        return $data;
+    }
+
+    /**
+     * Assert that two values equal
+     *
+     * @param mixed $expected Expected value
+     * @param mixed $actual Actual value
+     * @return boolean Actual value equals the expected one
+     */
+    protected function assertEquals($expected, $actual)
+    {
+        // If both values don't have the same type
+        if (gettype($expected) !== gettype($actual)) {
+            return false;
         }
 
-        return $this;
+        // If we are comparing arrays
+        if (is_array($expected)) {
+            return ArrayUtility::reduce($expected) == ArrayUtility::reduce($actual);
+        }
+
+        // Compare the values
+        return $expected == $actual;
     }
 }

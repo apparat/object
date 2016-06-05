@@ -139,4 +139,20 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
         $sorted = ['a' => ['a' => 1, 'c' => 3], 'b' => 2];
         $this->assertEquals(serialize($sorted), serialize(ArrayUtility::sortRecursiveByKey($unsorted)));
     }
+
+    /**
+     * Test the reduction of arrays
+     */
+    function testReduceArray()
+    {
+        $object = new \stdClass();
+        $this->assertEquals(
+            ArrayUtility::reduce([1, 2, 'test', $object, false]),
+            ArrayUtility::reduce([null, 2, $object, 1, 'test'])
+        );
+        $this->assertEquals(
+            ArrayUtility::reduce(['one' => true, 'two' => [1, 2, 'three']]),
+            ArrayUtility::reduce(['two' => ['three', 1, 2], 'one' => true])
+        );
+    }
 }

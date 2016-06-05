@@ -399,6 +399,7 @@ class MetaProperties extends AbstractProperties
     public function toArray()
     {
         return array_filter([
+            self::PROPERTY_TITLE => $this->title,
             self::PROPERTY_DESCRIPTION => $this->description,
             self::PROPERTY_ABSTRACT => $this->abstract,
             self::PROPERTY_KEYWORDS => $this->keywords,

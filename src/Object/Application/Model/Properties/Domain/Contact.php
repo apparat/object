@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Application\Model\Properties\Domain;
 
+use Apparat\Object\Application\Model\Properties\Domain\Traits\ContactPropertiesModelTrait;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 
 /**
@@ -46,5 +47,50 @@ use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
  */
 class Contact extends AbstractDomainProperties
 {
-
+    /**
+     * Use the contact properties model
+     */
+    use ContactPropertiesModelTrait;
+    /**
+     * Given name
+     *
+     * @var string
+     */
+    const GIVEN_NAME = 'givenName';
+    /**
+     * Given name
+     *
+     * @var string
+     */
+    const ADDITIONAL_NAME = 'additionalName';
+    /**
+     * Nickname
+     *
+     * @var string
+     */
+    const NICKNAME = 'nickname';
+    /**
+     * Family name
+     *
+     * @var string
+     */
+    const FAMILY_NAME = 'familyName';
+    /**
+     * Honorific prefix
+     *
+     * @var string
+     */
+    const HONORIFIC_PREFIX = 'honorificPrefix';
+    /**
+     * Honorific suffix
+     *
+     * @var string
+     */
+    const HONORIFIC_SUFFIX = 'honorificSuffix';
+    /**
+     * Sort string
+     *
+     * @var string
+     */
+    const SORT_STRING = 'sortString';
 }

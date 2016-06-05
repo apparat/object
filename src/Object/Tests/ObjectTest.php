@@ -340,22 +340,6 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Test mutation by altering domain properties
-         */
-        public function testDomainPropertyMutation()
-        {
-            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-            $this->assertTrue(is_array($object->getPropertyData()));
-            $objectUrl = $object->getAbsoluteUrl();
-            $objectRevision = $object->getRevision();
-            $object->setDomainProperty('a:b:c', 'mutated');
-            $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1-2', $objectUrl), $object->getAbsoluteUrl());
-            $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
-            $this->assertTrue($object->hasBeenModified());
-            $this->assertTrue($object->hasBeenMutated());
-        }
-
-        /**
          * Test change by altering processing instructions
          */
         public function testProcessingInstructionChange()

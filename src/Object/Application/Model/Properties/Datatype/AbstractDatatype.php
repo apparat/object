@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,28 +34,32 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Application\Model\Properties\Datatype;
 
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
- * Article object
+ * Abstract datatype
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Article extends AbstractCommonMarkObject
+abstract class AbstractDatatype implements DatatypeInterface
 {
     /**
-     * Domain property collection class
+     * Owning
      *
-     * @var string
+     * @var ObjectInterface
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    protected $object;
+
     /**
-     * Object type
+     * Constructor
      *
-     * @var string
+     * @param ObjectInterface $object Owning object
      */
-    const TYPE = Type::ARTICLE;
+    public function __construct(ObjectInterface $object)
+    {
+        $this->object = $object;
+    }
 }

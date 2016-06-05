@@ -60,4 +60,77 @@ class ArrayUtility
         }
         return $array;
     }
+
+    /**
+     * Return a comparable checksum of an array
+     *
+     * @param array $array Array
+     * @return string Comparable checksum
+     */
+    public static function reduce(array $array)
+    {
+        if (self::isNumericArray($array)) {
+            return self::reduceNumeric($array);
+        }
+
+        return self::reduceAssociative($array);
+    }
+
+    /**
+     * Return a comparable checksum of a numeric array
+     *
+     * @param array $array Numeric array
+     * @return string Comparable checksum
+     */
+    protected static function reduceNumeric(array $array) {
+        $array = array_map(['self', 'reduceValue'], $array);
+        sort($array, SORT_STRING);
+        return 'array-'.sha1(serialize($array));
+    }
+
+    /**
+     * Return a comparable checksum of an associative array
+     *
+     * @param array $array Associative array
+     * @return string Comparable checksum
+     */
+    protected static function reduceAssociative(array $array) {
+        ksort($array, SORT_STRING);
+        $array = array_map(['self', 'reduceValue'], $array);
+        return 'array-'.sha1(serialize($array));
+    }
+
+    /**
+     * Reduce a value to a checksum
+     *
+     * @param mixed $value Value
+     * @return string Checksum
+     */
+    protected static function reduceValue($value) {
+        $type = empty($value) ? 'empty' : gettype($value);
+        if (is_array($value)) {
+            return self::reduce($value);
+        } elseif (is_object($value)) {
+            $value = spl_object_hash($value);
+        }
+        return $type.'-'.sha1(strval($value));
+    }
+
+    /**
+     * Determine if all keys of an array are numeric
+     *
+     * @param array $array Array
+     * @return bool All keys are numeric
+     */
+    public static function isNumericArray(array $array)
+    {
+        $allNumeric = true;
+        foreach (array_keys($array) as $key) {
+            if (!is_numeric($key)) {
+                $allNumeric = false;
+                break;
+            }
+        }
+        return $allNumeric;
+    }
 }

@@ -36,10 +36,12 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Ports\Object;
 
 /**
  * Selector tests
@@ -77,7 +79,7 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidType()
     {
-        new Type('invalid');
+        Kernel::create(Type::class, ['invalid']);
     }
 
     /**
@@ -85,8 +87,8 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testTypeSerialization()
     {
-        $type = new Type(Type::ARTICLE);
-        $this->assertEquals(Type::ARTICLE, $type->serialize());
+        $type = Kernel::create(Type::class, [Object::ARTICLE]);
+        $this->assertEquals(Object::ARTICLE, $type->serialize());
     }
 
     /**

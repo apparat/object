@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Tests
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @subpackage  Apparat\Object\Domain\Contract
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,31 +34,23 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Tests;
-
-use Apparat\Object\Domain\Model\Object\Type;
+namespace Apparat\Object\Domain\Contract;
 
 /**
- * Test type
+ * Type service interface
  *
- * @package Apparat\Kernel
- * @subpackage ApparatTest
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-class TestType extends Type
+interface TypeServiceInterface
 {
     /**
-     * Register an invalid object type
+     * Return whether a particular object type is supported
+     *
+     * Non-static variant for domain usage
+     *
+     * @param string $type Object type
+     * @return boolean Object type is supported
      */
-    public static function addInvalidType()
-    {
-        parent::$types['invalid'] = true;
-    }
-
-    /**
-     * Remove the invalid object type
-     */
-    public static function removeInvalidType()
-    {
-        unset(parent::$types['invalid']);
-    }
+    public function supportsType($type);
 }

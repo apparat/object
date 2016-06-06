@@ -37,9 +37,9 @@
 namespace Apparat\Object\Ports;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Contract\ObjectTypesInterface;
+use Apparat\Object\Application\Contract\ObjectTypesInterface;
+use Apparat\Object\Application\Service\TypeService;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Repository\SelectorInterface;
@@ -52,12 +52,6 @@ use Apparat\Object\Domain\Repository\SelectorInterface;
  */
 class Object implements ObjectTypesInterface
 {
-    /**
-     * Supported object types
-     *
-     * @var array
-     */
-    protected static $supportedTypes = [];
     /**
      * Private
      *
@@ -111,20 +105,10 @@ class Object implements ObjectTypesInterface
      * Enable an object type
      *
      * @param string $type Object type
-     * @throws InvalidArgumentException If the object type is invalid
      */
     public static function enableType($type)
     {
-        $type = trim($type);
-
-        // If the object type is invalid
-        if (!strlen($type) || !array_key_exists($type, Type::$types)) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid object type "%s"', $type),
-                InvalidArgumentException::INVALID_OBJECT_TYPE
-            );
-        }
-        self::$supportedTypes[$type] = $type;
+        TypeService::enableType($type);
     }
 
     /**
@@ -135,8 +119,7 @@ class Object implements ObjectTypesInterface
      */
     public static function supportsType($type)
     {
-        $type = trim($type);
-        return strlen($type) && array_key_exists($type, self::$supportedTypes);
+        return TypeService::isEnabled($type);
     }
 
     /**
@@ -146,6 +129,6 @@ class Object implements ObjectTypesInterface
      */
     public static function getSupportedTypes()
     {
-        return self::$supportedTypes;
+        return TypeService::getSupportedTypes();
     }
 }

@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 
 /**
  * Image object
@@ -51,7 +51,7 @@ class Image extends AbstractBinaryObject
      *
      * @var string
      */
-    const TYPE = Type::IMAGE;
+    const TYPE = ObjectTypesInterface::IMAGE;
     /**
      * Domain property collection class
      *

@@ -36,10 +36,12 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Ports\Object;
 
 /**
  * Selector tests
@@ -162,7 +164,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidDateComponent()
     {
-        new RepositorySelector('invalid');
+        Kernel::create(RepositorySelector::class, ['invalid']);
     }
 
     /**
@@ -174,7 +176,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidIdComponent()
     {
-        new RepositorySelector(2015, 1, 1, null, null, null, 'invalid');
+        Kernel::create(RepositorySelector::class, [2015, 1, 1, null, null, null, 'invalid']);
     }
 
     /**
@@ -186,7 +188,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidTypeComponent()
     {
-        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'invalid');
+        Kernel::create(RepositorySelector::class, [2015, 1, 1, null, null, null, 1, 'invalid']);
     }
 
     /**
@@ -198,7 +200,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidRevisionComponent()
     {
-        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', 'invalid');
+        Kernel::create(RepositorySelector::class, [2015, 1, 1, null, null, null, 1, Object::EVENT, 'invalid']);
     }
 
     /**
@@ -210,6 +212,9 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidVisibilityComponent()
     {
-        new RepositorySelector(2015, 1, 1, null, null, null, 1, 'event', Revision::CURRENT, 0);
+        Kernel::create(
+            RepositorySelector::class,
+            [2015, 1, 1, null, null, null, 1, Object::EVENT, Revision::CURRENT, 0]
+        );
     }
 }

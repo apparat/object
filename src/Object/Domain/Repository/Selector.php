@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Domain\Repository;
 
+use Apparat\Object\Domain\Contract\TypeServiceInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Object\Type;
 
 /**
  * Repository selector
@@ -111,19 +111,21 @@ class Selector implements SelectorInterface
     /**
      * Repository selector constructor
      *
-     * @param string|int|NULL $year
-     * @param string|int|NULL $month
-     * @param string|int|NULL $day
-     * @param string|int|NULL $hour
-     * @param string|int|NULL $minute
-     * @param string|int|NULL $second
+     * @param TypeServiceInterface $typeService Type Service
+     * @param string|int|NULL $year Year
+     * @param string|int|NULL $month Month
+     * @param string|int|NULL $day Day
+     * @param string|int|NULL $hour Hour
+     * @param string|int|NULL $minute Minute
+     * @param string|int|NULL $second Second
      * @param string|int|NULL $uid Object ID
      * @param string|NULL $type Object type
-     * @param int|NULL $revision
-     * @param int $visibility
+     * @param int|NULL $revision Revision
+     * @param int $visibility Visibility
      * @throws InvalidArgumentException If any of the components isn't valid
      */
     public function __construct(
+        TypeServiceInterface $typeService,
         $year = self::WILDCARD,
         $month = self::WILDCARD,
         $day = self::WILDCARD,
@@ -180,7 +182,7 @@ class Selector implements SelectorInterface
         $this->uid = $uid;
 
         // If the type component isn't valid
-        if (!Type::isValidType($type) && ($type !== self::WILDCARD)) {
+        if (!$typeService->supportsType($type) && ($type !== self::WILDCARD)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid repository selector type component "%s"',

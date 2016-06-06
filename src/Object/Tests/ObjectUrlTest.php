@@ -36,11 +36,13 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Repository\Service;
+use Apparat\Object\Ports\Object;
 
 /**
  * Object URL tests
@@ -126,7 +128,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertInstanceOf(Id::class, $url->getId());
         $this->assertEquals(new Id(36704), $url->getId());
         $this->assertInstanceOf(Type::class, $url->getType());
-        $this->assertEquals(new Type('event'), $url->getType());
+        $this->assertEquals(Kernel::create(Type::class, [Object::EVENT]), $url->getType());
         $this->assertInstanceOf(Revision::class, $url->getRevision());
         $this->assertEquals(new Revision(1), $url->getRevision());
         $this->assertEquals(self::REMOTE_REPOSITORY_URL, Service::normalizeRepositoryUrl($url));
@@ -221,6 +223,8 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlSetters()
     {
+        /** @var Type $articleType */
+        $articleType = Kernel::create(Type::class, [Object::ARTICLE]);
         $url = new ObjectUrl(self::URL);
         $this->assertEquals('test', $url->setUser('test')->getUser());
         $this->assertEquals(null, $url->setUser(null)->getUser());
@@ -236,7 +240,10 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
             $url->setCreationDate(new \DateTimeImmutable('@1451606400'))->getCreationDate()->format('Y-m-d')
         );
         $this->assertEquals(123, $url->setId(new Id(123))->getId()->getId());
-        $this->assertEquals('article', $url->setType(new Type('article'))->getType()->getType());
+        $this->assertEquals(
+            'article',
+            $url->setType($articleType)->getType()->getType()
+        );
         $this->assertEquals(
             Revision::CURRENT,
             $url->setRevision(Revision::current())->getRevision()->getRevision()

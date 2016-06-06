@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,28 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
-
-use Apparat\Object\Domain\Contract\ObjectTypesInterface;
+namespace Apparat\Object\Application\Service;
 
 /**
- * Article object
+ * Service out-of-bounds exception
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Article extends AbstractCommonMarkObject
+class OutOfBoundsException extends \OutOfBoundsException
 {
     /**
-     * Domain property collection class
+     * Invalid object type
      *
-     * @var string
+     * @var int
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
-    /**
-     * Object type
-     *
-     * @var string
-     */
-    const TYPE = ObjectTypesInterface::ARTICLE;
+    const INVALID_OBJECT_TYPE = 1464810106;
 }

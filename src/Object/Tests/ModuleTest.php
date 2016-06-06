@@ -61,13 +61,10 @@ class ModuleTest extends AbstractDisabledAutoconnectorTest
      */
     public function testEnableObjectType()
     {
+        $supportedObjectTypes = Object::getSupportedTypes();
         Object::enableType(Object::EVENT);
         $this->assertEquals(
-            [
-                Object::ARTICLE => Object::ARTICLE,
-                Object::CONTACT => Object::CONTACT,
-                Object::EVENT => Object::EVENT
-            ],
+            array_merge($supportedObjectTypes, [Object::EVENT => Object::EVENT]),
             Object::getSupportedTypes()
         );
         $this->assertTrue(Object::supportsType(Object::EVENT));
@@ -77,7 +74,7 @@ class ModuleTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test enabling an invalid object type
      *
-     * @expectedException \Apparat\Object\Ports\InvalidArgumentException
+     * @expectedException \Apparat\Object\Application\Service\OutOfBoundsException
      * @expectedExceptionCode 1464810106
      */
     public function testEnableInvalidType()

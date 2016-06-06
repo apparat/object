@@ -37,10 +37,10 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Image;
-use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Infrastructure\Utilities\File;
+use Apparat\Object\Ports\Object;
 use Apparat\Object\Ports\Repository as RepositoryFactory;
 
 /**
@@ -73,7 +73,7 @@ class ImageObjectTest extends AbstractRepositoryEnabledTest
         $payloadFileName2 = '1.'.File::hash($fixtureDirectory.'Normalsegelapparat1895.jpg').'.jpg';
 
         // Create and persist an image object
-        $image = $repository->createObject(Type::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
+        $image = $repository->createObject(Object::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
         $this->assertInstanceOf(Image::class, $image);
         $this->assertEquals($payloadFileName1, $image->getPayload());
         $this->assertFileExists($tempRepoDirectory.

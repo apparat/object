@@ -43,10 +43,14 @@ use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
 use Apparat\Object\Application\Model\Object\AbstractBinaryObject;
 use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
 use Apparat\Object\Application\Model\Object\Manager;
+use Apparat\Object\Application\Service\TypeService;
+use Apparat\Object\Domain\Contract\TypeServiceInterface;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
+use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Repository\AdapterStrategyFactoryInterface;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
+use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
@@ -147,6 +151,22 @@ class Module extends AbstractModule
                 ],
                 ManagerInterface::class => [
                     'instance' => Manager::class,
+                ],
+            ]
+        ]);
+
+        // Configure the type service
+        $diContainer->register(Type::class, [
+            'substitutions' => [
+                TypeServiceInterface::class => [
+                    'instance' => TypeService::class,
+                ],
+            ]
+        ]);
+        $diContainer->register(Selector::class, [
+            'substitutions' => [
+                TypeServiceInterface::class => [
+                    'instance' => TypeService::class,
                 ],
             ]
         ]);

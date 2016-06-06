@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,28 +34,31 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Contract\ObjectTypesInterface;
+use Apparat\Object\Application\Service\TypeService;
 
 /**
- * Article object
+ * Test type
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @package Apparat\Kernel
+ * @subpackage ApparatTest
  */
-class Article extends AbstractCommonMarkObject
+class TestTypeService extends TypeService
 {
     /**
-     * Domain property collection class
-     *
-     * @var string
+     * Register an invalid object type
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
+    public static function addInvalidType()
+    {
+        parent::$enabledTypes['invalid'] = true;
+    }
+
     /**
-     * Object type
-     *
-     * @var string
+     * Remove the invalid object type
      */
-    const TYPE = ObjectTypesInterface::ARTICLE;
+    public static function removeInvalidType()
+    {
+        unset(parent::$enabledTypes['invalid']);
+    }
 }

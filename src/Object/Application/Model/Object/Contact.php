@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\Type;
 
 /**
  * Contact object
@@ -58,5 +58,5 @@ class Contact extends AbstractObject
      *
      * @var string
      */
-    const TYPE = Type::CONTACT;
+    const TYPE = ObjectTypesInterface::CONTACT;
 }

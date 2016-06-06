@@ -37,6 +37,7 @@
 namespace Apparat\Object\Application\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Application\Service\TypeService;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
@@ -94,7 +95,7 @@ class ObjectFactory
         // If the object type is invalid
         $objectType = $type->getType();
         $objectClass = 'Apparat\\Object\\Application\\Model\\Object\\'.ucfirst($objectType);
-        if (!Type::isValidType($objectType) || !class_exists($objectClass)) {
+        if (!TypeService::isEnabled($objectType) || !class_exists($objectClass)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid object type "%s"', $objectType),
                 InvalidArgumentException::INVALID_OBJECT_TYPE

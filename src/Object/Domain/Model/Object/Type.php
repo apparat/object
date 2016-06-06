@@ -36,8 +36,10 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
+use Apparat\Object\Domain\Contract\TypeServiceInterface;
 
 /**
  * Object type
@@ -48,48 +50,31 @@ use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 class Type implements SerializablePropertyInterface, ObjectTypesInterface
 {
     /**
-     * Type list
-     *
-     * @var array
-     */
-    public static $types = [
-        self::ARTICLE => true,
-        self::AUDIO => true,
-        self::BOOKMARK => true,
-        self::CHECKIN => true,
-        self::CITE => true,
-        self::CODE => true,
-        self::CONTACT => true,
-        self::ADDRESS => true,
-        self::EVENT => true,
-        self::FAVOURITE => true,
-        self::GEO => true,
-        self::IMAGE => true,
-        self::ITEM => true,
-        self::LIKE => true,
-        self::NOTE => true,
-        self::PROJECT => true,
-        self::REPLY => true,
-        self::REVIEW => true,
-        self::RSVP => true,
-        self::VENUE => true,
-        self::VIDEO => true,
-    ];
-    /**
      * Object type
      *
      * @var string
      */
     protected $type = null;
+    /**
+     * Type service
+     *
+     * @var TypeServiceInterface
+     */
+    protected $typeService;
 
     /**
      * Type constructor
      *
      * @param string $type Object type
+     * @param TypeServiceInterface $typeService Type service
+     * @throws InvalidArgumentException If the type is not supported
      */
-    public function __construct($type)
+    public function __construct($type, TypeServiceInterface $typeService)
     {
-        if (!$type || !self::isValidType($type)) {
+        $this->typeService = $typeService;
+
+        // If the type is not supported
+        if (!$this->typeService->supportsType($type)) {
             throw new InvalidArgumentException(
                 sprintf('Invalid object type "%s"', $type),
                 InvalidArgumentException::INVALID_OBJECT_TYPE
@@ -100,18 +85,6 @@ class Type implements SerializablePropertyInterface, ObjectTypesInterface
     }
 
     /**
-     * Test if a type string is valid
-     *
-     * @param string $type Type string
-     * @return bool Valid type
-     */
-    public static function isValidType($type)
-    {
-        $type = trim($type);
-        return strlen($type) && array_key_exists($type, self::$types);
-    }
-
-    /**
      * Unserialize the string representation of this property
      *
      * @param string $str Serialized property
@@ -119,7 +92,7 @@ class Type implements SerializablePropertyInterface, ObjectTypesInterface
      */
     public static function unserialize($str)
     {
-        return new static($str);
+        return Kernel::create(static::class, [$str]);
     }
 
     /**

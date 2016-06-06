@@ -108,7 +108,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
         $object->setDomainProperty('email', ['john.doe@example.com', 'john@test.com']);
         $object->setDomainProperty('logo', ['logo.jpg', '/2016/06/05/2-image']);
         $object->setDomainProperty('org', '/2016/06/05/2-contact');
-        print_r($object->getPropertyData());
+//        print_r($object->getPropertyData());
     }
 
     /**

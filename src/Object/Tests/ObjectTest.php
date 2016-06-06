@@ -81,7 +81,7 @@ namespace Apparat\Object\Tests {
         {
             putenv('MOCK_FLOCK');
             putenv('MOCK_RENAME');
-            TestType::removeInvalidType();
+            TestTypeService::removeInvalidType();
             parent::tearDown();
         }
 
@@ -172,7 +172,7 @@ namespace Apparat\Object\Tests {
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals(new Id(1), $articleObject->getId());
-            $this->assertEquals(new Type(Type::ARTICLE), $articleObject->getType());
+            $this->assertEquals(Kernel::create(Type::class, [Object::ARTICLE]), $articleObject->getType());
             $this->assertEquals(new Revision(1), $articleObject->getRevision());
             $this->assertFalse($articleObject->isDraft());
             $this->assertTrue($articleObject->isPublished());
@@ -276,7 +276,7 @@ namespace Apparat\Object\Tests {
          */
         public function testInvalidObjectTypeClass()
         {
-            TestType::addInvalidType();
+            TestTypeService::addInvalidType();
 
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
@@ -513,7 +513,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
 
             // Create a new article in the temporary repository
-            return $fileRepository->createObject(Type::ARTICLE, $payload, [], $creationDate);
+            return $fileRepository->createObject(Object::ARTICLE, $payload, [], $creationDate);
         }
 
         /**

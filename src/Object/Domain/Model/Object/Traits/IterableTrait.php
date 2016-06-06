@@ -97,8 +97,9 @@ trait IterableTrait
      */
     public function valid()
     {
-        /** @var AbstractObject $this */
-        return $this->nextRevision->getRevision() <= count($this);
+        /** @var AbstractObject $that */
+        $that =& $this;
+        return $this->nextRevision->getRevision() <= count($that);
     }
 
     /**

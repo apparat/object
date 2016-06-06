@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
-use Apparat\Object\Domain\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Repository\InvalidArgumentException as RepositoryInvalidArgumentException;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
@@ -107,7 +107,6 @@ class Manager implements ManagerInterface
      * @param RepositoryPathInterface $path Repository object path
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
-     * @throws InvalidArgumentException If the visibility requirement is invalid
      */
     public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL)
     {
@@ -131,6 +130,7 @@ class Manager implements ManagerInterface
      * @param RepositoryPathInterface $currentPath
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
+     * @throws InvalidArgumentException If the resource could not be loaded
      */
     public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL)
     {
@@ -164,6 +164,14 @@ class Manager implements ManagerInterface
             }
         }
 
+        // If the resource could not be loaded
+        if (!($objectResource instanceof ResourceInterface)) {
+            throw new InvalidArgumentException(
+                'Resource does not exist',
+                InvalidArgumentException::RESOURCE_DOES_NOT_EXIST
+            );
+        }
+
         return $objectResource;
     }
 
@@ -171,18 +179,18 @@ class Manager implements ManagerInterface
      * Validate a given object visibility
      *
      * @param int $visibility Object visibility
-     * @throw InvalidArgumentException If the visibility requirement is invalid
+     * @throw RepositoryInvalidArgumentException If the visibility requirement is invalid
      */
     protected function validateVisibility($visibility)
     {
         // If the visibility requirement is invalid
         if (!Selector::isValidVisibility($visibility)) {
-            throw new InvalidArgumentException(
+            throw new RepositoryInvalidArgumentException(
                 sprintf(
                     'Invalid repository selector visibility "%s"',
                     $visibility
                 ),
-                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                RepositoryInvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
                 null,
                 'visibility'
             );

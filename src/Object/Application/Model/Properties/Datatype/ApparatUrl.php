@@ -69,7 +69,6 @@ class ApparatUrl extends Url
             }
         } catch (DomainException $e) {
             throw new \InvalidArgumentException;
-
         } catch (\Exception $e) {
             throw new DomainException;
         }

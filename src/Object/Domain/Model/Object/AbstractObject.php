@@ -62,7 +62,7 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-abstract class AbstractObject implements ObjectInterface, \Iterator, \Countable
+abstract class AbstractObject implements ObjectInterface
 {
     /**
      * Use traits

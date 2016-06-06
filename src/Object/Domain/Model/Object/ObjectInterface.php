@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Model\Relation\RelationInterface;
  *
  * @package Apparat\Object\Domain\Model\Object
  */
-interface ObjectInterface
+interface ObjectInterface extends \Iterator, \Countable
 {
     /**
      * Clean state

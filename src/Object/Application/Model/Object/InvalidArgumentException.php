@@ -4,8 +4,8 @@
  * apparat/object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @package     Apparat\Server
+ * @subpackage  Apparat\Object\Application\Model\Object
  * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,35 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Datatype;
-
-use Apparat\Object\Application\Model\Properties\Domain\DomainException;
+namespace Apparat\Object\Application\Model\Object;
 
 /**
- * Datetime
+ * InvalidArgumentException
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Datetime extends AbstractDatatype
+class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Match a value against this datatype
+     * Resource does not exist
      *
-     * @param mixed $value Value
-     * @return mixed Matched and processed value
-     * @throws DomainException If the value is not a valid date
+     * @var int
      */
-    public function match($value)
-    {
-        try {
-            $value = new \DateTimeImmutable($value);
-
-            // If the value is not a valid date
-        } catch (\Exception $e) {
-            throw new DomainException;
-        }
-
-        return $value;
-    }
+    const RESOURCE_DOES_NOT_EXIST = 1447616824;
 }

@@ -182,7 +182,12 @@ class RelationFactory
 
             // Next: Try to parse it as URL
             try {
-                $url = self::parseRelationUrl($relationComponent, $parsed[self::PARSE_COUPLING], $contextRepository);
+                $parsed[self::PARSE_COUPLING] = intval($parsed[self::PARSE_COUPLING]);
+                $url = self::parseRelationUrl(
+                    $relationComponent,
+                    $parsed[self::PARSE_COUPLING],
+                    $contextRepository
+                );
 
                 // If the URL component has already been registered
                 if (!empty($parsed[self::PARSE_URL])) {

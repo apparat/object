@@ -77,8 +77,8 @@ namespace Apparat\Object\Tests {
             $image = $repository->createObject(Object::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
             $this->assertInstanceOf(Image::class, $image);
             $this->assertEquals($payloadFileName1, $image->getPayload());
-            $this->assertFileExists($tempRepoDirectory.
-                dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+            $this->assertFileExists(
+                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
                 DIRECTORY_SEPARATOR.$payloadFileName1
             );
 
@@ -92,8 +92,8 @@ namespace Apparat\Object\Tests {
             $image->setPayload($fixtureDirectory.'Normalsegelapparat1895.jpg')->persist();
             $this->assertEquals('gemeinfrei', $image->getDomainProperty('license'));
             $this->assertEquals($payloadFileName2, $image->getPayload());
-            $this->assertFileExists($tempRepoDirectory.
-                dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+            $this->assertFileExists(
+                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
                 DIRECTORY_SEPARATOR.$payloadFileName2
             );
 

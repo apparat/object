@@ -85,7 +85,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
     /**
      * Test a domain property model violation
      *
-     * @expectedException \Apparat\Object\Application\Model\Properties\DomainException
+     * @expectedException \Apparat\Object\Application\Model\Properties\Domain\DomainException
      * @expectedExceptionCode 1465130534
      */
     public function testDomainPropertyModel()

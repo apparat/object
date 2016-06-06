@@ -37,7 +37,7 @@
 namespace Apparat\Object\Application\Model\Properties\Datatype;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Application\Model\Properties\DomainException;
+use Apparat\Object\Application\Model\Properties\Domain\DomainException;
 
 /**
  * Geo URI

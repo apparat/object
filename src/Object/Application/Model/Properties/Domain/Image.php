@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Application\Model\Properties\Domain;
 
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
-
 /**
  * Image object domain properties
  *

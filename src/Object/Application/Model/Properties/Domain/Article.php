@@ -36,7 +36,6 @@
 
 namespace Apparat\Object\Application\Model\Properties\Domain;
 
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Application\Model\Properties\Domain\Traits\ArticlePropertiesModelTrait;
 
 /**

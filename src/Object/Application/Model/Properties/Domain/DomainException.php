@@ -34,26 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties;
+namespace Apparat\Object\Application\Model\Properties\Domain;
 
 /**
- * Domain properties InvalidArgumentException
+ * Domain exception
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class DomainException extends \DomainException
 {
     /**
-     * Invalid allowed property datatypes
+     * Invalid domain subproperty
      *
      * @var int
      */
-    const INVALID_PROPERTY_DATATYPES = 1465140832;
+    const INVALID_DOMAIN_SUBPROPERTY = 1465130534;
     /**
-     * Invalid allowed property datatype
+     * Invalid domain property value
      *
      * @var int
      */
-    const INVALID_PROPERTY_DATATYPE = 1465141877;
+    const INVALID_DOMAIN_PROPERTY_VALUE = 1465140806;
 }

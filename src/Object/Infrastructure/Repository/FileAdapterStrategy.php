@@ -156,8 +156,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         foreach ($repoDirectories as $repoDirectory) {
             // If the repository cannot be initialized
             if (file_exists($repoDirectory) ? !is_dir($repoDirectory) : !mkdir($repoDirectory, 0777, true)) {
-                throw new DomainRepositoryRuntimeException('Could not initialize repository',
-                    DomainRepositoryRuntimeException::REPO_NOT_INITIALIZED);
+                throw new DomainRepositoryRuntimeException(
+                    'Could not initialize repository',
+                    DomainRepositoryRuntimeException::REPO_NOT_INITIALIZED
+                );
             }
         }
 

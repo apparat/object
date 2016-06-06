@@ -64,5 +64,4 @@ abstract class AbstractPayloadProcessor implements PayloadProcessorInterface
     {
         $this->object = $object;
     }
-
 }

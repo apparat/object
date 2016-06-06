@@ -67,7 +67,8 @@ namespace Apparat\Object\Tests {
         {
             // Create a temporary repository
             $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-            $fixtureDirectory = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'.DIRECTORY_SEPARATOR;
+            $fixtureDirectory = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'
+                .DIRECTORY_SEPARATOR;
             $repository = $this->createRepository($tempRepoDirectory);
             $payloadFileName1 = '1.'.File::hash($fixtureDirectory.'MuehlenbergDerwitz.jpg').'.jpg';
             $payloadFileName2 = '1.'.File::hash($fixtureDirectory.'Normalsegelapparat1895.jpg').'.jpg';
@@ -170,7 +171,8 @@ namespace Apparat\Object\Tests {
 
             // Create a temporary repository
             $tempRepoDirectory = $this->registerTemporaryDirectory(sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo');
-            $fixtureDirectory = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'.DIRECTORY_SEPARATOR;
+            $fixtureDirectory = __DIR__.DIRECTORY_SEPARATOR.'Fixture'.DIRECTORY_SEPARATOR.'non-repo'
+                .DIRECTORY_SEPARATOR;
             $repository = $this->createRepository($tempRepoDirectory);
 
             // Create an image object

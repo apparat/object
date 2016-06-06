@@ -103,8 +103,10 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
             // If an invalid sub-property should be allocated
             if ($propertyModel !== null) {
                 throw new DomainException(
-                    sprintf('Property data model of "%s" doesn\'t allow subproperties',
-                        implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathSteps)),
+                    sprintf(
+                        'Property data model of "%s" doesn\'t allow subproperties',
+                        implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathSteps)
+                    ),
                     DomainException::INVALID_DOMAIN_SUBPROPERTY
                 );
             }

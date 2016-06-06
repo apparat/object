@@ -98,7 +98,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
     /**
      * Test a domain property model violation
      */
-    public function testDomainPropertyModel2()
+    public function testContactDomainPropertyModel()
     {
         $object = Object::instance(getenv('REPOSITORY_URL').self::CONTACT_PATH);
         $object->setDomainProperty('givenName', 'John');
@@ -110,16 +110,4 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
         $object->setDomainProperty('org', '/2016/06/05/2-contact');
 //        print_r($object->getPropertyData());
     }
-
-    /**
-     * Test a domain property datatype violation
-     *
-     */
-//    public function testDomainPropertyDatatype() {
-//        $object = Object::instance(getenv('REPOSITORY_URL').self::CONTACT_PATH);
-//        $object->setDomainProperty('givenName'.self::SEPARATOR.'subproperty', 'violation');
-//    }
-
-//* @expectedException \Apparat\Object\Domain\Model\Properties\DomainException
-//* @expectedExceptionCode 1465130534
 }

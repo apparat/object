@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat/object
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
- * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @subpackage  Apparat\Object\Test
+ * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,37 +34,42 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Tests;
+
+use Apparat\Object\Ports\Object;
 
 /**
- * Abstract URI base class
+ * Processing instruction properties test
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Tests
  */
-abstract class Uri
+class ProcessingInstructionPropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * URI
+     * Example object path
      *
      * @var string
      */
-    protected $uri;
+    const ARTICLE_PATH = '/2015/12/21/1-article/1';
 
     /**
-     * Constructor
-     *
-     * @param string $uri URI
+     * Test change by altering processing instructions
      */
-    public function __construct($uri)
+    public function testProcessingInstructionChange()
     {
-        $this->uri = $uri;
+        $object = Object::instance(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        $this->assertTrue(is_array($object->getPropertyData()));
+        $objectUrl = $object->getAbsoluteUrl();
+        $objectRevision = $object->getRevision();
+        $object->setProcessingInstruction('css', 'other-style.css');
+        $object->setProcessingInstruction('css', 'other-style.css'); // Intentionally re-set the same property
+        $object->setProcessingInstruction('script.var', 1);
+        $object->setProcessingInstruction('script.var', [1, 2]); // Intentionally re-set the same property
+        $object->setProcessingInstruction('script.var', [3, 4]); // Intentionally re-set the same property
+        $this->assertEquals($objectUrl, $object->getAbsoluteUrl());
+        $this->assertEquals($objectRevision->getRevision(), $object->getRevision()->getRevision());
+        $this->assertTrue($object->hasBeenModified());
+        $this->assertFalse($object->hasBeenMutated());
     }
-
-    /**
-     * Return the serialized URL
-     *
-     * @return string Serialized URL
-     */
-    abstract public function __toString();
 }

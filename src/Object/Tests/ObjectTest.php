@@ -341,22 +341,6 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Test change by altering processing instructions
-         */
-        public function testProcessingInstructionChange()
-        {
-            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-            $this->assertTrue(is_array($object->getPropertyData()));
-            $objectUrl = $object->getAbsoluteUrl();
-            $objectRevision = $object->getRevision();
-            $object->setProcessingInstruction('css', 'other-style.css');
-            $this->assertEquals($objectUrl, $object->getAbsoluteUrl());
-            $this->assertEquals($objectRevision->getRevision(), $object->getRevision()->getRevision());
-            $this->assertTrue($object->hasBeenModified());
-            $this->assertFalse($object->hasBeenMutated());
-        }
-
-        /**
          * Test change by altering relations
          */
         public function testRelationChange()
@@ -459,37 +443,6 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Test the creation and persisting of an article object with failing file lock
-         *
-         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
-         * @expectedExceptionCode 1464269155
-         */
-        public function testDeleteArticleObjectImpossible()
-        {
-            putenv('MOCK_RENAME=1');
-            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
-            $this->deleteRecursive($tempRepoDirectory);
-            $article->delete()->persist();
-        }
-
-        /**
-         * Test the creation and persisting of an article object with failing file lock
-         *
-         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
-         * @expectedExceptionCode 1464269179
-         */
-        public function testUndeleteArticleObjectImpossible()
-        {
-            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
-            $article->getRepositoryPath()->getRepository()->deleteObject($article);
-            $this->deleteRecursive($tempRepoDirectory);
-            putenv('MOCK_RENAME=1');
-            $article->undelete()->persist();
-        }
-
-        /**
          * Create a temporary repository and article object
          *
          * @param string $tempRepoDirectory Repository directory
@@ -535,6 +488,37 @@ namespace Apparat\Object\Tests {
                     $this->tmpFiles[] = $path;
                 }
             }
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
+         * @expectedExceptionCode 1464269155
+         */
+        public function testDeleteArticleObjectImpossible()
+        {
+            putenv('MOCK_RENAME=1');
+            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
+            $this->deleteRecursive($tempRepoDirectory);
+            $article->delete()->persist();
+        }
+
+        /**
+         * Test the creation and persisting of an article object with failing file lock
+         *
+         * @expectedException \Apparat\Object\Infrastructure\Repository\RuntimeException
+         * @expectedExceptionCode 1464269179
+         */
+        public function testUndeleteArticleObjectImpossible()
+        {
+            $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
+            $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
+            $article->getRepositoryPath()->getRepository()->deleteObject($article);
+            $this->deleteRecursive($tempRepoDirectory);
+            putenv('MOCK_RENAME=1');
+            $article->undelete()->persist();
         }
     }
 }

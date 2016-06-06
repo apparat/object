@@ -78,40 +78,6 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
     }
 
     /**
-     * Set a property value
-     *
-     * @param mixed $property Property
-     * @param mixed $value Value
-     * @param array $propertyPath Property path
-     * @param PropertyModel $propertyModel Property model
-     */
-    protected function setPropertyValue(
-        &$property,
-        $value,
-        array $propertyPath = null,
-        PropertyModel $propertyModel = null
-    ) {
-        // If the property path is not empty
-        if (is_array($propertyPath) && count($propertyPath)) {
-            // Filter the value if a property model is given
-            if ($propertyModel) {
-                $value = $propertyModel->filterValue($value);
-            }
-
-            // Determine the setter name
-            $propertySetter = 'setPm'.implode(array_map('ucfirst', $propertyPath));
-
-            // If there's an explicit setter for this property: Use it
-            if (is_callable([$this, $propertySetter])) {
-                $this->$propertySetter($property, $value);
-                return;
-            }
-
-            $property = $value;
-        }
-    }
-
-    /**
      * Traverse the property tree and return a node
      *
      * @param array $propertyPath Property name path
@@ -159,5 +125,39 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
         }
 
         return $data;
+    }
+
+    /**
+     * Set a property value
+     *
+     * @param mixed $property Property
+     * @param mixed $value Value
+     * @param array $propertyPath Property path
+     * @param PropertyModel $propertyModel Property model
+     */
+    protected function setPropertyValue(
+        &$property,
+        $value,
+        array $propertyPath = null,
+        PropertyModel $propertyModel = null
+    ) {
+        // If the property path is not empty
+        if (is_array($propertyPath) && count($propertyPath)) {
+            // Filter the value if a property model is given
+            if ($propertyModel) {
+                $value = $propertyModel->filterValue($value);
+            }
+
+            // Determine the setter name
+            $propertySetter = 'setPm'.implode(array_map('ucfirst', $propertyPath));
+
+            // If there's an explicit setter for this property: Use it
+            if (is_callable([$this, $propertySetter])) {
+                $this->$propertySetter($property, $value);
+                return;
+            }
+
+            $property = $value;
+        }
     }
 }

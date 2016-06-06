@@ -59,9 +59,6 @@ class Datetime extends Token
 
         try {
             $value = new \DateTimeImmutable($value);
-            if ($value === false) {
-                throw new \Exception;
-            }
 
             // If the value is not a valid date
         } catch (\Exception $e) {

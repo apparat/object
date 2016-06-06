@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Application\Model\Properties\Datatype;
 
-use Apparat\Object\Application\Model\Properties\Domain\DomainException;
-
 /**
  * Text
  *
@@ -52,15 +50,9 @@ class Text extends AbstractDatatype
      *
      * @param mixed $value Value
      * @return mixed Matched and processed value
-     * @throws DomainException If the value is empty
      */
     public function match($value)
     {
-        // If the value is empty
-        if (!strlen($value)) {
-            throw new DomainException;
-        }
-
         return strval($value);
     }
 }

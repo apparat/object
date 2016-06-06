@@ -105,9 +105,13 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
         $object->setDomainProperty('givenName', 'John'); // Intentional re-set!
         $object->setDomainProperty('familyName', 'Doe');
         $object->setDomainProperty('nickname', 'Houdini');
+        $object->setDomainProperty('additionalName', 'Mike');
+        $object->setDomainProperty('honorificPrefix', 'Prof.');
+        $object->setDomainProperty('honorificSuffix', 'jr.');
         $object->setDomainProperty('email', ['john.doe@example.com', 'john@test.com']);
         $object->setDomainProperty('logo', ['logo.jpg', '/2016/06/05/2-image']);
         $object->setDomainProperty('org', '/2016/06/05/2-contact');
+        $object->setDomainProperty('bday', '2016-06-05T00:00:00Z');
 //        print_r($object->getPropertyData());
     }
 }

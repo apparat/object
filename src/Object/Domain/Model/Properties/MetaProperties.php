@@ -113,6 +113,15 @@ class MetaProperties extends AbstractProperties
      */
     const PRIVACY_PUBLIC = 'public';
     /**
+     * Privacy levels
+     *
+     * @var array
+     */
+    public static $privacyLevels = [
+        self::PRIVACY_PRIVATE,
+        self::PRIVACY_PUBLIC,
+    ];
+    /**
      * Object title
      *
      * @var string
@@ -160,15 +169,6 @@ class MetaProperties extends AbstractProperties
      * @var array
      */
     protected $categories = [];
-    /**
-     * Privacy levels
-     *
-     * @var array
-     */
-    public static $privacyLevels = [
-        self::PRIVACY_PRIVATE,
-        self::PRIVACY_PUBLIC,
-    ];
 
     /*******************************************************************************
      * PUBLIC METHODS

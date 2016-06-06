@@ -78,6 +78,8 @@ trait PayloadTrait
         }
 
         $this->payload = $payload;
+
+        /** @var ObjectInterface $this */
         return $this;
     }
 

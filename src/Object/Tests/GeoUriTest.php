@@ -70,4 +70,13 @@ class GeoUriTest extends AbstractDisabledAutoconnectorTest
     {
         Kernel::create(GeoUri::class, ['geo:1.23,abc']);
     }
+
+    /**
+     * Test Geo URI serialization
+     */
+    public function testGeoUriSerialization()
+    {
+        $geo = Kernel::create(GeoUri::class, ['geo:1.23,-9.87,234.5']);
+        $this->assertEquals('geo:1.23,-9.87,234.5', strval($geo));
+    }
 }

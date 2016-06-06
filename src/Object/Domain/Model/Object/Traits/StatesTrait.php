@@ -176,6 +176,14 @@ trait StatesTrait
     }
 
     /**
+     * Set the system properties collection
+     *
+     * @param SystemProperties $systemProperties System property collection
+     * @param bool $overwrite Overwrite the existing collection (if present)
+     */
+    abstract protected function setSystemProperties(SystemProperties $systemProperties, $overwrite = false);
+
+    /**
      * Set the object state to deleted
      */
     protected function setDeletedState()
@@ -248,12 +256,4 @@ trait StatesTrait
      * Convert this object revision into a draft
      */
     abstract protected function convertToDraft();
-
-    /**
-     * Set the system properties collection
-     *
-     * @param SystemProperties $systemProperties System property collection
-     * @param bool $overwrite Overwrite the existing collection (if present)
-     */
-    abstract protected function setSystemProperties(SystemProperties $systemProperties, $overwrite = false);
 }

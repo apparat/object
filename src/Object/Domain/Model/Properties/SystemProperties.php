@@ -192,12 +192,12 @@ class SystemProperties extends AbstractProperties
 
         // Initialize the object creation date
         if (array_key_exists(self::PROPERTY_CREATED, $data)) {
-            $this->created =  $data[self::PROPERTY_CREATED];
+            $this->created = $data[self::PROPERTY_CREATED];
         }
 
         // Initialize the object modification date
         if (array_key_exists(self::PROPERTY_MODIFIED, $data)) {
-            $this->modified =$data[self::PROPERTY_MODIFIED];
+            $this->modified = $data[self::PROPERTY_MODIFIED];
         }
 
         // Initialize the object publication date

@@ -51,9 +51,9 @@ use Apparat\Object\Domain\Repository\RuntimeException as DomainRepositoryRuntime
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
+use Apparat\Object\Infrastructure\Utilities\File;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
-use Apparat\Object\Infrastructure\Utilities\File;
 
 /**
  * File adapter strategy
@@ -156,7 +156,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         foreach ($repoDirectories as $repoDirectory) {
             // If the repository cannot be initialized
             if (file_exists($repoDirectory) ? !is_dir($repoDirectory) : !mkdir($repoDirectory, 0777, true)) {
-                throw new DomainRepositoryRuntimeException('Could not initialize repository', DomainRepositoryRuntimeException::REPO_NOT_INITIALIZED);
+                throw new DomainRepositoryRuntimeException('Could not initialize repository',
+                    DomainRepositoryRuntimeException::REPO_NOT_INITIALIZED);
             }
         }
 

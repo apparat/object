@@ -45,6 +45,18 @@ namespace Apparat\Object\Domain\Model\Path;
 class GeoUri extends Uri
 {
     /**
+     * Geo schema
+     *
+     * @var string
+     */
+    const SCHEME_GEO = 'geo';
+    /**
+     * Regular expression for matching the Geo coordinates
+     *
+     * @var string
+     */
+    const GEO_REGEX = '(?P<latitude>-?\d+(?:\.\d+)?),(?P<longitude>-?\d+(?:\.\d+)?)(?:,(?P<altitude>-?\d+(?:\.\d+)?))?';
+    /**
      * Latitude
      *
      * @var float
@@ -62,18 +74,6 @@ class GeoUri extends Uri
      * @var float
      */
     protected $altitude;
-    /**
-     * Geo schema
-     *
-     * @var string
-     */
-    const SCHEME_GEO = 'geo';
-    /**
-     * Regular expression for matching the Geo coordinates
-     *
-     * @var string
-     */
-    const GEO_REGEX = '(?P<latitude>-?\d(?:\.\d+)*),(?P<longitude>-?\d(?:\.\d+)*)(?:,(?P<altitude>-?\d(?:\.\d+)*))?';
 
     /**
      * Constructor

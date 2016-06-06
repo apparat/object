@@ -209,14 +209,6 @@ trait Psr7Trait
     }
 
     /**
-     * Return the a complete serialized URL
-     *
-     * @param array $override Override components
-     * @return string Serialized URL
-     */
-    abstract protected function getUrlInternal(array &$override = []);
-
-    /**
      * Set the URL scheme
      *
      * @param string $scheme URL scheme
@@ -271,4 +263,12 @@ trait Psr7Trait
      * @return Url New URL
      */
     abstract public function setFragment($fragment);
+
+    /**
+     * Return the a complete serialized URL
+     *
+     * @param array $override Override components
+     * @return string Serialized URL
+     */
+    abstract protected function getUrlInternal(array &$override = []);
 }

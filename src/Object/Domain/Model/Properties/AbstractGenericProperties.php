@@ -145,7 +145,8 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
      * @param mixed $value Property value
      * @return GenericPropertiesInterface Self reference
      */
-    protected function setPropertyPath(array $propertyPath, array $propertyTree, $value) {
+    protected function setPropertyPath(array $propertyPath, array $propertyTree, $value)
+    {
         // Traverse the property tree and find the property node to set
         $created = false;
         $data =& $this->findPropertyNode($propertyPath, $propertyTree, $created);

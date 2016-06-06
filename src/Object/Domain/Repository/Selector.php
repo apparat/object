@@ -225,6 +225,19 @@ class Selector implements SelectorInterface
     }
 
     /**
+     * Test if the given argument is a valid object visibility
+     *
+     * @param int $visibility Object visibility
+     * @return boolean Valid visibility
+     */
+    public static function isValidVisibility($visibility)
+    {
+        return ($visibility === SelectorInterface::VISIBLE)
+        || ($visibility === SelectorInterface::HIDDEN)
+        || ($visibility === SelectorInterface::ALL);
+    }
+
+    /**
      * Return the year component
      *
      * @return int Year component
@@ -322,18 +335,5 @@ class Selector implements SelectorInterface
     public function getVisibility()
     {
         return $this->visibility;
-    }
-
-    /**
-     * Test if the given argument is a valid object visibility
-     *
-     * @param int $visibility Object visibility
-     * @return boolean Valid visibility
-     */
-    public static function isValidVisibility($visibility)
-    {
-        return ($visibility === SelectorInterface::VISIBLE)
-        || ($visibility === SelectorInterface::HIDDEN)
-        || ($visibility === SelectorInterface::ALL);
     }
 }

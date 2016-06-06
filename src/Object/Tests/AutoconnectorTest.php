@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Tests {
 
-    use Apparat\Kernel\Ports\Kernel;
     use Apparat\Dev\Tests\AbstractTest;
+    use Apparat\Kernel\Ports\Kernel;
     use Apparat\Object\Application\Model\Object\Contact;
     use Apparat\Object\Domain\Repository\Service;
     use Apparat\Object\Infrastructure\Repository\AutoConnector;
@@ -68,6 +68,15 @@ namespace Apparat\Object\Tests {
         }
 
         /**
+         * This method is called after the last test of this test class is run.
+         */
+        public static function tearDownAfterClass()
+        {
+            parent::tearDownAfterClass();
+            Kernel::create(Service::class)->useAutoConnect(false);
+        }
+
+        /**
          * Tears down the fixture
          */
         public function tearDown()
@@ -75,15 +84,6 @@ namespace Apparat\Object\Tests {
             putenv('MOCK_PHP_SAPI_NAME');
             Kernel::create(Service::class)->reset();
             parent::tearDown();
-        }
-
-        /**
-         * This method is called after the last test of this test class is run.
-         */
-        public static function tearDownAfterClass()
-        {
-            parent::tearDownAfterClass();
-            Kernel::create(Service::class)->useAutoConnect(false);
         }
 
         /**

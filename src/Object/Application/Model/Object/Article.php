@@ -47,15 +47,15 @@ use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 class Article extends AbstractCommonMarkObject
 {
     /**
-     * Domain property collection class
-     *
-     * @var string
-     */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
-    /**
      * Object type
      *
      * @var string
      */
     const TYPE = ObjectTypesInterface::ARTICLE;
+    /**
+     * Domain property collection class
+     *
+     * @var string
+     */
+    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Article::class;
 }

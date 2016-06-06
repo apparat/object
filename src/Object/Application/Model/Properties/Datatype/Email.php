@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Application\Model\Properties\Datatype;
 
-use Apparat\Object\Domain\Model\Properties\DomainException;
+use Apparat\Object\Application\Model\Properties\DomainException;
 
 /**
  * Email address

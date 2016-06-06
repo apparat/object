@@ -108,16 +108,4 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_LOCATION_PROPERTY_VALUE = 1462903252;
-    /**
-     * Invalid allowed property datatypes
-     *
-     * @var int
-     */
-    const INVALID_PROPERTY_DATATYPES = 1465140832;
-    /**
-     * Invalid allowed property datatype
-     *
-     * @var int
-     */
-    const INVALID_PROPERTY_DATATYPE = 1465141877;
 }

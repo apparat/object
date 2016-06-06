@@ -39,6 +39,8 @@ namespace Apparat\Object\Application\Model\Properties\Domain\Traits;
 use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
 use Apparat\Object\Application\Model\Properties\Datatype\Sentence;
 use Apparat\Object\Application\Model\Properties\Datatype\Text;
+use Apparat\Object\Application\Model\Properties\Datatype\Token;
+use Apparat\Object\Application\Model\Properties\Datatype\Url;
 use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 

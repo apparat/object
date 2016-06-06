@@ -47,7 +47,6 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  */
 abstract class AbstractGenericProperties extends AbstractProperties implements GenericPropertiesInterface
 {
-
     /**
      * Property collection constructor
      *
@@ -57,6 +56,16 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     public function __construct(array $data, ObjectInterface $object)
     {
         parent::__construct($data, $object);
+    }
+
+    /**
+     * Return the property values as array
+     *
+     * @return array Property values
+     */
+    public function toArray()
+    {
+        return $this->data;
     }
 
     /**
@@ -125,17 +134,25 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
      */
     public function setProperty($property, $value)
     {
-        $propertyPath = $this->buildPropertyPath($property);
+        return $this->setPropertyPath($this->buildPropertyPath($property), $this->data, $value);
+    }
 
+    /**
+     * Set a property value by path list and base data
+     *
+     * @param array $propertyPath Path list
+     * @param array $propertyTree Base data
+     * @param mixed $value Property value
+     * @return GenericPropertiesInterface Self reference
+     */
+    protected function setPropertyPath(array $propertyPath, array $propertyTree, $value) {
         // Traverse the property tree and find the property node to set
         $created = false;
-        $propertyTree = $this->data;
-        $propertyModel = null;
-        $data =& $this->findPropertyNode($propertyPath, $propertyTree, $created, $propertyModel);
+        $data =& $this->findPropertyNode($propertyPath, $propertyTree, $created);
 
         // If a new property is created with a non-empty value or an existing property is altered: Mutate
         if ($created ? !empty($value) : !$this->assertEquals($data, $value)) {
-            $this->setPropertyValue($data, $value, $propertyPath, $propertyModel);
+            $data = $value;
             return new static($propertyTree, $this->object);
         }
 
@@ -143,43 +160,23 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     }
 
     /**
-     * Set a property value
-     *
-     * @param mixed $property Property
-     * @param mixed $value Value
-     * @param array $propertyPath Property path
-     * @param PropertyModel $propertyModel Property model
-     */
-    protected function setPropertyValue(
-        &$property,
-        $value,
-        array $propertyPath = null,
-        PropertyModel $propertyModel = null
-    ) {
-        $property = $value;
-    }
-
-    /**
-     * Traverse the property tree and return a node
+     * Traverse the property tree and return a possibly node
      *
      * @param array $propertyPath Property name path
      * @param array $propertyTree Copy of the current property tree
      * @param boolean $created Property has been created
-     * @param PropertyModel $propertyModel Property model
      * @return mixed Property node
      */
     protected function &findPropertyNode(
         array $propertyPath,
         array &$propertyTree,
-        &$created,
-        PropertyModel &$propertyModel = null
+        &$created
     ) {
-        $propertyModel = null;
         $data =& $propertyTree;
 
         // Run through all sub-properties
         foreach ($propertyPath as $property) {
-            // If the sub-property doesn't exist
+            // Create the sub-property if it doesn't exist
             if (!array_key_exists($property, $data)) {
                 $data[$property] = [];
                 $created = true;

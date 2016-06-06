@@ -36,8 +36,8 @@
 
 namespace Apparat\Object\Application\Model\Properties\Domain;
 
+use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Application\Model\Properties\Domain\Traits\ContactPropertiesModelTrait;
-use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 
 /**
  * Contact object domain properties

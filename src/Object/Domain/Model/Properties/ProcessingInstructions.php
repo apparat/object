@@ -50,14 +50,4 @@ class ProcessingInstructions extends AbstractGenericProperties
      * @var string
      */
     const COLLECTION = 'procinst';
-
-    /**
-     * Return the property values as array
-     *
-     * @return array Property values
-     */
-    public function toArray()
-    {
-        return $this->data;
-    }
 }

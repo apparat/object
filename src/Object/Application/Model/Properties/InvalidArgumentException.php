@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,17 +34,26 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Domain;
-
-use Apparat\Object\Application\Model\Properties\AbstractDomainProperties;
+namespace Apparat\Object\Application\Model\Properties;
 
 /**
- * Image object domain properties
+ * Domain properties InvalidArgumentException
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Image extends AbstractDomainProperties
+class InvalidArgumentException extends \InvalidArgumentException
 {
-
+    /**
+     * Invalid allowed property datatypes
+     *
+     * @var int
+     */
+    const INVALID_PROPERTY_DATATYPES = 1465140832;
+    /**
+     * Invalid allowed property datatype
+     *
+     * @var int
+     */
+    const INVALID_PROPERTY_DATATYPE = 1465141877;
 }

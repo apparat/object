@@ -48,15 +48,15 @@ use Apparat\Object\Domain\Model\Object\AbstractObject;
 class Contact extends AbstractObject
 {
     /**
-     * Domain property collection class
-     *
-     * @var string
-     */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
-    /**
      * Object type
      *
      * @var string
      */
     const TYPE = ObjectTypesInterface::CONTACT;
+    /**
+     * Domain property collection class
+     *
+     * @var string
+     */
+    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
 }

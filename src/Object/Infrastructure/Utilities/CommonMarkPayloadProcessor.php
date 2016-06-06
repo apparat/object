@@ -54,7 +54,8 @@ use League\CommonMark\Inline\Element\Link;
  * @subpackage Apparat\Object\Infrastructure
  */
 class CommonMarkPayloadProcessor extends AbstractPayloadProcessor implements
-    CommonMarkPayloadProcessorInterface, DocumentProcessorInterface
+    CommonMarkPayloadProcessorInterface,
+    DocumentProcessorInterface
 {
     /**
      * Mailto URL scheme

@@ -38,7 +38,7 @@ namespace Apparat\Object\Ports;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
+use Apparat\Object\Infrastructure\Repository\InvalidArgumentException as InfrastructureInvalidArgumentException;
 
 /**
  * Repository facade
@@ -58,8 +58,8 @@ class Repository
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
      * @return \Apparat\Object\Domain\Repository\Repository Repository instance
-     * @throws InvalidArgumentException If the repository URL is invalid
-     * @throws InvalidArgumentException If the repository configuration is empty
+     * @throws InfrastructureInvalidArgumentException If the repository URL is invalid
+     * @throws InfrastructureInvalidArgumentException If the repository configuration is empty
      * @api
      */
     public static function register($url, array $config)
@@ -68,7 +68,7 @@ class Repository
         try {
             $url = Service::normalizeRepositoryUrl($url);
         } catch (\RuntimeException $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
+            throw new InfrastructureInvalidArgumentException($e->getMessage(), $e->getCode());
         }
 
         // Instantiate the object repository
@@ -86,8 +86,8 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @return \Apparat\Object\Domain\Repository\Repository Object repository
-     * @throws InvalidArgumentException If the repository URL is invalid
-     * @throws InvalidArgumentException If the repository URL is unknown
+     * @throws InfrastructureInvalidArgumentException If the repository URL is invalid
+     * @throws InfrastructureInvalidArgumentException If the repository URL is unknown
      * @api
      */
     public static function instance($url)
@@ -96,7 +96,7 @@ class Repository
         try {
             return Kernel::create(Service::class)->get($url);
         } catch (\Exception $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
+            throw new InfrastructureInvalidArgumentException($e->getMessage(), $e->getCode());
         }
     }
 

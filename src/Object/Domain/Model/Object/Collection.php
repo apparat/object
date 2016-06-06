@@ -118,10 +118,10 @@ class Collection implements CollectionInterface
         // Lazy-load the object once
         $object = $this->objects[$objectId];
         if ($object instanceof RepositoryPath) {
-            $this->objects[$objectId] = $object->getRepository()->loadObject($this->objects[$objectId]);
+            $object = $this->objects[$objectId] = $object->getRepository()->loadObject($object);
         }
 
-        return $this->objects[$objectId];
+        return $object;
     }
 
     /**

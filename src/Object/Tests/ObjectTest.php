@@ -50,7 +50,6 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Repository\Repository;
     use Apparat\Object\Infrastructure\Model\Object\Object;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-    use Apparat\Object\Ports\Facades\RepositoryFacade;
     use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
     /**
@@ -337,7 +336,8 @@ namespace Apparat\Object\Tests {
             $this->assertEquals('MIT', $object->getLicense());
             $this->assertEquals(ObjectTypes::PRIVACY_PRIVATE, $object->getPrivacy());
             $this->assertEquals(ObjectTypes::PRIVACY_PUBLIC,
-                $object->setPrivacy(ObjectTypes::PRIVACY_PUBLIC)->getPrivacy());
+                $object->setPrivacy(ObjectTypes::PRIVACY_PUBLIC)->getPrivacy()
+            );
             $object->setPrivacy('invalid');
         }
 
@@ -456,7 +456,7 @@ namespace Apparat\Object\Tests {
             $payload,
             \DateTimeInterface $creationDate = null
         ) {
-            $fileRepository = RepositoryFacade::create(
+            $fileRepository = \Apparat\Object\Infrastructure\Repository\Repository::create(
                 getenv('REPOSITORY_URL'),
                 [
                     'type' => FileAdapterStrategy::TYPE,

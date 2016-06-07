@@ -40,7 +40,6 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Repository\Repository;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Infrastructure\Utilities\File;
-    use Apparat\Object\Ports\Facades\RepositoryFacade;
     use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
     /**
@@ -110,7 +109,7 @@ namespace Apparat\Object\Tests {
          */
         protected function createRepository($tempRepoDirectory)
         {
-            $fileRepository = RepositoryFacade::create(
+            $fileRepository = \Apparat\Object\Infrastructure\Repository\Repository::create(
                 getenv('REPOSITORY_URL'),
                 [
                     'type' => FileAdapterStrategy::TYPE,

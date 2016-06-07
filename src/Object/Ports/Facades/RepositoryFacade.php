@@ -37,9 +37,13 @@
 namespace Apparat\Object\Ports\Facades;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Repository\Repository;
-use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
+use Apparat\Object\Domain\Factory\SelectorFactory;
+use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Repository\RepositoryInterface;
+use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
  * Repository facade
@@ -49,56 +53,46 @@ use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
  */
 class RepositoryFacade implements FacadeInterface
 {
-    /*******************************************************************************
-     * PUBLIC METHODS
-     *******************************************************************************/
+    /**
+     * Repository
+     *
+     * @var RepositoryInterface
+     */
+    protected $repository;
+
+    /**
+     * Repository facade constructor
+     *
+     * @param RepositoryInterface $repository
+     */
+    protected function __construct(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
 
     /**
      * Register a repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return \Apparat\Object\Domain\Repository\Repository Repository instance
-     * @throws InvalidArgumentException If the repository URL is invalid
-     * @throws InvalidArgumentException If the repository configuration is empty
+     * @return RepositoryFacade Repository facade
      * @api
      */
     public static function register($url, array $config)
     {
-        // Normalize to local repository URL
-        try {
-            $url = Service::normalizeRepositoryUrl($url);
-        } catch (\RuntimeException $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
-        }
-
-        // Instantiate the object repository
-        $repository = Kernel::create(Repository::class, [$url, $config]);
-
-        // Register the repository
-        Kernel::create(Service::class)->register($url, $repository);
-
-        // Return the registered repository instance
-        return $repository;
+        return new static(\Apparat\Object\Infrastructure\Repository\Repository::register($url, $config));
     }
 
     /**
      * Instantiate and return an object repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
-     * @return \Apparat\Object\Domain\Repository\Repository Object repository
-     * @throws InvalidArgumentException If the repository URL is invalid
-     * @throws InvalidArgumentException If the repository URL is unknown
+     * @return RepositoryFacade Repository facade
      * @api
      */
     public static function instance($url)
     {
-        // Normalize to return a repository instance matching this URL
-        try {
-            return Kernel::create(Service::class)->get($url);
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
-        }
+        return new static(\Apparat\Object\Infrastructure\Repository\Repository::instance($url));
     }
 
     /**
@@ -106,12 +100,39 @@ class RepositoryFacade implements FacadeInterface
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return \Apparat\Object\Domain\Repository\Repository Repository instance
+     * @return RepositoryFacade Repository facade
      * @api
      */
     public static function create($url, array $config)
     {
-        $config['init'] = true;
-        return self::register($url, $config);
+        return new static(\Apparat\Object\Infrastructure\Repository\Repository::create($url, $config));
+    }
+
+    /**
+     * Find objects by selector
+     *
+     * @param string $selector Object selector
+     * @return Collection Object collection
+     * @todo Cast collection as apparat objects
+     */
+    public function findObjects($selector)
+    {
+        $selector = SelectorFactory::createFromString($selector);
+        $collection = $this->repository->findObjects($selector);
+        return $collection;
+    }
+
+    /**
+     * Load an object from this repository
+     *
+     * @param string $path Object path
+     * @param int $visibility Object visibility
+     * @return ObjectInterface Object
+     */
+    public function loadObject($path, $visibility = SelectorInterface::ALL)
+    {
+        /** @var PathInterface $objectPath */
+        $objectPath = Kernel::create(RepositoryPath::class, [$this->repository, $path]);
+        return $this->repository->loadObject($objectPath, $visibility);
     }
 }

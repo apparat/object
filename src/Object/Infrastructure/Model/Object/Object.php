@@ -39,11 +39,11 @@ namespace Apparat\Object\Infrastructure\Model\Object;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
-use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Infrastructure\Repository\Repository;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
- * Object
+ * Object gateway
  *
  * @package Apparat\Server
  * @subpackage Apparat\Object\Infrastructure\Model\Object
@@ -64,6 +64,6 @@ class Object
         $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
 
         // Instantiate the local object repository, load and return the object
-        return RepositoryFacade::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
+        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
     }
 }

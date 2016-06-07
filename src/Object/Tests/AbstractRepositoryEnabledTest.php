@@ -37,7 +37,7 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Infrastructure\Repository\Repository;
 
 /**
  * Abstract repository enabled test
@@ -60,7 +60,7 @@ abstract class AbstractRepositoryEnabledTest extends AbstractDisabledAutoconnect
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        RepositoryFacade::register(
+        Repository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
@@ -68,7 +68,7 @@ abstract class AbstractRepositoryEnabledTest extends AbstractDisabledAutoconnect
             ]
         );
 
-        self::$repository = RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        self::$repository = Repository::instance(getenv('REPOSITORY_URL'));
 
         \date_default_timezone_set('UTC');
     }

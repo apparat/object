@@ -45,6 +45,7 @@ use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Module;
 use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Infrastructure\Repository\Repository as InfrastructureRepository;
 
 /**
  * Repository test
@@ -363,14 +364,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testFileRepository()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => self::$globBase,
             ]
         );
-        $fileRepository = RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        $fileRepository = InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
         $this->assertInstanceOf(Repository::class, $fileRepository);
 
         $selector = SelectorFactory::createFromString('/*');
@@ -413,7 +414,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                 'root' => self::$globBase,
             ]
         );
-        $fileRepository = RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        $fileRepository = InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
         $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704-event/36704-1');
         $this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
         $this->assertEquals($fileRepository, $repositoryPath->getRepository());
@@ -427,7 +428,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
         $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
         $this->tmpFiles[] = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
-        $fileRepository = RepositoryFacade::create(
+        $fileRepository = InfrastructureRepository::create(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
@@ -446,7 +447,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     public function testRepositoryCreationOverExistingFile()
     {
         $tempFile = $this->createTemporaryFile();
-        RepositoryFacade::create(
+        InfrastructureRepository::create(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
@@ -467,7 +468,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
         $this->tmpFiles[] = $tempSizeDescriptor = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
         mkdir($tempSizeDescriptor, 0777, true);
-        RepositoryFacade::create(
+        InfrastructureRepository::create(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,

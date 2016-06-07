@@ -56,7 +56,7 @@ use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\AutoConnector;
 use Apparat\Object\Infrastructure\Utilities\BinaryPayloadProcessor;
 use Apparat\Object\Infrastructure\Utilities\CommonMarkPayloadProcessor;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Types\Object;
 use Dotenv\Dotenv;
 
 /**

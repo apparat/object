@@ -41,7 +41,7 @@ use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
  * Selector tests
@@ -200,7 +200,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidRevisionComponent()
     {
-        Kernel::create(RepositorySelector::class, [2015, 1, 1, null, null, null, 1, Object::EVENT, 'invalid']);
+        Kernel::create(RepositorySelector::class, [2015, 1, 1, null, null, null, 1, ObjectTypes::EVENT, 'invalid']);
     }
 
     /**
@@ -214,7 +214,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
     {
         Kernel::create(
             RepositorySelector::class,
-            [2015, 1, 1, null, null, null, 1, Object::EVENT, Revision::CURRENT, 0]
+            [2015, 1, 1, null, null, null, 1, ObjectTypes::EVENT, Revision::CURRENT, 0]
         );
     }
 }

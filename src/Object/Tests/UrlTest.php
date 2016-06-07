@@ -41,7 +41,7 @@ use Apparat\Object\Domain\Model\Path\LocalPath;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Ports\Repository;
+use Apparat\Object\Ports\Facades\RepositoryFacade;
 
 /**
  * Object URL tests
@@ -161,7 +161,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRelativeApparatUrl()
     {
-        Repository::register(
+        RepositoryFacade::register(
             self::REPOSITORY_URL,
             [
                 'type' => FileAdapterStrategy::TYPE,

@@ -37,8 +37,8 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Article;
-use Apparat\Object\Ports\Object;
-use Apparat\Object\Ports\Relation;
+use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Types\Relation;
 
 /**
  * Object payload test
@@ -60,7 +60,7 @@ class PayloadTest extends AbstractRepositoryEnabledTest
      */
     public function testObjectSetPayload()
     {
-        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
 
         // Set the article payload

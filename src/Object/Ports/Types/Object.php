@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Ports
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,18 +34,15 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
+namespace Apparat\Object\Ports\Types;
 
-use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Contract\ObjectTypesInterface;
 use Apparat\Object\Application\Service\TypeService;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
- * Object facade
+ * Object types & constants
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Ports
@@ -82,24 +79,6 @@ class Object implements ObjectTypesInterface
      * @var int
      */
     const VISIBILITY_ALL = SelectorInterface::ALL;
-
-    /**
-     * Instantiate and return an object
-     *
-     * @param string $url Object URL (relative or absolute including the apparat base URL)
-     * @param int $visibility Object visibility
-     * @return ObjectInterface Object
-     * @api
-     */
-    public static function instance($url, $visibility = self::VISIBILITY_ALL)
-    {
-        // Instantiate the object URL
-        /** @var ObjectUrl $objectUrl */
-        $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
-
-        // Instantiate the local object repository, load and return the object
-        return Repository::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
-    }
 
     /**
      * Enable an object type

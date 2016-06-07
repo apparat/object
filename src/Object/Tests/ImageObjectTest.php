@@ -40,8 +40,8 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Repository\Repository;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Infrastructure\Utilities\File;
-    use Apparat\Object\Ports\Object;
-    use Apparat\Object\Ports\Repository as RepositoryFactory;
+    use Apparat\Object\Ports\Facades\RepositoryFacade;
+    use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
     /**
      * Object tests
@@ -74,7 +74,8 @@ namespace Apparat\Object\Tests {
             $payloadFileName2 = '1.'.File::hash($fixtureDirectory.'Normalsegelapparat1895.jpg').'.jpg';
 
             // Create and persist an image object
-            $image = $repository->createObject(Object::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
+            $image = $repository->createObject(ObjectTypes::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')
+                ->persist();
             $this->assertInstanceOf(Image::class, $image);
             $this->assertEquals($payloadFileName1, $image->getPayload());
             $this->assertFileExists(
@@ -109,7 +110,7 @@ namespace Apparat\Object\Tests {
          */
         protected function createRepository($tempRepoDirectory)
         {
-            $fileRepository = RepositoryFactory::create(
+            $fileRepository = RepositoryFacade::create(
                 getenv('REPOSITORY_URL'),
                 [
                     'type' => FileAdapterStrategy::TYPE,
@@ -146,7 +147,7 @@ namespace Apparat\Object\Tests {
         /**
          * Test empty binary payload
          *
-         * @expectedException \Apparat\Object\Ports\InvalidArgumentException
+         * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
          * @expectedExceptionCode 1464296678
          */
         public function testEmptyBinaryPayload()
@@ -156,13 +157,13 @@ namespace Apparat\Object\Tests {
             $repository = $this->createRepository($tempRepoDirectory);
 
             // Create an image object
-            $repository->createObject(Object::IMAGE);
+            $repository->createObject(ObjectTypes::IMAGE);
         }
 
         /**
          * Test empty binary payload
          *
-         * @expectedException \Apparat\Object\Ports\RuntimeException
+         * @expectedException \Apparat\Object\Ports\Exceptions\RuntimeException
          * @expectedExceptionCode 1464299856
          */
         public function testFailedRepositoryImport()
@@ -176,7 +177,7 @@ namespace Apparat\Object\Tests {
             $repository = $this->createRepository($tempRepoDirectory);
 
             // Create an image object
-            $repository->createObject(Object::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
+            $repository->createObject(ObjectTypes::IMAGE, $fixtureDirectory.'MuehlenbergDerwitz.jpg')->persist();
         }
     }
 }

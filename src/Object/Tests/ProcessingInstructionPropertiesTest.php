@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
  * Processing instruction properties test
@@ -58,7 +58,7 @@ class ProcessingInstructionPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testProcessingInstructionChange()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();

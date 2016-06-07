@@ -42,8 +42,8 @@ use Apparat\Object\Domain\Factory\RelationFactory;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
-use Apparat\Object\Ports\Object;
-use Apparat\Object\Ports\Relation;
+use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Types\Relation;
 
 /**
  * Object relation test
@@ -68,7 +68,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testObjectAddRelation()
     {
-        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
         $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
         $this->assertEquals(3, count($article->findRelations([Relation::URL => 'example.com'])));
@@ -128,7 +128,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testRelationConstruction()
     {
-        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
 
         /** @var Relations $relations */
         $relations = Kernel::create(Relations::class, [[Relation::CONTRIBUTED_BY => []], $article]);
@@ -154,7 +154,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testRelationFiltering()
     {
-        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
 
         /** @var Relations $relations */
         $relations = Kernel::create(Relations::class, [[Relation::CONTRIBUTED_BY => []], $article]);

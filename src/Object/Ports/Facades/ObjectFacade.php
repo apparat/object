@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Test
+ * @subpackage  Apparat\Object\Ports
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,34 +34,48 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Tests;
+namespace Apparat\Object\Ports\Facades;
 
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
- * General properties test
+ * Object facade
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Tests
+ * @subpackage Apparat\Object\Ports
  */
-class PropertiesTest extends AbstractRepositoryEnabledTest
+class ObjectFacade implements FacadeInterface
 {
     /**
-     * Example object path
+     * Object
      *
-     * @var string
+     * @var ObjectInterface
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    protected $object;
 
     /**
-     * Test the owner object of an abstract properties collection
+     * Object facade constructor
+     *
+     * @param ObjectInterface $object Object
+     * @internal
      */
-    public function testOwnerObject()
+    protected function __construct(ObjectInterface $object)
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $procInstProperties = Kernel::create(ProcessingInstructions::class, [[], $article]);
-        $this->assertEquals($article, $procInstProperties->getObject());
+        $this->object = $object;
+    }
+
+    /**
+     * Instantiate and return an object
+     *
+     * @param string $url Object URL (relative or absolute including the apparat base URL)
+     * @param int $visibility Object visibility
+     * @return ObjectInterface Object
+     * @api
+     */
+    public static function load($url, $visibility = ObjectTypes::VISIBILITY_ALL)
+    {
+        return new static(Object::load($url, $visibility));
     }
 }

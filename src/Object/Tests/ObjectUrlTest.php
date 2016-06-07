@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Model\Path\ObjectUrl;
 use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
  * Object URL tests
@@ -128,7 +128,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertInstanceOf(Id::class, $url->getId());
         $this->assertEquals(new Id(36704), $url->getId());
         $this->assertInstanceOf(Type::class, $url->getType());
-        $this->assertEquals(Kernel::create(Type::class, [Object::EVENT]), $url->getType());
+        $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::EVENT]), $url->getType());
         $this->assertInstanceOf(Revision::class, $url->getRevision());
         $this->assertEquals(new Revision(1), $url->getRevision());
         $this->assertEquals(self::REMOTE_REPOSITORY_URL, Service::normalizeRepositoryUrl($url));
@@ -224,7 +224,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     public function testUrlSetters()
     {
         /** @var Type $articleType */
-        $articleType = Kernel::create(Type::class, [Object::ARTICLE]);
+        $articleType = Kernel::create(Type::class, [ObjectTypes::ARTICLE]);
         $url = new ObjectUrl(self::URL);
         $this->assertEquals('test', $url->setUser('test')->getUser());
         $this->assertEquals(null, $url->setUser(null)->getUser());

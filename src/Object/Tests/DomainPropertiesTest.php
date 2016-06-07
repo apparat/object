@@ -37,7 +37,7 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Domain\Model\Properties\PropertiesInterface;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
  * System properties test
@@ -71,7 +71,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testDomainPropertyMutation()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();
@@ -90,7 +90,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testDomainPropertyModel()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::CONTACT_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_PATH);
         $object->setDomainProperty('givenName', 'apparat');
         $object->setDomainProperty('givenName'.self::SEPARATOR.'subproperty', 'violation');
     }
@@ -100,7 +100,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testContactDomainPropertyModel()
     {
-        $object = Object::instance(getenv('REPOSITORY_URL').self::CONTACT_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_PATH);
         $object->setDomainProperty('givenName', 'John');
         $object->setDomainProperty('givenName', 'John'); // Intentional re-set!
         $object->setDomainProperty('familyName', 'Doe');

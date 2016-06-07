@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
+namespace Apparat\Object\Ports\Types;
 
 use Apparat\Object\Domain\Model\Relation\AbstractRelation;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
@@ -52,7 +52,7 @@ use Apparat\Object\Domain\Model\Relation\RepostedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepostsRelation;
 
 /**
- * Relation
+ * Relation types & constants
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Ports

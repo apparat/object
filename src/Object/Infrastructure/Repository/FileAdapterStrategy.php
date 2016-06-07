@@ -433,7 +433,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function persistObjectResource(ObjectInterface $object)
     {
-        /** @var \Apparat\Object\Infrastructure\Model\Object\Resource $objectResource */
+        /** @var \Apparat\Object\Infrastructure\Resource $objectResource */
         $objectResource = ResourceFactory::createFromObject($object);
 
         // Create the absolute object resource path

@@ -48,10 +48,10 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Properties\MetaProperties;
     use Apparat\Object\Domain\Model\Properties\SystemProperties;
     use Apparat\Object\Domain\Repository\Repository;
+    use Apparat\Object\Infrastructure\Model\Object\Object;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-    use Apparat\Object\Ports\Object;
-    use Apparat\Object\Ports\Repository as RepositoryFactory;
-    use Prophecy\Prophecy\Revealer;
+    use Apparat\Object\Ports\Facades\RepositoryFacade;
+    use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
     /**
      * Object tests
@@ -172,7 +172,7 @@ namespace Apparat\Object\Tests {
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals(new Id(1), $articleObject->getId());
-            $this->assertEquals(Kernel::create(Type::class, [Object::ARTICLE]), $articleObject->getType());
+            $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::ARTICLE]), $articleObject->getType());
             $this->assertEquals(new Revision(1), $articleObject->getRevision());
             $this->assertFalse($articleObject->isDraft());
             $this->assertTrue($articleObject->isPublished());
@@ -241,18 +241,18 @@ namespace Apparat\Object\Tests {
         /**
          * Test the object facade with an absolute object URL
          */
-        public function testObjectFacadeAbsolute()
+        public function testObjectAbsolute()
         {
-            $object = Object::instance(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
             $this->assertInstanceOf(Article::class, $object);
         }
 
         /**
          * Test the object facade with a relative object URL
          */
-        public function testObjectFacadeRelative()
+        public function testObjectRelative()
         {
-            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
             $this->assertInstanceOf(Article::class, $object);
         }
 
@@ -262,9 +262,9 @@ namespace Apparat\Object\Tests {
          * @expectedException \Apparat\Resource\Ports\InvalidReaderArgumentException
          * @expectedExceptionCode 1447616824
          */
-        public function testObjectFacadeRelativeInvalid()
+        public function testObjectRelativeInvalid()
         {
-            $object = Object::instance(getenv('REPOSITORY_URL').'/2015/12/21/2-article/2');
+            $object = Object::load(getenv('REPOSITORY_URL').'/2015/12/21/2-article/2');
             $this->assertInstanceOf(Article::class, $object);
         }
 
@@ -305,7 +305,7 @@ namespace Apparat\Object\Tests {
         public function testObjectPropertyData()
         {
 //  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
-            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
             $this->assertTrue(is_array($object->getPropertyData()));
 //        print_r($frontMarkResource->getData());
 //        print_r($object->getPropertyData());
@@ -319,7 +319,7 @@ namespace Apparat\Object\Tests {
          */
         public function testMetaDataMutation()
         {
-            $object = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
             $this->assertTrue(is_array($object->getPropertyData()));
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
@@ -335,8 +335,9 @@ namespace Apparat\Object\Tests {
             $this->assertTrue($object->hasBeenModified());
             $this->assertTrue($object->hasBeenMutated());
             $this->assertEquals('MIT', $object->getLicense());
-            $this->assertEquals(Object::PRIVACY_PRIVATE, $object->getPrivacy());
-            $this->assertEquals(Object::PRIVACY_PUBLIC, $object->setPrivacy(Object::PRIVACY_PUBLIC)->getPrivacy());
+            $this->assertEquals(ObjectTypes::PRIVACY_PRIVATE, $object->getPrivacy());
+            $this->assertEquals(ObjectTypes::PRIVACY_PUBLIC,
+                $object->setPrivacy(ObjectTypes::PRIVACY_PUBLIC)->getPrivacy());
             $object->setPrivacy('invalid');
         }
 
@@ -455,7 +456,7 @@ namespace Apparat\Object\Tests {
             $payload,
             \DateTimeInterface $creationDate = null
         ) {
-            $fileRepository = RepositoryFactory::create(
+            $fileRepository = RepositoryFacade::create(
                 getenv('REPOSITORY_URL'),
                 [
                     'type' => FileAdapterStrategy::TYPE,
@@ -466,7 +467,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
 
             // Create a new article in the temporary repository
-            return $fileRepository->createObject(Object::ARTICLE, $payload, [], $creationDate);
+            return $fileRepository->createObject(ObjectTypes::ARTICLE, $payload, [], $creationDate);
         }
 
         /**

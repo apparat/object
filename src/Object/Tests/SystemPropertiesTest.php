@@ -40,7 +40,7 @@ use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Model\Object\AbstractObject;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
  * System properties test
@@ -107,7 +107,7 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
         $latitude = rand(0, 10000) / 10000;
         $longitude = rand(0, 10000) / 10000;
         $elevation = rand(0, 10000);
-        $article = Object::instance(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals($latitude, $article->setLatitude($latitude)->getLatitude());
 

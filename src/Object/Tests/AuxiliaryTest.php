@@ -41,7 +41,7 @@ use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
  * Selector tests
@@ -87,8 +87,8 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      */
     public function testTypeSerialization()
     {
-        $type = Kernel::create(Type::class, [Object::ARTICLE]);
-        $this->assertEquals(Object::ARTICLE, $type->serialize());
+        $type = Kernel::create(Type::class, [ObjectTypes::ARTICLE]);
+        $this->assertEquals(ObjectTypes::ARTICLE, $type->serialize());
     }
 
     /**

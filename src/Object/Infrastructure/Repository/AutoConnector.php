@@ -39,7 +39,7 @@ namespace Apparat\Object\Infrastructure\Repository;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Path\Url;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
-use Apparat\Object\Ports\Repository;
+use Apparat\Object\Ports\Facades\RepositoryFacade;
 
 /**
  * Repository auto-connector service
@@ -64,7 +64,7 @@ class AutoConnector implements AutoConnectorInterface
 
         // If a repository configuration has been created
         if ($config !== null) {
-            $repository = Repository::register(strval($url), $config);
+            $repository = RepositoryFacade::register(strval($url), $config);
             return $repository instanceof \Apparat\Object\Domain\Repository\Repository;
         }
 

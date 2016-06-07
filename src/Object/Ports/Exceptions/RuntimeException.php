@@ -34,20 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
+namespace Apparat\Object\Ports\Exceptions;
 
 /**
- * Invalid argument exception
+ * Runtime exception
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Ports
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class RuntimeException extends \RuntimeException
 {
     /**
-     * Invalid binary payload source
+     * Cannot import binary resource
      *
      * @var int
      */
-    const INVALID_BINARY_PAYLOAD_SOURCE = 1464296678;
+    const CANNOT_IMPORT_BINARY_RESOURCE = 1464299856;
 }

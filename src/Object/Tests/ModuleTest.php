@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 use Apparat\Resource\Module;
 
 /**
@@ -61,14 +61,14 @@ class ModuleTest extends AbstractDisabledAutoconnectorTest
      */
     public function testEnableObjectType()
     {
-        $supportedObjectTypes = Object::getSupportedTypes();
-        Object::enableType(Object::EVENT);
+        $supportedObjectTypes = ObjectTypes::getSupportedTypes();
+        ObjectTypes::enableType(ObjectTypes::EVENT);
         $this->assertEquals(
-            array_merge($supportedObjectTypes, [Object::EVENT => Object::EVENT]),
-            Object::getSupportedTypes()
+            array_merge($supportedObjectTypes, [ObjectTypes::EVENT => ObjectTypes::EVENT]),
+            ObjectTypes::getSupportedTypes()
         );
-        $this->assertTrue(Object::supportsType(Object::EVENT));
-        $this->assertFalse(Object::supportsType('invalid'));
+        $this->assertTrue(ObjectTypes::supportsType(ObjectTypes::EVENT));
+        $this->assertFalse(ObjectTypes::supportsType('invalid'));
     }
 
     /**
@@ -79,6 +79,6 @@ class ModuleTest extends AbstractDisabledAutoconnectorTest
      */
     public function testEnableInvalidType()
     {
-        Object::enableType('invalid');
+        ObjectTypes::enableType('invalid');
     }
 }

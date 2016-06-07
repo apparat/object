@@ -41,7 +41,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Application\Model\Object\Contact;
     use Apparat\Object\Domain\Repository\Service;
     use Apparat\Object\Infrastructure\Repository\AutoConnector;
-    use Apparat\Object\Ports\Object;
+    use Apparat\Object\Infrastructure\Model\Object\Object;
 
     /**
      * Autoconnector tests
@@ -91,7 +91,7 @@ namespace Apparat\Object\Tests {
          */
         public function testAutoconnectRelativeUrlCli()
         {
-            $article = Object::instance(self::OBJECT_PATH);
+            $article = Object::load(self::OBJECT_PATH);
             $this->assertInstanceOf(Contact::class, $article);
         }
 
@@ -101,12 +101,12 @@ namespace Apparat\Object\Tests {
         public function testAutoconnectRelativeUrlWebserver()
         {
             putenv('MOCK_PHP_SAPI_NAME=1');
-            $article = Object::instance(self::OBJECT_PATH);
+            $article = Object::load(self::OBJECT_PATH);
             $this->assertInstanceOf(Contact::class, $article);
         }
 
         /**
-         * Test basic autoconnection functionality
+         * Test basic auto-connection functionality
          *
          * @todo Implement when absolute repository is implemented
          */

@@ -34,11 +34,12 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
+namespace Apparat\Object\Ports\Facades;
 
 use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\Service;
-use Apparat\Object\Infrastructure\Repository\InvalidArgumentException as InfrastructureInvalidArgumentException;
+use Apparat\Object\Infrastructure\Repository\InvalidArgumentException;
 
 /**
  * Repository facade
@@ -46,7 +47,7 @@ use Apparat\Object\Infrastructure\Repository\InvalidArgumentException as Infrast
  * @package Apparat\Object
  * @subpackage Apparat\Object\Ports
  */
-class Repository
+class RepositoryFacade implements FacadeInterface
 {
     /*******************************************************************************
      * PUBLIC METHODS
@@ -58,8 +59,8 @@ class Repository
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
      * @return \Apparat\Object\Domain\Repository\Repository Repository instance
-     * @throws InfrastructureInvalidArgumentException If the repository URL is invalid
-     * @throws InfrastructureInvalidArgumentException If the repository configuration is empty
+     * @throws InvalidArgumentException If the repository URL is invalid
+     * @throws InvalidArgumentException If the repository configuration is empty
      * @api
      */
     public static function register($url, array $config)
@@ -68,11 +69,11 @@ class Repository
         try {
             $url = Service::normalizeRepositoryUrl($url);
         } catch (\RuntimeException $e) {
-            throw new InfrastructureInvalidArgumentException($e->getMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
         }
 
         // Instantiate the object repository
-        $repository = Kernel::create(\Apparat\Object\Domain\Repository\Repository::class, [$url, $config]);
+        $repository = Kernel::create(Repository::class, [$url, $config]);
 
         // Register the repository
         Kernel::create(Service::class)->register($url, $repository);
@@ -86,8 +87,8 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @return \Apparat\Object\Domain\Repository\Repository Object repository
-     * @throws InfrastructureInvalidArgumentException If the repository URL is invalid
-     * @throws InfrastructureInvalidArgumentException If the repository URL is unknown
+     * @throws InvalidArgumentException If the repository URL is invalid
+     * @throws InvalidArgumentException If the repository URL is unknown
      * @api
      */
     public static function instance($url)
@@ -96,7 +97,7 @@ class Repository
         try {
             return Kernel::create(Service::class)->get($url);
         } catch (\Exception $e) {
-            throw new InfrastructureInvalidArgumentException($e->getMessage(), $e->getCode());
+            throw new InvalidArgumentException($e->getMessage(), $e->getCode());
         }
     }
 

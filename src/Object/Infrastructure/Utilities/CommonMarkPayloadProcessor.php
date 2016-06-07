@@ -39,7 +39,7 @@ namespace Apparat\Object\Infrastructure\Utilities;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
 use Apparat\Object\Application\Model\Object\AbstractCommonMarkObject;
-use Apparat\Object\Ports\Relation;
+use Apparat\Object\Ports\Types\Relation;
 use League\CommonMark\Block\Element\Document;
 use League\CommonMark\DocParser;
 use League\CommonMark\DocumentProcessorInterface;

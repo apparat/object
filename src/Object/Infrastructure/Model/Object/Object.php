@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Test
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @package     Apparat\Server
+ * @subpackage  Apparat\Object\Infrastructure\Model\Object
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,34 +34,36 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Tests;
+namespace Apparat\Object\Infrastructure\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
- * General properties test
+ * Object
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Tests
+ * @package Apparat\Server
+ * @subpackage Apparat\Object\Infrastructure\Model\Object
  */
-class PropertiesTest extends AbstractRepositoryEnabledTest
+class Object
 {
     /**
-     * Example object path
+     * Instantiate and return an object
      *
-     * @var string
+     * @param string $url Object URL (relative or absolute including the apparat base URL)
+     * @param int $visibility Object visibility
+     * @return ObjectInterface Object
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
-
-    /**
-     * Test the owner object of an abstract properties collection
-     */
-    public function testOwnerObject()
+    public static function load($url, $visibility = ObjectTypes::VISIBILITY_ALL)
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $procInstProperties = Kernel::create(ProcessingInstructions::class, [[], $article]);
-        $this->assertEquals($article, $procInstProperties->getObject());
+        // Instantiate the object URL
+        /** @var ObjectUrl $objectUrl */
+        $objectUrl = Kernel::create(ObjectUrl::class, [$url, true]);
+
+        // Instantiate the local object repository, load and return the object
+        return RepositoryFacade::instance($objectUrl->getRepositoryUrl())->loadObject($objectUrl, $visibility);
     }
 }

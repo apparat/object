@@ -40,7 +40,8 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
 use Apparat\Object\Application\Model\Properties\Domain\PropertyModel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
  * Property model tests
@@ -75,7 +76,7 @@ class PropertyModelTest extends AbstractRepositoryEnabledTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$object = Object::instance(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
     }
 
     /**
@@ -111,7 +112,7 @@ class PropertyModelTest extends AbstractRepositoryEnabledTest
         /** @var PropertyModel $propertyModel */
         $propertyModel = Kernel::create(
             PropertyModel::class,
-            [self::$object, false, [ApparatUrl::class], [ApparatUrl::class => Object::CONTACT]]
+            [self::$object, false, [ApparatUrl::class], [ApparatUrl::class => ObjectTypes::CONTACT]]
         );
         $this->assertNull($propertyModel->filterValue(''));
         $propertyModel->filterValue(self::ARTICLE_PATH);

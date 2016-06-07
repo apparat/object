@@ -49,7 +49,7 @@ use Apparat\Object\Application\Model\Properties\Datatype\Token;
 use Apparat\Object\Application\Model\Properties\Datatype\Url;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\GeoUri;
-use Apparat\Object\Ports\Object;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
  * Property model tests
@@ -84,7 +84,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$object = Object::instance(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
     }
 
     /**

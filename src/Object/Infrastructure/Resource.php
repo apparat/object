@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\<Layer>
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,20 +34,60 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Ports;
+namespace Apparat\Object\Infrastructure;
+
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Resource\Infrastructure\Model\Resource\FrontMarkResource;
 
 /**
- * Runtime exception
+ * Object resource
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Ports
+ * @subpackage Apparat\Object\Infrastructure
  */
-class RuntimeException extends \RuntimeException
+class Resource extends FrontMarkResource implements ResourceInterface
 {
     /**
-     * Cannot import binary resource
+     * Return the property data
      *
-     * @var int
+     * @return array Property data
      */
-    const CANNOT_IMPORT_BINARY_RESOURCE = 1464299856;
+    public function getPropertyData()
+    {
+        return $this->getData();
+    }
+
+    /**
+     * Set the property data
+     *
+     * @param array $data Property data
+     * @return ResourceInterface Object resource
+     */
+    public function setPropertyData(array $data)
+    {
+        $this->setData($data);
+        return $this;
+    }
+
+    /**
+     * Return the object payload
+     *
+     * @return string Object payload
+     */
+    public function getPayload()
+    {
+        return $this->get();
+    }
+
+    /**
+     * Set the object payload
+     *
+     * @param string $payload Object payload
+     * @return ResourceInterface Object resource
+     */
+    public function setPayload($payload)
+    {
+        $this->set($payload);
+        return $this;
+    }
 }

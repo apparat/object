@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
+ * @subpackage  Apparat\Object\<Layer>
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,60 +34,20 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object;
-
-use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Resource\Infrastructure\Model\Resource\FrontMarkResource;
+namespace Apparat\Object\Ports\Exceptions;
 
 /**
- * Object resource
+ * Invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Ports
  */
-class Resource extends FrontMarkResource implements ResourceInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Return the property data
+     * Invalid binary payload source
      *
-     * @return array Property data
+     * @var int
      */
-    public function getPropertyData()
-    {
-        return $this->getData();
-    }
-
-    /**
-     * Set the property data
-     *
-     * @param array $data Property data
-     * @return ResourceInterface Object resource
-     */
-    public function setPropertyData(array $data)
-    {
-        $this->setData($data);
-        return $this;
-    }
-
-    /**
-     * Return the object payload
-     *
-     * @return string Object payload
-     */
-    public function getPayload()
-    {
-        return $this->get();
-    }
-
-    /**
-     * Set the object payload
-     *
-     * @param string $payload Object payload
-     * @return ResourceInterface Object resource
-     */
-    public function setPayload($payload)
-    {
-        $this->set($payload);
-        return $this;
-    }
+    const INVALID_BINARY_PAYLOAD_SOURCE = 1464296678;
 }

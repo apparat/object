@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Test
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -36,32 +36,29 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
-use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Facades\ObjectFacade;
 
 /**
- * General properties test
+ * Facade tests
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Tests
+ * @subpackage Apparat\Object\Test
  */
-class PropertiesTest extends AbstractRepositoryEnabledTest
+class FacadeTest extends AbstractRepositoryEnabledTest
 {
     /**
      * Example object path
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    const OBJECT_PATH = '/repo/2015/12/21/1-article/1';
 
     /**
-     * Test the owner object of an abstract properties collection
+     * Test Object facade
      */
-    public function testOwnerObject()
+    public function testObjectFacade()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
-        $procInstProperties = Kernel::create(ProcessingInstructions::class, [[], $article]);
-        $this->assertEquals($article, $procInstProperties->getObject());
+        $object = ObjectFacade::load(self::OBJECT_PATH);
+        $this->assertInstanceOf(ObjectFacade::class, $object);
     }
 }

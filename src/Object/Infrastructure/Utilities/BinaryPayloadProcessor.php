@@ -38,8 +38,8 @@ namespace Apparat\Object\Infrastructure\Utilities;
 
 use Apparat\Object\Application\Contract\BinaryPayloadProcessorInterface;
 use Apparat\Object\Application\Model\Object\AbstractBinaryObject;
-use Apparat\Object\Ports\InvalidArgumentException;
-use Apparat\Object\Ports\RuntimeException;
+use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
+use Apparat\Object\Ports\Exceptions\RuntimeException;
 
 /**
  * Binary payload processor

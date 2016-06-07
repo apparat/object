@@ -39,7 +39,7 @@ namespace Apparat\Object\Infrastructure\Factory;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Object\Infrastructure\Model\Object\Resource;
+use Apparat\Object\Infrastructure\Resource;
 
 /**
  * Object resource factory
@@ -65,11 +65,11 @@ class ResourceFactory extends \Apparat\Resource\Ports\Resource
      * Create and return a FrontMark resource instance from an object
      *
      * @param ObjectInterface $object Object
-     * @return Resource Object resource
+     * @return ResourceInterface Object resource
      */
     public static function createFromObject(ObjectInterface $object)
     {
-        /** @var Resource $resource */
+        /** @var ResourceInterface $resource */
         $resource = Kernel::create(Resource::class, [null]);
         $resource->setPropertyData($object->getPropertyData());
         $resource->setPayload($object->getPayload());

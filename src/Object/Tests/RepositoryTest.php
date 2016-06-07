@@ -43,9 +43,8 @@ use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
-use Apparat\Object\Module;
-use Apparat\Object\Ports\Facades\RepositoryFacade;
 use Apparat\Object\Infrastructure\Repository\Repository as InfrastructureRepository;
+use Apparat\Object\Module;
 
 /**
  * Repository test
@@ -204,7 +203,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRegisterInvalidQueryRepositoryUrl()
     {
-        RepositoryFacade::register(getenv('REPOSITORY_URL').'?a=1', []);
+        InfrastructureRepository::register(getenv('REPOSITORY_URL').'?a=1', []);
     }
 
     /**
@@ -215,14 +214,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInstantiateInvalidQueryRepositoryUrl()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => __DIR__,
             ]
         );
-        RepositoryFacade::instance(getenv('REPOSITORY_URL').'?a=1');
+        InfrastructureRepository::instance(getenv('REPOSITORY_URL').'?a=1');
     }
 
     /**
@@ -233,7 +232,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInstantiateUnknownRepositoryUrl()
     {
-        RepositoryFacade::instance('unknown');
+        InfrastructureRepository::instance('unknown');
     }
 
     /**
@@ -244,7 +243,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testEmptyRepositoryConfig()
     {
-        RepositoryFacade::register(getenv('REPOSITORY_URL'), []);
+        InfrastructureRepository::register(getenv('REPOSITORY_URL'), []);
     }
 
     /**
@@ -296,13 +295,13 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testMissingFileStrategyRoot()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
             ]
         );
-        RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
     }
 
     /**
@@ -313,14 +312,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testEmptyFileStrategyRoot()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => '',
             ]
         );
-        RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
     }
 
     /**
@@ -331,14 +330,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testInvalidFileStrategyRoot()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => '__FILE__',
             ]
         );
-        RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
     }
 
     /**
@@ -349,14 +348,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUnknownRepositoryUrlInstance()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => self::$globBase,
             ]
         );
-        RepositoryFacade::instance('http://example.com');
+        InfrastructureRepository::instance('http://example.com');
     }
 
     /**
@@ -387,14 +386,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testFileRepositoryRevisions()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => self::$globBase,
             ]
         );
-        $fileRepository = RepositoryFacade::instance(getenv('REPOSITORY_URL'));
+        $fileRepository = InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
 
         $selector = SelectorFactory::createFromString('/*/*/*/*/*/*/*-*/*-1');
         $collection = $fileRepository->findObjects($selector);
@@ -407,7 +406,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRepositoryPath()
     {
-        RepositoryFacade::register(
+        InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,

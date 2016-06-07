@@ -41,7 +41,8 @@ use Apparat\Object\Domain\Model\Path\ObjectUrl;
 /**
  * Object URL version with test extension
  *
- * @package Apparat\Resource
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Test
  */
 class TestObjectUrl extends ObjectUrl
 {

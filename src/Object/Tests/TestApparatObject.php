@@ -36,29 +36,22 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Application\Service\TypeService;
+use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
 
 /**
- * Test type
+ * Apparat object version with test extension
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Test
  */
-class TestTypeService extends TypeService
+class TestApparatObject extends AbstractApparatObject
 {
     /**
-     * Register an invalid object type
+     * Property mapping
+     *
+     * @var array
      */
-    public static function addInvalidType()
-    {
-        parent::$enabledTypes['invalid'] = true;
-    }
-
-    /**
-     * Remove the invalid object type
-     */
-    public static function removeInvalidType()
-    {
-        unset(parent::$enabledTypes['invalid']);
-    }
+    protected $mapping = [
+        'invalid' => 'invalid',
+    ];
 }

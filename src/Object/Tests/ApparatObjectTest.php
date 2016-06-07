@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Object\Article as ApplicationArticle;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\Article;
 use Apparat\Object\Infrastructure\Model\Object\Object;
@@ -57,15 +58,48 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
 
     /**
      * Test the article apparat object
+     *
+     * @expectedException \BadMethodCallException
      */
-    public function testArticleApparatObject()
+    public function testArticleApparatObjectInvalidGetter()
     {
         /** @var ApplicationArticle $articleObj */
         $articleObj = Object::load(self::ARTICLE_PATH);
-        $articleApparatObj = new Article($articleObj);
+        $articleApparatObj = Kernel::create(Article::class, [$articleObj]);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
+        $this->assertTrue(isset($articleApparatObj['name']));
         $this->assertEquals('First repository article', $articleApparatObj['name']);
         $this->assertEquals('First repository article', $articleApparatObj->getName());
+        $articleApparatObj['name'] = null;
+        $articleApparatObj->getInvalid();
+    }
+
+    /**
+     * Test illegal unsetting of apparat object property
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1465330565
+     */
+    public function testArticleApparatObjectUnvalidUnset()
+    {
+        /** @var ApplicationArticle $articleObj */
+        $articleObj = Object::load(self::ARTICLE_PATH);
+        $articleApparatObj = Kernel::create(Article::class, [$articleObj]);
+        unset($articleApparatObj['name']);
+    }
+
+    /**
+     * Test invalid apparat object getter
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1465330399
+     */
+    public function testInvalidApparatObjectGetter()
+    {
+        /** @var ApplicationArticle $articleObj */
+        $articleObj = Object::load(self::ARTICLE_PATH);
+        $articleApparatObj = Kernel::create(TestApparatObject::class, [$articleObj]);
+        $articleApparatObj['invalid'];
     }
 }

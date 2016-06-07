@@ -96,10 +96,18 @@ trait ApparatObjectTrait
      */
     public function offsetGet($offset)
     {
-        $arguments = (array)$this->mapping[$offset];
-        $property = array_shift($arguments);
-        $getter = 'get'.ucfirst($property);
-        return $this->delegateObjectGetter($property, $getter, $arguments);
+        // If a known object property has been requested
+        if (array_key_exists($offset, $this->mapping)) {
+            $arguments = (array)$this->mapping[$offset];
+            $property = array_shift($arguments);
+            $getter = 'get'.ucfirst($property);
+            return $this->delegateObjectGetter($property, $getter, $arguments);
+        }
+
+        throw new InvalidArgumentException(
+            sprintf('Invalid apparat object property "%s"', $offset),
+            InvalidArgumentException::INVALID_APPARAT_OBJECT_PROPERTY
+        );
     }
 
     /**

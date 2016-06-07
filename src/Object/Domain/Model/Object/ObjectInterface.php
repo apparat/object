@@ -83,6 +83,12 @@ interface ObjectInterface extends \Iterator, \Countable
      */
     const STATE_UNDELETED = 16;
     /**
+     * Payload property
+     *
+     * @var string
+     */
+    const PROPERTY_PAYLOAD = 'payload';
+    /**
      * Object constructor
      *
      * The constructor is not part of the interface as the object proxy class also implements it

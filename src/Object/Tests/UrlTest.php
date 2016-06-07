@@ -47,7 +47,7 @@ use Apparat\Object\Ports\Facades\RepositoryFacade;
  * Object URL tests
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class UrlTest extends AbstractDisabledAutoconnectorTest
 {

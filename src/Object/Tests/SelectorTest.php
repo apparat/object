@@ -47,7 +47,7 @@ use Apparat\Object\Ports\Types\Object as ObjectTypes;
  * Selector tests
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class SelectorTest extends AbstractDisabledAutoconnectorTest
 {

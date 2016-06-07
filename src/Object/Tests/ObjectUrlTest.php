@@ -48,7 +48,7 @@ use Apparat\Object\Ports\Types\Object as ObjectTypes;
  * Object URL tests
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
 {

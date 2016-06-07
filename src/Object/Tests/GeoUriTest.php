@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Model\Path\GeoUri;
  * Geo URI test
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class GeoUriTest extends AbstractDisabledAutoconnectorTest
 {

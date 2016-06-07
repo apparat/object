@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Application
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -36,27 +36,15 @@
 
 namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Domain\Contract\ObjectTypesInterface;
-use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
- * Contact object
+ * Application object interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-class Contact extends AbstractObject implements ApplicationObjectInterface
+interface ApplicationObjectInterface extends ObjectInterface
 {
-    /**
-     * Object type
-     *
-     * @var string
-     */
-    const TYPE = ObjectTypesInterface::CONTACT;
-    /**
-     * Domain property collection class
-     *
-     * @var string
-     */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
+
 }

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Infrastructure
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,29 +34,38 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Object;
+namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Contract\ObjectTypesInterface;
-use Apparat\Object\Domain\Model\Object\AbstractObject;
+use Apparat\Object\Application\Model\Object\Article as ApplicationArticle;
+use Apparat\Object\Infrastructure\Model\Object\Apparat\Article;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
- * Contact object
+ * Object URL tests
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Test
  */
-class Contact extends AbstractObject implements ApplicationObjectInterface
+class ApparatObjectTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Object type
+     * Example object path
      *
      * @var string
      */
-    const TYPE = ObjectTypesInterface::CONTACT;
+    const ARTICLE_PATH = '/repo/2015/12/21/1-article/1';
+
     /**
-     * Domain property collection class
-     *
-     * @var string
+     * Test the article apparat object
      */
-    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Contact::class;
+    public function testArticleApparatObject()
+    {
+        /** @var ApplicationArticle $articleObj */
+        $articleObj = Object::load(self::ARTICLE_PATH);
+        $articleApparatObj = new Article($articleObj);
+        $this->assertInstanceOf(Article::class, $articleApparatObj);
+
+        $this->assertEquals('First repository article', $articleApparatObj['name']);
+        $this->assertEquals('First repository article', $articleApparatObj->getName());
+    }
 }

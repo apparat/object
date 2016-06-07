@@ -42,7 +42,7 @@ use Apparat\Object\Application\Service\TypeService;
  * Test type
  *
  * @package Apparat\Kernel
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class TestTypeService extends TypeService
 {

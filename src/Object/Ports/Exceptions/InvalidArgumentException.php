@@ -50,4 +50,16 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const INVALID_BINARY_PAYLOAD_SOURCE = 1464296678;
+    /**
+     * Invalid apparat object property
+     *
+     * @var int
+     */
+    const INVALID_APPARAT_OBJECT_PROPERTY = 1465330399;
+    /**
+     * Cannot unset apparat object property
+     *
+     * @var int
+     */
+    const CANNOT_UNSET_APPARAT_OBJECT_PROPERTY = 1465330565;
 }

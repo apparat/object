@@ -50,7 +50,7 @@ use Apparat\Object\Module;
  * Repository test
  *
  * @package Apparat\Object
- * @subpackage ApparatTest
+ * @subpackage Apparat\Object\Test
  */
 class RepositoryTest extends AbstractDisabledAutoconnectorTest
 {

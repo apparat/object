@@ -38,7 +38,6 @@ namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Contract\PayloadProcessorInterface;
 use Apparat\Object\Domain\Model\Object\AbstractObject;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
 
 /**
  * Abstract processed payload object
@@ -46,7 +45,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Application
  */
-abstract class AbstractProcessedPayloadObject extends AbstractObject
+abstract class AbstractProcessedPayloadObject extends AbstractObject implements ApplicationObjectInterface
 {
     /**
      * Payload processor
@@ -59,7 +58,7 @@ abstract class AbstractProcessedPayloadObject extends AbstractObject
      * Set the payload
      *
      * @param string $payload Payload
-     * @return ObjectInterface Self reference
+     * @return ApplicationObjectInterface Self reference
      */
     public function setPayload($payload)
     {

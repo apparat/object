@@ -34,13 +34,14 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
+namespace Apparat\Object\Ports\Object;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
 use Apparat\Object\Ports\Types\Relation;
 
 /**
@@ -50,6 +51,12 @@ use Apparat\Object\Ports\Types\Relation;
  * @subpackage Apparat\Object\Infrastructure
  * @method string getName() Return the object name
  * @method string getSummary() Return the object summary
+ * @method string getContent() Return the object content
+ * @method \DateTimeImmutable getPublished() Return the object publication date
+ * @method \DateTimeImmutable getUpdated() Return the object modification date
+ * @method array getAuthor() Return the object authors
+ * @method array getCategory() Return the object authors
+ * @method array getKlaus() Return the object authors
  */
 class Article extends AbstractApparatObject
 {

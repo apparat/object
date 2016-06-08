@@ -38,6 +38,7 @@ namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
 
 use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\Traits\ApparatObjectTrait;
+use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 
 /**
  * Abstract apparat object

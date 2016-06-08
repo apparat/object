@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
+namespace Apparat\Object\Ports\Contract;
 
 use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
 

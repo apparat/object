@@ -36,8 +36,9 @@
 
 namespace Apparat\Object\Ports\Facades;
 
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Infrastructure\Factory\ApparatObjectFactory;
 use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
@@ -49,33 +50,15 @@ use Apparat\Object\Ports\Types\Object as ObjectTypes;
 class ObjectFacade implements FacadeInterface
 {
     /**
-     * Object
-     *
-     * @var ObjectInterface
-     */
-    protected $object;
-
-    /**
-     * Object facade constructor
-     *
-     * @param ObjectInterface $object Object
-     * @internal
-     */
-    protected function __construct(ObjectInterface $object)
-    {
-        $this->object = $object;
-    }
-
-    /**
      * Instantiate and return an object
      *
      * @param string $url Object URL (relative or absolute including the apparat base URL)
      * @param int $visibility Object visibility
-     * @return ObjectInterface Object
+     * @return ApparatObjectInterface Apparat object
      * @api
      */
     public static function load($url, $visibility = ObjectTypes::VISIBILITY_ALL)
     {
-        return new static(Object::load($url, $visibility));
+        return ApparatObjectFactory::create(Object::load($url, $visibility));
     }
 }

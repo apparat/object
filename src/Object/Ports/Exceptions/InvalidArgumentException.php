@@ -62,4 +62,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const CANNOT_UNSET_APPARAT_OBJECT_PROPERTY = 1465330565;
+    /**
+     * Unknown apparat object type
+     *
+     * @var int
+     */
+    const UNKNOWN_APPARAT_OBJECT_TYPE = 1465368597;
 }

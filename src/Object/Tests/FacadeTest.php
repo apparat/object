@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Object\Ports\Object\Article;
 use Apparat\Object\Ports\Facades\ObjectFacade;
 
 /**
@@ -59,6 +60,6 @@ class FacadeTest extends AbstractRepositoryEnabledTest
     public function testObjectFacade()
     {
         $object = ObjectFacade::load(self::OBJECT_PATH);
-        $this->assertInstanceOf(ObjectFacade::class, $object);
+        $this->assertInstanceOf(Article::class, $object);
     }
 }

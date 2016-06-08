@@ -38,8 +38,9 @@ namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Object\Article as ApplicationArticle;
-use Apparat\Object\Infrastructure\Model\Object\Apparat\Article;
 use Apparat\Object\Infrastructure\Model\Object\Object;
+use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Ports\Object\Article;
 
 /**
  * Object URL tests
@@ -63,15 +64,16 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
      */
     public function testArticleApparatObjectInvalidGetter()
     {
-        /** @var ApplicationArticle $articleObj */
-        $articleObj = Object::load(self::ARTICLE_PATH);
-        $articleApparatObj = Kernel::create(Article::class, [$articleObj]);
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_PATH);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
         $this->assertTrue(isset($articleApparatObj['name']));
         $this->assertEquals('First repository article', $articleApparatObj['name']);
         $this->assertEquals('First repository article', $articleApparatObj->getName());
         $articleApparatObj['name'] = null;
+
+        /** @noinspection PhpUndefinedMethodInspection */
         $articleApparatObj->getInvalid();
     }
 
@@ -83,9 +85,8 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
      */
     public function testArticleApparatObjectUnvalidUnset()
     {
-        /** @var ApplicationArticle $articleObj */
-        $articleObj = Object::load(self::ARTICLE_PATH);
-        $articleApparatObj = Kernel::create(Article::class, [$articleObj]);
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_PATH);
         unset($articleApparatObj['name']);
     }
 

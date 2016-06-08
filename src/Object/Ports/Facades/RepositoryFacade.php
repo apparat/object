@@ -39,11 +39,12 @@ namespace Apparat\Object\Ports\Facades;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Path\PathInterface;
 use Apparat\Object\Domain\Model\Path\RepositoryPath;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Infrastructure\Factory\ApparatObjectFactory;
+use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 
 /**
  * Repository facade
@@ -127,12 +128,12 @@ class RepositoryFacade implements FacadeInterface
      *
      * @param string $path Object path
      * @param int $visibility Object visibility
-     * @return ObjectInterface Object
+     * @return ApparatObjectInterface Object
      */
     public function loadObject($path, $visibility = SelectorInterface::ALL)
     {
         /** @var PathInterface $objectPath */
         $objectPath = Kernel::create(RepositoryPath::class, [$this->repository, $path]);
-        return $this->repository->loadObject($objectPath, $visibility);
+        return ApparatObjectFactory::create($this->repository->loadObject($objectPath, $visibility));
     }
 }

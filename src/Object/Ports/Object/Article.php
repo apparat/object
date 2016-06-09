@@ -79,7 +79,6 @@ class Article extends AbstractApparatObject
         'syndication' => [], // TODO Map to additional relation type?
         'inReplyTo' => [Relations::COLLECTION, Relation::REPLIES_TO],
         'rsvp' => [AbstractDomainProperties::COLLECTION, 'rsvp'],
-        'comment' => [AbstractDomainProperties::COLLECTION, 'comment'],
         'likeOf' => [Relations::COLLECTION, Relation::LIKES],
         'repostOf' => [Relations::COLLECTION, Relation::REPOSTS],
         'photo' => [AbstractDomainProperties::COLLECTION, 'photo'],

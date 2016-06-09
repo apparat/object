@@ -38,7 +38,6 @@ namespace Apparat\Object\Application\Model\Properties\Domain\Traits;
 
 use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
 use Apparat\Object\Application\Model\Properties\Datatype\Sentence;
-use Apparat\Object\Application\Model\Properties\Datatype\Text;
 use Apparat\Object\Application\Model\Properties\Datatype\Token;
 use Apparat\Object\Application\Model\Properties\Datatype\Url;
 use Apparat\Object\Domain\Contract\ObjectTypesInterface;
@@ -69,16 +68,6 @@ trait ArticlePropertiesModelTrait
      * @var array
      */
     protected $pmRsvp = [false, [Token::class]];
-    /**
-     * Property model: Comment
-     *
-     * @var array
-     */
-    protected $pmComment = [
-        true,
-        [ApparatUrl::class, Text::class],
-        [ApparatUrl::class => [ObjectTypesInterface::CITE]]
-    ];
     /**
      * Property model: Featured
      *

@@ -280,16 +280,17 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Return the object property data
      *
+     * @param bool $serialize Serialize property objects
      * @return array Object property data
      */
-    public function getPropertyData()
+    public function getPropertyData($serialize = true)
     {
         $propertyData = array_filter([
-            SystemProperties::COLLECTION => $this->systemProperties->toArray(),
-            MetaProperties::COLLECTION => $this->metaProperties->toArray(),
-            AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray(),
-            ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray(),
-            Relations::COLLECTION => $this->relations->toArray(),
+            SystemProperties::COLLECTION => $this->systemProperties->toArray($serialize),
+            MetaProperties::COLLECTION => $this->metaProperties->toArray($serialize),
+            AbstractDomainProperties::COLLECTION => $this->domainProperties->toArray($serialize),
+            ProcessingInstructions::COLLECTION => $this->processingInstructions->toArray($serialize),
+            Relations::COLLECTION => $this->relations->toArray($serialize),
         ], function (array $collection) {
             return (boolean)count($collection);
         });

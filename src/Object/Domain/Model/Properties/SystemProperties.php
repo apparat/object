@@ -506,20 +506,24 @@ class SystemProperties extends AbstractProperties
     /**
      * Return the property values as array
      *
+     * @param bool $serialize Serialize property objects
      * @return array Property values
      */
-    public function toArray()
+    public function toArray($serialize = true)
     {
-        return array_filter([
-            self::PROPERTY_ID => $this->uid->getId(),
-            self::PROPERTY_TYPE => $this->type->getType(),
-            self::PROPERTY_REVISION => $this->revision->getRevision(),
-            self::PROPERTY_CREATED => $this->created,
-            self::PROPERTY_MODIFIED => $this->modified,
-            self::PROPERTY_PUBLISHED => $this->published,
-            self::PROPERTY_DELETED => $this->deleted,
-            self::PROPERTY_LOCATION => $this->location->toArray(),
-            self::PROPERTY_LANGUAGE => $this->language,
-        ]);
+        return $this->toSerializedArray(
+            $serialize,
+            [
+                self::PROPERTY_ID => $this->uid->getId(),
+                self::PROPERTY_TYPE => $this->type->getType(),
+                self::PROPERTY_REVISION => $this->revision->getRevision(),
+                self::PROPERTY_CREATED => $this->created,
+                self::PROPERTY_MODIFIED => $this->modified,
+                self::PROPERTY_PUBLISHED => $this->published,
+                self::PROPERTY_DELETED => $this->deleted,
+                self::PROPERTY_LOCATION => $this->location->toArray(),
+                self::PROPERTY_LANGUAGE => $this->language,
+            ]
+        );
     }
 }

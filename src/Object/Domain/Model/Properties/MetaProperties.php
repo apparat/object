@@ -399,16 +399,20 @@ class MetaProperties extends AbstractProperties
     /**
      * Return the property values as array
      *
+     * @param bool $serialize Serialize property objects
      * @return array Property values
      */
-    public function toArray()
+    public function toArray($serialize = true)
     {
-        return array_filter([
-            self::PROPERTY_TITLE => $this->title,
-            self::PROPERTY_DESCRIPTION => $this->description,
-            self::PROPERTY_ABSTRACT => $this->abstract,
-            self::PROPERTY_KEYWORDS => $this->keywords,
-            self::PROPERTY_CATEGORIES => $this->categories,
-        ]);
+        return $this->toSerializedArray(
+            $serialize,
+            [
+                self::PROPERTY_TITLE => $this->title,
+                self::PROPERTY_DESCRIPTION => $this->description,
+                self::PROPERTY_ABSTRACT => $this->abstract,
+                self::PROPERTY_KEYWORDS => $this->keywords,
+                self::PROPERTY_CATEGORIES => $this->categories,
+            ]
+        );
     }
 }

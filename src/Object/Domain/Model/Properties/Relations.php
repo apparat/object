@@ -252,9 +252,10 @@ class Relations extends AbstractProperties
     /**
      * Return the property values as array
      *
+     * @param bool $serialize Serialize property objects
      * @return array Property values
      */
-    public function toArray()
+    public function toArray($serialize = true)
     {
         $relations = [];
         /** @var RelationInterface $relation */
@@ -267,6 +268,6 @@ class Relations extends AbstractProperties
             $relations[$relationType][] = strval($relation);
         }
         ksort($relations);
-        return $relations;
+        return $this->toSerializedArray($serialize, $relations);
     }
 }

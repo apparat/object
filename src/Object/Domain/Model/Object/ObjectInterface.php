@@ -336,9 +336,10 @@ interface ObjectInterface extends \Iterator, \Countable
     /**
      * Return the object property data
      *
+     * @param bool $serialize Serialize property objects
      * @return array Object property data
      */
-    public function getPropertyData();
+    public function getPropertyData($serialize = true);
 
     /**
      * Return the object payload

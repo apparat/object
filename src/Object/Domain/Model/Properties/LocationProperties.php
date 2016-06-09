@@ -196,16 +196,20 @@ class LocationProperties extends AbstractProperties
     }
 
     /**
-     * Return the location values as array
+     * Return the property values as array
      *
-     * @return array LocationProperties values
+     * @param bool $serialize Serialize property objects
+     * @return array Property values
      */
-    public function toArray()
+    public function toArray($serialize = true)
     {
-        return array_filter([
-            self::LATITUDE => $this->latitude,
-            self::LONGITUDE => $this->longitude,
-            self::ELEVATION => $this->elevation,
-        ]);
+        return $this->toSerializedArray(
+            $serialize,
+            [
+                self::LATITUDE => $this->latitude,
+                self::LONGITUDE => $this->longitude,
+                self::ELEVATION => $this->elevation,
+            ]
+        );
     }
 }

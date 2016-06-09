@@ -59,16 +59,6 @@ abstract class AbstractGenericProperties extends AbstractProperties implements G
     }
 
     /**
-     * Return the property values as array
-     *
-     * @return array Property values
-     */
-    public function toArray()
-    {
-        return $this->data;
-    }
-
-    /**
      * Get a property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").

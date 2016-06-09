@@ -35,7 +35,9 @@
 
 namespace Apparat\Object\Domain\Model\Path;
 
+use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Utility\ArrayUtility;
+use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
 use Apparat\Object\Domain\Model\Path\Traits\Psr7Trait;
 use Psr\Http\Message\UriInterface;
 
@@ -44,7 +46,7 @@ use Psr\Http\Message\UriInterface;
  *
  * @package Apparat\Object\Domain\Model
  */
-class Url extends Uri implements UriInterface
+class Url extends Uri implements UriInterface, SerializablePropertyInterface
 {
     /**
      * Use PSR-7 method
@@ -474,5 +476,24 @@ class Url extends Uri implements UriInterface
         }
 
         return true;
+    }
+
+    /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     */
+    public static function unserialize($str) {
+        return Kernel::create(static::class, [$str]);
+    }
+
+    /**
+     * Serialize the property
+     *
+     * @return mixed Property serialization
+     */
+    public function serialize() {
+        return strval($this);
     }
 }

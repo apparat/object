@@ -64,7 +64,8 @@ interface PropertiesInterface
     /**
      * Return the property values as array
      *
+     * @param bool $serialize Serialize property objects
      * @return array Property values
      */
-    public function toArray();
+    public function toArray($serialize = true);
 }

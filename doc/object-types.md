@@ -69,7 +69,15 @@ What follows is a list of supported text based object types.
 * See [IWC like](https://indiewebcamp.com/like)
 
 
-9. Bookmark (`bookmark`)
+9. Repost (`repost`)
+----------------
+* For pure 100% re-publications of another post (e.g. Retweet, Reblogging etc.)
+* Compatible with [µf2 h-entry](http://microformats.org/wiki/h-entry)
+* Body file part is mapped to the `u-repost-of` property
+* See [IWC like](https://indiewebcamp.com/repost)
+
+
+10. Bookmark (`bookmark`)
 ------------------------
 * For bookmarks consisting of a URL, sometimes with a description or cite
 * Compatible with [µf2 h-entry](http://microformats.org/wiki/h-entry)
@@ -78,7 +86,7 @@ What follows is a list of supported text based object types.
 * See [IWC bookmark](https://indiewebcamp.com/bookmark)
 
 
-10. Checkin (`checkin`)
+11. Checkin (`checkin`)
 ----------------------
 * For venue checkins
 * Compatible with [µf2 h-entry](http://microformats.org/wiki/h-entry)
@@ -88,14 +96,14 @@ What follows is a list of supported text based object types.
 * See [IWC checkin](https://indiewebcamp.com/checkin)
 
 
-11. Review / recommendation / rating (`review`)
+12. Review / recommendation / rating (`review`)
 ----------------------------------------------
 * For reviews, recommendations or ratings
 * Compatible with [µf2 h-review](http://microformats.org/wiki/h-review)
 * Body file part is mapped to the `e-description` property
 
 
-12. Venue / address (`venue`)
+13. Venue / address (`venue`)
 -----------------------------
 * Named locations or address / geo, typically used for checkins
 * Compatible with a basic [µf2 h-card](http://microformats.org/wiki/h-card)
@@ -103,7 +111,7 @@ What follows is a list of supported text based object types.
 * See [IWC venue](https://indiewebcamp.com/venue) and [µf2 opening hours](http://microformats.org/wiki/opening-hours)
 
 
-13. Geographical coordinates (`geo`)
+14. Geographical coordinates (`geo`)
 ------------------------------------
 * [WGS84](http://en.wikipedia.org/wiki/WGS84) geographic coordinates, typically used by checkins and events
 * Compatible with [µf2 h-geo](http://microformats.org/wiki/h-geo)
@@ -111,7 +119,7 @@ What follows is a list of supported text based object types.
 * See [IWC location](https://indiewebcamp.com/location)
 
 
-14. Contact card (`contact`)
+15. Contact card (`contact`)
 ----------------------------
 * Person or organization details
 * Compatible with [µf2 h-card](http://microformats.org/wiki/h-card)
@@ -119,7 +127,7 @@ What follows is a list of supported text based object types.
 * See [IWC contact](https://indiewebcamp.com/contact)
 
 
-15. Citation (`cite`)
+16. Citation (`cite`)
 ---------------------
 * Citation or reference to online publication
 * Compatible with [µf2 h-cite](http://microformats.org/wiki/h-cite)
@@ -127,7 +135,7 @@ What follows is a list of supported text based object types.
 * See [IWC citation](https://indiewebcamp.com/citation)
 
 
-16. Project (`project`)
+17. Project (`project`)
 -----------------------
 * Citation or reference to online publication
 * Compatible with [µf2 h-project](http://microformats.org/wiki/h-product)
@@ -135,7 +143,7 @@ What follows is a list of supported text based object types.
 * What about a `product` object type?
 
 
-17. Item (`item`)
+18. Item (`item`)
 -----------------
 * As base for a review, project / product or event (in rare cases)
 * Compatible with [µf2 h-item](http://microformats.org/wiki/h-item)

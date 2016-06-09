@@ -50,6 +50,8 @@ use Apparat\Object\Domain\Model\Relation\RepliedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepliesToRelation;
 use Apparat\Object\Domain\Model\Relation\RepostedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepostsRelation;
+use Apparat\Object\Domain\Model\Relation\SyndicatedFromRelation;
+use Apparat\Object\Domain\Model\Relation\SyndicatedToRelation;
 
 /**
  * Relation types & constants
@@ -131,6 +133,18 @@ class Relation
      * @var string
      */
     const REPOSTS = RepostsRelation::TYPE;
+    /**
+     * Syndicated-To relation
+     *
+     * @var string
+     */
+    const SYNDICATED_TO = SyndicatedToRelation::TYPE;
+    /**
+     * Syndicated-From relation
+     *
+     * @var string
+     */
+    const SYNDICATED_FROM = SyndicatedFromRelation::TYPE;
     /**
      * Type property
      *

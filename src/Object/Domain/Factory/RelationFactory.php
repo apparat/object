@@ -54,6 +54,8 @@ use Apparat\Object\Domain\Model\Relation\RepliedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepliesToRelation;
 use Apparat\Object\Domain\Model\Relation\RepostedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepostsRelation;
+use Apparat\Object\Domain\Model\Relation\SyndicatedFromRelation;
+use Apparat\Object\Domain\Model\Relation\SyndicatedToRelation;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Infrastructure\Utilities\Validator;
 
@@ -107,6 +109,8 @@ class RelationFactory
         RepliedByRelation::TYPE => RepliedByRelation::class,
         RepostsRelation::TYPE => RepostsRelation::class,
         RepostedByRelation::TYPE => RepostedByRelation::class,
+        SyndicatedToRelation::TYPE => SyndicatedToRelation::class,
+        SyndicatedFromRelation::TYPE => SyndicatedFromRelation::class,
     ];
 
     /**

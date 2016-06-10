@@ -92,4 +92,172 @@ class Contact extends AbstractDomainProperties
      * @var string
      */
     const SORT_STRING = 'sortString';
+    /**
+     * Email address
+     *
+     * @var string
+     */
+    const EMAIL = 'email';
+    /**
+     * Logo
+     *
+     * @var string
+     */
+    const LOGO = 'logo';
+    /**
+     * Photo
+     *
+     * @var string
+     */
+    const PHOTO = 'photo';
+    /**
+     * URL
+     *
+     * @var string
+     */
+    const URL = 'url';
+    /**
+     * Embedded apparat address
+     *
+     * @var string
+     */
+    const ADR = 'adr';
+    /**
+     * Post office box
+     *
+     * @var string
+     */
+    const POST_OFFICE_BOX = 'postOfficeBox';
+    /**
+     * Extended address
+     *
+     * @var string
+     */
+    const EXTENDED_ADDRESS = 'extendedAddress';
+    /**
+     * Street address
+     *
+     * @var string
+     */
+    const STREET_ADDRESS = 'streetAddress';
+    /**
+     * Locality
+     *
+     * @var string
+     */
+    const LOCALITY = 'locality';
+    /**
+     * Region
+     *
+     * @var string
+     */
+    const REGION = 'region';
+    /**
+     * Postal code
+     *
+     * @var string
+     */
+    const POSTAL_CODE = 'postalCode';
+    /**
+     * Country name
+     *
+     * @var string
+     */
+    const COUNTRY_NAME = 'countryName';
+    /**
+     * Label
+     *
+     * @var string
+     */
+    const LABEL = 'label';
+    /**
+     * Geo URL
+     *
+     * @var string
+     */
+    const GEO = 'geo';
+    /**
+     * Latitude
+     *
+     * @var string
+     */
+    const LATITUDE = 'latitude';
+    /**
+     * Longitude
+     *
+     * @var string
+     */
+    const LONGITUDE = 'longitude';
+    /**
+     * Altitude
+     *
+     * @var string
+     */
+    const ALTITUDE = 'altitude';
+    /**
+     * Telephone number
+     *
+     * @var string
+     */
+    const TEL = 'tel';
+    /**
+     * Additional notes
+     *
+     * @var string
+     */
+    const NOTE = 'note';
+    /**
+     * Birthday
+     *
+     * @var string
+     */
+    const BDAY = 'bday';
+    /**
+     * Cryptographic key
+     *
+     * @var string
+     */
+    const KEY = 'key';
+    /**
+     * Affiliated organization
+     *
+     * @var string
+     */
+    const ORG = 'org';
+    /**
+     * Job title
+     *
+     * @var string
+     */
+    const JOB_TITLE = 'jobTitle';
+    /**
+     * Role
+     *
+     * @var string
+     */
+    const ROLE = 'role';
+    /**
+     * Instant messager profile
+     *
+     * @var string
+     */
+    const IMPP = 'impp';
+    /**
+     * Sex
+     *
+     * @var string
+     */
+    const SEX = 'sex';
+    /**
+     * Gender identity
+     *
+     * @var string
+     */
+    const GENDER_IDENTITY = 'genderIdentity';
+    /**
+     * Anniversary
+     *
+     * @var string
+     */
+    const ANNIVERSARY = 'anniversary';
 }

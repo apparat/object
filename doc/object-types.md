@@ -127,7 +127,14 @@ What follows is a list of supported text based object types.
 * See [IWC contact](https://indiewebcamp.com/contact)
 
 
-16. Citation (`cite`)
+16. Address (`address`)
+----------------------------
+* Postal address
+* Compatible with [µf2 h-adr](http://microformats.org/wiki/h-adr)
+* Body file part is mapped to?
+
+
+17. Citation (`cite`)
 ---------------------
 * Citation or reference to online publication
 * Compatible with [µf2 h-cite](http://microformats.org/wiki/h-cite)
@@ -135,7 +142,7 @@ What follows is a list of supported text based object types.
 * See [IWC citation](https://indiewebcamp.com/citation)
 
 
-17. Project (`project`)
+18. Project (`project`)
 -----------------------
 * Citation or reference to online publication
 * Compatible with [µf2 h-project](http://microformats.org/wiki/h-product)
@@ -143,7 +150,7 @@ What follows is a list of supported text based object types.
 * What about a `product` object type?
 
 
-18. Item (`item`)
+19. Item (`item`)
 -----------------
 * As base for a review, project / product or event (in rare cases)
 * Compatible with [µf2 h-item](http://microformats.org/wiki/h-item)

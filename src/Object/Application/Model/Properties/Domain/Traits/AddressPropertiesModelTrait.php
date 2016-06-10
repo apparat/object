@@ -110,8 +110,8 @@ trait AddressPropertiesModelTrait
      */
     protected $pmGeo = [
         false,
-        [Geo::class],
-        [Geo::class => [ObjectTypesInterface::GEO]]
+        [ApparatUrl::class, Geo::class],
+        [ApparatUrl::class => [ObjectTypesInterface::GEO], Geo::class => [ObjectTypesInterface::GEO]]
     ];
     /**
      * Property model: Latitude

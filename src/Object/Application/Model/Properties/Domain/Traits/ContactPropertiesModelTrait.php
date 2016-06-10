@@ -201,8 +201,10 @@ trait ContactPropertiesModelTrait
      * Property model: Anniversary
      *
      * @var array
+     * @todo There seems to be a bug in symfony/yaml so that lists of dates cannot be parsed w/o errors, so right now
+     * there cannot be a list of anniversaries
      */
-    protected $pmAnniversary = [true, [Datetime::class]];
+    protected $pmAnniversary = [false, [Datetime::class]];
 
     /**
      * Set the given name

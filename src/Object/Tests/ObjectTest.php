@@ -335,7 +335,8 @@ namespace Apparat\Object\Tests {
             $this->assertTrue($object->hasBeenMutated());
             $this->assertEquals('MIT', $object->getLicense());
             $this->assertEquals(ObjectTypes::PRIVACY_PRIVATE, $object->getPrivacy());
-            $this->assertEquals(ObjectTypes::PRIVACY_PUBLIC,
+            $this->assertEquals(
+                ObjectTypes::PRIVACY_PUBLIC,
                 $object->setPrivacy(ObjectTypes::PRIVACY_PUBLIC)->getPrivacy()
             );
             $object->setPrivacy('invalid');

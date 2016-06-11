@@ -220,8 +220,7 @@ abstract class AbstractProperties implements PropertiesInterface
                 if (is_array($value)) {
                     $data[$property] = $this->toSerializedArray($serialize, $value);
                     // Else if the value is serializable
-                } elseif (
-                    is_object($value) &&
+                } elseif (is_object($value) &&
                     (new \ReflectionClass($value))->implementsInterface(SerializablePropertyInterface::class)
                 ) {
                     /** @var $value SerializablePropertyInterface */

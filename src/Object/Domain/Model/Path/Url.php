@@ -484,7 +484,8 @@ class Url extends Uri implements UriInterface, SerializablePropertyInterface
      * @param string $str Serialized property
      * @return SerializablePropertyInterface Property
      */
-    public static function unserialize($str) {
+    public static function unserialize($str)
+    {
         return Kernel::create(static::class, [$str]);
     }
 
@@ -493,7 +494,8 @@ class Url extends Uri implements UriInterface, SerializablePropertyInterface
      *
      * @return mixed Property serialization
      */
-    public function serialize() {
+    public function serialize()
+    {
         return strval($this);
     }
 }

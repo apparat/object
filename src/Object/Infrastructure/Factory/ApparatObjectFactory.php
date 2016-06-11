@@ -40,7 +40,7 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Ports\Contract\ApparatObjectInterface;
-use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
+use Apparat\Object\Ports\Exceptions\InvalidArgumentException as PortsInvalidArgumentException;
 use Apparat\Object\Ports\Object\Article;
 use Apparat\Object\Ports\Object\Contact;
 
@@ -93,9 +93,9 @@ class ApparatObjectFactory implements ObjectTypesInterface
 
         // If the object type doesn't map to known apparat object class
         if (!array_key_exists($objectType, self::$typeClasses) || !self::$typeClasses[$objectType]) {
-            throw new InvalidArgumentException(
+            throw new PortsInvalidArgumentException(
                 sprintf('Unknown apparat object type "%s"', $objectType),
-                InvalidArgumentException::UNKNOWN_APPARAT_OBJECT_TYPE
+                PortsInvalidArgumentException::UNKNOWN_APPARAT_OBJECT_TYPE
             );
         }
 

@@ -228,7 +228,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test URL serialization / unserialization
      */
-    public function testUrlSerializationUnserialization() {
+    public function testUrlSerializationUnserialization()
+    {
         $url = Url::unserialize(self::REMOTE_URL);
         $this->assertInstanceOf(Url::class, $url);
         $this->assertEquals(self::REMOTE_URL, $url->serialize());

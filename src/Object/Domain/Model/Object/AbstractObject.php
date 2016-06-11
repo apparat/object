@@ -309,6 +309,17 @@ abstract class AbstractObject implements ObjectInterface
     }
 
     /**
+     * Return the canonical object URL
+     *
+     * @return string
+     */
+    public function getCanonicalUrl()
+    {
+        $canonicalPath = $this->path->setRevision(Revision::current());
+        return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($canonicalPath);
+    }
+
+    /**
      * Persist the current object revision
      *
      * @return ObjectInterface Object

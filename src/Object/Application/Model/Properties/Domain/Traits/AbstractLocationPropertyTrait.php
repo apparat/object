@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
+ * @subpackage  Apparat\Object\Application
  * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,46 +34,28 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
+namespace Apparat\Object\Application\Model\Properties\Domain\Traits;
 
-use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
-use Apparat\Object\Infrastructure\Model\Object\Apparat\Traits\ApparatObjectTrait;
-use Apparat\Object\Ports\Contract\ApparatObjectInterface;
+use Apparat\Object\Application\Contract\ObjectTypesInterface;
+use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
+use Apparat\Object\Application\Model\Properties\Datatype\Sentence;
 
 /**
- * Abstract apparat object
+ * Abstract location property trait
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
- * @method \DateTimeImmutable getPublished() Return the object publication date
- * @method \DateTimeImmutable getUpdated() Return the object modification date
- * @method array getAuthor() Return the object authors
- * @method array getCategory() Return the object authors
- * @method array getUrl() Return the object URL
- * @method array getUid() Return the object UID
- * @method array getLocation() Return the object location
- * @method array getSyndication() Return the object location
+ * @subpackage Apparat\Object\Application
  */
-abstract class AbstractApparatObject implements ApparatObjectInterface
+trait AbstractLocationPropertyTrait
 {
     /**
-     * Use the apparat object common properties
-     */
-    use ApparatObjectTrait;
-    /**
-     * Application object
+     * Property model: Location
      *
-     * @var ApplicationObjectInterface
+     * @var array
      */
-    protected $object;
-
-    /**
-     * Apparat object constructor
-     *
-     * @param ApplicationObjectInterface $object Application object
-     */
-    public function __construct(ApplicationObjectInterface $object)
-    {
-        $this->object = $object;
-    }
+    protected $pmLocation = [
+        false,
+        [ApparatUrl::class, Sentence::class],
+        [ApparatUrl::class => [ObjectTypesInterface::ADDRESS, ObjectTypesInterface::GEO]]
+    ];
 }

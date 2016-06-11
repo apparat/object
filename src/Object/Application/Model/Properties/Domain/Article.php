@@ -36,7 +36,10 @@
 
 namespace Apparat\Object\Application\Model\Properties\Domain;
 
-use Apparat\Object\Application\Model\Properties\Domain\Traits\ArticlePropertiesModelTrait;
+use Apparat\Object\Application\Contract\ObjectTypesInterface;
+use Apparat\Object\Application\Model\Properties\Datatype\ApparatUrl;
+use Apparat\Object\Application\Model\Properties\Datatype\Url;
+use Apparat\Object\Application\Model\Properties\Domain\Traits\AbstractLocationPropertyTrait;
 
 /**
  * Article object domain properties
@@ -47,7 +50,36 @@ use Apparat\Object\Application\Model\Properties\Domain\Traits\ArticlePropertiesM
 class Article extends AbstractDomainProperties
 {
     /**
-     * Use the article properties model
+     * Import the location property
      */
-    use ArticlePropertiesModelTrait;
+    use AbstractLocationPropertyTrait;
+    /**
+     * Summary
+     *
+     * @var string
+     */
+    const SUMMARY = 'summary';
+    /**
+     * Content
+     *
+     * @var string
+     */
+    const CONTENT = 'content';
+    /**
+     * Featured image
+     *
+     * @var string
+     */
+    const FEATURED = 'featured';
+
+    /**
+     * Property model: Featured
+     *
+     * @var array
+     */
+    protected $pmFeatured = [
+        false,
+        [ApparatUrl::class, Url::class],
+        [ApparatUrl::class => [ObjectTypesInterface::IMAGE]]
+    ];
 }

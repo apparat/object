@@ -59,6 +59,18 @@ abstract class AbstractProperties implements PropertiesInterface
      * @var ObjectInterface
      */
     protected $object = null;
+    /**
+     * Absolute URL property
+     *
+     * @var string
+     */
+    const PROPERTY_ABSOLUTE_URL = 'absoluteUrl';
+    /**
+     * Canonical URL property
+     *
+     * @var string
+     */
+    const PROPERTY_CANONICAL_URL = 'canonicalUrl';
 
     /**
      * Meta properties constructor

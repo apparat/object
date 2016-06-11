@@ -48,7 +48,7 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class ObjectProxy implements ObjectInterface
+abstract class ObjectProxy implements ObjectInterface
 {
     /**
      * Apparat object URL
@@ -95,11 +95,12 @@ class ObjectProxy implements ObjectInterface
     /**
      * Return the object property data
      *
+     * @param bool $serialize Serialize property objects
      * @return array Object property data
      */
-    public function getPropertyData()
+    public function getPropertyData($serialize = true)
     {
-        return $this->object()->getPropertyData();
+        return $this->object()->getPropertyData($serialize);
     }
 
     /**
@@ -538,6 +539,16 @@ class ObjectProxy implements ObjectInterface
     public function getAbsoluteUrl()
     {
         return strval($this->url);
+    }
+
+    /**
+     * Return the canonical object URL
+     *
+     * @return string
+     */
+    public function getCanonicalUrl()
+    {
+        return $this->getAbsoluteUrl();
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat/object
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
- * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @subpackage  Apparat\Object\Application
+ * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -34,46 +34,28 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
+namespace Apparat\Object\Application\Model\Object;
 
-use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
-use Apparat\Object\Infrastructure\Model\Object\Apparat\Traits\ApparatObjectTrait;
-use Apparat\Object\Ports\Contract\ApparatObjectInterface;
+use Apparat\Object\Domain\Contract\ObjectTypesInterface;
 
 /**
- * Abstract apparat object
+ * Rsvp object
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
- * @method \DateTimeImmutable getPublished() Return the object publication date
- * @method \DateTimeImmutable getUpdated() Return the object modification date
- * @method array getAuthor() Return the object authors
- * @method array getCategory() Return the object authors
- * @method array getUrl() Return the object URL
- * @method array getUid() Return the object UID
- * @method array getLocation() Return the object location
- * @method array getSyndication() Return the object location
+ * @subpackage Apparat\Object\Application
  */
-abstract class AbstractApparatObject implements ApparatObjectInterface
+class Rsvp extends AbstractCommonMarkObject
 {
     /**
-     * Use the apparat object common properties
-     */
-    use ApparatObjectTrait;
-    /**
-     * Application object
+     * Object type
      *
-     * @var ApplicationObjectInterface
+     * @var string
      */
-    protected $object;
-
+    const TYPE = ObjectTypesInterface::RSVP;
     /**
-     * Apparat object constructor
+     * Domain property collection class
      *
-     * @param ApplicationObjectInterface $object Application object
+     * @var string
      */
-    public function __construct(ApplicationObjectInterface $object)
-    {
-        $this->object = $object;
-    }
+    protected $domainPropertyCClass = \Apparat\Object\Application\Model\Properties\Domain\Rsvp::class;
 }

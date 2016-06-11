@@ -36,8 +36,9 @@
 
 namespace Apparat\Object\Ports\Object;
 
+use Apparat\Object\Application\Model\Properties\Domain\Article as ArticleProperties;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
+use Apparat\Object\Domain\Model\Properties\AbstractProperties;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
@@ -52,11 +53,6 @@ use Apparat\Object\Ports\Types\Relation;
  * @method string getName() Return the object name
  * @method string getSummary() Return the object summary
  * @method string getContent() Return the object content
- * @method \DateTimeImmutable getPublished() Return the object publication date
- * @method \DateTimeImmutable getUpdated() Return the object modification date
- * @method array getAuthor() Return the object authors
- * @method array getCategory() Return the object authors
- * @method array getKlaus() Return the object authors
  */
 class Article extends AbstractApparatObject
 {
@@ -66,24 +62,27 @@ class Article extends AbstractApparatObject
      * @var array
      */
     protected $mapping = [
-        'name' => MetaProperties::PROPERTY_TITLE,
-        'summary' => MetaProperties::PROPERTY_ABSTRACT,
-        'content' => ObjectInterface::PROPERTY_PAYLOAD,
-        'published' => SystemProperties::PROPERTY_PUBLISHED,
-        'updated' => SystemProperties::PROPERTY_MODIFIED,
-        'author' => [Relations::COLLECTION, Relation::CONTRIBUTED_BY],
-        'category' => MetaProperties::PROPERTY_CATEGORIES,
-        'url' => null, // TODO Map to absolute URL
-        'uid' => null, // TODO Map to absolute URL
-        'location' => SystemProperties::PROPERTY_LOCATION,
-        'syndication' => [], // TODO Map to additional relation type?
-        'inReplyTo' => [Relations::COLLECTION, Relation::REPLIES_TO],
-        'rsvp' => [AbstractDomainProperties::COLLECTION, 'rsvp'],
-        'likeOf' => [Relations::COLLECTION, Relation::LIKES],
-        'repostOf' => [Relations::COLLECTION, Relation::REPOSTS],
-        'photo' => [AbstractDomainProperties::COLLECTION, 'photo'],
-        'audio' => [AbstractDomainProperties::COLLECTION, 'audio'],
-        'repost' => [Relations::COLLECTION, Relation::REPOSTED_BY],
-        'featured' => [AbstractDomainProperties::COLLECTION, 'featured'],
+        ArticleProperties::PUBLISHED => SystemProperties::PROPERTY_PUBLISHED,
+        ArticleProperties::UPDATED => SystemProperties::PROPERTY_MODIFIED,
+        ArticleProperties::AUTHOR => [Relations::COLLECTION, Relation::CONTRIBUTED_BY],
+        ArticleProperties::CATEGORY => MetaProperties::PROPERTY_CATEGORIES,
+        ArticleProperties::URL => AbstractProperties::PROPERTY_ABSOLUTE_URL,
+        ArticleProperties::UID => AbstractProperties::PROPERTY_CANONICAL_URL,
+        ArticleProperties::LOCATION => SystemProperties::PROPERTY_LOCATION,
+        ArticleProperties::SYNDICATION => [Relations::COLLECTION, Relation::SYNDICATED_TO],
+
+        ArticleProperties::NAME => MetaProperties::PROPERTY_TITLE,
+        ArticleProperties::SUMMARY => MetaProperties::PROPERTY_ABSTRACT,
+        ArticleProperties::CONTENT => ObjectInterface::PROPERTY_PAYLOAD,
+        ArticleProperties::FEATURED => [ArticleProperties::COLLECTION, ArticleProperties::FEATURED],
+
+//        'inReplyTo' => [Relations::COLLECTION, Relation::REPLIES_TO],
+//        'rsvp' => [AbstractDomainProperties::COLLECTION, 'rsvp'],
+//        'likeOf' => [Relations::COLLECTION, Relation::LIKES],
+//        'repostOf' => [Relations::COLLECTION, Relation::REPOSTS],
+//        'photo' => [AbstractDomainProperties::COLLECTION, 'photo'],
+//        'audio' => [AbstractDomainProperties::COLLECTION, 'audio'],
+//        'repost' => [Relations::COLLECTION, Relation::REPOSTED_BY],
+//        'featured' => [AbstractDomainProperties::COLLECTION, 'featured'],
     ];
 }

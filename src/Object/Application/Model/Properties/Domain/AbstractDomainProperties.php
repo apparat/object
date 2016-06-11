@@ -52,6 +52,54 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
      * @var string
      */
     const NAME = 'name';
+    /**
+     * Publication date & time
+     *
+     * @var string
+     */
+    const PUBLISHED = 'published';
+    /**
+     * Modification date & time
+     *
+     * @var string
+     */
+    const UPDATED = 'updated';
+    /**
+     * Authors
+     *
+     * @var string
+     */
+    const AUTHOR = 'author';
+    /**
+     * Categories
+     *
+     * @var string
+     */
+    const CATEGORY = 'category';
+    /**
+     * URL
+     *
+     * @var string
+     */
+    const URL = 'url';
+    /**
+     * UID
+     *
+     * @var string
+     */
+    const UID = 'uid';
+    /**
+     * Location
+     *
+     * @var string
+     */
+    const LOCATION = 'location';
+    /**
+     * Syndication URLs
+     *
+     * @var string
+     */
+    const SYNDICATION = 'syndication';
 
     /**
      * Set a property value by path list and base data

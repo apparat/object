@@ -41,6 +41,7 @@ use Apparat\Object\Application\Model\Object\Article as ApplicationArticle;
 use Apparat\Object\Infrastructure\Model\Object\Object;
 use Apparat\Object\Ports\Facades\RepositoryFacade;
 use Apparat\Object\Ports\Object\Article;
+use Apparat\Object\Ports\Object\Contact;
 
 /**
  * Object URL tests
@@ -51,11 +52,17 @@ use Apparat\Object\Ports\Object\Article;
 class ApparatObjectTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example article path
      *
      * @var string
      */
     const ARTICLE_PATH = '/repo/2015/12/21/1-article/1';
+    /**
+     * Example contact path
+     *
+     * @var string
+     */
+    const CONTACT_PATH = '/repo/2016/01/08/2-contact/2';
 
     /**
      * Test the article apparat object
@@ -102,5 +109,14 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         $articleObj = Object::load(self::ARTICLE_PATH);
         $articleApparatObj = Kernel::create(TestApparatObject::class, [$articleObj]);
         $articleApparatObj['invalid'];
+    }
+
+    /**
+     * Test the contact object
+     */
+    public function testContactObject()
+    {
+        $contactApparatObject = RepositoryFacade::instance('repo')->loadObject(self::CONTACT_PATH);
+        $this->assertInstanceOf(Contact::class, $contactApparatObject);
     }
 }

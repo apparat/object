@@ -416,6 +416,13 @@ interface ObjectInterface extends \Iterator, \Countable
     public function getAbsoluteUrl();
 
     /**
+     * Return the canonical object URL
+     *
+     * @return string
+     */
+    public function getCanonicalUrl();
+
+    /**
      * Get a domain property value
      *
      * Multi-level properties might be traversed by property name paths separated with colons (":").

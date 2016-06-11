@@ -4,8 +4,8 @@
  * apparat/object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
+ * @package     Apparat\Server
+ * @subpackage  Apparat\Object\Application\Model\Properties\Domain
  * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,46 +34,27 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
+namespace Apparat\Object\Application\Model\Properties\Domain;
 
-use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
-use Apparat\Object\Infrastructure\Model\Object\Apparat\Traits\ApparatObjectTrait;
-use Apparat\Object\Ports\Contract\ApparatObjectInterface;
+use Apparat\Object\Application\Model\Properties\Datatype\Token;
+use Apparat\Object\Application\Model\Properties\Domain\Traits\AbstractLocationPropertyTrait;
 
 /**
- * Abstract apparat object
+ * RSVP object domain properties
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
- * @method \DateTimeImmutable getPublished() Return the object publication date
- * @method \DateTimeImmutable getUpdated() Return the object modification date
- * @method array getAuthor() Return the object authors
- * @method array getCategory() Return the object authors
- * @method array getUrl() Return the object URL
- * @method array getUid() Return the object UID
- * @method array getLocation() Return the object location
- * @method array getSyndication() Return the object location
+ * @subpackage Apparat\Object\Application
  */
-abstract class AbstractApparatObject implements ApparatObjectInterface
+class Rsvp extends AbstractDomainProperties
 {
     /**
-     * Use the apparat object common properties
+     * Import the location property
      */
-    use ApparatObjectTrait;
+    use AbstractLocationPropertyTrait;
     /**
-     * Application object
+     * Property model: RSVP
      *
-     * @var ApplicationObjectInterface
+     * @var array
      */
-    protected $object;
-
-    /**
-     * Apparat object constructor
-     *
-     * @param ApplicationObjectInterface $object Application object
-     */
-    public function __construct(ApplicationObjectInterface $object)
-    {
-        $this->object = $object;
-    }
+    protected $pmRsvp = [true, [Token::class]];
 }

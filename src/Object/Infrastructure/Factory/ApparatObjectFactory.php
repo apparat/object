@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
 use Apparat\Object\Ports\Object\Article;
+use Apparat\Object\Ports\Object\Contact;
 
 /**
  * Apparat object factory
@@ -63,7 +64,7 @@ class ApparatObjectFactory implements ObjectTypesInterface
         self::CHECKIN => false,
         self::CITE => false,
         self::CODE => false,
-        self::CONTACT => false,
+        self::CONTACT => Contact::class,
         self::ADDRESS => false,
         self::EVENT => false,
         self::FAVOURITE => false,

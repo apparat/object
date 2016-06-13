@@ -1,7 +1,18 @@
-Apparat URL Design
-==================
+Apparat URIs, URLs & Selectors
+==============================
 
-All objects published via *apparat* are assigned unique [permanent URLs](https://en.wikipedia.org/wiki/Permalink) for access and retrieval. As *apparat* aims to impose as few requirements as possible, URLs need to be designed deliberately. In particular, object URLs SHOULD NOT depend on
+- Apparat instance URI
+- Apparat object URI
+- Minimum viable object URI
+- Full object URI
+- Mapping between URIs and URLs
+- Resource selectors
+
+___
+
+Each object associated with an *apparat* instance is assigned a [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier) that basically expresses the object's **resource location within the file system**.
+
+As *apparat* aims to impose as few requirements as possible, object URLs need to be designed deliberately. In particular, they SHOULD NOT depend on
 
 * a routing mechanism,
 * the web server's index document feature¹,
@@ -12,6 +23,7 @@ Canonical object URLs widely adhere to the underlying file system and should be 
 
 1. Alternative approach: File formats and extensions [are implementation details](http://www.w3.org/Provider/Style/URI.html#hmap-4) that don't have to be transparent to the client. It is OK to use the web server layer to abstract away these details (and rely on the web server's rewrite features).
 
+[permanent URL](https://en.wikipedia.org/wiki/Permalink)
 
 Object URLs
 -----------

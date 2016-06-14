@@ -4,7 +4,7 @@ Apparat URIs, URLs & Selectors
 Apparat base URL
 ----------------
 
-As an *apparat* instance is typically meant to be accessible over the web, it is assigned a **base URL** using the environment variable `APPARAT_BASE_URL`. The base URL uses the `http` or `https` scheme and might optionally contain an authentication, port and path section. Seen from a webserver perspective, the path section (if present) *SHOULD* match an existing directory within a virtual host. 
+As an *apparat* instance is typically meant to be accessible over the web, it is assigned a **base URL** using the environment variable `APPARAT_BASE_URL`. The base URL uses the `http` or `https` scheme and might optionally contain an authentication, port and path section. In general, the [HTTPS scheme](https://en.wikipedia.org/wiki/HTTPS) *SHOULD* be preferred. Seen from a webserver perspective, the path section (if present) *SHOULD* match an existing directory within a virtual host. 
 
 ### Typical example
 ```
@@ -32,8 +32,8 @@ http://apparat.example.com/
 ```
 https://apparat.example.com/blog
 \___/   \_________________/ \__/
-  |              |           |
-Scheme          Host      Repository identifier
+  |              |            |
+Scheme          Host    Repository identifier
 ```
 
 Object locator
@@ -43,7 +43,7 @@ An *apparat* object consists of potentially multiple file resources stored in a 
 
 * (potentially) several nested directories reflecting the object's **creation date**,
 * the container directory named after the **object ID** and its **type**,
-* the object itself named after its ID and the **object revision**.
+* the object itself, named after its ID and the **object revision**.
 
 Additionally, the locator may contain indicators for the **object visibility** and its **draft state**. An classic object locator looks like this:
 
@@ -77,6 +77,54 @@ In fact, to unambigously address the current revision of an object, the followin
 ```
 /2016/06/14/238
 ```
+
+### Creation Date
+
+Using creation dates for structuring a large number of objects seems to be an **intuitive** and the **most widely accepted approach**. These dates are immutable, and unlike many other category systems the calendar is a pretty stable, predictable and commonly understood system. Although [ordinal dates](https://en.wikipedia.org/wiki/Ordinal_date) would be slightly shorter, *apparat* sticks to a [Gregorian date representation](https://en.wikipedia.org/wiki/Gregorian_calendar) as the large majority of users is not familiar with ordinal dates at all.
+
+Depending on the environment variable `OBJECT_DATE_PRECISION`, *apparat* uses between three and six nested subdirectories for expressing an object's creation date (and time), following a pattern from `YYYY/MM/DD` to `YYYY/MM/DD/HH/II/SS`.
+
+### Object IDs
+
+It is imaginable that multiple objects are created simultaneously (within the limits of accuracy). In order to unambiguously distinguish these objects they need to be **numbered sequentially** in some way. While it's easy to read and understand the [creation date locator part](#creation-date), any form of abstract numbering will be of little cognitive value to users. So instead of numbering the objects "locally" (within the scope of their particular creation date and time), *apparat* applies a **"global" numbering across all objects** belonging to a particular repository, turning the necessity into a feature. The absolute order of object creation will always be comprehensible regardless of the concrete creation timestamps. The object ID is used to name both the **object container directory** as well as the single object revisions.
+
+**Question**: Naturally sorting files by object ID?
+
+### Object types
+
+Please see the [object summary](object-types.md) for a list of known object types.
+
+### Object names
+
+#### Text objects
+
+A [text based object](object-types.md#text-objects) (e.g. an article, note, etc.) results from a raw text submission, so the object resource is created from scratch. The object name is built from
+
+1. the automatically assigned **[object ID](#object-ids)** and
+2. an optional [revision number](#object-revision), separated by a dash.
+
+An example could be `36704-1`. The object resource will be saved using a lower-case `.md` (Markdown) file extension and also include a [language indicator](#language-indicator).
+
+#### Media objects
+
+In contrast, a [media object](object-types.md#media-objects) (e.g. an image, video, etc.) derives from an existing file that is submitted during publication. As the original file name might describe the object's contents and thus be of a certain value to users, it is preserved, yet normalized to comply with general URL requirements. The object name is built from
+
+1. the **normalized original file name** (without the file extension),
+2. the automatically assigned **[object ID](#object-ids)** and finally
+3. an optional [revision number](#object-revision), separated by a dash.
+
+An example could be `myphoto.36704-2`. The media file will be saved with its **original lower-case file extension** and also include a [language indicator](#language-indicator).
+
+#### Object revision
+
+When an object gets modified and re-published, *apparat* saves a copy of the previous instance instead of simply overwriting it with the updated revision. The latest instance will always be accessible under the canonical object URL, with the current revision number being part of the object system properties (this way, it's a very straightforward task to find out the number of revisions available). Previous revisions may be explicitly retrieved by appending a **revision number** into the object URL (as a suffix to the object ID, separated by a minus):
+
+```
+https://apparat.tools/2015/10/01/36704-event/36704-1.md
+                        Identifier for revision 1 ^^
+```
+
+Also, an object may have **[draft status](object-states.md)**, which will also result in a different URL. *Apparat*'s revisioning system is [explained in detail here](object-revisions.md).
 
 - aprt / aprts scheme
 
@@ -140,59 +188,9 @@ https://apparat.tools  /  blog  /  2015/10/01  /  36704  -  image  /  36704  -  
 
 ### Base URL
 
-The base URL associated with an *apparat* instance MAY inlude login credentials, a port number and / or a path component (e.g. `http://user:password@example.com:80/objects/`). In general, the [HTTPS scheme](https://en.wikipedia.org/wiki/HTTPS) is preferred for *apparat* URLs.
+The base URL associated with an *apparat* instance MAY inlude login credentials, a port number and / or a path component (e.g. `http://user:password@example.com:80/objects/`). 
 
-### Repository URL
 
-The repository URL identifies the repository an object belongs to. It is relative to the *apparat* [base URL](#base-url) and typically reflects subdirectories in the file system (e.g. `blog`). It might be empty (in which case no subdirectories are involved). In practice it depends on your repository configuration which part of the object URL is considered the repository URL (if any) or the path part of the *apparat* base URL instead.
-
-### Creation Date
-
-Using creation dates for structuring a large number of objects seems to be an **intuitive** and the **most widely accepted approach**. These dates are immutable, and unlike many other category systems the calendar is a pretty stable, predictable and commonly understood system. Although [ordinal dates](https://en.wikipedia.org/wiki/Ordinal_date) would be slightly shorter, *apparat* sticks to a [Gregorian date representation](https://en.wikipedia.org/wiki/Gregorian_calendar) as the large majority of users is not familiar with ordinal dates at all.
-
-### Object IDs
-
-It is possible that several objects are created simultaneously (in terms of the date precision in use). In order to unambiguously distinguish these objects by URL they need to be **numbered sequentially** in some way. While it may be possible to interpret the preceding [date based URL part](#creation-date) by intuition, any form of abstract numbering will be of little cognitive value to users. So instead of numbering the objects "locally" (within the scope of their particular creation date and time), *apparat* applies a **"global" numbering across all objects**, turning the necessity into a feature. The absolute object creation order will always be comprehensible regardless of the creation dates.
-
- The object ID is used as the first part of the **object's parent directory** and once more as (a suffix to) the **[object name](#object-name)**.
-
-**Question**: Naturally sorting files by object ID?
-
-### Object types
-
-Please see the [object summary](object-types.md) for a list of known object types.
-
-### Object names
-
-#### Text objects
-
-A [text based object](object-types.md#text-objects) (e.g. an article, note, etc.) results from a raw text submission, so the object resource is created from scratch. The object name is built from
-
-1. the automatically assigned **[object ID](#object-ids)** and
-2. an optional [revision number](#object-revision), separated by a dash.
-
-An example could be `36704-1`. The object resource will be saved using a lower-case `.md` (Markdown) file extension and also include a [language indicator](#language-indicator).
-
-#### Media objects
-
-In contrast, a [media object](object-types.md#media-objects) (e.g. an image, video, etc.) derives from an existing file that is submitted during publication. As the original file name might describe the object's contents and thus be of a certain value to users, it is preserved, yet normalized to comply with general URL requirements. The object name is built from
-
-1. the **normalized original file name** (without the file extension),
-2. the automatically assigned **[object ID](#object-ids)** and finally
-3. an optional [revision number](#object-revision), separated by a dash.
-
-An example could be `myphoto.36704-2`. The media file will be saved with its **original lower-case file extension** and also include a [language indicator](#language-indicator).
-
-#### Object revision
-
-When an object gets modified and re-published, *apparat* saves a copy of the previous instance instead of simply overwriting it with the updated revision. The latest instance will always be accessible under the canonical object URL, with the current revision number being part of the object system properties (this way, it's a very straightforward task to find out the number of revisions available). Previous revisions may be explicitly retrieved by appending a **revision number** into the object URL (as a suffix to the object ID, separated by a minus):
-
-```
-https://apparat.tools/2015/10/01/36704-event/36704-1.md
-                        Identifier for revision 1 ^^
-```
-
-Also, an object may have **[draft status](object-states.md)**, which will also result in a different URL. *Apparat*'s revisioning system is [explained in detail here](object-revisions.md).
 
 ## Object resources
 

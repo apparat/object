@@ -1,11 +1,96 @@
 Apparat URIs, URLs & Selectors
 ==============================
 
-- Apparat instance URI
-- Apparat object URI
-- Minimum viable object URI
-- Full object URI
-- Mapping between URIs and URLs
+Apparat base URL
+----------------
+
+As an *apparat* instance is typically meant to be accessible over the web, it is assigned a **base URL** using the environment variable `APPARAT_BASE_URL`. The base URL uses the `http` or `https` scheme and might optionally contain an authentication, port and path section. Seen from a webserver perspective, the path section (if present) *SHOULD* match an existing directory within a virtual host. 
+
+### Typical example
+```
+http://apparat.example.com
+```
+### Full example
+```
+ https://john:doe@apparat.example.com:8080/blog
+ \___/   \__/ \_/ \_________________/ \__/\___/
+   |      |    |           |           |    |
+Scheme    | Password      Host       Port  Path
+        User
+```
+
+Repository URL
+--------------
+
+An *apparat* instance consists of one or more **object repositories** that map to specific locations in the file system. Each repository has a unique identifier that — in combination with the base URL,  separated by a slash `"/"` — makes up a globally unique **repository URL**. The identifier must follow the rules for URL path sections and may optionally be empty. Seen from a webserver perspective, the repository URL's path section *SHOULD* match an existing directory within a virtual host. 
+
+### Typical example (with empty repository identifier)
+```
+http://apparat.example.com/
+```
+### Full example
+```
+https://apparat.example.com/blog
+\___/   \_________________/ \__/
+  |              |           |
+Scheme          Host      Repository identifier
+```
+
+Object locator
+--------------
+
+An *apparat* object consists of potentially multiple file resources stored in a common container directory. An **object locator** identifies a [single object revision](object-revisions.md) and reflects its resource location on the file system (relative to the repository root directory). The locator is built as follows:
+
+* (potentially) several nested directories reflecting the object's **creation date**,
+* the container directory named after the **object ID** and its **type**,
+* the object itself named after its ID and the **object revision**.
+
+Additionally, the locator may contain indicators for the **object visibility** and its **draft state**. An classic object locator looks like this:
+
+```
+/2016/06/14/238-article/238-1
+\_________/ \_/ \_____/ \_/  \
+     |       |     |     |    \
+ Creation    |   Object  |   Object
+   date   Object  type   |  revision
+            ID ----------/
+```
+
+The indicators are applied like this:
+
+```
+/2016/06/14/.238-article/.238-3
+            |            |
+         Hidden        Draft
+         object       revision
+```
+
+As soon as an object has been published for the first time, there's always one revision called the ***current*** one, identifying the most recently published state. For the *current revision*, no revision identifier is used. This way, the following locator consistently maps to the most recent "official" version of an object (no matter how many revisions have been published):
+
+```
+/2016/06/14/238-article/238
+```
+
+In fact, to unambigously address the current revision of an object, the following **canonical object locator** is just enough:
+
+
+```
+/2016/06/14/238
+```
+
+- aprt / aprts scheme
+
+
+Object URL
+----------
+
+- Apparat object URL
+- Full object URL
+
+
+Repository selector
+-------------------
+
 - Resource selectors
 
 ___

@@ -21,7 +21,7 @@ Purpose of this module:
 		* Extraction of references from text-based resources
 		* Involvement signalling to other objects
 3. **Utility functions**
-	* [Object URL](object-url.md) handling (composition, decomposition)
+	* [Object identifier & URL](object-identifier.md) handling (composition, decomposition)
 	* `aprt://` and `aprts://` URL handling
 
 # Object repositories

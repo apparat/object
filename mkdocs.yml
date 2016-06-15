@@ -8,7 +8,7 @@ pages:
 - Objects:
   - Types: 'object-types.md'
   - Properties: 'object-properties.md'
-  - URLs: 'object-url.md'
+  - Identifiers, URLs & selectors: 'object-identifier.md'
   - Revisions: 'object-revisions.md'
   - States: 'object-states.md'
 - To-Do: 'todo.md'

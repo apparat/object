@@ -45,14 +45,14 @@ use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\RelationsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\StatesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\SystemPropertiesTrait;
-use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
-use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Domain\Repository\Service;
 
@@ -316,7 +316,8 @@ abstract class AbstractObject implements ObjectInterface
     public function getCanonicalUrl()
     {
         $canonicalLocator = $this->locator->setRevision(Revision::current());
-        return getenv('APPARAT_BASE_URL').ltrim($this->locator->getRepository()->getUrl(), '/').strval($canonicalLocator);
+        $canonicalUrl = ltrim($this->locator->getRepository()->getUrl(), '/').strval($canonicalLocator);
+        return getenv('APPARAT_BASE_URL').$canonicalUrl;
     }
 
     /**
@@ -426,7 +427,7 @@ abstract class AbstractObject implements ObjectInterface
         // Set the system properties to draft mode
         $this->setSystemProperties($this->systemProperties->createDraft($draftRevision), true);
 
-        // Update the object locator
+        // Update the object locato
         $this->updateLocator();
     }
 }

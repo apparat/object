@@ -82,7 +82,10 @@ interface ManagerInterface
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
      */
-    public function loadObjectResource(RepositoryLocatorInterface &$currentLocator, $visibility = SelectorInterface::ALL);
+    public function loadObjectResource(
+        RepositoryLocatorInterface &$currentLocator,
+        $visibility = SelectorInterface::ALL
+    );
 
     /**
      * Test whether an object resource exists

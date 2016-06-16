@@ -45,9 +45,9 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Object\ResourceInterface;
     use Apparat\Object\Domain\Model\Object\Revision;
     use Apparat\Object\Domain\Model\Object\Type;
-    use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
     use Apparat\Object\Domain\Model\Properties\MetaProperties;
     use Apparat\Object\Domain\Model\Properties\SystemProperties;
+    use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
     use Apparat\Object\Domain\Repository\Repository;
     use Apparat\Object\Infrastructure\Model\Object\Object;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
@@ -62,12 +62,6 @@ namespace Apparat\Object\Tests {
     class ObjectTest extends AbstractRepositoryEnabledTest
     {
         /**
-         * Default privacy
-         *
-         * @var string
-         */
-        protected static $defaultPrivacy;
-        /**
          * Example object locator
          *
          * @var string
@@ -79,6 +73,12 @@ namespace Apparat\Object\Tests {
          * @var string
          */
         const HIDDEN_OBJECT_LOCATOR = '/2016/05/26/6-article/6';
+        /**
+         * Default privacy
+         *
+         * @var string
+         */
+        protected static $defaultPrivacy;
 
         /**
          * Setup
@@ -117,7 +117,8 @@ namespace Apparat\Object\Tests {
         {
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([]);
-            $repositoryLocator = $this->getMockBuilder(RepositoryLocator::class)->disableOriginalConstructor()->getMock();
+            $repositoryLocator =
+                $this->getMockBuilder(RepositoryLocator::class)->disableOriginalConstructor()->getMock();
 
             /** @var ResourceInterface $resource */
             /** @var RepositoryLocator $repositoryLocator */
@@ -326,11 +327,12 @@ namespace Apparat\Object\Tests {
          */
         public function testObjectPropertyData()
         {
-//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_LOCATOR.'.md');
+//            $frontMarkResource =
+//                Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_LOCATOR.'.md');
             $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
             $this->assertTrue(is_array($object->getPropertyData()));
-//        print_r($frontMarkResource->getData());
-//        print_r($object->getPropertyData());
+//            print_r($frontMarkResource->getData());
+//            print_r($object->getPropertyData());
         }
 
         /**

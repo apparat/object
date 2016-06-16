@@ -41,9 +41,9 @@ use Apparat\Object\Application\Service\TypeService;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Object factory
@@ -113,7 +113,10 @@ class ObjectFactory
      * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public static function createFromParams(RepositoryLocatorInterface $locator, $payload = '', array $propertyData = [])
+    public static function createFromParams(
+        RepositoryLocatorInterface $locator,
+        $payload = '',
+        array $propertyData = [])
     {
         // Determine the object class
         $objectClass = self::objectClassFromType($locator->getType());

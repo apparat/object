@@ -132,7 +132,9 @@ class Manager implements ManagerInterface
      * @return ResourceInterface Object resource
      * @throws InvalidArgumentException If the resource could not be loaded
      */
-    public function loadObjectResource(RepositoryLocatorInterface &$currentLocator, $visibility = SelectorInterface::ALL)
+    public function loadObjectResource(
+        RepositoryLocatorInterface &$currentLocator,
+        $visibility = SelectorInterface::ALL)
     {
         // Validate the object visibility
         $this->validateVisibility($visibility);

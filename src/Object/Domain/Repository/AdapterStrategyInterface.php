@@ -54,14 +54,14 @@ interface AdapterStrategyInterface
      *
      * @param SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return LocatorInterface[] Object paths
+     * @return LocatorInterface[] Object locators
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
 
     /**
      * Find and return an object resource
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return ResourceInterface Object resource
      */
     public function getObjectResource($resourcePath);
@@ -69,7 +69,7 @@ interface AdapterStrategyInterface
     /**
      * Test if an object resource exists
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return boolean Object resource exists
      */
     public function hasResource($resourcePath);
@@ -77,7 +77,7 @@ interface AdapterStrategyInterface
     /**
      * Return an individual hash for a resource
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return string|null Resource hash
      */
     public function getResourceHash($resourcePath);
@@ -86,7 +86,7 @@ interface AdapterStrategyInterface
      * Import a resource into this repository
      *
      * @param string $source Source resource
-     * @param string $target Repository relative target resource path
+     * @param string $target Repository relative target resource locator
      * @return boolean Success
      */
     public function importResource($source, $target);
@@ -129,10 +129,10 @@ interface AdapterStrategyInterface
     public function initializeRepository();
 
     /**
-     * Build an absolute repository resource path
+     * Build an absolute repository resource locator
      *
-     * @param RepositoryLocatorInterface $repositoryLocator Repository path
-     * @return string Absolute repository resource path
+     * @param RepositoryLocatorInterface $repositoryLocator Repository locator
+     * @return string Absolute repository resource locator
      */
     public function getAbsoluteResourcePath(RepositoryLocatorInterface $repositoryLocator);
 }

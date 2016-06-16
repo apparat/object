@@ -49,8 +49,8 @@ interface AdapterStrategyInterface extends \Apparat\Object\Domain\Repository\Ada
     /**
      * Find and return an object resource
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return ResourceInterface Object resource
      */
-    public function getObjectResource($resourcePath);
+    public function getObjectResource($resourceLocator);
 }

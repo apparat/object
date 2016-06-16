@@ -48,7 +48,7 @@ use Apparat\Object\Domain\Model\Object\Type;
 class ObjectUrl extends Url implements LocatorInterface
 {
     /**
-     * Object path
+     * Object locator
      *
      * @var Locator
      */
@@ -64,7 +64,7 @@ class ObjectUrl extends Url implements LocatorInterface
      * @param string $url Object URL
      * @param boolean $remote Accept remote URL (less strict date component checking)
      * @throws InvalidArgumentException If remote URLs are not allowed and a remote URL is given
-     * @throws InvalidArgumentException If the path component is empty
+     * @throws InvalidArgumentException If the locator component is empty
      */
     public function __construct($url, $remote = false)
     {
@@ -78,7 +78,7 @@ class ObjectUrl extends Url implements LocatorInterface
             );
         }
 
-        // If the path component is empty
+        // If the locator component is empty
         if (empty($this->urlParts['path'])) {
             throw new InvalidArgumentException(
                 'Invalid object URL path (empty)',
@@ -86,14 +86,14 @@ class ObjectUrl extends Url implements LocatorInterface
             );
         }
 
-        // Instantiate the local path component
+        // Instantiate the local locator component
         $this->locator = new Locator(
             $this->urlParts['path'],
             $remote ? true : null,
             $this->urlParts['path']
         );
 
-        // Normalize the path prefix
+        // Normalize the locator prefix
         if (!strlen($this->urlParts['path'])) {
             $this->urlParts['path'] = null;
         }
@@ -103,7 +103,7 @@ class ObjectUrl extends Url implements LocatorInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return LocatorInterface|ObjectUrl New object path
+     * @return LocatorInterface|ObjectUrl New object locator
      */
     public function setCreationDate(\DateTimeInterface $creationDate)
     {
@@ -227,9 +227,9 @@ class ObjectUrl extends Url implements LocatorInterface
     }
 
     /**
-     * Return the local object path
+     * Return the local object locator
      *
-     * @return LocatorInterface|Locator Local object path
+     * @return LocatorInterface|Locator Local object locator
      */
     public function getLocator()
     {
@@ -250,7 +250,7 @@ class ObjectUrl extends Url implements LocatorInterface
      * Set the object draft mode
      *
      * @param boolean $draft Object draft mode
-     * @return LocatorInterface|ObjectUrl New object path
+     * @return LocatorInterface|ObjectUrl New object locator
      */
     public function setDraft($draft)
     {
@@ -299,7 +299,7 @@ class ObjectUrl extends Url implements LocatorInterface
     {
         parent::getUrlInternal($override);
 
-        // Prepare the local object path
+        // Prepare the local object locator
         $override['object'] = isset($override['object']) ? $override['object'] : strval($this->locator);
 
         return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}".

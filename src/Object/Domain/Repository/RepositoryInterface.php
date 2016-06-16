@@ -81,11 +81,11 @@ interface RepositoryInterface extends SearchableRepositoryInterface
     /**
      * Load an object from this repository
      *
-     * @param LocatorInterface $path Object path
+     * @param LocatorInterface $locator Object locator
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(LocatorInterface $path, $visibility = SelectorInterface::ALL);
+    public function loadObject(LocatorInterface $locator, $visibility = SelectorInterface::ALL);
 
     /**
      * Return the repository's adapter strategy

@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * Object path
+ * Object locator
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
@@ -100,92 +100,92 @@ class Locator implements LocatorInterface
     /**
      * Object URL constructor
      *
-     * @param null|string $path Object path
+     * @param null|string $locator Object locator
      * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
      *     URLs)]
-     * @param string $leader Leading base path
-     * @throws InvalidArgumentException If the object URL path is invalid
+     * @param string $leader Leading base locator
+     * @throws InvalidArgumentException If the object URL locator is invalid
      */
-    public function __construct($path = null, $datePrecision = null, &$leader = '')
+    public function __construct($locator = null, $datePrecision = null, &$leader = '')
     {
-        if (!empty($path)) {
+        if (!empty($locator)) {
             // If the local default date precision should be used
             if ($datePrecision === null) {
                 $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
             }
 
-            // Build the regular expression for matching a local path
-            $pathPattern = $this->buildPathRegex($datePrecision);
+            // Build the regular expression for matching a local locator
+            $locatorPattern = $this->buildLocatorRegex($datePrecision);
 
-            // Match the local path
-            if (!preg_match($pathPattern, $path, $pathParts)) {
+            // Match the local locator
+            if (!preg_match($locatorPattern, $locator, $locatorParts)) {
                 throw new InvalidArgumentException(
-                    sprintf('Invalid object URL path "%s"', $path),
+                    sprintf('Invalid object URL locator "%s"', $locator),
                     InvalidArgumentException::INVALID_OBJECT_URL_LOCATOR
                 );
             }
 
             // If date components are used
             if ($datePrecision) {
-                $year = $pathParts['year'];
-                $month = isset($pathParts['month']) ? $pathParts['month'] ?: '01' : '01';
-                $day = isset($pathParts['day']) ? $pathParts['day'] ?: '01' : '01';
-                $hour = isset($pathParts['hour']) ? $pathParts['hour'] ?: '00' : '00';
-                $minute = isset($pathParts['minute']) ? $pathParts['minute'] ?: '00' : '00';
-                $second = isset($pathParts['second']) ? $pathParts['second'] ?: '00' : '00';
+                $year = $locatorParts['year'];
+                $month = isset($locatorParts['month']) ? $locatorParts['month'] ?: '01' : '01';
+                $day = isset($locatorParts['day']) ? $locatorParts['day'] ?: '01' : '01';
+                $hour = isset($locatorParts['hour']) ? $locatorParts['hour'] ?: '00' : '00';
+                $minute = isset($locatorParts['minute']) ? $locatorParts['minute'] ?: '00' : '00';
+                $second = isset($locatorParts['second']) ? $locatorParts['second'] ?: '00' : '00';
                 $this->creationDate = new \DateTimeImmutable("$year-$month-$day".'T'."$hour:$minute:$second+00:00");
             }
 
             // Determine the leader
             $leader = ($datePrecision === true) ? substr(
-                $path,
+                $locator,
                 0,
-                strlen($path) - strlen($pathParts[0])
-            ) : $pathParts['leader'];
+                strlen($locator) - strlen($locatorParts[0])
+            ) : $locatorParts['leader'];
 
             // Set the hidden state
-            $this->hidden = !empty($pathParts['hidden']);
+            $this->hidden = !empty($locatorParts['hidden']);
 
             // Set the ID
-            $this->uid = Kernel::create(Id::class, [intval($pathParts['id'])]);
+            $this->uid = Kernel::create(Id::class, [intval($locatorParts['id'])]);
 
             // Set the type
-            $this->type = Kernel::create(Type::class, [$pathParts['type']]);
+            $this->type = Kernel::create(Type::class, [$locatorParts['type']]);
 
             // Set the revision
             $this->revision = Kernel::create(
                 Revision::class,
                 [
-                    empty($pathParts['revision']) ? Revision::CURRENT : intval($pathParts['revision']),
-                    !empty($pathParts['draft'])
+                    empty($locatorParts['revision']) ? Revision::CURRENT : intval($locatorParts['revision']),
+                    !empty($locatorParts['draft'])
                 ]
             );
         }
     }
 
     /**
-     * Create and return the object URL path
+     * Create and return the object URL locator
      *
-     * @return string Object path
+     * @return string Object locator
      */
     public function __toString()
     {
-        $path = [];
+        $locator = [];
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
         // Add the creation date
         foreach (array_slice(array_keys(self::$datePattern), 0, $datePrecision) as $dateFormat) {
-            $path[] = $this->creationDate->format($dateFormat);
+            $locator[] = $this->creationDate->format($dateFormat);
         }
 
         // Add the object ID and type
-        $path[] = ($this->hidden ? '.' : '').$this->uid->getId().'-'.$this->type->getType();
+        $locator[] = ($this->hidden ? '.' : '').$this->uid->getId().'-'.$this->type->getType();
 
         // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
-        $path[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
+        $locator[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
 
-        return '/'.implode('/', $path);
+        return '/'.implode('/', $locator);
     }
 
     /**
@@ -202,13 +202,13 @@ class Locator implements LocatorInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setCreationDate(\DateTimeInterface $creationDate)
     {
-        $path = clone $this;
-        $path->creationDate = $creationDate;
-        return $path;
+        $locator = clone $this;
+        $locator->creationDate = $creationDate;
+        return $locator;
     }
 
     /**
@@ -225,13 +225,13 @@ class Locator implements LocatorInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setType(Type $type)
     {
-        $path = clone $this;
-        $path->type = $type;
-        return $path;
+        $locator = clone $this;
+        $locator->type = $type;
+        return $locator;
     }
 
     /**
@@ -248,13 +248,13 @@ class Locator implements LocatorInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setId(Id $uid)
     {
-        $path = clone $this;
-        $path->uid = $uid;
-        return $path;
+        $locator = clone $this;
+        $locator->uid = $uid;
+        return $locator;
     }
 
     /**
@@ -271,13 +271,13 @@ class Locator implements LocatorInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setRevision(Revision $revision)
     {
-        $path = clone $this;
-        $path->revision = $revision;
-        return $path;
+        $locator = clone $this;
+        $locator->revision = $revision;
+        return $locator;
     }
 
     /**
@@ -294,30 +294,30 @@ class Locator implements LocatorInterface
      * Set the object hidden state
      *
      * @param boolean $hidden Object hidden state
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setHidden($hidden)
     {
-        $path = clone $this;
-        $path->hidden = !!$hidden;
-        return $path;
+        $locator = clone $this;
+        $locator->hidden = !!$hidden;
+        return $locator;
     }
 
     /**
-     * Build the regular expression for matching a local object path
+     * Build the regular expression for matching a local object locator
      *
      * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
      *     URLs)]
-     * @return string Regular expression for matching a local object path
+     * @return string Regular expression for matching a local object locator
      * @throws InvalidArgumentException If the date precision is invalid
      */
-    protected function buildPathRegex($datePrecision)
+    protected function buildLocatorRegex($datePrecision)
     {
-        $pathPattern = null;
+        $locatorPattern = null;
 
         // If a valid integer date precision is given
         if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-            $pathPattern = '%^(?P<leader>(/[^/]+)*)?/'.
+            $locatorPattern = '%^(?P<leader>(/[^/]+)*)?/'.
                 implode(
                     '/',
                     array_slice(self::$datePattern, 0, $datePrecision)
@@ -325,13 +325,13 @@ class Locator implements LocatorInterface
 
             // Else if the date precision may be arbitrary
         } elseif ($datePrecision === true) {
-            $pathPattern = '%(?:/'.implode('(?:/', self::$datePattern);
-            $pathPattern .= str_repeat(')?', count(self::$datePattern));
-            $pathPattern .= '/';
+            $locatorPattern = '%(?:/'.implode('(?:/', self::$datePattern);
+            $locatorPattern .= str_repeat(')?', count(self::$datePattern));
+            $locatorPattern .= '/';
         }
 
         // If the date precision is invalid
-        if ($pathPattern === null) {
+        if ($locatorPattern === null) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid date precision "%s" (%s)',
@@ -342,9 +342,9 @@ class Locator implements LocatorInterface
             );
         }
 
-        $pathPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(?P<draft>\.)?(.*\.)?';
-        $pathPattern .= '\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+        $locatorPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(?P<draft>\.)?(.*\.)?';
+        $locatorPattern .= '\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
 
-        return $pathPattern;
+        return $locatorPattern;
     }
 }

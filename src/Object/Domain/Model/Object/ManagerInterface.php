@@ -69,26 +69,26 @@ interface ManagerInterface
     /**
      * Load an object from a repository
      *
-     * @param RepositoryLocatorInterface $path Repository object path
+     * @param RepositoryLocatorInterface $locator Repository object locator
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryLocatorInterface $path, $visibility = SelectorInterface::ALL);
+    public function loadObject(RepositoryLocatorInterface $locator, $visibility = SelectorInterface::ALL);
 
     /**
      * Load and return an object resource respecting visibility constraints
      *
-     * @param RepositoryLocatorInterface $currentPath
+     * @param RepositoryLocatorInterface $currentLocator
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
      */
-    public function loadObjectResource(RepositoryLocatorInterface &$currentPath, $visibility = SelectorInterface::ALL);
+    public function loadObjectResource(RepositoryLocatorInterface &$currentLocator, $visibility = SelectorInterface::ALL);
 
     /**
      * Test whether an object resource exists
      *
-     * @param RepositoryLocatorInterface $path
+     * @param RepositoryLocatorInterface $locator
      * @return boolean Object resource exists
      */
-    public function objectResourceExists(RepositoryLocatorInterface $path);
+    public function objectResourceExists(RepositoryLocatorInterface $locator);
 }

@@ -104,60 +104,60 @@ class Manager implements ManagerInterface
     /**
      * Load an object from a repository
      *
-     * @param RepositoryLocatorInterface $path Repository object path
+     * @param RepositoryLocatorInterface $locator Repository object locator
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryLocatorInterface $path, $visibility = SelectorInterface::ALL)
+    public function loadObject(RepositoryLocatorInterface $locator, $visibility = SelectorInterface::ALL)
     {
-        // Create the current revision path
-        /** @var RepositoryLocatorInterface $currentPath */
-        $currentPath = $path->setRevision(Revision::current());
+        // Create the current revision locator
+        /** @var RepositoryLocatorInterface $currentLocator */
+        $currentLocator = $locator->setRevision(Revision::current());
 
         // Load the object resource respecting visibility constraints
-        $objectResource = $this->loadObjectResource($currentPath, $visibility);
+        $objectResource = $this->loadObjectResource($currentLocator, $visibility);
 
         // Instantiate the object
-        $object = ObjectFactory::createFromResource($currentPath, $objectResource);
+        $object = ObjectFactory::createFromResource($currentLocator, $objectResource);
 
         // Use and return the requested object revision
-        return $object->useRevision($path->getRevision());
+        return $object->useRevision($locator->getRevision());
     }
 
     /**
      * Load and return an object resource respecting visibility constraints
      *
-     * @param RepositoryLocatorInterface $currentPath
+     * @param RepositoryLocatorInterface $currentLocator
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
      * @throws InvalidArgumentException If the resource could not be loaded
      */
-    public function loadObjectResource(RepositoryLocatorInterface &$currentPath, $visibility = SelectorInterface::ALL)
+    public function loadObjectResource(RepositoryLocatorInterface &$currentLocator, $visibility = SelectorInterface::ALL)
     {
         // Validate the object visibility
         $this->validateVisibility($visibility);
 
         $objectResource = null;
 
-        // Create the current revision paths (visible and hidden)
-        /** @var RepositoryLocatorInterface[] $currentPaths */
-        $currentPaths = array_filter([
-            ($visibility & SelectorInterface::VISIBLE) ? $currentPath->setHidden(false) : null,
-            ($visibility & SelectorInterface::HIDDEN) ? $currentPath->setHidden(true) : null,
+        // Create the current revision locators (visible and hidden)
+        /** @var RepositoryLocatorInterface[] $currentLocators */
+        $currentLocators = array_filter([
+            ($visibility & SelectorInterface::VISIBLE) ? $currentLocator->setHidden(false) : null,
+            ($visibility & SelectorInterface::HIDDEN) ? $currentLocator->setHidden(true) : null,
         ]);
 
-        // Run through the possible revision paths
-        foreach ($currentPaths as $currentPathIndex => $currentPath) {
+        // Run through the possible revision locators
+        foreach ($currentLocators as $currentLocatorIndex => $currentLocator) {
             try {
                 // Load the current object resource
-                $objectResource = $this->getObjectResource($currentPath);
+                $objectResource = $this->getObjectResource($currentLocator);
                 break;
 
                 // In case of an error
             } catch (InvalidReaderArgumentException $e) {
                 // If it's not an error about the resource not existing or if it's the last possible option
                 if (($e->getCode() != InvalidReaderArgumentException::RESOURCE_DOES_NOT_EXIST)
-                    || ($currentPathIndex >= (count($currentPaths) - 1))
+                    || ($currentLocatorIndex >= (count($currentLocators) - 1))
                 ) {
                     throw $e;
                 }
@@ -200,26 +200,26 @@ class Manager implements ManagerInterface
     /**
      * Instantiate object resource
      *
-     * @param RepositoryLocatorInterface $path
+     * @param RepositoryLocatorInterface $locator
      * @return ResourceInterface Object resource
      */
-    public function getObjectResource(RepositoryLocatorInterface $path)
+    public function getObjectResource(RepositoryLocatorInterface $locator)
     {
-        return $path->getRepository()->getAdapterStrategy()->getObjectResource(
-            $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        return $locator->getRepository()->getAdapterStrategy()->getObjectResource(
+            $locator->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
     }
 
     /**
      * Test whether an object resource exists
      *
-     * @param RepositoryLocatorInterface $path
+     * @param RepositoryLocatorInterface $locator
      * @return boolean Object resource exists
      */
-    public function objectResourceExists(RepositoryLocatorInterface $path)
+    public function objectResourceExists(RepositoryLocatorInterface $locator)
     {
-        return $path->getRepository()->getAdapterStrategy()->hasResource(
-            $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+        return $locator->getRepository()->getAdapterStrategy()->hasResource(
+            $locator->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
     }
 }

@@ -58,19 +58,19 @@ abstract class AbstractCommonMarkObject extends AbstractProcessedPayloadObject
      * Object constructor
      *
      * @param CommonMarkPayloadProcessorInterface $payloadProcessor Payload processor
-     * @param RepositoryLocatorInterface $path Object repository path
+     * @param RepositoryLocatorInterface $locator Object repository locator
      * @param string $payload Object payload
      * @param array $propertyData Property data
      */
     public function __construct(
         CommonMarkPayloadProcessorInterface $payloadProcessor,
-        RepositoryLocatorInterface $path,
+        RepositoryLocatorInterface $locator,
         $payload,
         array $propertyData
     ) {
         $this->payloadProcessor = $payloadProcessor;
         $this->payloadProcessor->setObject($this);
 
-        parent::__construct($path, $payload, $propertyData);
+        parent::__construct($locator, $payload, $propertyData);
     }
 }

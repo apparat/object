@@ -47,7 +47,7 @@ use Apparat\Object\Infrastructure\Model\Object\Object;
 class ProcessingInstructionPropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

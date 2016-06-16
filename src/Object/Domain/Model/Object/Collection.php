@@ -73,7 +73,7 @@ class Collection implements CollectionInterface
      * Collection constructor
      *
      * @param array $objects Collection objects
-     * @throws InvalidArgumentException If the an invalid object or path is provided
+     * @throws InvalidArgumentException If an invalid object or locator is provided
      */
     public function __construct(array $objects = [])
     {
@@ -83,7 +83,7 @@ class Collection implements CollectionInterface
                 $this->objects[$object->getId()->getId()] = $object;
                 continue;
 
-                // Else if it's an object path
+                // Else if it's an object locator
             } elseif ($object instanceof RepositoryLocatorInterface) {
                 $this->objects[$object->getId()->getId()] = $object;
                 continue;

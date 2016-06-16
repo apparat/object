@@ -48,7 +48,7 @@ use Apparat\Object\Ports\Facades\ObjectFacade;
 class FacadeTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

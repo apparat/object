@@ -74,8 +74,8 @@ class CollectionTest extends AbstractRepositoryEnabledTest
         $this->assertInstanceOf(Article::class, $collection[$uid]);
 
         // Load a contact object
-        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
-        $contactObject = self::$repository->loadObject($contactObjectPath);
+        $contactObjectLocator = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObject = self::$repository->loadObject($contactObjectLocator);
         $this->assertInstanceOf(Contact::class, $contactObject);
         $collection[$uid] = $contactObject;
     }
@@ -102,8 +102,8 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionAdd()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
-        $contactObject = self::$repository->loadObject($contactObjectPath);
+        $contactObjectLocator = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObject = self::$repository->loadObject($contactObjectLocator);
         $this->assertInstanceOf(Contact::class, $contactObject);
 
         // Load a collection
@@ -116,7 +116,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
         $collection = $collection->add($contactObject);
         $this->assertEquals($articleCount + 1, count($collection));
 
-        // Add another object by repository path
+        // Add another object by repository locator
         /** @var Collection $collection */
         $collection = $collection->add(new RepositoryLocator(self::$repository, '/2016/02/07/3-article/3'));
         $this->assertEquals($articleCount + 2, count($collection));
@@ -134,8 +134,8 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionRemove()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
-        $contactObject = self::$repository->loadObject($contactObjectPath);
+        $contactObjectLocator = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObject = self::$repository->loadObject($contactObjectLocator);
         $this->assertInstanceOf(Contact::class, $contactObject);
 
         // Load a collection

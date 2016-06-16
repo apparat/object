@@ -48,13 +48,13 @@ use Apparat\Object\Infrastructure\Model\Object\Object;
 class DomainPropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */
     const ARTICLE_LOCATOR = '/2015/12/21/1-article/1';
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

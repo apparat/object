@@ -52,7 +52,7 @@ namespace Apparat\Object\Tests {
     class AutoconnectorTest extends AbstractTest
     {
         /**
-         * Example object path
+         * Example object locator
          *
          * @var string
          */

@@ -67,7 +67,7 @@ class InvalidArgumentException extends \InvalidArgumentException
      */
     const INVALID_OBJECT_REVISION = 1449871715;
     /**
-     * Invalid collection object or path
+     * Invalid collection object or locator
      *
      * @var int
      */

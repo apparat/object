@@ -49,7 +49,7 @@ use Apparat\Object\Infrastructure\Model\Object\Object;
 class PropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

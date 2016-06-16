@@ -117,7 +117,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             );
         }
 
-        // Get the real path of the root directory
+        // Get the real locator of the root directory
         $this->root = realpath($this->config['root']);
 
         // If the repository should be initialized
@@ -182,7 +182,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @param Selector|SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return LocatorInterface[] Object paths
+     * @return LocatorInterface[] Object locators
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
     {
@@ -236,8 +236,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         }
 
         return array_map(
-            function ($objectPath) use ($repository) {
-                return Kernel::create(RepositoryLocator::class, [$repository, '/'.$objectPath]);
+            function ($objectResourcePath) use ($repository) {
+                return Kernel::create(RepositoryLocator::class, [$repository, '/'.$objectResourcePath]);
             },
             glob(ltrim($glob, '/'), $globFlags)
         );
@@ -246,7 +246,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     /**
      * Test if an object resource exists
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return boolean Object resource exists
      */
     public function hasResource($resourcePath)
@@ -257,7 +257,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     /**
      * Return an individual hash for a resource
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return string|null Resource hash
      */
     public function getResourceHash($resourcePath)
@@ -269,7 +269,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * Import a resource into this repository
      *
      * @param string $source Source resource
-     * @param string $target Repository relative target resource path
+     * @param string $target Repository relative target resource locator
      * @return boolean Success
      */
     public function importResource($source, $target)
@@ -280,7 +280,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     /**
      * Find and return an object resource
      *
-     * @param string $resourcePath Repository relative resource path
+     * @param string $resourceLocator Repository relative resource locator
      * @return ResourceInterface Object resource
      */
     public function getObjectResource($resourcePath)
@@ -383,8 +383,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectRepoLocator = $object->getRepositoryLocator();
 
         // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftPath = $objectRepoLocator->setRevision($object->getRevision()->setDraft(true));
-        $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftPath);
+        $objectDraftLocator = $objectRepoLocator->setRevision($object->getRevision()->setDraft(true));
+        $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftLocator);
         if (@file_exists($absObjectDraftPath)) {
             unlink($absObjectDraftPath);
         }
@@ -392,12 +392,12 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         // If it's not the first object revision: Rotate the previous revision resource
         $objectRevisionNumber = $object->getRevision()->getRevision();
         if ($objectRevisionNumber > 1) {
-            // Build the "current" object repository path
+            // Build the "current" object repository locator
             $currentRevision = Revision::current();
             $curObjectResPath =
                 $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($currentRevision));
 
-            // Build the previous object repository path
+            // Build the previous object repository locator
             /** @var Revision $previousRevision */
             $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
             $prevObjectResPath
@@ -411,10 +411,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
-     * Build an absolute repository resource path
+     * Build an absolute repository resource locator
      *
-     * @param RepositoryLocatorInterface $repositoryLocator Repository path
-     * @return string Absolute repository resource path
+     * @param RepositoryLocatorInterface $repositoryLocator Repository locator
+     * @return string Absolute repository resource locator
      */
     public function getAbsoluteResourcePath(RepositoryLocatorInterface $repositoryLocator)
     {

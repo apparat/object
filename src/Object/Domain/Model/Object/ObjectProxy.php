@@ -78,9 +78,9 @@ abstract class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Return the object repository path
+     * Return the object repository locator
      *
-     * @return RepositoryLocatorInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository locator
      */
     public function getRepositoryLocator()
     {
@@ -486,7 +486,7 @@ abstract class ObjectProxy implements ObjectInterface
     /**
      * Get a domain property value
      *
-     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     * Multi-level properties might be traversed by property name locators separated with colons (":").
      *
      * @param string $property Property name
      * @return mixed Property value

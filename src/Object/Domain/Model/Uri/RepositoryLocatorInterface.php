@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Object\Type;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
- * Repository path interface
+ * Repository locator interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
@@ -50,7 +50,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
 interface RepositoryLocatorInterface extends LocatorInterface
 {
     /**
-     * Return the repository this path applies to
+     * Return the repository this locator applies to
      *
      * @return RepositoryInterface Repository
      */
@@ -60,7 +60,7 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return RepositoryLocatorInterface New object path
+     * @return RepositoryLocatorInterface New object locator
      */
     public function setCreationDate(\DateTimeInterface $creationDate);
 
@@ -68,7 +68,7 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return RepositoryLocatorInterface New object path
+     * @return RepositoryLocatorInterface New object locator
      */
     public function setType(Type $type);
 
@@ -76,7 +76,7 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return RepositoryLocatorInterface New object path
+     * @return RepositoryLocatorInterface New object locator
      */
     public function setId(Id $uid);
 
@@ -84,15 +84,15 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return RepositoryLocatorInterface New object path
+     * @return RepositoryLocatorInterface New object locator
      */
     public function setRevision(Revision $revision);
 
     /**
-     * Return the repository relative object path with a file extension
+     * Return the repository relative object locator with a file extension
      *
      * @param string $extension File extension
-     * @return string Repository relative object path with extension
+     * @return string Repository relative object locator with extension
      */
     public function withExtension($extension);
 
@@ -107,7 +107,7 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * Set the object hidden state
      *
      * @param boolean $hidden Object hidden state
-     * @return LocatorInterface|Locator New object path
+     * @return LocatorInterface|Locator New object locator
      */
     public function setHidden($hidden);
 }

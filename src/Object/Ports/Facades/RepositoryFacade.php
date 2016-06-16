@@ -126,14 +126,14 @@ class RepositoryFacade implements FacadeInterface
     /**
      * Load an object from this repository
      *
-     * @param string $path Object path
+     * @param string $locator Object locator
      * @param int $visibility Object visibility
      * @return ApparatObjectInterface Object
      */
-    public function loadObject($path, $visibility = SelectorInterface::ALL)
+    public function loadObject($locator, $visibility = SelectorInterface::ALL)
     {
-        /** @var LocatorInterface $objectPath */
-        $objectPath = Kernel::create(RepositoryLocator::class, [$this->repository, $path]);
-        return ApparatObjectFactory::create($this->repository->loadObject($objectPath, $visibility));
+        /** @var LocatorInterface $objectLocator */
+        $objectLocator = Kernel::create(RepositoryLocator::class, [$this->repository, $locator]);
+        return ApparatObjectFactory::create($this->repository->loadObject($objectLocator, $visibility));
     }
 }

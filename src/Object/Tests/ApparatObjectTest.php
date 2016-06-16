@@ -52,13 +52,13 @@ use Apparat\Object\Ports\Object\Contact;
 class ApparatObjectTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example article path
+     * Example article locator
      *
      * @var string
      */
     const ARTICLE_LOCATOR = '/repo/2015/12/21/1-article/1';
     /**
-     * Example contact path
+     * Example contact locator
      *
      * @var string
      */

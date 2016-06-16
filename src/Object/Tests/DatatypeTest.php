@@ -66,7 +66,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
      */
     protected static $object;
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

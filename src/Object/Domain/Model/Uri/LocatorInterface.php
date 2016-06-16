@@ -41,7 +41,7 @@ use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
 
 /**
- * Object path interface
+ * Object locator interface
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
@@ -50,9 +50,9 @@ interface LocatorInterface
 {
 
     /**
-     * Create and return the object URL path
+     * Create and return the object URL locator
      *
-     * @return string Object path
+     * @return string Object locator
      */
     public function __toString();
 
@@ -67,7 +67,7 @@ interface LocatorInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return LocatorInterface New object path
+     * @return LocatorInterface New object locator
      */
     public function setCreationDate(\DateTimeInterface $creationDate);
 
@@ -82,7 +82,7 @@ interface LocatorInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return LocatorInterface New object path
+     * @return LocatorInterface New object locator
      */
     public function setType(Type $type);
 
@@ -97,7 +97,7 @@ interface LocatorInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return LocatorInterface New object path
+     * @return LocatorInterface New object locator
      */
     public function setId(Id $uid);
 
@@ -112,7 +112,7 @@ interface LocatorInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return LocatorInterface New object path
+     * @return LocatorInterface New object locator
      */
     public function setRevision(Revision $revision);
 }

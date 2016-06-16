@@ -65,13 +65,13 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     const REPOSITORY_URL = '/repo';
     /**
-     * Example path
+     * Example locator
      *
      * @var string
      */
     const LOCATOR = '/2015/10/01/36704-event/36704-1';
     /**
-     * Example path (draft mode)
+     * Example locator (draft mode)
      *
      * @var string
      */

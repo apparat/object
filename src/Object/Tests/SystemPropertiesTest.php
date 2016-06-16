@@ -51,7 +51,7 @@ use Apparat\Object\Infrastructure\Model\Object\Object;
 class SystemPropertiesTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

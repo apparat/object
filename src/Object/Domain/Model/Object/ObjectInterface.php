@@ -94,11 +94,11 @@ interface ObjectInterface extends \Iterator, \Countable
      * The constructor is not part of the interface as the object proxy class also implements it
      * with a different signature
      *
-     * @param RepositoryLocator $path Object repository path
+     * @param RepositoryLocator $locator Object repository locator
      * @param array $propertyData Property data
      * @param string $payload Object payload
      */
-//	public function __construct(RepositoryLocator $path, array $propertyData = [], $payload = '');
+//	public function __construct(RepositoryLocator $locator, array $propertyData = [], $payload = '');
 
     /**
      * Return the object ID
@@ -327,9 +327,9 @@ interface ObjectInterface extends \Iterator, \Countable
     public function setCategories(array $categories);
 
     /**
-     * Return the object repository path
+     * Return the object repository locator
      *
-     * @return RepositoryLocatorInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository locator
      */
     public function getRepositoryLocator();
 
@@ -425,7 +425,7 @@ interface ObjectInterface extends \Iterator, \Countable
     /**
      * Get a domain property value
      *
-     * Multi-level properties might be traversed by property name paths separated with colons (":").
+     * Multi-level properties might be traversed by property name locators separated with colons (":").
      *
      * @param string $property Property name
      * @return mixed Property value

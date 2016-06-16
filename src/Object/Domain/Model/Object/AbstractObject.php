@@ -71,11 +71,11 @@ abstract class AbstractObject implements ObjectInterface
         ProcessingInstructionsTrait, PayloadTrait, IterableTrait, StatesTrait;
 
     /**
-     * Repository path
+     * Repository locator
      *
      * @var RepositoryLocatorInterface
      */
-    protected $path;
+    protected $locator;
     /**
      * Latest revision
      *
@@ -86,11 +86,11 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Object constructor
      *
-     * @param RepositoryLocatorInterface $path Object repository path
+     * @param RepositoryLocatorInterface $locator Object repository locator
      * @param string $payload Object payload
      * @param array $propertyData Property data
      */
-    public function __construct(RepositoryLocatorInterface $path, $payload = '', array $propertyData = [])
+    public function __construct(RepositoryLocatorInterface $locator, $payload = '', array $propertyData = [])
     {
         // If the domain property collection class is invalid
         if (!$this->domainPropertyCClass
@@ -106,8 +106,8 @@ abstract class AbstractObject implements ObjectInterface
             );
         }
 
-        // Save the original object path
-        $this->path = $path;
+        // Save the original object locator
+        $this->locator = $locator;
 
         // Load the current revision data
         $this->loadRevisionData($payload, $propertyData);
@@ -117,8 +117,8 @@ abstract class AbstractObject implements ObjectInterface
             ? Kernel::create(Revision::class, [$this->getRevision()->getRevision() + 1, true])
             : $this->getRevision();
 
-        // Update the object path
-        $this->updatePath();
+        // Update the object locator
+        $this->updateLocator();
     }
 
     /**
@@ -185,22 +185,22 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected function hasDraft()
     {
-        // Create the object draft resource path
-        $draftPath = $this->path->setRevision(Revision::current(true));
+        // Create the object draft resource locator
+        $draftLocator = $this->locator->setRevision(Revision::current(true));
 
         // Use the object manager to look for a draft resource
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
-        return $objectManager->objectResourceExists($draftPath);
+        return $objectManager->objectResourceExists($draftLocator);
     }
 
     /**
-     * Update the object path
+     * Update the object locator
      */
-    protected function updatePath()
+    protected function updateLocator()
     {
         $revision = $this->getRevision();
-        $this->path = $this->path->setRevision(
+        $this->locator = $this->locator->setRevision(
             !$revision->isDraft() && ($this->getCurrentRevision()->getRevision() == $revision->getRevision())
                 ? Revision::current($revision->isDraft())
                 : $revision
@@ -251,30 +251,30 @@ abstract class AbstractObject implements ObjectInterface
             $objectManager = Kernel::create(Service::class)->getObjectManager();
             /** @var Revision $newRevision */
             $newRevision = $isCurrentRevision ? Revision::current() : $revision;
-            /** @var RepositoryLocator $newRevisionPath */
-            $newRevisionPath = $this->path->setRevision($newRevision);
+            /** @var RepositoryLocator $newRevisionLocator */
+            $newRevisionLocator = $this->locator->setRevision($newRevision);
 
             // Instantiate the requested revision resource
-            $revisionResource = $objectManager->loadObjectResource($newRevisionPath, SelectorInterface::ALL);
+            $revisionResource = $objectManager->loadObjectResource($newRevisionLocator, SelectorInterface::ALL);
 
             // Load the revision resource data
             $this->loadRevisionData($revisionResource->getPayload(), $revisionResource->getPropertyData());
 
-            // Update the object path
-            $this->updatePath();
+            // Update the object locator
+            $this->updateLocator();
         }
 
         return $this;
     }
 
     /**
-     * Return the object repository path
+     * Return the object repository locator
      *
-     * @return RepositoryLocatorInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository locator
      */
     public function getRepositoryLocator()
     {
-        return $this->path;
+        return $this->locator;
     }
 
     /**
@@ -305,7 +305,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($this->path);
+        return getenv('APPARAT_BASE_URL').ltrim($this->locator->getRepository()->getUrl(), '/').strval($this->locator);
     }
 
     /**
@@ -315,8 +315,8 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getCanonicalUrl()
     {
-        $canonicalPath = $this->path->setRevision(Revision::current());
-        return getenv('APPARAT_BASE_URL').ltrim($this->path->getRepository()->getUrl(), '/').strval($canonicalPath);
+        $canonicalLocator = $this->locator->setRevision(Revision::current());
+        return getenv('APPARAT_BASE_URL').ltrim($this->locator->getRepository()->getUrl(), '/').strval($canonicalLocator);
     }
 
     /**
@@ -339,12 +339,12 @@ abstract class AbstractObject implements ObjectInterface
         }
 
         // Update the object repository
-        $this->path->getRepository()->updateObject($this);
+        $this->locator->getRepository()->updateObject($this);
 
         // Reset to a clean state
         $this->resetState();
         $this->latestRevision = $this->getRevision();
-        $this->updatePath();
+        $this->updateLocator();
 
         // Post persistence hook
         $this->postPersist();
@@ -372,7 +372,7 @@ abstract class AbstractObject implements ObjectInterface
         if ($this->isDraft() & !$this->hasBeenPublished()) {
             $this->setPublishedState();
             $this->latestRevision = $this->latestRevision->setDraft(false);
-            $this->updatePath();
+            $this->updateLocator();
         }
 
         return $this;
@@ -388,7 +388,7 @@ abstract class AbstractObject implements ObjectInterface
         // If this object is not already deleted
         if (!$this->isDeleted() && !$this->hasBeenDeleted()) {
             $this->setDeletedState();
-            $this->updatePath();
+            $this->updateLocator();
         }
 
         return $this;
@@ -404,7 +404,7 @@ abstract class AbstractObject implements ObjectInterface
         // If this object is already deleted
         if ($this->isDeleted() && !$this->hasBeenUndeleted()) {
             $this->setUndeletedState();
-            $this->updatePath();
+            $this->updateLocator();
         }
 
         return $this;
@@ -426,7 +426,7 @@ abstract class AbstractObject implements ObjectInterface
         // Set the system properties to draft mode
         $this->setSystemProperties($this->systemProperties->createDraft($draftRevision), true);
 
-        // Update the object path
-        $this->updatePath();
+        // Update the object locator
+        $this->updateLocator();
     }
 }

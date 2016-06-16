@@ -148,17 +148,17 @@ class Repository implements RepositoryInterface
     /**
      * Load an object from this repository
      *
-     * @param LocatorInterface $path Object path
+     * @param LocatorInterface $locator Object locator
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(LocatorInterface $path, $visibility = SelectorInterface::ALL)
+    public function loadObject(LocatorInterface $locator, $visibility = SelectorInterface::ALL)
     {
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
 
         /** @var RepositoryLocatorInterface $repositoryLocator */
-        $repositoryLocator = Kernel::create(RepositoryLocator::class, [$this, $path]);
+        $repositoryLocator = Kernel::create(RepositoryLocator::class, [$this, $locator]);
 
         // Load and return the object
         return $objectManager->loadObject($repositoryLocator, $visibility);

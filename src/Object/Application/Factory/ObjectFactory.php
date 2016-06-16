@@ -56,12 +56,12 @@ class ObjectFactory
     /**
      * Create an object
      *
-     * @param RepositoryLocatorInterface $path Repository object path
+     * @param RepositoryLocatorInterface $locator Repository object locator
      * @param ResourceInterface $objectResource
      * @return ObjectInterface Object
      * @throws InvalidArgumentException If the object type is undefined
      */
-    public static function createFromResource(RepositoryLocatorInterface $path, ResourceInterface $objectResource)
+    public static function createFromResource(RepositoryLocatorInterface $locator, ResourceInterface $objectResource)
     {
         $propertyData = $objectResource->getPropertyData();
 
@@ -77,10 +77,10 @@ class ObjectFactory
         }
 
         // Determine the object class
-        $objectClass = self::objectClassFromType($path->getType());
+        $objectClass = self::objectClassFromType($locator->getType());
 
         // Instantiate the object
-        return Kernel::create($objectClass, [$path, $objectResource->getPayload(), $propertyData]);
+        return Kernel::create($objectClass, [$locator, $objectResource->getPayload(), $propertyData]);
     }
 
     /**
@@ -108,26 +108,26 @@ class ObjectFactory
     /**
      * Create and return a new object
      *
-     * @param RepositoryLocatorInterface $path Repository object path
+     * @param RepositoryLocatorInterface $locator Repository object locator
      * @param string $payload Object payload
      * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public static function createFromParams(RepositoryLocatorInterface $path, $payload = '', array $propertyData = [])
+    public static function createFromParams(RepositoryLocatorInterface $locator, $payload = '', array $propertyData = [])
     {
         // Determine the object class
-        $objectClass = self::objectClassFromType($path->getType());
+        $objectClass = self::objectClassFromType($locator->getType());
 
         // Prepare the system properties collection
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
             !is_array(
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
-        $systemPropertyData[SystemProperties::PROPERTY_ID] = $path->getId()->getId();
-        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $path->getType()->getType();
-        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $path->getRevision()->getRevision();
+        $systemPropertyData[SystemProperties::PROPERTY_ID] = $locator->getId()->getId();
+        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $locator->getType()->getType();
+        $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $locator->getRevision()->getRevision();
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] =
-        $systemPropertyData[SystemProperties::PROPERTY_MODIFIED] = $path->getCreationDate();
+        $systemPropertyData[SystemProperties::PROPERTY_MODIFIED] = $locator->getCreationDate();
         if (empty($systemPropertyData[SystemProperties::PROPERTY_LANGUAGE])) {
             $systemPropertyData[SystemProperties::PROPERTY_LANGUAGE] = getenv('OBJECT_DEFAULT_LANGUAGE');
         }
@@ -143,7 +143,7 @@ class ObjectFactory
 
         // Instantiate the object
         /** @var ObjectInterface $object */
-        $object = Kernel::create($objectClass, [$path, '', $propertyData]);
+        $object = Kernel::create($objectClass, [$locator, '', $propertyData]);
         return $object->setPayload($payload);
     }
 }

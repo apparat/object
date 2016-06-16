@@ -402,7 +402,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     }
 
     /**
-     * Test a repository path
+     * Test a repository locator
      */
     public function testRepositoryLocator()
     {

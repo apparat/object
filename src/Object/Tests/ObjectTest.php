@@ -68,13 +68,13 @@ namespace Apparat\Object\Tests {
          */
         protected static $defaultPrivacy;
         /**
-         * Example object path
+         * Example object locator
          *
          * @var string
          */
         const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
         /**
-         * Example hidden object path
+         * Example hidden object locator
          *
          * @var string
          */
@@ -134,10 +134,10 @@ namespace Apparat\Object\Tests {
         {
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
 
             /** @var ResourceInterface $resource */
-            ObjectFactory::createFromResource($articleObjectPath, $resource);
+            ObjectFactory::createFromResource($articleObjectLocator, $resource);
         }
 
         /**
@@ -148,8 +148,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectInvalidVisibility()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            self::$repository->loadObject($articleObjectPath, 0);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            self::$repository->loadObject($articleObjectLocator, 0);
         }
 
         /**
@@ -160,8 +160,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObject()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertEquals(
                 getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_LOCATOR,
                 $articleObject->getAbsoluteUrl()
@@ -179,8 +179,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadHiddenArticleObject()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::HIDDEN_OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::HIDDEN_OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertTrue($articleObject->isDeleted());
             $this->assertTrue($articleObject->getRepositoryLocator()->isHidden());
         }
@@ -190,8 +190,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectSystemProperties()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals(new Id(1), $articleObject->getId());
             $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::ARTICLE]), $articleObject->getType());
@@ -215,8 +215,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectMetaProperties()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals('Example article object', $articleObject->getDescription());
             $this->assertEquals(
@@ -240,8 +240,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectDomainProperties()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
             $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
             $articleObject->getDomainProperty('group:invalid');
@@ -255,8 +255,8 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectDomainEmptyProperty()
         {
-            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
-            $articleObject = self::$repository->loadObject($articleObjectPath);
+            $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
+            $articleObject = self::$repository->loadObject($articleObjectLocator);
             $articleObject->getDomainProperty('');
         }
 
@@ -302,10 +302,10 @@ namespace Apparat\Object\Tests {
 
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-            $articleObjectPath = new RepositoryLocator(self::$repository, '/2016/02/16/5-invalid/5');
+            $articleObjectLocator = new RepositoryLocator(self::$repository, '/2016/02/16/5-invalid/5');
 
             /** @var ResourceInterface $resource */
-            ObjectFactory::createFromResource($articleObjectPath, $resource);
+            ObjectFactory::createFromResource($articleObjectLocator, $resource);
         }
 
         /**

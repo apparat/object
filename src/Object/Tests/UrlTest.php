@@ -64,13 +64,13 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     const REPOSITORY_URL = '/repo';
     /**
-     * Example path
+     * Example locator
      *
      * @var string
      */
     const LOCATOR = '/2015/10/01/36704-event/36704-1';
     /**
-     * Example path (draft mode)
+     * Example locator (draft mode)
      *
      * @var string
      */
@@ -189,18 +189,18 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testArbitraryDatePrecision()
     {
-        $path = new Locator(self::LOCATOR, true);
-        $this->assertInstanceOf(Locator::class, $path);
+        $locator = new Locator(self::LOCATOR, true);
+        $this->assertInstanceOf(Locator::class, $locator);
     }
 
     /**
-     * Test draft path
+     * Test draft locator
      */
     public function testDraftPath()
     {
-        $path = new Locator(self::DRAFT_LOCATOR);
-        $this->assertInstanceOf(Locator::class, $path);
-        $this->assertTrue($path->getRevision()->isDraft());
+        $locator = new Locator(self::DRAFT_LOCATOR);
+        $this->assertInstanceOf(Locator::class, $locator);
+        $this->assertTrue($locator->getRevision()->isDraft());
     }
 
     /**

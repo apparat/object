@@ -49,7 +49,7 @@ class InvalidArgumentException extends \InvalidArgumentException
      */
     const INVALID_DATE_PRECISION = 1451514114;
     /**
-     * Invalid object URL path
+     * Invalid object URL locator
      *
      * @var int
      */

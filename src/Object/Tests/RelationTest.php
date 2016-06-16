@@ -54,7 +54,7 @@ use Apparat\Object\Ports\Types\Relation;
 class RelationTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Example object path
+     * Example object locator
      *
      * @var string
      */

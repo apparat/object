@@ -39,7 +39,7 @@ namespace Apparat\Object\Domain\Model\Uri;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 
 /**
- * Repository object path
+ * Repository object locator
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
@@ -54,30 +54,30 @@ class RepositoryLocator extends Locator implements RepositoryLocatorInterface
     protected $repository;
 
     /**
-     * Repository path constructor
+     * Repository locator constructor
      *
-     * @param RepositoryInterface $repository Object repository this path applies to
-     * @param null|string|LocatorInterface $path Object path
+     * @param RepositoryInterface $repository Object repository this locator applies to
+     * @param null|string|LocatorInterface $locator Object locator
      */
-    public function __construct(RepositoryInterface $repository, $path = null)
+    public function __construct(RepositoryInterface $repository, $locator = null)
     {
         $this->repository = $repository;
 
-        // If an instantiated path (local path, repository path, object URL) is given
-        if ($path instanceof LocatorInterface) {
-            $this->creationDate = $path->getCreationDate();
-            $this->uid = $path->getId();
-            $this->type = $path->getType();
-            $this->revision = $path->getRevision();
+        // If an instantiated locator (local locator, repository locator, object URL) is given
+        if ($locator instanceof LocatorInterface) {
+            $this->creationDate = $locator->getCreationDate();
+            $this->uid = $locator->getId();
+            $this->type = $locator->getType();
+            $this->revision = $locator->getRevision();
             return;
         }
 
         // Else: Parse as string
-        parent::__construct($path);
+        parent::__construct($locator);
     }
 
     /**
-     * Return the repository this path applies to
+     * Return the repository this locator applies to
      *
      * @return RepositoryInterface Repository
      */
@@ -87,10 +87,10 @@ class RepositoryLocator extends Locator implements RepositoryLocatorInterface
     }
 
     /**
-     * Return the repository relative object path with a file extension
+     * Return the repository relative object locator with a file extension
      *
      * @param string $extension File extension
-     * @return string Repository relative object path with extension
+     * @return string Repository relative object locator with extension
      */
     public function withExtension($extension)
     {

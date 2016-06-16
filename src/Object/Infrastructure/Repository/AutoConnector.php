@@ -37,7 +37,7 @@
 namespace Apparat\Object\Infrastructure\Repository;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
 
 /**

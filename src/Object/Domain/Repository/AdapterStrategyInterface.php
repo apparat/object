@@ -38,8 +38,8 @@ namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
-use Apparat\Object\Domain\Model\Path\PathInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\LocatorInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Repository adapter strategy interface
@@ -54,7 +54,7 @@ interface AdapterStrategyInterface
      *
      * @param SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return PathInterface[] Object paths
+     * @return LocatorInterface[] Object paths
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
 
@@ -131,8 +131,8 @@ interface AdapterStrategyInterface
     /**
      * Build an absolute repository resource path
      *
-     * @param RepositoryPathInterface $repositoryPath Repository path
+     * @param RepositoryLocatorInterface $repositoryLocator Repository path
      * @return string Absolute repository resource path
      */
-    public function getAbsoluteResourcePath(RepositoryPathInterface $repositoryPath);
+    public function getAbsoluteResourcePath(RepositoryLocatorInterface $repositoryLocator);
 }

@@ -39,7 +39,7 @@ namespace Apparat\Object\Tests;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Factory\RelationFactory;
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
 use Apparat\Object\Infrastructure\Model\Object\Object;
@@ -58,7 +58,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
 
     /**
      * Test the addition of an object relation
@@ -68,7 +68,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testObjectAddRelation()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
         $this->assertInstanceOf(Article::class, $article);
         $article->addRelation('http://example.com <john@example.com> John Doe', Relation::EMBEDDED_BY);
         $this->assertEquals(3, count($article->findRelations([Relation::URL => 'example.com'])));
@@ -128,7 +128,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testRelationConstruction()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
 
         /** @var Relations $relations */
         $relations = Kernel::create(Relations::class, [[Relation::CONTRIBUTED_BY => []], $article]);
@@ -154,7 +154,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testRelationFiltering()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
 
         /** @var Relations $relations */
         $relations = Kernel::create(Relations::class, [[Relation::CONTRIBUTED_BY => []], $article]);
@@ -206,7 +206,7 @@ class RelationTest extends AbstractRepositoryEnabledTest
      */
     public function testRelationGetterSetters()
     {
-        $url = Kernel::create(Url::class, [self::OBJECT_PATH]);
+        $url = Kernel::create(Url::class, [self::OBJECT_LOCATOR]);
         $this->assertInstanceOf(Url::class, $url);
 
         /** @var ContributedByRelation $relation */

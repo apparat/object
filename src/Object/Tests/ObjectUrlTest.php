@@ -40,7 +40,7 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Uri\ObjectUrl;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
@@ -69,19 +69,19 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const PATH = '/2015/10/01/36704-event/36704-1';
+    const LOCATOR = '/2015/10/01/36704-event/36704-1';
     /**
      * Example path (draft mode)
      *
      * @var string
      */
-    const DRAFT_PATH = '/2015/10/01/36704-event/.36704';
+    const DRAFT_LOCATOR = '/2015/10/01/36704-event/.36704';
     /**
      * Example URL
      *
      * @var string
      */
-    const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const URL = self::REPOSITORY_URL.self::LOCATOR.self::QUERY_FRAGMENT;
     /**
      * Example remote repository URL
      *
@@ -93,12 +93,12 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::LOCATOR.self::QUERY_FRAGMENT;
 
     /**
      * Test an URL
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1451515385
      */
     public function testInvalidRemoteUrl()
@@ -141,7 +141,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testRemoteDraftUrl()
     {
-        $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::DRAFT_PATH, true);
+        $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::DRAFT_LOCATOR, true);
         $this->assertInstanceOf(ObjectUrl::class, $url);
         $this->assertTrue($url->isDraft());
     }
@@ -152,15 +152,15 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     public function testLeadedLocalUrl()
     {
         $pathPrefix = '/prefix/path';
-        $url = new ObjectUrl($pathPrefix.self::PATH);
+        $url = new ObjectUrl($pathPrefix.self::LOCATOR);
         $this->assertEquals($pathPrefix, $url->getPath());
-        $this->assertEquals(self::PATH, $url->getLocalPath());
+        $this->assertEquals(self::LOCATOR, $url->getLocator());
     }
 
     /**
      * Test an invalid URL
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1449873819
      */
     public function testInvalidUrl()
@@ -171,7 +171,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test an invalid URL path
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1449874494
      */
     public function testInvalidUrlPath()
@@ -182,7 +182,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the scheme setter
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1449924914
      */
     public function testUrlSchemeSetter()
@@ -195,7 +195,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the host setter
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1449925567
      */
     public function testUrlHostSetter()
@@ -208,7 +208,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test the port setter
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1449925885
      */
     public function testUrlPortSetter()
@@ -277,7 +277,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlAbsoluteLocal()
     {
-        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::LOCATOR, true);
         $this->assertTrue($url->isAbsoluteLocal());
     }
 
@@ -286,7 +286,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlRelative()
     {
-        $url = new ObjectUrl(self::PATH.self::QUERY_FRAGMENT);
+        $url = new ObjectUrl(self::LOCATOR.self::QUERY_FRAGMENT);
         $this->assertEquals(false, $url->isAbsolute());
     }
 
@@ -295,9 +295,9 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testUrlRemote()
     {
-        $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::REPOSITORY_URL.self::PATH, true);
+        $url = new ObjectUrl(self::REMOTE_REPOSITORY_URL.self::REPOSITORY_URL.self::LOCATOR, true);
         $this->assertTrue($url->isRemote());
-        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::PATH, true);
+        $url = new ObjectUrl(rtrim(getenv('APPARAT_BASE_URL'), '/').self::REPOSITORY_URL.self::LOCATOR, true);
         $this->assertFalse($url->isRemote());
     }
 

@@ -38,7 +38,7 @@ namespace Apparat\Object\Tests;
 
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Repository\Repository;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
@@ -404,7 +404,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test a repository path
      */
-    public function testRepositoryPath()
+    public function testRepositoryLocator()
     {
         InfrastructureRepository::register(
             getenv('REPOSITORY_URL'),
@@ -414,9 +414,9 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             ]
         );
         $fileRepository = InfrastructureRepository::instance(getenv('REPOSITORY_URL'));
-        $repositoryPath = new RepositoryPath($fileRepository, '/2015/10/01/00/00/00/36704-event/36704-1');
-        $this->assertInstanceOf(RepositoryPath::class, $repositoryPath);
-        $this->assertEquals($fileRepository, $repositoryPath->getRepository());
+        $repositoryLocator = new RepositoryLocator($fileRepository, '/2015/10/01/00/00/00/36704-event/36704-1');
+        $this->assertInstanceOf(RepositoryLocator::class, $repositoryLocator);
+        $this->assertEquals($fileRepository, $repositoryLocator->getRepository());
     }
 
     /**

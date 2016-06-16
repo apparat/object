@@ -37,8 +37,8 @@
 namespace Apparat\Object\Domain\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
 use Apparat\Object\Domain\Model\Relation\ContributesRelation;
 use Apparat\Object\Domain\Model\Relation\EmbeddedByRelation;
@@ -262,7 +262,7 @@ class RelationFactory
                 return Kernel::create(ApparatUrl::class, [$url, true, $contextRepository]);
 
                 // If there's an apparat URL problem: Try to instantiate as a regular URL
-            } catch (\Apparat\Object\Domain\Model\Path\InvalidArgumentException $e) {
+            } catch (\Apparat\Object\Domain\Model\Uri\InvalidArgumentException $e) {
                 /** @var Url $urlInstance */
                 $urlInstance = Kernel::create(Url::class, [$url]);
                 if ($urlInstance->isAbsolute()) {

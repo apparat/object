@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Uri\ObjectUrl;
 
 /**
  * Object URL version with test extension

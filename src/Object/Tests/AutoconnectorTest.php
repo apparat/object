@@ -56,7 +56,7 @@ namespace Apparat\Object\Tests {
          *
          * @var string
          */
-        const OBJECT_PATH = '/2016/01/08/2-contact/2';
+        const OBJECT_LOCATOR = '/2016/01/08/2-contact/2';
 
         /**
          * Setup
@@ -91,7 +91,7 @@ namespace Apparat\Object\Tests {
          */
         public function testAutoconnectRelativeUrlCli()
         {
-            $article = Object::load(self::OBJECT_PATH);
+            $article = Object::load(self::OBJECT_LOCATOR);
             $this->assertInstanceOf(Contact::class, $article);
         }
 
@@ -101,7 +101,7 @@ namespace Apparat\Object\Tests {
         public function testAutoconnectRelativeUrlWebserver()
         {
             putenv('MOCK_PHP_SAPI_NAME=1');
-            $article = Object::load(self::OBJECT_PATH);
+            $article = Object::load(self::OBJECT_LOCATOR);
             $this->assertInstanceOf(Contact::class, $article);
         }
 
@@ -113,7 +113,7 @@ namespace Apparat\Object\Tests {
         public function testAutoconnectAbsoluteUrl()
         {
             $autoconnector = new AutoConnector();
-            $this->assertTrue($autoconnector->connect('http://example.com'.self::OBJECT_PATH));
+            $this->assertTrue($autoconnector->connect('http://example.com'.self::OBJECT_LOCATOR));
         }
     }
 }

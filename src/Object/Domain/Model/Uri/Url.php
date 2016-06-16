@@ -33,12 +33,12 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Contract\SerializablePropertyInterface;
-use Apparat\Object\Domain\Model\Path\Traits\Psr7Trait;
+use Apparat\Object\Domain\Model\Uri\Traits\Psr7Trait;
 use Psr\Http\Message\UriInterface;
 
 /**

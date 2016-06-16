@@ -53,14 +53,14 @@ class PayloadTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
 
     /**
      * Test setting the object payload
      */
     public function testObjectSetPayload()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
         $this->assertInstanceOf(Article::class, $article);
 
         // Set the article payload

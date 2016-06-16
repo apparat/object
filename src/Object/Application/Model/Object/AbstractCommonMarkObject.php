@@ -37,7 +37,7 @@
 namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Contract\CommonMarkPayloadProcessorInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Abstract CommonMark object
@@ -58,13 +58,13 @@ abstract class AbstractCommonMarkObject extends AbstractProcessedPayloadObject
      * Object constructor
      *
      * @param CommonMarkPayloadProcessorInterface $payloadProcessor Payload processor
-     * @param RepositoryPathInterface $path Object repository path
+     * @param RepositoryLocatorInterface $path Object repository path
      * @param string $payload Object payload
      * @param array $propertyData Property data
      */
     public function __construct(
         CommonMarkPayloadProcessorInterface $payloadProcessor,
-        RepositoryPathInterface $path,
+        RepositoryLocatorInterface $path,
         $payload,
         array $propertyData
     ) {

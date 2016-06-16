@@ -37,7 +37,7 @@
 namespace Apparat\Object\Application\Model\Object;
 
 use Apparat\Object\Application\Contract\BinaryPayloadProcessorInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Abstract binary object
@@ -58,13 +58,13 @@ abstract class AbstractBinaryObject extends AbstractProcessedPayloadObject
      * Object constructor
      *
      * @param BinaryPayloadProcessorInterface $payloadProcessor Payload processor
-     * @param RepositoryPathInterface $path Object repository path
+     * @param RepositoryLocatorInterface $path Object repository path
      * @param string $payload Object payload
      * @param array $propertyData Property data
      */
     public function __construct(
         BinaryPayloadProcessorInterface $payloadProcessor,
-        RepositoryPathInterface $path,
+        RepositoryLocatorInterface $path,
         $payload,
         array $propertyData
     ) {

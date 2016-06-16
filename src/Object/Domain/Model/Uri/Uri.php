@@ -1,12 +1,13 @@
 <?php
 
 /**
- * apparat-object
+ * apparat/object
  *
  * @category    Apparat
- * @package     Apparat\Object\Domain
- * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @package     Apparat\Object
+ * @subpackage  Apparat\Object\Domain
+ * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -33,61 +34,37 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 /**
- * Object invalid argument exception
+ * Abstract URI base class
  *
- * @package Apparat\Object\Domain
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Domain
  */
-class InvalidArgumentException extends \InvalidArgumentException
+abstract class Uri
 {
     /**
-     * Invalid date precision
+     * URI
      *
-     * @var int
+     * @var string
      */
-    const INVALID_DATE_PRECISION = 1451514114;
+    protected $uri;
+
     /**
-     * Invalid object URL path
+     * Constructor
      *
-     * @var int
+     * @param string $uri URI
      */
-    const INVALID_OBJECT_URL_PATH = 1449874494;
+    public function __construct($uri)
+    {
+        $this->uri = $uri;
+    }
+
     /**
-     * Invalid URL
+     * Return the serialized URL
      *
-     * @var int
+     * @return string Serialized URL
      */
-    const INVALID_URL = 1449873819;
-    /**
-     * Invalid remote object URL
-     *
-     * @var int
-     */
-    const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
-    /**
-     * Invalid URL scheme
-     *
-     * @var int
-     */
-    const INVALID_URL_SCHEME = 1449924914;
-    /**
-     * Invalid URL host
-     *
-     * @var int
-     */
-    const INVALID_URL_HOST = 1449925567;
-    /**
-     * Invalid URL port
-     *
-     * @var int
-     */
-    const INVALID_URL_PORT = 1449925885;
-    /**
-     * Invalid GEO URL
-     *
-     * @var int
-     */
-    const INVALID_GEO_URL = 1465153737;
+    abstract public function __toString();
 }

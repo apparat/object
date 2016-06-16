@@ -40,9 +40,9 @@ use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\PathInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\LocatorInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Abstract object repository
@@ -148,20 +148,20 @@ class Repository implements RepositoryInterface
     /**
      * Load an object from this repository
      *
-     * @param PathInterface $path Object path
+     * @param LocatorInterface $path Object path
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(PathInterface $path, $visibility = SelectorInterface::ALL)
+    public function loadObject(LocatorInterface $path, $visibility = SelectorInterface::ALL)
     {
         /** @var ManagerInterface $objectManager */
         $objectManager = Kernel::create(Service::class)->getObjectManager();
 
-        /** @var RepositoryPathInterface $repositoryPath */
-        $repositoryPath = Kernel::create(RepositoryPath::class, [$this, $path]);
+        /** @var RepositoryLocatorInterface $repositoryLocator */
+        $repositoryLocator = Kernel::create(RepositoryLocator::class, [$this, $path]);
 
         // Load and return the object
-        return $objectManager->loadObject($repositoryPath, $visibility);
+        return $objectManager->loadObject($repositoryLocator, $visibility);
     }
 
     /**

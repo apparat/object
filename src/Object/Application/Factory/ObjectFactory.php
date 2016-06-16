@@ -41,7 +41,7 @@ use Apparat\Object\Application\Service\TypeService;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 
@@ -56,12 +56,12 @@ class ObjectFactory
     /**
      * Create an object
      *
-     * @param RepositoryPathInterface $path Repository object path
+     * @param RepositoryLocatorInterface $path Repository object path
      * @param ResourceInterface $objectResource
      * @return ObjectInterface Object
      * @throws InvalidArgumentException If the object type is undefined
      */
-    public static function createFromResource(RepositoryPathInterface $path, ResourceInterface $objectResource)
+    public static function createFromResource(RepositoryLocatorInterface $path, ResourceInterface $objectResource)
     {
         $propertyData = $objectResource->getPropertyData();
 
@@ -108,12 +108,12 @@ class ObjectFactory
     /**
      * Create and return a new object
      *
-     * @param RepositoryPathInterface $path Repository object path
+     * @param RepositoryLocatorInterface $path Repository object path
      * @param string $payload Object payload
      * @param array $propertyData Object property data
      * @return ObjectInterface Object
      */
-    public static function createFromParams(RepositoryPathInterface $path, $payload = '', array $propertyData = [])
+    public static function createFromParams(RepositoryLocatorInterface $path, $payload = '', array $propertyData = [])
     {
         // Determine the object class
         $objectClass = self::objectClassFromType($path->getType());

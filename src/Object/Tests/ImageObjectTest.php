@@ -78,7 +78,7 @@ namespace Apparat\Object\Tests {
             $this->assertInstanceOf(Image::class, $image);
             $this->assertEquals($payloadFileName1, $image->getPayload());
             $this->assertFileExists(
-                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryLocator())).
                 DIRECTORY_SEPARATOR.$payloadFileName1
             );
 
@@ -93,7 +93,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals('gemeinfrei', $image->getDomainProperty('license'));
             $this->assertEquals($payloadFileName2, $image->getPayload());
             $this->assertFileExists(
-                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryPath())).
+                $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryLocator())).
                 DIRECTORY_SEPARATOR.$payloadFileName2
             );
 

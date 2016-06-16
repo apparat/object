@@ -53,14 +53,14 @@ class PropertiesTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
 
     /**
      * Test the owner object of an abstract properties collection
      */
     public function testOwnerObject()
     {
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
         $procInstProperties = Kernel::create(ProcessingInstructions::class, [[], $article]);
         $this->assertEquals($article, $procInstProperties->getObject());
     }

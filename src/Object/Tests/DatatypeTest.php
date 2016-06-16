@@ -48,7 +48,7 @@ use Apparat\Object\Application\Model\Properties\Datatype\Text;
 use Apparat\Object\Application\Model\Properties\Datatype\Token;
 use Apparat\Object\Application\Model\Properties\Datatype\Url;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\GeoUri;
+use Apparat\Object\Domain\Model\Uri\GeoUri;
 use Apparat\Object\Infrastructure\Model\Object\Object;
 
 /**
@@ -70,7 +70,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const ARTICLE_PATH = '/2015/12/21/1-article/1';
+    const ARTICLE_LOCATOR = '/2015/12/21/1-article/1';
     /**
      * Example Url
      *
@@ -84,7 +84,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_LOCATOR);
     }
 
     /**
@@ -97,7 +97,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
         /** @var ApparatUrl $apparatUrlDatatype */
         $apparatUrlDatatype = Kernel::create(ApparatUrl::class, [self::$object, ['invalid']]);
         $this->assertInstanceOf(ApparatUrl::class, $apparatUrlDatatype);
-        $apparatUrlDatatype->match(self::ARTICLE_PATH);
+        $apparatUrlDatatype->match(self::ARTICLE_LOCATOR);
     }
 
     /**
@@ -110,7 +110,7 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
         /** @var Url $urlDatatype */
         $urlDatatype = Kernel::create(Url::class, [self::$object, []]);
         $this->assertInstanceOf(Url::class, $urlDatatype);
-        $this->assertInstanceOf(\Apparat\Object\Domain\Model\Path\Url::class, $urlDatatype->match(self::URL));
+        $this->assertInstanceOf(\Apparat\Object\Domain\Model\Uri\Url::class, $urlDatatype->match(self::URL));
         $urlDatatype->match('http://');
     }
 
@@ -192,10 +192,10 @@ class DatatypeTest extends AbstractRepositoryEnabledTest
         /** @var GeoUri $geoUri */
         $geoUri = Kernel::create(GeoUri::class, [$geoUriStr]);
         $geoApparatUrlStr = '/2016/06/05/1-geo';
-        /** @var \Apparat\Object\Domain\Model\Path\ApparatUrl $geoApparatUrl */
+        /** @var \Apparat\Object\Domain\Model\Uri\ApparatUrl $geoApparatUrl */
         $geoApparatUrl = Kernel::create(
-            \Apparat\Object\Domain\Model\Path\ApparatUrl::class,
-            [$geoApparatUrlStr, false, self::$object->getRepositoryPath()->getRepository()]
+            \Apparat\Object\Domain\Model\Uri\ApparatUrl::class,
+            [$geoApparatUrlStr, false, self::$object->getRepositoryLocator()->getRepository()]
         );
 
         /** @var Geo $geoDatatype */

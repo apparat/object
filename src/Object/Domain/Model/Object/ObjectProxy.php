@@ -37,8 +37,8 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
@@ -80,16 +80,16 @@ abstract class ObjectProxy implements ObjectInterface
     /**
      * Return the object repository path
      *
-     * @return RepositoryPathInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository path
      */
-    public function getRepositoryPath()
+    public function getRepositoryLocator()
     {
         // If the object has already been instantiated
         if ($this->object instanceof ObjectInterface) {
-            return $this->object->getRepositoryPath();
+            return $this->object->getRepositoryLocator();
         }
 
-        return $this->url->getLocalPath();
+        return $this->url->getLocator();
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class ObjectProxy implements ObjectInterface
         // Lazy-load the remote object if necessary
         if (!$this->object instanceof ObjectInterface) {
             // Instantiate the local object repository, load and return the object
-            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocalPath());
+            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocator());
         }
 
         return $this->object;

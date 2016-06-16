@@ -42,9 +42,9 @@ use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
-use Apparat\Object\Domain\Model\Path\PathInterface;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\LocatorInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Repository\AdapterStrategyInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\RuntimeException as DomainRepositoryRuntimeException;
@@ -182,7 +182,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      *
      * @param Selector|SelectorInterface $selector Object selector
      * @param RepositoryInterface $repository Object repository
-     * @return PathInterface[] Object paths
+     * @return LocatorInterface[] Object paths
      */
     public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
     {
@@ -237,7 +237,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         return array_map(
             function ($objectPath) use ($repository) {
-                return Kernel::create(RepositoryPath::class, [$repository, '/'.$objectPath]);
+                return Kernel::create(RepositoryLocator::class, [$repository, '/'.$objectPath]);
             },
             glob(ltrim($glob, '/'), $globFlags)
         );
@@ -380,10 +380,10 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     protected function publishObject(ObjectInterface $object)
     {
-        $objectRepositoryPath = $object->getRepositoryPath();
+        $objectRepoLocator = $object->getRepositoryLocator();
 
         // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftPath = $objectRepositoryPath->setRevision($object->getRevision()->setDraft(true));
+        $objectDraftPath = $objectRepoLocator->setRevision($object->getRevision()->setDraft(true));
         $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftPath);
         if (@file_exists($absObjectDraftPath)) {
             unlink($absObjectDraftPath);
@@ -395,13 +395,13 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             // Build the "current" object repository path
             $currentRevision = Revision::current();
             $curObjectResPath =
-                $this->getAbsoluteResourcePath($objectRepositoryPath->setRevision($currentRevision));
+                $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($currentRevision));
 
             // Build the previous object repository path
             /** @var Revision $previousRevision */
             $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
             $prevObjectResPath
-                = $this->getAbsoluteResourcePath($objectRepositoryPath->setRevision($previousRevision));
+                = $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($previousRevision));
 
             // Rotate the previous revision's resource path
             if (file_exists($curObjectResPath)) {
@@ -413,15 +413,15 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     /**
      * Build an absolute repository resource path
      *
-     * @param RepositoryPathInterface $repositoryPath Repository path
+     * @param RepositoryLocatorInterface $repositoryLocator Repository path
      * @return string Absolute repository resource path
      */
-    public function getAbsoluteResourcePath(RepositoryPathInterface $repositoryPath)
+    public function getAbsoluteResourcePath(RepositoryLocatorInterface $repositoryLocator)
     {
         return $this->root.str_replace(
             '/',
             DIRECTORY_SEPARATOR,
-            $repositoryPath->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+            $repositoryLocator->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
         );
     }
 
@@ -437,7 +437,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $objectResource = ResourceFactory::createFromObject($object);
 
         // Create the absolute object resource path
-        $objectResourcePath = $this->getAbsoluteResourcePath($object->getRepositoryPath());
+        $objectResourcePath = $this->getAbsoluteResourcePath($object->getRepositoryLocator());
 
         /** @var Writer $fileWriter */
         $fileWriter = Kernel::create(
@@ -473,7 +473,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function deleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryPath())));
+        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
         $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
@@ -505,7 +505,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     protected function undeleteObject(ObjectInterface $object)
     {
         // Hide object directory
-        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryPath())));
+        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
         $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;

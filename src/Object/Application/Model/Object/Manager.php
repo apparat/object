@@ -44,8 +44,8 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Repository\InvalidArgumentException as RepositoryInvalidArgumentException;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\Selector;
@@ -87,14 +87,14 @@ class Manager implements ManagerInterface
             /** @var Revision $revision */
             $revision = Kernel::create(Revision::class, [1, true]);
 
-            /** @var RepositoryPath $repositoryPath */
-            $repositoryPath = Kernel::create(RepositoryPath::class, [$repository]);
-            $repositoryPath = $repositoryPath->setId($uid);
-            $repositoryPath = $repositoryPath->setRevision($revision);
-            $repositoryPath = $repositoryPath->setType($type);
-            $repositoryPath = $repositoryPath->setCreationDate($creationDate);
+            /** @var RepositoryLocator $repositoryLocator */
+            $repositoryLocator = Kernel::create(RepositoryLocator::class, [$repository]);
+            $repositoryLocator = $repositoryLocator->setId($uid);
+            $repositoryLocator = $repositoryLocator->setRevision($revision);
+            $repositoryLocator = $repositoryLocator->setType($type);
+            $repositoryLocator = $repositoryLocator->setCreationDate($creationDate);
 
-            return ObjectFactory::createFromParams($repositoryPath, $payload, $propertyData);
+            return ObjectFactory::createFromParams($repositoryLocator, $payload, $propertyData);
         };
 
         // Wrap the object creation in an ID allocation transaction
@@ -104,14 +104,14 @@ class Manager implements ManagerInterface
     /**
      * Load an object from a repository
      *
-     * @param RepositoryPathInterface $path Repository object path
+     * @param RepositoryLocatorInterface $path Repository object path
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL)
+    public function loadObject(RepositoryLocatorInterface $path, $visibility = SelectorInterface::ALL)
     {
         // Create the current revision path
-        /** @var RepositoryPathInterface $currentPath */
+        /** @var RepositoryLocatorInterface $currentPath */
         $currentPath = $path->setRevision(Revision::current());
 
         // Load the object resource respecting visibility constraints
@@ -127,12 +127,12 @@ class Manager implements ManagerInterface
     /**
      * Load and return an object resource respecting visibility constraints
      *
-     * @param RepositoryPathInterface $currentPath
+     * @param RepositoryLocatorInterface $currentPath
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
      * @throws InvalidArgumentException If the resource could not be loaded
      */
-    public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL)
+    public function loadObjectResource(RepositoryLocatorInterface &$currentPath, $visibility = SelectorInterface::ALL)
     {
         // Validate the object visibility
         $this->validateVisibility($visibility);
@@ -140,7 +140,7 @@ class Manager implements ManagerInterface
         $objectResource = null;
 
         // Create the current revision paths (visible and hidden)
-        /** @var RepositoryPathInterface[] $currentPaths */
+        /** @var RepositoryLocatorInterface[] $currentPaths */
         $currentPaths = array_filter([
             ($visibility & SelectorInterface::VISIBLE) ? $currentPath->setHidden(false) : null,
             ($visibility & SelectorInterface::HIDDEN) ? $currentPath->setHidden(true) : null,
@@ -200,10 +200,10 @@ class Manager implements ManagerInterface
     /**
      * Instantiate object resource
      *
-     * @param RepositoryPathInterface $path
+     * @param RepositoryLocatorInterface $path
      * @return ResourceInterface Object resource
      */
-    public function getObjectResource(RepositoryPathInterface $path)
+    public function getObjectResource(RepositoryLocatorInterface $path)
     {
         return $path->getRepository()->getAdapterStrategy()->getObjectResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
@@ -213,10 +213,10 @@ class Manager implements ManagerInterface
     /**
      * Test whether an object resource exists
      *
-     * @param RepositoryPathInterface $path
+     * @param RepositoryLocatorInterface $path
      * @return boolean Object resource exists
      */
-    public function objectResourceExists(RepositoryPathInterface $path)
+    public function objectResourceExists(RepositoryLocatorInterface $path)
     {
         return $path->getRepository()->getAdapterStrategy()->hasResource(
             $path->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))

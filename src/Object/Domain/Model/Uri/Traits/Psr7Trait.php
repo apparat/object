@@ -34,14 +34,14 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path\Traits;
+namespace Apparat\Object\Domain\Model\Uri\Traits;
 
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\Url;
 
 /**
  * PSR-7 URI trait
  *
- * @package Apparat\Object\Domain\Model\Path\Traits
+ * @package Apparat\Object\Domain\Model\Uri\Traits
  * @property array $urlParts
  */
 trait Psr7Trait

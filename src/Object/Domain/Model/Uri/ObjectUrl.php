@@ -33,7 +33,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
@@ -45,14 +45,14 @@ use Apparat\Object\Domain\Model\Object\Type;
  *
  * @package Apparat\Object\Domain\Model
  */
-class ObjectUrl extends Url implements PathInterface
+class ObjectUrl extends Url implements LocatorInterface
 {
     /**
      * Object path
      *
-     * @var LocalPath
+     * @var Locator
      */
-    protected $localPath = null;
+    protected $locator = null;
 
     /*******************************************************************************
      * PUBLIC METHODS
@@ -82,12 +82,12 @@ class ObjectUrl extends Url implements PathInterface
         if (empty($this->urlParts['path'])) {
             throw new InvalidArgumentException(
                 'Invalid object URL path (empty)',
-                InvalidArgumentException::INVALID_OBJECT_URL_PATH
+                InvalidArgumentException::INVALID_OBJECT_URL_LOCATOR
             );
         }
 
         // Instantiate the local path component
-        $this->localPath = new LocalPath(
+        $this->locator = new Locator(
             $this->urlParts['path'],
             $remote ? true : null,
             $this->urlParts['path']
@@ -103,11 +103,11 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return PathInterface|ObjectUrl New object path
+     * @return LocatorInterface|ObjectUrl New object path
      */
     public function setCreationDate(\DateTimeInterface $creationDate)
     {
-        $this->localPath = $this->localPath->setCreationDate($creationDate);
+        $this->locator = $this->locator->setCreationDate($creationDate);
         return $this;
     }
 
@@ -115,11 +115,11 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return PathInterface|ObjectUrl New object URL
+     * @return LocatorInterface|ObjectUrl New object URL
      */
     public function setType(Type $type)
     {
-        $this->localPath = $this->localPath->setType($type);
+        $this->locator = $this->locator->setType($type);
         return $this;
     }
 
@@ -127,11 +127,11 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return PathInterface|ObjectUrl New object URL
+     * @return LocatorInterface|ObjectUrl New object URL
      */
     public function setId(Id $uid)
     {
-        $this->localPath = $this->localPath->setId($uid);
+        $this->locator = $this->locator->setId($uid);
         return $this;
     }
 
@@ -139,11 +139,11 @@ class ObjectUrl extends Url implements PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return PathInterface|ObjectUrl New object URL
+     * @return LocatorInterface|ObjectUrl New object URL
      */
     public function setRevision(Revision $revision)
     {
-        $this->localPath = $this->localPath->setRevision($revision);
+        $this->locator = $this->locator->setRevision($revision);
         return $this;
     }
 
@@ -193,7 +193,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getCreationDate()
     {
-        return $this->localPath->getCreationDate();
+        return $this->locator->getCreationDate();
     }
 
     /**
@@ -203,7 +203,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getId()
     {
-        return $this->localPath->getId();
+        return $this->locator->getId();
     }
 
     /**
@@ -213,7 +213,7 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getType()
     {
-        return $this->localPath->getType();
+        return $this->locator->getType();
     }
 
     /**
@@ -223,17 +223,17 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function getRevision()
     {
-        return $this->localPath->getRevision();
+        return $this->locator->getRevision();
     }
 
     /**
      * Return the local object path
      *
-     * @return PathInterface|LocalPath Local object path
+     * @return LocatorInterface|Locator Local object path
      */
-    public function getLocalPath()
+    public function getLocator()
     {
-        return $this->localPath;
+        return $this->locator;
     }
 
     /**
@@ -243,18 +243,18 @@ class ObjectUrl extends Url implements PathInterface
      */
     public function isDraft()
     {
-        return $this->localPath->getRevision()->isDraft();
+        return $this->locator->getRevision()->isDraft();
     }
 
     /**
      * Set the object draft mode
      *
      * @param boolean $draft Object draft mode
-     * @return PathInterface|ObjectUrl New object path
+     * @return LocatorInterface|ObjectUrl New object path
      */
     public function setDraft($draft)
     {
-        $this->localPath = $this->localPath->setRevision($this->localPath->getRevision()->setDraft($draft));
+        $this->locator = $this->locator->setRevision($this->locator->getRevision()->setDraft($draft));
         return $this;
     }
 
@@ -300,7 +300,7 @@ class ObjectUrl extends Url implements PathInterface
         parent::getUrlInternal($override);
 
         // Prepare the local object path
-        $override['object'] = isset($override['object']) ? $override['object'] : strval($this->localPath);
+        $override['object'] = isset($override['object']) ? $override['object'] : strval($this->locator);
 
         return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}".
         "{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";

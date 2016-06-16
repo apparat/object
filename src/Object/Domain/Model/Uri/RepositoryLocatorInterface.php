@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
@@ -47,7 +47,7 @@ use Apparat\Object\Domain\Repository\RepositoryInterface;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface RepositoryPathInterface extends PathInterface
+interface RepositoryLocatorInterface extends LocatorInterface
 {
     /**
      * Return the repository this path applies to
@@ -60,7 +60,7 @@ interface RepositoryPathInterface extends PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return RepositoryPathInterface New object path
+     * @return RepositoryLocatorInterface New object path
      */
     public function setCreationDate(\DateTimeInterface $creationDate);
 
@@ -68,7 +68,7 @@ interface RepositoryPathInterface extends PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return RepositoryPathInterface New object path
+     * @return RepositoryLocatorInterface New object path
      */
     public function setType(Type $type);
 
@@ -76,7 +76,7 @@ interface RepositoryPathInterface extends PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return RepositoryPathInterface New object path
+     * @return RepositoryLocatorInterface New object path
      */
     public function setId(Id $uid);
 
@@ -84,7 +84,7 @@ interface RepositoryPathInterface extends PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return RepositoryPathInterface New object path
+     * @return RepositoryLocatorInterface New object path
      */
     public function setRevision(Revision $revision);
 
@@ -107,7 +107,7 @@ interface RepositoryPathInterface extends PathInterface
      * Set the object hidden state
      *
      * @param boolean $hidden Object hidden state
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setHidden($hidden);
 }

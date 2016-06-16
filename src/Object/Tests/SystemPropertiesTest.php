@@ -55,7 +55,7 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/2015/12/21/1-article/1';
+    const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
 
     /**
      * Test the instantiation of system properties
@@ -107,7 +107,7 @@ class SystemPropertiesTest extends AbstractRepositoryEnabledTest
         $latitude = rand(0, 10000) / 10000;
         $longitude = rand(0, 10000) / 10000;
         $elevation = rand(0, 10000);
-        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
         $this->assertInstanceOf(Article::class, $article);
         $this->assertEquals($latitude, $article->setLatitude($latitude)->getLatitude());
 

@@ -45,7 +45,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Object\ResourceInterface;
     use Apparat\Object\Domain\Model\Object\Revision;
     use Apparat\Object\Domain\Model\Object\Type;
-    use Apparat\Object\Domain\Model\Path\RepositoryPath;
+    use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
     use Apparat\Object\Domain\Model\Properties\MetaProperties;
     use Apparat\Object\Domain\Model\Properties\SystemProperties;
     use Apparat\Object\Domain\Repository\Repository;
@@ -72,13 +72,13 @@ namespace Apparat\Object\Tests {
          *
          * @var string
          */
-        const OBJECT_PATH = '/2015/12/21/1-article/1';
+        const OBJECT_LOCATOR = '/2015/12/21/1-article/1';
         /**
          * Example hidden object path
          *
          * @var string
          */
-        const HIDDEN_OBJECT_PATH = '/2016/05/26/6-article/6';
+        const HIDDEN_OBJECT_LOCATOR = '/2016/05/26/6-article/6';
 
         /**
          * Setup
@@ -117,11 +117,11 @@ namespace Apparat\Object\Tests {
         {
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([]);
-            $repositoryPath = $this->getMockBuilder(RepositoryPath::class)->disableOriginalConstructor()->getMock();
+            $repositoryLocator = $this->getMockBuilder(RepositoryLocator::class)->disableOriginalConstructor()->getMock();
 
             /** @var ResourceInterface $resource */
-            /** @var RepositoryPath $repositoryPath */
-            ObjectFactory::createFromResource($repositoryPath, $resource);
+            /** @var RepositoryLocator $repositoryLocator */
+            ObjectFactory::createFromResource($repositoryLocator, $resource);
         }
 
         /**
@@ -134,7 +134,7 @@ namespace Apparat\Object\Tests {
         {
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
 
             /** @var ResourceInterface $resource */
             ObjectFactory::createFromResource($articleObjectPath, $resource);
@@ -148,7 +148,7 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectInvalidVisibility()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             self::$repository->loadObject($articleObjectPath, 0);
         }
 
@@ -160,14 +160,14 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObject()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertEquals(
-                getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH,
+                getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_LOCATOR,
                 $articleObject->getAbsoluteUrl()
             );
             $this->assertFalse($articleObject->isDeleted());
-            $this->assertFalse($articleObject->getRepositoryPath()->isHidden());
+            $this->assertFalse($articleObject->getRepositoryLocator()->isHidden());
 
             /** @var Revision $invalidRevision */
             $invalidRevision = Kernel::create(Revision::class, [99]);
@@ -179,10 +179,10 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadHiddenArticleObject()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::HIDDEN_OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::HIDDEN_OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertTrue($articleObject->isDeleted());
-            $this->assertTrue($articleObject->getRepositoryPath()->isHidden());
+            $this->assertTrue($articleObject->getRepositoryLocator()->isHidden());
         }
 
         /**
@@ -190,7 +190,7 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectSystemProperties()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals(new Id(1), $articleObject->getId());
@@ -215,7 +215,7 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectMetaProperties()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals('Example article object', $articleObject->getDescription());
@@ -240,7 +240,7 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectDomainProperties()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
             $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
@@ -255,7 +255,7 @@ namespace Apparat\Object\Tests {
          */
         public function testLoadArticleObjectDomainEmptyProperty()
         {
-            $articleObjectPath = new RepositoryPath(self::$repository, self::OBJECT_PATH);
+            $articleObjectPath = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectPath);
             $articleObject->getDomainProperty('');
         }
@@ -265,7 +265,7 @@ namespace Apparat\Object\Tests {
          */
         public function testObjectAbsolute()
         {
-            $object = Object::load(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
             $this->assertInstanceOf(Article::class, $object);
         }
 
@@ -274,7 +274,7 @@ namespace Apparat\Object\Tests {
          */
         public function testObjectRelative()
         {
-            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
             $this->assertInstanceOf(Article::class, $object);
         }
 
@@ -302,7 +302,7 @@ namespace Apparat\Object\Tests {
 
             $resource = $this->createMock(ResourceInterface::class);
             $resource->method('getPropertyData')->willReturn([SystemProperties::COLLECTION => ['type' => 'invalid']]);
-            $articleObjectPath = new RepositoryPath(self::$repository, '/2016/02/16/5-invalid/5');
+            $articleObjectPath = new RepositoryLocator(self::$repository, '/2016/02/16/5-invalid/5');
 
             /** @var ResourceInterface $resource */
             ObjectFactory::createFromResource($articleObjectPath, $resource);
@@ -317,7 +317,7 @@ namespace Apparat\Object\Tests {
         public function testInvalidDomainPropertyCollectionClass()
         {
             $this->getMockBuilder(AbstractObject::class)
-                ->setConstructorArgs([new RepositoryPath(self::$repository, self::OBJECT_PATH)])
+                ->setConstructorArgs([new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR)])
                 ->getMock();
         }
 
@@ -326,8 +326,8 @@ namespace Apparat\Object\Tests {
          */
         public function testObjectPropertyData()
         {
-//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_PATH.'.md');
-            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+//  $frontMarkResource = Resource::frontMark('file://'.__DIR__.DIRECTORY_SEPARATOR.'Fixture'.self::OBJECT_LOCATOR.'.md');
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
             $this->assertTrue(is_array($object->getPropertyData()));
 //        print_r($frontMarkResource->getData());
 //        print_r($object->getPropertyData());
@@ -341,7 +341,7 @@ namespace Apparat\Object\Tests {
          */
         public function testMetaDataMutation()
         {
-            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_PATH);
+            $object = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
             $this->assertTrue(is_array($object->getPropertyData()));
             $objectUrl = $object->getAbsoluteUrl();
             $objectRevision = $object->getRevision();
@@ -412,7 +412,7 @@ namespace Apparat\Object\Tests {
             $this->assertEquals(MetaProperties::PRIVACY_PUBLIC, $article->getPrivacy());
             $this->assertEquals($payload, $article->getPayload());
             $this->assertFileExists($tempRepoDirectory.
-                str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryPath()
+                str_replace('/', DIRECTORY_SEPARATOR, $article->getRepositoryLocator()
                     ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
             $this->assertEquals($creationDate, $article->getCreated());
 
@@ -542,7 +542,7 @@ namespace Apparat\Object\Tests {
         {
             $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
             $article = $this->createRepositoryAndArticleObject($tempRepoDirectory, 'Revision 1 draft');
-            $article->getRepositoryPath()->getRepository()->deleteObject($article);
+            $article->getRepositoryLocator()->getRepository()->deleteObject($article);
             $this->deleteRecursive($tempRepoDirectory);
             putenv('MOCK_RENAME=1');
             $article->undelete()->persist();

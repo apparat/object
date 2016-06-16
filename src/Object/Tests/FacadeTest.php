@@ -52,14 +52,14 @@ class FacadeTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const OBJECT_PATH = '/repo/2015/12/21/1-article/1';
+    const OBJECT_LOCATOR = '/repo/2015/12/21/1-article/1';
 
     /**
      * Test Object facade
      */
     public function testObjectFacade()
     {
-        $object = ObjectFacade::load(self::OBJECT_PATH);
+        $object = ObjectFacade::load(self::OBJECT_LOCATOR);
         $this->assertInstanceOf(Article::class, $object);
     }
 }

@@ -36,9 +36,9 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Model\Path\LocalPath;
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
+use Apparat\Object\Domain\Model\Uri\Locator;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Repository\Service;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Facades\RepositoryFacade;
@@ -68,19 +68,19 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const PATH = '/2015/10/01/36704-event/36704-1';
+    const LOCATOR = '/2015/10/01/36704-event/36704-1';
     /**
      * Example path (draft mode)
      *
      * @var string
      */
-    const DRAFT_PATH = '/2015/10/01/36704-event/.36704';
+    const DRAFT_LOCATOR = '/2015/10/01/36704-event/.36704';
     /**
      * Example URL
      *
      * @var string
      */
-    const URL = self::REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const URL = self::REPOSITORY_URL.self::LOCATOR.self::QUERY_FRAGMENT;
     /**
      * Example remote repository authority
      *
@@ -98,13 +98,13 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      *
      * @var string
      */
-    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::PATH.self::QUERY_FRAGMENT;
+    const REMOTE_URL = self::REMOTE_REPOSITORY_URL.self::LOCATOR.self::QUERY_FRAGMENT;
     /**
      * Example apparat URL
      *
      * @var string
      */
-    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT;
+    const APPARAT_URL = 'aprts://apparat:tools@apparat.tools:80'.self::LOCATOR.self::QUERY_FRAGMENT;
 
     /**
      * Test URL comparison
@@ -127,7 +127,7 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test an invalid apparat URL
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1451435429
      */
     public function testInvalidApparatUrl()
@@ -148,12 +148,12 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test an unknown relative apparat URL
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\ApparatInvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\ApparatInvalidArgumentException
      * @expectedExceptionCode 1452695654
      */
     public function testUnknownRelativeApparatUrl()
     {
-        new ApparatUrl(self::PATH.self::QUERY_FRAGMENT);
+        new ApparatUrl(self::LOCATOR.self::QUERY_FRAGMENT);
     }
 
     /**
@@ -176,12 +176,12 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test invalid date precision
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1451514114
      */
     public function testInvalidDatePrecision()
     {
-        new LocalPath(self::PATH, -1);
+        new Locator(self::LOCATOR, -1);
     }
 
     /**
@@ -189,8 +189,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testArbitraryDatePrecision()
     {
-        $path = new LocalPath(self::PATH, true);
-        $this->assertInstanceOf(LocalPath::class, $path);
+        $path = new Locator(self::LOCATOR, true);
+        $this->assertInstanceOf(Locator::class, $path);
     }
 
     /**
@@ -198,8 +198,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
      */
     public function testDraftPath()
     {
-        $path = new LocalPath(self::DRAFT_PATH);
-        $this->assertInstanceOf(LocalPath::class, $path);
+        $path = new Locator(self::DRAFT_LOCATOR);
+        $this->assertInstanceOf(Locator::class, $path);
         $this->assertTrue($path->getRevision()->isDraft());
     }
 
@@ -220,8 +220,8 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
     public function testLocalStringUrlNormalization()
     {
         $this->assertEquals(
-            self::REPOSITORY_URL.self::PATH,
-            Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::PATH)
+            self::REPOSITORY_URL.self::LOCATOR,
+            Service::normalizeRepositoryUrl(getenv('APPARAT_BASE_URL').self::REPOSITORY_URL.self::LOCATOR)
         );
     }
 
@@ -244,23 +244,23 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals(self::REMOTE_REPOSITORY_AUTHORITY, $url->getAuthority());
         $this->assertEquals('apparat:tools', $url->getUserInfo());
         $this->assertEquals(
-            'https://'.self::REMOTE_REPOSITORY_AUTHORITY.self::PATH.self::QUERY_FRAGMENT,
+            'https://'.self::REMOTE_REPOSITORY_AUTHORITY.self::LOCATOR.self::QUERY_FRAGMENT,
             strval($url->withScheme('HTTPS'))
         );
         $this->assertEquals(
-            'http://test@apparat.tools:80'.self::PATH.self::QUERY_FRAGMENT,
+            'http://test@apparat.tools:80'.self::LOCATOR.self::QUERY_FRAGMENT,
             strval($url->withUserInfo('test'))
         );
         $this->assertEquals(
-            'http://apparat:tools@test.com:80'.self::PATH.self::QUERY_FRAGMENT,
+            'http://apparat:tools@test.com:80'.self::LOCATOR.self::QUERY_FRAGMENT,
             strval($url->withHost('test.com'))
         );
         $this->assertEquals(
-            'http://apparat:tools@apparat.tools:443'.self::PATH.self::QUERY_FRAGMENT,
+            'http://apparat:tools@apparat.tools:443'.self::LOCATOR.self::QUERY_FRAGMENT,
             strval($url->withPort(443))
         );
         $this->assertEquals(
-            'http://apparat:tools@apparat.tools'.self::PATH.self::QUERY_FRAGMENT,
+            'http://apparat:tools@apparat.tools'.self::LOCATOR.self::QUERY_FRAGMENT,
             strval($url->withPort(null))
         );
         $this->assertEquals(
@@ -268,11 +268,11 @@ class UrlTest extends AbstractDisabledAutoconnectorTest
             strval($url->withPath('test/path'))
         );
         $this->assertEquals(
-            'http://apparat:tools@apparat.tools:80'.self::PATH.'?param2=value2#fragment',
+            'http://apparat:tools@apparat.tools:80'.self::LOCATOR.'?param2=value2#fragment',
             strval($url->withQuery('param2=value2'))
         );
         $this->assertEquals(
-            'http://apparat:tools@apparat.tools:80'.self::PATH.'?param=value#fragment2',
+            'http://apparat:tools@apparat.tools:80'.self::LOCATOR.'?param=value#fragment2',
             strval($url->withFragment('fragment2'))
         );
     }

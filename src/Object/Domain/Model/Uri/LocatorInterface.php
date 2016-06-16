@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
@@ -46,7 +46,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-interface PathInterface
+interface LocatorInterface
 {
 
     /**
@@ -67,7 +67,7 @@ interface PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return PathInterface New object path
+     * @return LocatorInterface New object path
      */
     public function setCreationDate(\DateTimeInterface $creationDate);
 
@@ -82,7 +82,7 @@ interface PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return PathInterface New object path
+     * @return LocatorInterface New object path
      */
     public function setType(Type $type);
 
@@ -97,7 +97,7 @@ interface PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return PathInterface New object path
+     * @return LocatorInterface New object path
      */
     public function setId(Id $uid);
 
@@ -112,7 +112,7 @@ interface PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return PathInterface New object path
+     * @return LocatorInterface New object path
      */
     public function setRevision(Revision $revision);
 }

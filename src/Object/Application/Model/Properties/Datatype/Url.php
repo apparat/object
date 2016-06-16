@@ -57,7 +57,7 @@ class Url extends Token
     public function match($value)
     {
         try {
-            $url = Kernel::create(\Apparat\Object\Domain\Model\Path\Url::class, [$value, true]);
+            $url = Kernel::create(\Apparat\Object\Domain\Model\Uri\Url::class, [$value, true]);
         } catch (\Exception $e) {
             throw new DomainException;
         }

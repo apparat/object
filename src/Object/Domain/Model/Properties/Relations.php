@@ -89,7 +89,7 @@ class Relations extends AbstractProperties
                 $this->addRelationInstance(RelationFactory::createFromString(
                     $relationType,
                     $serializedRelation,
-                    $this->object->getRepositoryPath()->getRepository()
+                    $this->object->getRepositoryLocator()->getRepository()
                 ));
             }
         }
@@ -146,7 +146,7 @@ class Relations extends AbstractProperties
             $relation = RelationFactory::createFromString(
                 $relationType,
                 $relation,
-                $this->object->getRepositoryPath()->getRepository()
+                $this->object->getRepositoryLocator()->getRepository()
             );
         }
 

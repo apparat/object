@@ -40,7 +40,7 @@ use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Application\Model\Object\Contact;
 use Apparat\Object\Domain\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 
 /**
  * Object collection tests
@@ -74,7 +74,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
         $this->assertInstanceOf(Article::class, $collection[$uid]);
 
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
         $collection[$uid] = $contactObject;
@@ -102,7 +102,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionAdd()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
 
@@ -118,7 +118,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
 
         // Add another object by repository path
         /** @var Collection $collection */
-        $collection = $collection->add(new RepositoryPath(self::$repository, '/2016/02/07/3-article/3'));
+        $collection = $collection->add(new RepositoryLocator(self::$repository, '/2016/02/07/3-article/3'));
         $this->assertEquals($articleCount + 2, count($collection));
 
         // Add invalid object
@@ -134,7 +134,7 @@ class CollectionTest extends AbstractRepositoryEnabledTest
     public function testObjectCollectionRemove()
     {
         // Load a contact object
-        $contactObjectPath = new RepositoryPath(self::$repository, '/2016/01/08/2-contact/2');
+        $contactObjectPath = new RepositoryLocator(self::$repository, '/2016/01/08/2-contact/2');
         $contactObject = self::$repository->loadObject($contactObjectPath);
         $this->assertInstanceOf(Contact::class, $contactObject);
 

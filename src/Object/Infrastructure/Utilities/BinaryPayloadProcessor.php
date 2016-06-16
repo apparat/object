@@ -80,7 +80,7 @@ class BinaryPayloadProcessor extends AbstractPayloadProcessor implements BinaryP
             );
         }
 
-        $adapterStrategy = $this->object->getRepositoryPath()->getRepository()->getAdapterStrategy();
+        $adapterStrategy = $this->object->getRepositoryLocator()->getRepository()->getAdapterStrategy();
         $currentPayload = $this->object->getPayload();
         $currentPayloadHash = strlen($currentPayload) ? $adapterStrategy->getResourceHash($currentPayload) : null;
         $payloadHash = File::hash($payload);
@@ -107,8 +107,8 @@ class BinaryPayloadProcessor extends AbstractPayloadProcessor implements BinaryP
     {
         // If there are entries in the persistence queue
         if (count($this->persistQueue)) {
-            $adapterStrategy = $this->object->getRepositoryPath()->getRepository()->getAdapterStrategy();
-            $containerPath = dirname(strval($this->object->getRepositoryPath())).DIRECTORY_SEPARATOR;
+            $adapterStrategy = $this->object->getRepositoryLocator()->getRepository()->getAdapterStrategy();
+            $containerPath = dirname(strval($this->object->getRepositoryLocator())).DIRECTORY_SEPARATOR;
 
             // Run through all resources in the persistence queue
             foreach ($this->persistQueue as $source => $target) {

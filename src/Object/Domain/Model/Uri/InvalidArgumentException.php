@@ -4,8 +4,7 @@
  * apparat-object
  *
  * @category    Apparat
- * @package     Apparat\Object
- * @subpackage  Apparat\Object\Domain
+ * @package     Apparat\Object\Domain
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,66 +33,61 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
-
-use Apparat\Object\Domain\Repository\RepositoryInterface;
+namespace Apparat\Object\Domain\Model\Uri;
 
 /**
- * Repository object path
+ * Object invalid argument exception
  *
- * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @package Apparat\Object\Domain
  */
-class RepositoryPath extends LocalPath implements RepositoryPathInterface
+class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Repository
+     * Invalid date precision
      *
-     * @var RepositoryInterface
+     * @var int
      */
-    protected $repository;
-
+    const INVALID_DATE_PRECISION = 1451514114;
     /**
-     * Repository path constructor
+     * Invalid object URL path
      *
-     * @param RepositoryInterface $repository Object repository this path applies to
-     * @param null|string|PathInterface $path Object path
+     * @var int
      */
-    public function __construct(RepositoryInterface $repository, $path = null)
-    {
-        $this->repository = $repository;
-
-        // If an instantiated path (local path, repository path, object URL) is given
-        if ($path instanceof PathInterface) {
-            $this->creationDate = $path->getCreationDate();
-            $this->uid = $path->getId();
-            $this->type = $path->getType();
-            $this->revision = $path->getRevision();
-            return;
-        }
-
-        // Else: Parse as string
-        parent::__construct($path);
-    }
-
+    const INVALID_OBJECT_URL_LOCATOR = 1449874494;
     /**
-     * Return the repository this path applies to
+     * Invalid URL
      *
-     * @return RepositoryInterface Repository
+     * @var int
      */
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-
+    const INVALID_URL = 1449873819;
     /**
-     * Return the repository relative object path with a file extension
+     * Invalid remote object URL
      *
-     * @param string $extension File extension
-     * @return string Repository relative object path with extension
+     * @var int
      */
-    public function withExtension($extension)
-    {
-        return $this.'.'.strtolower($extension);
-    }
+    const UNALLOWED_REMOTE_OBJECT_URL = 1451515385;
+    /**
+     * Invalid URL scheme
+     *
+     * @var int
+     */
+    const INVALID_URL_SCHEME = 1449924914;
+    /**
+     * Invalid URL host
+     *
+     * @var int
+     */
+    const INVALID_URL_HOST = 1449925567;
+    /**
+     * Invalid URL port
+     *
+     * @var int
+     */
+    const INVALID_URL_PORT = 1449925885;
+    /**
+     * Invalid GEO URL
+     *
+     * @var int
+     */
+    const INVALID_GEO_URL = 1465153737;
 }

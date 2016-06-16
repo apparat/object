@@ -37,7 +37,7 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Path\GeoUri;
+use Apparat\Object\Domain\Model\Uri\GeoUri;
 
 /**
  * Geo URI test
@@ -63,7 +63,7 @@ class GeoUriTest extends AbstractDisabledAutoconnectorTest
     /**
      * Test an invalid Geo URI
      *
-     * @expectedException \Apparat\Object\Domain\Model\Path\InvalidArgumentException
+     * @expectedException \Apparat\Object\Domain\Model\Uri\InvalidArgumentException
      * @expectedExceptionCode 1465153737
      */
     public function testInvalidGeoUri()

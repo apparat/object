@@ -57,10 +57,10 @@ class ApparatUrl extends Url
     public function match($value)
     {
         try {
-            /** @var \Apparat\Object\Domain\Model\Path\ApparatUrl $apparatUrl */
+            /** @var \Apparat\Object\Domain\Model\Uri\ApparatUrl $apparatUrl */
             $apparatUrl = Kernel::create(
-                \Apparat\Object\Domain\Model\Path\ApparatUrl::class,
-                [$value, true, $this->object->getRepositoryPath()->getRepository()]
+                \Apparat\Object\Domain\Model\Uri\ApparatUrl::class,
+                [$value, true, $this->object->getRepositoryLocator()->getRepository()]
             );
 
             // If the apparat URL needs to be filtered

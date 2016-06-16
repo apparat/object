@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Relation;
 
-use Apparat\Object\Domain\Model\Path\Url;
+use Apparat\Object\Domain\Model\Uri\Url;
 
 /**
  * Relation interface

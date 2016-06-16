@@ -71,7 +71,7 @@ class InvalidArgumentException extends \InvalidArgumentException
      *
      * @var int
      */
-    const INVALID_COLLECTION_OBJECT_OR_PATH = 1450131914;
+    const INVALID_COLLECTION_OBJECT_OR_LOCATOR = 1450131914;
     /**
      * Invalid object proxy method
      *

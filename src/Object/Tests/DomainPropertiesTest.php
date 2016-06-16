@@ -52,13 +52,13 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const ARTICLE_PATH = '/2015/12/21/1-article/1';
+    const ARTICLE_LOCATOR = '/2015/12/21/1-article/1';
     /**
      * Example object path
      *
      * @var string
      */
-    const CONTACT_PATH = '/2016/01/08/2-contact/2';
+    const CONTACT_LOCATOR = '/2016/01/08/2-contact/2';
     /**
      * Property traversal separator
      *
@@ -71,7 +71,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testDomainPropertyMutation()
     {
-        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_LOCATOR);
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();
@@ -90,7 +90,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testDomainPropertyModel()
     {
-        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_LOCATOR);
         $object->setDomainProperty('givenName', 'apparat');
         $object->setDomainProperty('givenName'.self::SEPARATOR.'subproperty', 'violation');
     }
@@ -100,7 +100,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
      */
     public function testContactDomainPropertyModel()
     {
-        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_LOCATOR);
         $object->setDomainProperty('givenName', 'John');
         $object->setDomainProperty('givenName', 'John'); // Intentional re-set!
         $object->setDomainProperty('familyName', 'Doe');

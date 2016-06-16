@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 
@@ -69,26 +69,26 @@ interface ManagerInterface
     /**
      * Load an object from a repository
      *
-     * @param RepositoryPathInterface $path Repository object path
+     * @param RepositoryLocatorInterface $path Repository object path
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(RepositoryPathInterface $path, $visibility = SelectorInterface::ALL);
+    public function loadObject(RepositoryLocatorInterface $path, $visibility = SelectorInterface::ALL);
 
     /**
      * Load and return an object resource respecting visibility constraints
      *
-     * @param RepositoryPathInterface $currentPath
+     * @param RepositoryLocatorInterface $currentPath
      * @param int $visibility Object visibility
      * @return ResourceInterface Object resource
      */
-    public function loadObjectResource(RepositoryPathInterface &$currentPath, $visibility = SelectorInterface::ALL);
+    public function loadObjectResource(RepositoryLocatorInterface &$currentPath, $visibility = SelectorInterface::ALL);
 
     /**
      * Test whether an object resource exists
      *
-     * @param RepositoryPathInterface $path
+     * @param RepositoryLocatorInterface $path
      * @return boolean Object resource exists
      */
-    public function objectResourceExists(RepositoryPathInterface $path);
+    public function objectResourceExists(RepositoryLocatorInterface $path);
 }

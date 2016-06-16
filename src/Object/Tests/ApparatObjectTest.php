@@ -56,13 +56,13 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const ARTICLE_PATH = '/repo/2015/12/21/1-article/1';
+    const ARTICLE_LOCATOR = '/repo/2015/12/21/1-article/1';
     /**
      * Example contact path
      *
      * @var string
      */
-    const CONTACT_PATH = '/repo/2016/01/08/2-contact/2';
+    const CONTACT_LOCATOR = '/repo/2016/01/08/2-contact/2';
 
     /**
      * Test the article apparat object
@@ -72,7 +72,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     public function testArticleApparatObjectInvalidGetter()
     {
         /** @var Article $articleApparatObj */
-        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_PATH);
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
         $this->assertTrue(isset($articleApparatObj['name']));
@@ -93,7 +93,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     public function testArticleApparatObjectUnvalidUnset()
     {
         /** @var Article $articleApparatObj */
-        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_PATH);
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
         unset($articleApparatObj['name']);
     }
 
@@ -106,7 +106,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     public function testInvalidApparatObjectGetter()
     {
         /** @var ApplicationArticle $articleObj */
-        $articleObj = Object::load(self::ARTICLE_PATH);
+        $articleObj = Object::load(self::ARTICLE_LOCATOR);
         $articleApparatObj = Kernel::create(TestApparatObject::class, [$articleObj]);
         $articleApparatObj['invalid'];
     }
@@ -116,7 +116,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
      */
     public function testContactObject()
     {
-        $contactApparatObject = RepositoryFacade::instance('repo')->loadObject(self::CONTACT_PATH);
+        $contactApparatObject = RepositoryFacade::instance('repo')->loadObject(self::CONTACT_LOCATOR);
         $this->assertInstanceOf(Contact::class, $contactApparatObject);
     }
 }

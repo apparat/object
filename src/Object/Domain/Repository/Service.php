@@ -37,8 +37,8 @@
 namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Model\Object\ManagerInterface;
-use Apparat\Object\Domain\Model\Path\ApparatUrl;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
+use Apparat\Object\Domain\Model\Uri\ObjectUrl;
 use Apparat\Object\Module;
 
 /**

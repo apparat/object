@@ -35,7 +35,8 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
 /**
  * Lazy loading object collection
@@ -48,7 +49,7 @@ class Collection implements CollectionInterface
     /**
      * Objects
      *
-     * @var RepositoryPath[]|ObjectInterface[]
+     * @var RepositoryLocator[]|ObjectInterface[]
      */
     protected $objects = array();
     /**
@@ -83,14 +84,14 @@ class Collection implements CollectionInterface
                 continue;
 
                 // Else if it's an object path
-            } elseif ($object instanceof RepositoryPath) {
+            } elseif ($object instanceof RepositoryLocatorInterface) {
                 $this->objects[$object->getId()->getId()] = $object;
                 continue;
             }
 
             throw new InvalidArgumentException(
                 'Invalid collection object or path',
-                InvalidArgumentException::INVALID_COLLECTION_OBJECT_OR_PATH
+                InvalidArgumentException::INVALID_COLLECTION_OBJECT_OR_LOCATOR
             );
         }
 
@@ -117,7 +118,7 @@ class Collection implements CollectionInterface
     {
         // Lazy-load the object once
         $object = $this->objects[$objectId];
-        if ($object instanceof RepositoryPath) {
+        if ($object instanceof RepositoryLocatorInterface) {
             $object = $this->objects[$objectId] = $object->getRepository()->loadObject($object);
         }
 
@@ -179,7 +180,7 @@ class Collection implements CollectionInterface
      * Get an object with a particular ID
      *
      * @param int $offset Object ID
-     * @return RepositoryPath|ObjectInterface Object
+     * @return RepositoryLocator|ObjectInterface Object
      */
     public function offsetGet($offset)
     {

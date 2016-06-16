@@ -51,14 +51,14 @@ class ProcessingInstructionPropertiesTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const ARTICLE_PATH = '/2015/12/21/1-article/1';
+    const ARTICLE_LOCATOR = '/2015/12/21/1-article/1';
 
     /**
      * Test change by altering processing instructions
      */
     public function testProcessingInstructionChange()
     {
-        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        $object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_LOCATOR);
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();

@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Path;
+namespace Apparat\Object\Domain\Model\Uri;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Id;
@@ -47,7 +47,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class LocalPath implements PathInterface
+class Locator implements LocatorInterface
 {
     /**
      * Date PCRE pattern
@@ -121,7 +121,7 @@ class LocalPath implements PathInterface
             if (!preg_match($pathPattern, $path, $pathParts)) {
                 throw new InvalidArgumentException(
                     sprintf('Invalid object URL path "%s"', $path),
-                    InvalidArgumentException::INVALID_OBJECT_URL_PATH
+                    InvalidArgumentException::INVALID_OBJECT_URL_LOCATOR
                 );
             }
 
@@ -202,7 +202,7 @@ class LocalPath implements PathInterface
      * Set the object's creation date
      *
      * @param \DateTimeInterface $creationDate
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setCreationDate(\DateTimeInterface $creationDate)
     {
@@ -225,7 +225,7 @@ class LocalPath implements PathInterface
      * Set the object type
      *
      * @param Type $type Object type
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setType(Type $type)
     {
@@ -248,7 +248,7 @@ class LocalPath implements PathInterface
      * Set the object ID
      *
      * @param Id $uid Object ID
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setId(Id $uid)
     {
@@ -271,7 +271,7 @@ class LocalPath implements PathInterface
      * Set the object revision
      *
      * @param Revision $revision Object revision
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setRevision(Revision $revision)
     {
@@ -294,7 +294,7 @@ class LocalPath implements PathInterface
      * Set the object hidden state
      *
      * @param boolean $hidden Object hidden state
-     * @return PathInterface|LocalPath New object path
+     * @return LocatorInterface|Locator New object path
      */
     public function setHidden($hidden)
     {

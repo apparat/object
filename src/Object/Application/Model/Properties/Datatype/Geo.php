@@ -57,7 +57,7 @@ class Geo extends Token
     public function match($value)
     {
         try {
-            $geo = Kernel::create(\Apparat\Object\Domain\Model\Path\GeoUri::class, [$value]);
+            $geo = Kernel::create(\Apparat\Object\Domain\Model\Uri\GeoUri::class, [$value]);
         } catch (\Exception $e) {
             throw new DomainException;
         }

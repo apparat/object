@@ -62,7 +62,7 @@ class PropertyModelTest extends AbstractRepositoryEnabledTest
      *
      * @var string
      */
-    const ARTICLE_PATH = '/2015/12/21/1-article/1';
+    const ARTICLE_LOCATOR = '/2015/12/21/1-article/1';
     /**
      * Example Url
      *
@@ -76,7 +76,7 @@ class PropertyModelTest extends AbstractRepositoryEnabledTest
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_PATH);
+        self::$object = Object::load(getenv('REPOSITORY_URL').self::ARTICLE_LOCATOR);
     }
 
     /**
@@ -115,6 +115,6 @@ class PropertyModelTest extends AbstractRepositoryEnabledTest
             [self::$object, false, [ApparatUrl::class], [ApparatUrl::class => ObjectTypes::CONTACT]]
         );
         $this->assertNull($propertyModel->filterValue(''));
-        $propertyModel->filterValue(self::ARTICLE_PATH);
+        $propertyModel->filterValue(self::ARTICLE_LOCATOR);
     }
 }

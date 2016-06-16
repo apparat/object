@@ -37,7 +37,7 @@ namespace Apparat\Object\Domain\Repository;
 
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Object\Type;
-use Apparat\Object\Domain\Model\Path\PathInterface;
+use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 
 /**
  * Object repository interface
@@ -81,11 +81,11 @@ interface RepositoryInterface extends SearchableRepositoryInterface
     /**
      * Load an object from this repository
      *
-     * @param PathInterface $path Object path
+     * @param LocatorInterface $path Object path
      * @param int $visibility Object visibility
      * @return ObjectInterface Object
      */
-    public function loadObject(PathInterface $path, $visibility = SelectorInterface::ALL);
+    public function loadObject(LocatorInterface $path, $visibility = SelectorInterface::ALL);
 
     /**
      * Return the repository's adapter strategy

@@ -35,8 +35,8 @@
 
 namespace Apparat\Object\Domain\Model\Object;
 
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
 
 /**
@@ -94,11 +94,11 @@ interface ObjectInterface extends \Iterator, \Countable
      * The constructor is not part of the interface as the object proxy class also implements it
      * with a different signature
      *
-     * @param RepositoryPath $path Object repository path
+     * @param RepositoryLocator $path Object repository path
      * @param array $propertyData Property data
      * @param string $payload Object payload
      */
-//	public function __construct(RepositoryPath $path, array $propertyData = [], $payload = '');
+//	public function __construct(RepositoryLocator $path, array $propertyData = [], $payload = '');
 
     /**
      * Return the object ID
@@ -329,9 +329,9 @@ interface ObjectInterface extends \Iterator, \Countable
     /**
      * Return the object repository path
      *
-     * @return RepositoryPathInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository path
      */
-    public function getRepositoryPath();
+    public function getRepositoryLocator();
 
     /**
      * Return the object property data

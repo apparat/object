@@ -45,8 +45,8 @@ use Apparat\Object\Domain\Model\Object\Traits\ProcessingInstructionsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\RelationsTrait;
 use Apparat\Object\Domain\Model\Object\Traits\StatesTrait;
 use Apparat\Object\Domain\Model\Object\Traits\SystemPropertiesTrait;
-use Apparat\Object\Domain\Model\Path\RepositoryPath;
-use Apparat\Object\Domain\Model\Path\RepositoryPathInterface;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
+use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Properties\AbstractDomainProperties;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Domain\Model\Properties\MetaProperties;
@@ -73,7 +73,7 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Repository path
      *
-     * @var RepositoryPathInterface
+     * @var RepositoryLocatorInterface
      */
     protected $path;
     /**
@@ -86,11 +86,11 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Object constructor
      *
-     * @param RepositoryPathInterface $path Object repository path
+     * @param RepositoryLocatorInterface $path Object repository path
      * @param string $payload Object payload
      * @param array $propertyData Property data
      */
-    public function __construct(RepositoryPathInterface $path, $payload = '', array $propertyData = [])
+    public function __construct(RepositoryLocatorInterface $path, $payload = '', array $propertyData = [])
     {
         // If the domain property collection class is invalid
         if (!$this->domainPropertyCClass
@@ -251,7 +251,7 @@ abstract class AbstractObject implements ObjectInterface
             $objectManager = Kernel::create(Service::class)->getObjectManager();
             /** @var Revision $newRevision */
             $newRevision = $isCurrentRevision ? Revision::current() : $revision;
-            /** @var RepositoryPath $newRevisionPath */
+            /** @var RepositoryLocator $newRevisionPath */
             $newRevisionPath = $this->path->setRevision($newRevision);
 
             // Instantiate the requested revision resource
@@ -270,9 +270,9 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Return the object repository path
      *
-     * @return RepositoryPathInterface Object repository path
+     * @return RepositoryLocatorInterface Object repository path
      */
-    public function getRepositoryPath()
+    public function getRepositoryLocator()
     {
         return $this->path;
     }

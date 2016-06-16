@@ -38,7 +38,7 @@ namespace Apparat\Object\Infrastructure\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
-use Apparat\Object\Domain\Model\Path\ObjectUrl;
+use Apparat\Object\Domain\Model\Uri\ObjectUrl;
 use Apparat\Object\Infrastructure\Repository\Repository;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 

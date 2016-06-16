@@ -134,8 +134,8 @@ class Manager implements ManagerInterface
      */
     public function loadObjectResource(
         RepositoryLocatorInterface &$currentLocator,
-        $visibility = SelectorInterface::ALL)
-    {
+        $visibility = SelectorInterface::ALL
+    ) {
         // Validate the object visibility
         $this->validateVisibility($visibility);
 

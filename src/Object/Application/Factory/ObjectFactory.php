@@ -116,8 +116,8 @@ class ObjectFactory
     public static function createFromParams(
         RepositoryLocatorInterface $locator,
         $payload = '',
-        array $propertyData = [])
-    {
+        array $propertyData = []
+    ) {
         // Determine the object class
         $objectClass = self::objectClassFromType($locator->getType());
 

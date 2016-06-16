@@ -62,11 +62,11 @@ trait ApparatObjectTrait
      * @param array $arguments Arguments
      * @throws \BadMethodCallException If the method is unknown
      */
-    public function __call($name, array $arguments)
+    public function __call($method, array $arguments)
     {
         // If a getter was called
-        if (!strncmp('get', $name, 3)) {
-            $property = lcfirst(substr($name, 3));
+        if (!strncmp('get', $method, 3)) {
+            $property = lcfirst(substr($method, 3));
             if (array_key_exists($property, $this->mapping)) {
                 $arguments = (array)$this->mapping[$property];
                 $getter = 'get'.ucfirst(array_shift($arguments));
@@ -75,7 +75,7 @@ trait ApparatObjectTrait
         }
 
         // If the method is unknown
-        throw new \BadMethodCallException(sprintf('Unknown apparat object method "%s()"', $name));
+        throw new \BadMethodCallException(sprintf('Unknown apparat object method "%s()"', $method));
     }
 
     /**

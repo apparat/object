@@ -61,7 +61,7 @@ interface AdapterStrategyInterface
     /**
      * Find and return an object resource
      *
-     * @param string $resourceLocator Repository relative resource locator
+     * @param string $resourcePath Repository relative resource path
      * @return ResourceInterface Object resource
      */
     public function getObjectResource($resourcePath);
@@ -69,7 +69,7 @@ interface AdapterStrategyInterface
     /**
      * Test if an object resource exists
      *
-     * @param string $resourceLocator Repository relative resource locator
+     * @param string $resourcePath Repository relative resource path
      * @return boolean Object resource exists
      */
     public function hasResource($resourcePath);
@@ -77,7 +77,7 @@ interface AdapterStrategyInterface
     /**
      * Return an individual hash for a resource
      *
-     * @param string $resourceLocator Repository relative resource locator
+     * @param string $resourcePath Repository relative resource path
      * @return string|null Resource hash
      */
     public function getResourceHash($resourcePath);

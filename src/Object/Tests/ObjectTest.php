@@ -39,6 +39,7 @@ namespace Apparat\Object\Tests {
     use Apparat\Kernel\Ports\Kernel;
     use Apparat\Object\Application\Factory\ObjectFactory;
     use Apparat\Object\Application\Model\Object\Article;
+    use Apparat\Object\Application\Service\TypeService;
     use Apparat\Object\Domain\Model\Object\AbstractObject;
     use Apparat\Object\Domain\Model\Object\Id;
     use Apparat\Object\Domain\Model\Object\ResourceInterface;
@@ -61,6 +62,12 @@ namespace Apparat\Object\Tests {
     class ObjectTest extends AbstractRepositoryEnabledTest
     {
         /**
+         * Default privacy
+         *
+         * @var string
+         */
+        protected static $defaultPrivacy;
+        /**
          * Example object path
          *
          * @var string
@@ -74,12 +81,28 @@ namespace Apparat\Object\Tests {
         const HIDDEN_OBJECT_PATH = '/2016/05/26/6-article/6';
 
         /**
+         * Setup
+         */
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            self::$defaultPrivacy = getenv('OBJECT_DEFAULT_PRIVACY');
+
+            TypeService::enableType(Type::ARTICLE);
+            TypeService::enableType(Type::CONTACT);
+            TypeService::enableType(Type::GEO);
+            TypeService::enableType(Type::IMAGE);
+            TypeService::enableType(Type::NOTE);
+        }
+
+        /**
          * Tears down the fixture
          */
         public function tearDown()
         {
             putenv('MOCK_FLOCK');
             putenv('MOCK_RENAME');
+            putenv('OBJECT_DEFAULT_PRIVACY='.self::$defaultPrivacy);
             TestTypeService::removeInvalidType();
             parent::tearDown();
         }
@@ -378,6 +401,8 @@ namespace Apparat\Object\Tests {
          */
         public function testCreateAndPublishArticleObject()
         {
+            putenv('OBJECT_DEFAULT_PRIVACY=public');
+
             // Create a temporary repository & article
             $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
             $payload = 'Revision 1 draft';

@@ -75,9 +75,21 @@ class SelectorFactory
     public static function createFromString($selector)
     {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-        $selectorPattern = '/(?P<visibility>(?:\{\.,\})|\.)?';
-        $selectorPattern .= '(?P<id>(?:\d+)|\*)\-(?P<type>(?:[a-z]+)|\*)';
-        $selectorPattern .= '(?:/\\k<id>(?:-(?P<revision>\d+))?)?';
+        $bothIndicator = preg_quote(SelectorInterface::INDICATOR_BOTH);
+        $hiddenIndicator = preg_quote(SelectorInterface::INDICATOR_HIDDEN);
+        $wildcard = preg_quote(SelectorInterface::WILDCARD);
+
+        $revisionPart = '(?:-(?P<revision>(?:\d+)|'.$wildcard.'))?';
+
+        $draftIndicator = preg_quote(SelectorInterface::INDICATOR_DRAFT);
+        $draftPart = '(?P<draft>'.$bothIndicator.'|'.$draftIndicator.')?';
+        $instancePart = '(?:/'.$draftPart.'(?:(?:\\k<id>)|'.$wildcard.')'.$revisionPart.')?';
+
+        $typePart = '(?:\-(?:(?P<type>(?:[a-z]+)|'.$wildcard.'))'.$instancePart.')?';
+
+        $hiddenPart = '(?P<visibility>'.$bothIndicator.'|'.$hiddenIndicator.')?';
+        $idPart = '(?P<id>(?:\d+|'.$wildcard.'))';
+        $selectorPattern = '/'.$hiddenPart.$idPart.$typePart;
 
         // If the creation date is used as selector component
         if ($datePrecision) {
@@ -102,9 +114,14 @@ class SelectorFactory
         }
 
         // Object visibility
-        $visibility = empty($selectorParts['visibility'])
-            ? SelectorInterface::VISIBLE
-            : (($selectorParts['visibility'] == '.') ? SelectorInterface::HIDDEN : SelectorInterface::ALL);
+        $visibility = empty($selectorParts['visibility']) ? SelectorInterface::VISIBLE
+            : (($selectorParts['visibility'] == SelectorInterface::INDICATOR_HIDDEN) ?
+                SelectorInterface::HIDDEN : SelectorInterface::ALL);
+
+        // Object draft
+        $draft = empty($selectorParts['draft']) ? SelectorInterface::PUBLISHED
+            : (($selectorParts['draft'] == SelectorInterface::INDICATOR_DRAFT) ?
+                SelectorInterface::DRAFT : SelectorInterface::ALL);
 
         $year = $month = $day = $hour = $minute = $second = null;
         if (($datePrecision > 0)) {
@@ -138,13 +155,11 @@ class SelectorFactory
         $uid = isset($selectorParts['id']) ? self::castInt($selectorParts['id']) : SelectorInterface::WILDCARD;
 
         $type = empty($selectorParts['type']) ? SelectorInterface::WILDCARD : trim($selectorParts['type']);
-        $revision = (isset($selectorParts['revision']) && strlen($selectorParts['revision'])) ? intval(
-            $selectorParts['revision']
-        ) : Revision::CURRENT;
+        $revision = empty($selectorParts['revision']) ? Revision::CURRENT : self::castInt($selectorParts['revision']);
 
         return Kernel::create(
             RepositorySelector::class,
-            [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision, $visibility]
+            [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision, $visibility, $draft]
         );
     }
 

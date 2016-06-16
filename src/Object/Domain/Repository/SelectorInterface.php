@@ -45,6 +45,24 @@ namespace Apparat\Object\Domain\Repository;
 interface SelectorInterface
 {
     /**
+     * Indicator for draft objects
+     *
+     * @var string
+     */
+    const INDICATOR_DRAFT = '.';
+    /**
+     * Indicator for hidden object
+     *
+     * @var string
+     */
+    const INDICATOR_HIDDEN = '.';
+    /**
+     * Indicator for both hidden and visible / draft and regular objects
+     *
+     * @var string
+     */
+    const INDICATOR_BOTH = '~';
+    /**
      * Wildcard
      *
      * @var string
@@ -62,6 +80,18 @@ interface SelectorInterface
      * @var int
      */
     const HIDDEN = 2;
+    /**
+     * Published objects only
+     *
+     * @var int
+     */
+    const PUBLISHED = 1;
+    /**
+     * Draft objects only
+     *
+     * @var int
+     */
+    const DRAFT = 2;
     /**
      * All objects
      *

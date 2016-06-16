@@ -52,61 +52,67 @@ class Selector implements SelectorInterface
      *
      * @var int
      */
-    private $year = null;
+    protected $year = null;
     /**
      * Month component
      *
      * @var int
      */
-    private $month = null;
+    protected $month = null;
     /**
      * Day component
      *
      * @var int
      */
-    private $day = null;
+    protected $day = null;
     /**
      * Hour component
      *
      * @var int
      */
-    private $hour = null;
+    protected $hour = null;
     /**
      * Minute component
      *
      * @var int
      */
-    private $minute = null;
+    protected $minute = null;
     /**
      * Second component
      *
      * @var int
      */
-    private $second = null;
+    protected $second = null;
     /**
      * Object ID
      *
      * @var int|string
      */
-    private $uid = null;
+    protected $uid = null;
     /**
      * Object type
      *
      * @var string
      */
-    private $type = null;
+    protected $type = null;
     /**
      * Revision component
      *
      * @var int
      */
-    private $revision = null;
+    protected $revision = null;
     /**
      * Object visibility
      *
      * @var int
      */
-    private $visibility = SelectorInterface::VISIBLE;
+    protected $visibility = SelectorInterface::VISIBLE;
+    /**
+     * Object draft
+     *
+     * @var int
+     */
+    protected $draft = SelectorInterface::PUBLISHED;
 
     /**
      * Repository selector constructor
@@ -122,6 +128,7 @@ class Selector implements SelectorInterface
      * @param string|NULL $type Object type
      * @param int|NULL $revision Revision
      * @param int $visibility Visibility
+     * @param int $draft Draft state
      * @throws InvalidArgumentException If any of the components isn't valid
      */
     public function __construct(
@@ -135,7 +142,8 @@ class Selector implements SelectorInterface
         $uid = self::WILDCARD,
         $type = self::WILDCARD,
         $revision = Revision::CURRENT,
-        $visibility = SelectorInterface::VISIBLE
+        $visibility = SelectorInterface::VISIBLE,
+        $draft = SelectorInterface::PUBLISHED
     ) {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
@@ -222,6 +230,20 @@ class Selector implements SelectorInterface
             );
         }
         $this->visibility = $visibility;
+
+        // If the object draft state isn't valid
+        if (!self::isValidDraftState($draft)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid repository selector draft state "%s"',
+                    $visibility
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'draft'
+            );
+        }
+        $this->draft = $draft;
     }
 
     /**
@@ -235,6 +257,19 @@ class Selector implements SelectorInterface
         return ($visibility === SelectorInterface::VISIBLE)
         || ($visibility === SelectorInterface::HIDDEN)
         || ($visibility === SelectorInterface::ALL);
+    }
+
+    /**
+     * Test if the given argument is a valid object draft state
+     *
+     * @param int $draft Object draft state
+     * @return boolean Valid draft state
+     */
+    public static function isValidDraftState($draft)
+    {
+        return ($draft === SelectorInterface::PUBLISHED)
+        || ($draft === SelectorInterface::DRAFT)
+        || ($draft === SelectorInterface::ALL);
     }
 
     /**
@@ -335,5 +370,15 @@ class Selector implements SelectorInterface
     public function getVisibility()
     {
         return $this->visibility;
+    }
+
+    /**
+     * Return the object draft state
+     *
+     * @return int Object draft state
+     */
+    public function getDraft()
+    {
+        return $this->draft;
     }
 }

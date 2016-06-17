@@ -79,7 +79,7 @@ class SelectorFactory
         // If the selector is invalid
         if (!strlen($selector) ||
             !preg_match(
-                self::getSelectorRegex($datePrecision),
+                '%^'.self::getSelectorRegex($datePrecision).'$%',
                 $selector,
                 $selectorParts
             ) ||
@@ -170,7 +170,6 @@ class SelectorFactory
             $selectorPattern = '(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
             $selectorPattern = implode('', array_slice(self::$datePattern, 0, $datePrecision)).$selectorPattern;
         }
-        $selectorPattern = '%^'.$selectorPattern.'$%';
         return $selectorPattern;
     }
 

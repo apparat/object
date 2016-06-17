@@ -37,7 +37,7 @@
 namespace Apparat\Object\Ports\Facades;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Factory\SelectorFactory;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;

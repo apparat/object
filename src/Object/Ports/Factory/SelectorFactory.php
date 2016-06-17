@@ -34,7 +34,7 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Factory;
+namespace Apparat\Object\Ports\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Revision;
@@ -75,33 +75,11 @@ class SelectorFactory
     public static function createFromString($selector)
     {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-        $bothIndicator = preg_quote(SelectorInterface::INDICATOR_BOTH);
-        $hiddenIndicator = preg_quote(SelectorInterface::INDICATOR_HIDDEN);
-        $wildcard = preg_quote(SelectorInterface::WILDCARD);
-
-        $revisionPart = '(?:-(?P<revision>(?:\d+)|'.$wildcard.'))?';
-
-        $draftIndicator = preg_quote(SelectorInterface::INDICATOR_DRAFT);
-        $draftPart = '(?P<draft>'.$bothIndicator.'|'.$draftIndicator.')?';
-        $instancePart = '(?:/'.$draftPart.'(?:(?:\\k<id>)|'.$wildcard.')'.$revisionPart.')?';
-
-        $typePart = '(?:\-(?:(?P<type>(?:[a-z]+)|'.$wildcard.'))'.$instancePart.')?';
-
-        $hiddenPart = '(?P<visibility>'.$bothIndicator.'|'.$hiddenIndicator.')?';
-        $idPart = '(?P<id>(?:\d+|'.$wildcard.'))';
-        $selectorPattern = '/'.$hiddenPart.$idPart.$typePart;
-
-        // If the creation date is used as selector component
-        if ($datePrecision) {
-            $selectorPattern = '(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
-            $selectorPattern = implode('', array_slice(self::$datePattern, 0, $datePrecision)).$selectorPattern;
-        }
-        $selectorPattern = '%^'.$selectorPattern.'$%';
 
         // If the selector is invalid
         if (!strlen($selector) ||
             !preg_match(
-                $selectorPattern,
+                self::getSelectorRegex($datePrecision),
                 $selector,
                 $selectorParts
             ) ||
@@ -161,6 +139,39 @@ class SelectorFactory
             RepositorySelector::class,
             [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision, $visibility, $draft]
         );
+    }
+
+    /**
+     * Return a regular expression for selector parsing
+     *
+     * @param int $datePrecision Object date precision
+     * @return string Selector parsing regular expression
+     */
+    public static function getSelectorRegex($datePrecision)
+    {
+        $bothIndicator = preg_quote(SelectorInterface::INDICATOR_BOTH);
+        $hiddenIndicator = preg_quote(SelectorInterface::INDICATOR_HIDDEN);
+        $wildcard = preg_quote(SelectorInterface::WILDCARD);
+
+        $revisionPart = '(?:-(?P<revision>(?:\d+)|'.$wildcard.'))?';
+
+        $draftIndicator = preg_quote(SelectorInterface::INDICATOR_DRAFT);
+        $draftPart = '(?P<draft>'.$bothIndicator.'|'.$draftIndicator.')?';
+        $instancePart = '(?:/'.$draftPart.'(?:(?:\\k<id>)|'.$wildcard.')'.$revisionPart.')?';
+
+        $typePart = '(?:\-(?:(?P<type>(?:[a-z]+)|'.$wildcard.'))'.$instancePart.')?';
+
+        $hiddenPart = '(?P<visibility>'.$bothIndicator.'|'.$hiddenIndicator.')?';
+        $idPart = '(?P<id>(?:\d+|'.$wildcard.'))';
+        $selectorPattern = '/'.$hiddenPart.$idPart.$typePart;
+
+        // If the creation date is used as selector component
+        if ($datePrecision) {
+            $selectorPattern = '(?:'.$selectorPattern.str_repeat(')?', $datePrecision);
+            $selectorPattern = implode('', array_slice(self::$datePattern, 0, $datePrecision)).$selectorPattern;
+        }
+        $selectorPattern = '%^'.$selectorPattern.'$%';
+        return $selectorPattern;
     }
 
     /**

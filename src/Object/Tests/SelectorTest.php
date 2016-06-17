@@ -37,7 +37,7 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Factory\SelectorFactory;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;

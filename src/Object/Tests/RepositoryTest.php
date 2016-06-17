@@ -36,7 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Domain\Factory\SelectorFactory;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Repository\Repository;

@@ -38,7 +38,7 @@ namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Application\Model\Object\Contact;
-use Apparat\Object\Domain\Factory\SelectorFactory;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 

@@ -39,7 +39,7 @@ namespace Apparat\Object\Ports\Factory;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
-use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
+use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 
 /**
@@ -69,17 +69,15 @@ class SelectorFactory
      * Parse and instantiate an object selector
      *
      * @param string $selector String selector
-     * @return \Apparat\Object\Domain\Repository\Selector Object selector
+     * @return Selector Object selector
      * @throws InvalidArgumentException If the selector is invalid
      */
     public static function createFromString($selector)
     {
-        $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
-
         // If the selector is invalid
         if (!strlen($selector) ||
             !preg_match(
-                '%^'.self::getSelectorRegex($datePrecision).'$%',
+                '%^'.self::getSelectorRegex(intval(getenv('OBJECT_DATE_PRECISION'))).'$%',
                 $selector,
                 $selectorParts
             ) ||
@@ -91,54 +89,7 @@ class SelectorFactory
             );
         }
 
-        // Object visibility
-        $visibility = empty($selectorParts['visibility']) ? SelectorInterface::VISIBLE
-            : (($selectorParts['visibility'] == SelectorInterface::INDICATOR_HIDDEN) ?
-                SelectorInterface::HIDDEN : SelectorInterface::ALL);
-
-        // Object draft
-        $draft = empty($selectorParts['draft']) ? SelectorInterface::PUBLISHED
-            : (($selectorParts['draft'] == SelectorInterface::INDICATOR_DRAFT) ?
-                SelectorInterface::DRAFT : SelectorInterface::ALL);
-
-        $year = $month = $day = $hour = $minute = $second = null;
-        if (($datePrecision > 0)) {
-            $year = isset($selectorParts['year']) ? self::castInt(
-                $selectorParts['year']
-            ) : SelectorInterface::WILDCARD;
-        }
-        if (($datePrecision > 1)) {
-            $month = isset($selectorParts['month']) ? self::castInt(
-                $selectorParts['month']
-            ) : SelectorInterface::WILDCARD;
-        }
-        if (($datePrecision > 2)) {
-            $day = isset($selectorParts['day']) ? self::castInt($selectorParts['day']) : SelectorInterface::WILDCARD;
-        }
-        if (($datePrecision > 3)) {
-            $hour = isset($selectorParts['hour']) ? self::castInt(
-                $selectorParts['hour']
-            ) : SelectorInterface::WILDCARD;
-        }
-        if (($datePrecision > 4)) {
-            $minute = isset($selectorParts['minute']) ? self::castInt(
-                $selectorParts['minute']
-            ) : SelectorInterface::WILDCARD;
-        }
-        if (($datePrecision > 5)) {
-            $second = isset($selectorParts['second']) ? self::castInt(
-                $selectorParts['second']
-            ) : SelectorInterface::WILDCARD;
-        }
-        $uid = isset($selectorParts['id']) ? self::castInt($selectorParts['id']) : SelectorInterface::WILDCARD;
-
-        $type = empty($selectorParts['type']) ? SelectorInterface::WILDCARD : trim($selectorParts['type']);
-        $revision = empty($selectorParts['revision']) ? Revision::CURRENT : self::castInt($selectorParts['revision']);
-
-        return Kernel::create(
-            RepositorySelector::class,
-            [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision, $visibility, $draft]
-        );
+        return self::createFromParams($selectorParts);
     }
 
     /**
@@ -159,7 +110,7 @@ class SelectorFactory
         $draftPart = '(?P<draft>'.$bothIndicator.'|'.$draftIndicator.')?';
         $instancePart = '(?:/'.$draftPart.'(?:(?:\\k<id>)|'.$wildcard.')'.$revisionPart.')?';
 
-        $typePart = '(?:\-(?:(?P<type>(?:[a-z]+)|'.$wildcard.'))'.$instancePart.')?';
+        $typePart = '(?:(?:\-(?:(?P<type>(?:[a-z]+)|'.$wildcard.')))?'.$instancePart.')?';
 
         $hiddenPart = '(?P<visibility>'.$bothIndicator.'|'.$hiddenIndicator.')?';
         $idPart = '(?P<id>(?:\d+|'.$wildcard.'))';
@@ -171,6 +122,66 @@ class SelectorFactory
             $selectorPattern = implode('', array_slice(self::$datePattern, 0, $datePrecision)).$selectorPattern;
         }
         return $selectorPattern;
+    }
+
+    /**
+     * Instantiate an object selector from a list of parameters
+     *
+     * @param array $params Object selector parameters
+     * @return Selector Object selector
+     */
+    public static function createFromParams(array $params)
+    {
+        $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
+
+        // Object visibility
+        $visibility = empty($params['visibility']) ? SelectorInterface::VISIBLE
+            : (($params['visibility'] == SelectorInterface::INDICATOR_HIDDEN) ?
+                SelectorInterface::HIDDEN : SelectorInterface::ALL);
+
+        // Object draft
+        $draft = empty($params['draft']) ? SelectorInterface::PUBLISHED
+            : (($params['draft'] == SelectorInterface::INDICATOR_DRAFT) ?
+                SelectorInterface::DRAFT : SelectorInterface::ALL);
+
+        $year = $month = $day = $hour = $minute = $second = null;
+        if (($datePrecision > 0)) {
+            $year = isset($params['year']) ? self::castInt(
+                $params['year']
+            ) : SelectorInterface::WILDCARD;
+        }
+        if (($datePrecision > 1)) {
+            $month = isset($params['month']) ? self::castInt(
+                $params['month']
+            ) : SelectorInterface::WILDCARD;
+        }
+        if (($datePrecision > 2)) {
+            $day = isset($params['day']) ? self::castInt($params['day']) : SelectorInterface::WILDCARD;
+        }
+        if (($datePrecision > 3)) {
+            $hour = isset($params['hour']) ? self::castInt(
+                $params['hour']
+            ) : SelectorInterface::WILDCARD;
+        }
+        if (($datePrecision > 4)) {
+            $minute = isset($params['minute']) ? self::castInt(
+                $params['minute']
+            ) : SelectorInterface::WILDCARD;
+        }
+        if (($datePrecision > 5)) {
+            $second = isset($params['second']) ? self::castInt(
+                $params['second']
+            ) : SelectorInterface::WILDCARD;
+        }
+        $uid = isset($params['id']) ? self::castInt($params['id']) : SelectorInterface::WILDCARD;
+
+        $type = empty($params['type']) ? SelectorInterface::WILDCARD : trim($params['type']);
+        $revision = empty($params['revision']) ? Revision::CURRENT : self::castInt($params['revision']);
+
+        return Kernel::create(
+            Selector::class,
+            [$year, $month, $day, $hour, $minute, $second, $uid, $type, $revision, $visibility, $draft]
+        );
     }
 
     /**

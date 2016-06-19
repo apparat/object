@@ -39,8 +39,8 @@ namespace Apparat\Object\Ports\Factory;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\InvalidArgumentException;
-use Apparat\Object\Domain\Repository\Selector;
-use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Ports\Repository\Selector;
+use Apparat\Object\Ports\Repository\SelectorInterface;
 
 /**
  * Object selector factory

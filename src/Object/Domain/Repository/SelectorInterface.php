@@ -106,4 +106,89 @@ interface SelectorInterface
      * @return boolean Valid visibility
      */
     public static function isValidVisibility($visibility);
+
+    /**
+     * Test if the given argument is a valid object draft state
+     *
+     * @param int $draft Object draft state
+     * @return boolean Valid draft state
+     */
+    public static function isValidDraftState($draft);
+
+    /**
+     * Return the year component
+     *
+     * @return int Year component
+     */
+    public function getYear();
+
+    /**
+     * Return the month component
+     *
+     * @return int Month component
+     */
+    public function getMonth();
+
+    /**
+     * Return the day component
+     *
+     * @return int Day component
+     */
+    public function getDay();
+
+    /**
+     * Return the hour component
+     *
+     * @return int Hour component
+     */
+    public function getHour();
+
+    /**
+     * Return the minute component
+     *
+     * @return int
+     */
+    public function getMinute();
+
+    /**
+     * Return the second component
+     *
+     * @return int
+     */
+    public function getSecond();
+
+    /**
+     * Return the ID component
+     *
+     * @return int ID component
+     */
+    public function getId();
+
+    /**
+     * Return the Type component
+     *
+     * @return string
+     */
+    public function getType();
+
+    /**
+     * Return the revision component
+     *
+     * @return int Revision component
+     */
+    public function getRevision();
+
+    /**
+     * Return the object visibility
+     *
+     * @return int Object visibility
+     */
+    public function getVisibility();
+
+    /**
+     * Return the object draft state
+     *
+     * @return int Object draft state
+     */
+    public function getDraft();
 }

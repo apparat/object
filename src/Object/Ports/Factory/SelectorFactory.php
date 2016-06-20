@@ -69,7 +69,7 @@ class SelectorFactory
      * Parse and instantiate an object selector
      *
      * @param string $selector String selector
-     * @return Selector Object selector
+     * @return SelectorInterface Object selector
      * @throws InvalidArgumentException If the selector is invalid
      */
     public static function createFromString($selector)
@@ -128,7 +128,7 @@ class SelectorFactory
      * Instantiate an object selector from a list of parameters
      *
      * @param array $params Object selector parameters
-     * @return Selector Object selector
+     * @return SelectorInterface Object selector
      */
     public static function createFromParams(array $params)
     {

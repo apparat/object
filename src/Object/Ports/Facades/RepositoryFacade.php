@@ -37,7 +37,7 @@
 namespace Apparat\Object\Ports\Facades;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Object\Collection;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
@@ -113,16 +113,19 @@ class RepositoryFacade implements FacadeInterface
      * Find objects by selector
      *
      * @param string|SelectorInterface $selector Object selector
-     * @return Collection Object collection
-     * @todo Cast collection as apparat objects
+     * @return array Objects
      */
     public function findObjects($selector)
     {
         if (!($selector instanceof SelectorInterface)) {
             $selector = SelectorFactory::createFromString($selector);
         }
-        $collection = $this->repository->findObjects($selector);
-        return $collection;
+        $objects = [];
+        /** @var ObjectInterface $object */
+        foreach ($this->repository->findObjects($selector) as $object) {
+            $objects[] = ApparatObjectFactory::create($object);
+        }
+        return $objects;
     }
 
     /**

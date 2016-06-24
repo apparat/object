@@ -57,11 +57,29 @@ class InvalidArgumentException extends \InvalidArgumentException
      */
     const INVALID_APPARAT_OBJECT_PROPERTY = 1465330399;
     /**
+     * Cannot set apparat object property
+     *
+     * @var int
+     */
+    const CANNOT_SET_APPARAT_OBJECT_PROPERTY = 1466804125;
+    /**
      * Cannot unset apparat object property
      *
      * @var int
      */
     const CANNOT_UNSET_APPARAT_OBJECT_PROPERTY = 1465330565;
+    /**
+     * Cannot append apparat object property
+     *
+     * @var int
+     */
+    const CANNOT_APPEND_APPARAT_OBJECT_VALUE = 1466804193;
+    /**
+     * Invalid exchange object
+     *
+     * @var int
+     */
+    const INVALID_EXCHANGE_OBJECT = 1466805183;
     /**
      * Unknown apparat object type
      *

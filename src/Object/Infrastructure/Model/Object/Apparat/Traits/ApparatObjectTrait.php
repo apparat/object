@@ -37,6 +37,8 @@
 namespace Apparat\Object\Infrastructure\Model\Object\Apparat\Traits;
 
 use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
 use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
 
 /**
@@ -93,6 +95,7 @@ trait ApparatObjectTrait
      *
      * @param string $offset Property name
      * @return mixed Property value
+     * @throws InvalidArgumentException If the requested property is invalid
      */
     public function offsetGet($offset)
     {
@@ -115,16 +118,21 @@ trait ApparatObjectTrait
      *
      * @param string $offset Property name
      * @param mixed $value Property value
+     * @throws InvalidArgumentException
      */
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
+        throw new InvalidArgumentException(
+            sprintf('Cannot set apparat object property "%s"', $offset),
+            InvalidArgumentException::CANNOT_SET_APPARAT_OBJECT_PROPERTY
+        );
     }
 
     /**
      * Unset a particular property
      *
      * @param string $offset Property name
+     * @throws InvalidArgumentException
      */
     public function offsetUnset($offset)
     {
@@ -135,24 +143,148 @@ trait ApparatObjectTrait
     }
 
     /**
-     * Delegate the mapped object getter
+     * Append a value
      *
-     * @param string $property Property name
-     * @param string $getter Getter name
-     * @param array $arguments Getter arguments
-     * @return mixed Property value
-     * @throws InvalidArgumentException If the property is invalid
+     * @param mixed $value Value
+     * @throws InvalidArgumentException
      */
-    protected function delegateObjectGetter($property, $getter, array $arguments)
+    public function append($value)
     {
-        // If the property is invalid
-        if (!is_callable([$this->object, $getter])) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid apparat object property "%s"', $property),
-                InvalidArgumentException::INVALID_APPARAT_OBJECT_PROPERTY
-            );
+        throw new InvalidArgumentException(
+            sprintf('Cannot append apparat object value "%s"', $value),
+            InvalidArgumentException::CANNOT_APPEND_APPARAT_OBJECT_VALUE
+        );
+    }
+
+    /**
+     * Return an array copy of all object properties
+     *
+     * @return array Object properties
+     */
+    public function getArrayCopy()
+    {
+        // TODO: Run through the mapping and return all values
+        return [];
+    }
+
+    /**
+     * Return the number of object properties
+     *
+     * @return int Number of object properties
+     */
+    public function count()
+    {
+        return count($this->mapping);
+    }
+
+    /**
+     * Sort the object properties by value
+     *
+     * @return void
+     */
+    public function asort()
+    {
+        // Do nothing
+    }
+
+    /**
+     * Sort the entries by key
+     * @link http://php.net/manual/en/arrayobject.ksort.php
+     * @return void
+     * @since 5.2.0
+     */
+    /**
+     * Sort the object properties by key
+     *
+     * @return void
+     */
+    public function ksort()
+    {
+        // Do nothing
+    }
+
+    /**
+     * Sort the object properties by user function
+     *
+     * @param \Callable $compareFunction User function
+     * @return void
+     */
+    public function uasort($compareFunction)
+    {
+        // Do nothing
+    }
+
+    /**
+     * Sort the object properties by name and user function
+     *
+     * @param \Callable $compareFunction User function
+     * @return void
+     */
+    public function uksort($cmp_function)
+    {
+        // Do nothing
+    }
+
+    /**
+     * Sort the object properties using a "natural order" algorithm
+     *
+     * @return void
+     */
+    public function natsort()
+    {
+        // Do nothing
+    }
+
+    /**
+     * Sort the object properties using a case insensitive "natural order" algorithm
+     *
+     * @return void
+     */
+    public function natcasesort()
+    {
+        // Do nothing
+    }
+
+    /**
+     * Unserialize the apparat object
+     *
+     * @param string $serialized Serialized apparat object
+     * @return AbstractApparatObject Unserialized apparat object
+     */
+    public function unserialize($serialized)
+    {
+        return unserialize($serialized);
+    }
+
+    /**
+     * Serialize the apparat object
+     *
+     * @return AbstractApparatObject Serialized apparat object
+     */
+    public function serialize()
+    {
+        // TODO: Serialization should consist of repository + object locators (or object URL?)
+        return '';
+    }
+
+    /**
+     * Exchange the associated object
+     *
+     * @param mixed $object Object
+     * @return ObjectInterface Former object
+     */
+    public function exchangeArray($object)
+    {
+        // If a valid option was given
+        if ($object instanceof ObjectInterface) {
+            $formerObject = $this->object;
+            $this->object = $object;
+            return $formerObject;
         }
 
-        return $this->object->$getter(...$arguments);
+        throw new InvalidArgumentException(
+            sprintf('Invalid exchange object'),
+            InvalidArgumentException::INVALID_EXCHANGE_OBJECT
+        );
     }
 }

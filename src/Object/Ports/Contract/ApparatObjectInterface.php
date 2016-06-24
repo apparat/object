@@ -44,12 +44,12 @@ use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
  * @package Apparat\Server
  * @subpackage Apparat\Server\Infrastructure
  */
-interface ApparatObjectInterface extends \ArrayAccess
+interface ApparatObjectInterface
 {
-    /**
-     * Apparat object constructor
-     *
-     * @param ApplicationObjectInterface $object Application object
-     */
-    public function __construct(ApplicationObjectInterface $object);
+//    /**
+//     * Apparat object constructor
+//     *
+//     * @param ApplicationObjectInterface $object Application object
+//     */
+//    public function __construct(ApplicationObjectInterface $object);
 }

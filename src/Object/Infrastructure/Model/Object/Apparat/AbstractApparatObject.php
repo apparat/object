@@ -54,7 +54,7 @@ use Apparat\Object\Ports\Contract\ApparatObjectInterface;
  * @method array getLocation() Return the object location
  * @method array getSyndication() Return the object location
  */
-abstract class AbstractApparatObject implements ApparatObjectInterface
+abstract class AbstractApparatObject extends \ArrayObject implements ApparatObjectInterface
 {
     /**
      * Use the apparat object common properties
@@ -68,12 +68,9 @@ abstract class AbstractApparatObject implements ApparatObjectInterface
     protected $object;
 
     /**
-     * Apparat object constructor
-     *
-     * @param ApplicationObjectInterface $object Application object
+     * AbstractApparatObject constructor.
      */
-    public function __construct(ApplicationObjectInterface $object)
-    {
+    public function __construct($object, $flags = 0, $iterator_class = "ArrayIterator") {
         $this->object = $object;
     }
 }

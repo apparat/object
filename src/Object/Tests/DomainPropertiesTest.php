@@ -75,7 +75,7 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();
-        $object->setDomainProperty('a'.self::SEPARATOR.'b'.self::SEPARATOR.'c', 'mutated');
+        $object->setDomain('a'.self::SEPARATOR.'b'.self::SEPARATOR.'c', 'mutated');
         $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1-2', $objectUrl), $object->getAbsoluteUrl());
         $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
         $this->assertTrue($object->hasBeenModified());
@@ -91,8 +91,8 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
     public function testDomainPropertyModel()
     {
         $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_LOCATOR);
-        $object->setDomainProperty('givenName', 'apparat');
-        $object->setDomainProperty('givenName'.self::SEPARATOR.'subproperty', 'violation');
+        $object->setDomain('givenName', 'apparat');
+        $object->setDomain('givenName'.self::SEPARATOR.'subproperty', 'violation');
     }
 
     /**
@@ -101,17 +101,17 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
     public function testContactDomainPropertyModel()
     {
         $object = Object::load(getenv('REPOSITORY_URL').self::CONTACT_LOCATOR);
-        $object->setDomainProperty('givenName', 'John');
-        $object->setDomainProperty('givenName', 'John'); // Intentional re-set!
-        $object->setDomainProperty('familyName', 'Doe');
-        $object->setDomainProperty('nickname', 'Houdini');
-        $object->setDomainProperty('additionalName', 'Mike');
-        $object->setDomainProperty('honorificPrefix', 'Prof.');
-        $object->setDomainProperty('honorificSuffix', 'jr.');
-        $object->setDomainProperty('email', ['john.doe@example.com', 'john@test.com']);
-        $object->setDomainProperty('logo', ['logo.jpg', '/2016/06/05/2-image']);
-        $object->setDomainProperty('org', '/2016/06/05/2-contact');
-        $object->setDomainProperty('bday', '2016-06-05T00:00:00Z');
+        $object->setDomain('givenName', 'John');
+        $object->setDomain('givenName', 'John'); // Intentional re-set!
+        $object->setDomain('familyName', 'Doe');
+        $object->setDomain('nickname', 'Houdini');
+        $object->setDomain('additionalName', 'Mike');
+        $object->setDomain('honorificPrefix', 'Prof.');
+        $object->setDomain('honorificSuffix', 'jr.');
+        $object->setDomain('email', ['john.doe@example.com', 'john@test.com']);
+        $object->setDomain('logo', ['logo.jpg', '/2016/06/05/2-image']);
+        $object->setDomain('org', '/2016/06/05/2-contact');
+        $object->setDomain('bday', '2016-06-05T00:00:00Z');
 //        print_r($object->getPropertyData());
     }
 }

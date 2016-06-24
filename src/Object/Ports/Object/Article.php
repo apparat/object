@@ -68,7 +68,7 @@ class Article extends AbstractApparatObject
         ArticleProperties::CATEGORY => MetaProperties::PROPERTY_CATEGORIES,
         ArticleProperties::URL => AbstractProperties::PROPERTY_ABSOLUTE_URL,
         ArticleProperties::UID => AbstractProperties::PROPERTY_CANONICAL_URL,
-        ArticleProperties::LOCATION => [ArticleProperties::COLLECTION, SystemProperties::PROPERTY_LOCATION],
+        ArticleProperties::LOCATION => [ArticleProperties::COLLECTION, ArticleProperties::LOCATION],
         ArticleProperties::SYNDICATION => [Relations::COLLECTION, Relation::SYNDICATED_TO],
 
         ArticleProperties::NAME => MetaProperties::PROPERTY_TITLE,

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * apparat/object
+ * apparat-object
  *
  * @category    Apparat
  * @package     Apparat\Object
  * @subpackage  Apparat\Object\Infrastructure
- * @author      Joschi Kuphal <joschi@tollwerk.de> / @jkphl
- * @copyright   Copyright © 2016 Joschi Kuphal <joschi@tollwerk.de> / @jkphl
+ * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
+ * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
@@ -36,50 +36,41 @@
 
 namespace Apparat\Object\Infrastructure\Model\Object\Apparat;
 
-use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
-use Apparat\Object\Infrastructure\Model\Object\Apparat\Traits\ApparatObjectTrait;
-use Apparat\Object\Ports\Contract\ApparatObjectInterface;
-
 /**
- * Abstract apparat object
+ * Apparat object iterator
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Infrastructure
- * @method \DateTimeImmutable getPublished() Return the object publication date
- * @method \DateTimeImmutable getUpdated() Return the object modification date
- * @method array getAuthor() Return the object authors
- * @method array getCategory() Return the object authors
- * @method array getUrl() Return the object URL
- * @method array getUid() Return the object UID
- * @method array getLocation() Return the object location
- * @method array getSyndication() Return the object location
  */
-abstract class AbstractApparatObject extends \ArrayObject implements ApparatObjectInterface
+class ApparatObjectIterator extends \ArrayIterator
 {
     /**
-     * Use the apparat object common properties
-     */
-    use ApparatObjectTrait;
-    /**
-     * Application object
+     * Associated apparat object
      *
-     * @var ApplicationObjectInterface
+     * @var AbstractApparatObject
      */
     protected $object;
 
     /**
-     * Apparat object constructor
+     * Construct an apparat object iterator
      *
-     * @param ApplicationObjectInterface $object Object
+     * @param array $array Mapping
      * @param int $flags Flags
-     * @param string $iteratorClass Iterator class
+     * @param AbstractApparatObject $object Associated apparat object
      */
-    public function __construct(
-        ApplicationObjectInterface $object,
-        $flags = 0,
-        $iteratorClass = ApparatObjectIterator::class
-    ) {
-        parent::__construct($this->mapping, $flags, $iteratorClass);
+    public function __construct(array $array, $flags, AbstractApparatObject $object)
+    {
+        parent::__construct($array, $flags);
         $this->object = $object;
+    }
+
+    /**
+     * Return the current object property value
+     *
+     * @return mixed Object property value
+     */
+    public function current()
+    {
+        return $this->object[parent::key()];
     }
 }

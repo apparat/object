@@ -70,7 +70,7 @@ trait DomainPropertiesTrait
      * @param string $property Property name
      * @return mixed Property value
      */
-    public function getDomainProperty($property)
+    public function getDomain($property)
     {
         return $this->domainProperties->getProperty($property);
     }
@@ -82,7 +82,7 @@ trait DomainPropertiesTrait
      * @param mixed $value Property value
      * @return ObjectInterface Self reference
      */
-    public function setDomainProperty($property, $value)
+    public function setDomain($property, $value)
     {
         $this->setDomainProperties($this->domainProperties->setProperty($property, $value));
         return $this;

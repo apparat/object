@@ -86,11 +86,11 @@ namespace Apparat\Object\Tests {
             $image->publish()->persist();
 
             // Add content relevant properties, publish & persist
-            $image->setDomainProperty('license', 'gemeinfrei')->publish()->persist();
+            $image->setDomain('license', 'gemeinfrei')->publish()->persist();
 
             // Alter the payload
             $image->setPayload($fixtureDirectory.'Normalsegelapparat1895.jpg')->persist();
-            $this->assertEquals('gemeinfrei', $image->getDomainProperty('license'));
+            $this->assertEquals('gemeinfrei', $image->getDomain('license'));
             $this->assertEquals($payloadFileName2, $image->getPayload());
             $this->assertFileExists(
                 $tempRepoDirectory.dirname(str_replace('/', DIRECTORY_SEPARATOR, $image->getRepositoryLocator())).

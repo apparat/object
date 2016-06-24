@@ -36,9 +36,12 @@
 
 namespace Apparat\Object\Infrastructure\Model\Object\Apparat\Traits;
 
+use Apparat\Kernel\Tests\Kernel;
 use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
 use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
+use Apparat\Object\Infrastructure\Model\Object\Apparat\ApparatObjectIterator;
 use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
 
 /**
@@ -78,6 +81,31 @@ trait ApparatObjectTrait
 
         // If the method is unknown
         throw new \BadMethodCallException(sprintf('Unknown apparat object method "%s()"', $method));
+    }
+
+    /**
+     * Delegate the mapped object getter
+     *
+     * @param string $property Property name
+     * @param string $getter Getter name
+     * @param array $arguments Getter arguments
+     * @return mixed Property value
+     * @throws InvalidArgumentException If the property is invalid
+     */
+    protected function delegateObjectGetter($property, $getter, array $arguments)
+    {
+        // If the property is invalid
+        if (!is_callable([$this->object, $getter])) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid apparat object property "%s"', $property),
+                InvalidArgumentException::INVALID_APPARAT_OBJECT_PROPERTY
+            );
+        }
+        try {
+            return $this->object->$getter(...$arguments);
+        } catch (PropertyInvalidArgumentException $e) {
+            return null;
+        }
     }
 
     /**
@@ -123,7 +151,7 @@ trait ApparatObjectTrait
     public function offsetSet($offset, $value)
     {
         throw new InvalidArgumentException(
-            sprintf('Cannot set apparat object property "%s"', $offset),
+            sprintf('Cannot set apparat object property "%s" to value "%s"', $offset, $value),
             InvalidArgumentException::CANNOT_SET_APPARAT_OBJECT_PROPERTY
         );
     }
@@ -163,8 +191,16 @@ trait ApparatObjectTrait
      */
     public function getArrayCopy()
     {
-        // TODO: Run through the mapping and return all values
-        return [];
+        $properties = array_keys($this->mapping);
+        return array_combine(
+            $properties,
+            array_map(
+                function ($property) {
+                    return $this[$property];
+                },
+                $properties
+            )
+        );
     }
 
     /**
@@ -286,5 +322,15 @@ trait ApparatObjectTrait
             sprintf('Invalid exchange object'),
             InvalidArgumentException::INVALID_EXCHANGE_OBJECT
         );
+    }
+    
+    /**
+     * Create and return a new object iterator instance
+     *
+     * @return ApparatObjectIterator Object iterator instance
+     */
+    public function getIterator()
+    {
+        return Kernel::create($this->getIteratorClass(), [$this->mapping, $this->getFlags(), $this]);
     }
 }

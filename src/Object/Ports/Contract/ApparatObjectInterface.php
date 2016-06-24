@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Ports\Contract;
 
-use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
-
 /**
  * Apparat object interface
  *
@@ -46,10 +44,5 @@ use Apparat\Object\Application\Model\Object\ApplicationObjectInterface;
  */
 interface ApparatObjectInterface
 {
-//    /**
-//     * Apparat object constructor
-//     *
-//     * @param ApplicationObjectInterface $object Application object
-//     */
-//    public function __construct(ApplicationObjectInterface $object);
+
 }

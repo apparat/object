@@ -67,9 +67,10 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     /**
      * Test the article apparat object
      *
-     * @expectedException \BadMethodCallException
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1466804125
      */
-    public function testArticleApparatObjectInvalidGetter()
+    public function testArticleApparatObjectIlleggalSetter()
     {
         /** @var Article $articleApparatObj */
         $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
@@ -79,6 +80,18 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         $this->assertEquals('First repository article', $articleApparatObj['name']);
         $this->assertEquals('First repository article', $articleApparatObj->getName());
         $articleApparatObj['name'] = null;
+    }
+
+    /**
+     * Test the article apparat object
+     *
+     * @expectedException \BadMethodCallException
+     */
+    public function testArticleApparatObjectInvalidGetter()
+    {
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
+        $this->assertInstanceOf(Article::class, $articleApparatObj);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $articleApparatObj->getInvalid();

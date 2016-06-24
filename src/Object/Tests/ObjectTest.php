@@ -243,9 +243,9 @@ namespace Apparat\Object\Tests {
         {
             $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectLocator);
-            $this->assertEquals('/system/url', $articleObject->getDomainProperty('uid'));
-            $this->assertEquals('value', $articleObject->getDomainProperty('group:single'));
-            $articleObject->getDomainProperty('group:invalid');
+            $this->assertEquals('/system/url', $articleObject->getDomain('uid'));
+            $this->assertEquals('value', $articleObject->getDomain('group:single'));
+            $articleObject->getDomain('group:invalid');
         }
 
         /**
@@ -258,7 +258,7 @@ namespace Apparat\Object\Tests {
         {
             $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectLocator);
-            $articleObject->getDomainProperty('');
+            $articleObject->getDomain('');
         }
 
         /**

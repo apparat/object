@@ -491,9 +491,9 @@ abstract class ObjectProxy implements ObjectInterface
      * @param string $property Property name
      * @return mixed Property value
      */
-    public function getDomainProperty($property)
+    public function getDomain($property)
     {
-        return $this->object()->getDomainProperty($property);
+        return $this->object()->getDomain($property);
     }
 
     /**
@@ -503,9 +503,9 @@ abstract class ObjectProxy implements ObjectInterface
      * @param mixed $value Property value
      * @return ObjectInterface Self reference
      */
-    public function setDomainProperty($property, $value)
+    public function setDomain($property, $value)
     {
-        return $this->object()->setDomainProperty($property, $value);
+        return $this->object()->setDomain($property, $value);
     }
 
     /**

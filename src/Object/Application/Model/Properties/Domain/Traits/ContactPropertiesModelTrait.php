@@ -296,7 +296,7 @@ trait ContactPropertiesModelTrait
         ];
         foreach (array_keys($nameProperties) as $name) {
             try {
-                $nameProperty = trim($this->getObject()->getDomainProperty($name));
+                $nameProperty = trim($this->getObject()->getDomain($name));
                 if (strlen($nameProperty)) {
                     $nameProperties[$name] = $nameProperty;
                 }

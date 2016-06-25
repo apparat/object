@@ -59,6 +59,38 @@ class AdapterStrategyFactory implements AdapterStrategyFactoryInterface
     ];
 
     /**
+     * Add an adapter strategy
+     *
+     * @param string $type Adapter type
+     * @param string $class Adapter class
+     * @throws InvalidArgumentException If the type is invalid
+     * @throws InvalidArgumentException If the class is invalid
+     */
+    public static function setAdapterStrategyTypeClass($type, $class)
+    {
+
+        // If the type is invalid
+        if (!strlen($type)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid adapter strategy type "%s"', $type),
+                InvalidArgumentException::INVALID_ADAPTER_STRATEGY_TYPE
+            );
+        }
+
+        // If the class doesn't exist or is invalid
+        if (!class_exists($class) ||
+            !(new \ReflectionClass($class))->implementsInterface(AdapterStrategyInterface::class)
+        ) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid adapter strategy class "%s"', $class),
+                InvalidArgumentException::INVALID_ADAPTER_STRATEGY_CLASS
+            );
+        }
+
+        self::$types[$type] = $class;
+    }
+
+    /**
      * Instantiate and return an adapter strategy
      *
      * @param array $config Adapter strategy config

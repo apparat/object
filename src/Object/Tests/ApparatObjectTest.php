@@ -65,12 +65,12 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     const CONTACT_LOCATOR = '/repo/2016/01/08/2-contact/2';
 
     /**
-     * Test the article apparat object
+     * Test the article apparat object with an illegal setter
      *
      * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
      * @expectedExceptionCode 1466804125
      */
-    public function testArticleApparatObjectIlleggalSetter()
+    public function testArticleApparatObjectIllegalSetter()
     {
         /** @var Article $articleApparatObj */
         $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
@@ -83,7 +83,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
     }
 
     /**
-     * Test the article apparat object
+     * Test the article apparat object with an invalid getter
      *
      * @expectedException \BadMethodCallException
      */
@@ -93,9 +93,19 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
+        // Test serialization / deserialization
         $serialized = serialize($articleApparatObj);
         $unserializedArticle = unserialize($serialized);
         $this->assertEquals($unserializedArticle['name'], $articleApparatObj['name']);
+
+        // Test iteration
+        $articleArray = $articleApparatObj->getArrayCopy();
+        foreach ($articleApparatObj as $property => $value) {
+            $this->assertTrue(array_key_exists($property, $articleArray));
+            $this->assertEquals($articleArray[$property], $value);
+            unset($articleArray[$property]);
+        }
+        $this->assertEquals(0, count($articleArray));
 
         /** @noinspection PhpUndefinedMethodInspection */
         $articleApparatObj->getInvalid();

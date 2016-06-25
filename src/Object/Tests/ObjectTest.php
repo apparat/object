@@ -49,9 +49,11 @@ namespace Apparat\Object\Tests {
     use Apparat\Object\Domain\Model\Properties\SystemProperties;
     use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
     use Apparat\Object\Domain\Repository\Repository;
+    use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
     use Apparat\Object\Infrastructure\Model\Object\Object;
     use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Ports\Types\Object as ObjectTypes;
+    use Apparat\Object\Infrastructure\Repository\Repository as InfrastructureRepository;
 
     /**
      * Object tests
@@ -151,6 +153,29 @@ namespace Apparat\Object\Tests {
         {
             $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             self::$repository->loadObject($articleObjectLocator, 0);
+        }
+
+        /**
+         * Load a non-existing article object
+         *
+         * @expectedException \Apparat\Object\Application\Model\Object\InvalidArgumentException
+         * @expectedExceptionCode 1466882391
+         */
+        public function testLoadNonExistingArticleObject()
+        {
+            AdapterStrategyFactory::setAdapterStrategyTypeClass(
+                TestFileAdapterStrategy::TYPE,
+                TestFileAdapterStrategy::class
+            );
+            $repository = InfrastructureRepository::register(
+                'non-'.getenv('REPOSITORY_URL'),
+                [
+                    'type' => TestFileAdapterStrategy::TYPE,
+                    'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
+                ]
+            );
+            $articleObjectLocator = new RepositoryLocator($repository, self::OBJECT_LOCATOR);
+            $repository->loadObject($articleObjectLocator);
         }
 
         /**
@@ -572,7 +597,7 @@ namespace Apparat\Object\Infrastructure\Repository {
      * Mocked version of the native rename() function
      *
      * @param string $oldname The old name. The wrapper used in oldname must match the wrapper used in newname.
-     * @param @param string $newname The new name.
+     * @param string $newname The new name.
      * @return bool true on success or false on failure.
      */
     function rename($oldname, $newname)

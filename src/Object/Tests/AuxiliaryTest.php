@@ -41,6 +41,8 @@ use Apparat\Object\Application\Utility\ArrayUtility;
 use Apparat\Object\Domain\Model\Object\Id;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
@@ -156,5 +158,25 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
             ArrayUtility::reduce(['one' => true, 'two' => [1, 2, 'three']]),
             ArrayUtility::reduce(['two' => ['three', 1, 2], 'one' => true])
         );
+    }
+
+    /**
+     * Test an invalid adapter strategy type
+     *
+     * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
+     * @expectedExceptionCode 1449956471
+     */
+    public function testAdapterStrategyInvalidType() {
+        AdapterStrategyFactory::setAdapterStrategyTypeClass('', '');
+    }
+
+    /**
+     * Test an invalid adapter strategy class
+     *
+     * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
+     * @expectedExceptionCode 1466883683
+     */
+    public function testAdapterStrategyInvalidClass() {
+        AdapterStrategyFactory::setAdapterStrategyTypeClass(FileAdapterStrategy::TYPE, static::class);
     }
 }

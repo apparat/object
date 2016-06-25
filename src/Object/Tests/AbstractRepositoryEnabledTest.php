@@ -60,16 +60,13 @@ abstract class AbstractRepositoryEnabledTest extends AbstractDisabledAutoconnect
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        Repository::register(
+        self::$repository = Repository::register(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => __DIR__.DIRECTORY_SEPARATOR.'Fixture',
             ]
         );
-
-        self::$repository = Repository::instance(getenv('REPOSITORY_URL'));
-
         \date_default_timezone_set('UTC');
     }
 }

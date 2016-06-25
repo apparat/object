@@ -169,8 +169,8 @@ class Manager implements ManagerInterface
         // If the resource could not be loaded
         if (!($objectResource instanceof ResourceInterface)) {
             throw new InvalidArgumentException(
-                'Resource does not exist',
-                InvalidArgumentException::RESOURCE_DOES_NOT_EXIST
+                'Resource could not be loaded',
+                InvalidArgumentException::RESOURCE_NOT_LOADED
             );
         }
 

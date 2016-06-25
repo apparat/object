@@ -37,11 +37,11 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Revision;
 use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\Selector as RepositorySelector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
@@ -183,7 +183,8 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
     {
         Kernel::create(
             RepositorySelector::class,
-            [2015, 1, 1, null, null, null, 1, ObjectTypes::ARTICLE, 'invalid', SelectorInterface::PUBLISHED]
+            [2015, 1, 1, null, null, null, 1, ObjectTypes::ARTICLE, 'invalid', SelectorInterface::VISIBLE,
+                SelectorInterface::PUBLISHED]
         );
     }
 
@@ -199,6 +200,21 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
         Kernel::create(
             RepositorySelector::class,
             [2015, 1, 1, null, null, null, 1, ObjectTypes::ARTICLE, Revision::CURRENT, 0, SelectorInterface::PUBLISHED]
+        );
+    }
+
+    /**
+     * Test an invalid object draft state
+     *
+     * @expectedException \Apparat\Object\Domain\Repository\InvalidArgumentException
+     * @expectedExceptionCode 1449999646
+     * @expectedExceptionMessageRegExp %draft%
+     */
+    public function testInvalidDraftComponent()
+    {
+        Kernel::create(
+            RepositorySelector::class,
+            [2015, 1, 1, null, null, null, 1, ObjectTypes::ARTICLE, Revision::CURRENT, SelectorInterface::VISIBLE, 4]
         );
     }
 }

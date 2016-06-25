@@ -50,4 +50,10 @@ class InvalidArgumentException extends \InvalidArgumentException
      * @var int
      */
     const RESOURCE_DOES_NOT_EXIST = 1447616824;
+    /**
+     * Resource not loaded
+     *
+     * @var int
+     */
+    const RESOURCE_NOT_LOADED = 1466882391;
 }

@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Infrastructure
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,32 +34,34 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Infrastructure\Factory;
+namespace Apparat\Object\Tests;
+
+use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 
 /**
- * Repository invalid argument exception
+ * Test file adapter strategy
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Tests
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class TestFileAdapterStrategy extends FileAdapterStrategy
 {
     /**
-     * Empty adapter strategy configuration
+     * Adapter strategy type
      *
-     * @var int
+     * @var string
      */
-    const EMPTY_ADAPTER_STRATEGY_CONFIG = 1449956347;
+    const TYPE = 'filetest';
+
     /**
-     * Invalid adapter strategy type
+     * Find and return an object resource
      *
-     * @var int
+     * @param string $resourcePath Repository relative resource locator
+     * @return ResourceInterface Object resource
      */
-    const INVALID_ADAPTER_STRATEGY_TYPE = 1449956471;
-    /**
-     * Invalid adapter strategy class
-     *
-     * @var int
-     */
-    const INVALID_ADAPTER_STRATEGY_CLASS = 1466883683;
+    public function getObjectResource($resourcePath)
+    {
+        return null;
+    }
 }

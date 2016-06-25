@@ -164,7 +164,7 @@ namespace Apparat\Object\Tests {
             $articleObjectLocator = new RepositoryLocator(self::$repository, self::OBJECT_LOCATOR);
             $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertEquals(
-                getenv('APPARAT_BASE_URL').getenv('REPOSITORY_URL').self::OBJECT_LOCATOR,
+                getenv('APPARAT_BASE_URL').rtrim('/'.getenv('REPOSITORY_URL'), '/').self::OBJECT_LOCATOR,
                 $articleObject->getAbsoluteUrl()
             );
             $this->assertFalse($articleObject->isDeleted());

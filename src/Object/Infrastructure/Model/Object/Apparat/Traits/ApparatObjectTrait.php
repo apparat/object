@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\InvalidArgumentException as PropertyInvalidArgumentException;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\ApparatObjectIterator;
+use Apparat\Object\Infrastructure\Model\Object\Object;
 use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
 
 /**
@@ -285,22 +286,11 @@ trait ApparatObjectTrait
      * Unserialize the apparat object
      *
      * @param string $serialized Serialized apparat object
-     * @return AbstractApparatObject Unserialized apparat object
      */
     public function unserialize($serialized)
     {
-        return unserialize($serialized);
-    }
-
-    /**
-     * Serialize the apparat object
-     *
-     * @return AbstractApparatObject Serialized apparat object
-     */
-    public function serialize()
-    {
-        // TODO: Serialization should consist of repository + object locators (or object URL?)
-        return '';
+        $objectUrl = unserialize($serialized);
+        $this->object = Object::load($objectUrl);
     }
 
     /**
@@ -323,7 +313,17 @@ trait ApparatObjectTrait
             InvalidArgumentException::INVALID_EXCHANGE_OBJECT
         );
     }
-    
+
+    /**
+     * Serialize the apparat object
+     *
+     * @return AbstractApparatObject Serialized apparat object
+     */
+    public function serialize()
+    {
+        return serialize($this->object->getAbsoluteUrl());
+    }
+
     /**
      * Create and return a new object iterator instance
      *

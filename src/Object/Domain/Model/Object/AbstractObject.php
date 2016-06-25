@@ -305,7 +305,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL').ltrim($this->locator->getRepository()->getUrl(), '/').strval($this->locator);
+        return getenv('APPARAT_BASE_URL').rtrim($this->locator->getRepository()->getUrl(), '/').strval($this->locator);
     }
 
     /**

@@ -93,6 +93,10 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
+        $serialized = serialize($articleApparatObj);
+        $unserializedArticle = unserialize($serialized);
+        $this->assertEquals($unserializedArticle['name'], $articleApparatObj['name']);
+
         /** @noinspection PhpUndefinedMethodInspection */
         $articleApparatObj->getInvalid();
     }

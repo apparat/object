@@ -115,4 +115,19 @@ interface LocatorInterface
      * @return LocatorInterface New object locator
      */
     public function setRevision(Revision $revision);
+
+    /**
+     * Return the object hidden state
+     *
+     * @return boolean Object hidden state
+     */
+    public function isHidden();
+
+    /**
+     * Set the object hidden state
+     *
+     * @param boolean $hidden Object hidden state
+     * @return LocatorInterface|Locator New object locator
+     */
+    public function setHidden($hidden);
 }

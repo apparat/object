@@ -51,7 +51,6 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\ProcessingInstructions;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
-use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Repository\SelectorInterface;
@@ -271,7 +270,7 @@ abstract class AbstractObject implements ObjectInterface
     /**
      * Return the object repository locator
      *
-     * @return RepositoryLocatorInterface|LocatorInterface Object repository locator
+     * @return RepositoryLocatorInterface Object repository locator
      */
     public function getRepositoryLocator()
     {

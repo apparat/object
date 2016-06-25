@@ -92,7 +92,7 @@ class ApparatObjectFactory implements ObjectTypesInterface
         $objectType = $object->getType()->getType();
 
         // If the object type doesn't map to known apparat object class
-        if (!array_key_exists($objectType, self::$typeClasses) || !self::$typeClasses[$objectType]) {
+        if (!array_key_exists($objectType, static::$typeClasses) || !static::$typeClasses[$objectType]) {
             throw new PortsInvalidArgumentException(
                 sprintf('Unknown apparat object type "%s"', $objectType),
                 PortsInvalidArgumentException::UNKNOWN_APPARAT_OBJECT_TYPE

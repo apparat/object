@@ -40,6 +40,7 @@ use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Object\Article as ApplicationArticle;
 use Apparat\Object\Infrastructure\Model\Object\Object;
 use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Ports\Object\Article;
 use Apparat\Object\Ports\Object\Contact;
 
@@ -63,6 +64,32 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
      * @var string
      */
     const CONTACT_LOCATOR = '/repo/2016/01/08/2-contact/2';
+
+    /**
+     * Test the apparat object factory with an invalid object type
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1465368597
+     */
+    public function testApparatObjectFactoryInvalidType()
+    {
+        /** @var ApplicationArticle $articleObj */
+        $articleObj = Object::load(self::ARTICLE_LOCATOR);
+        TestApparatObjectFactory::create($articleObj);
+    }
+
+    /**
+     * Test the selection of apparat objects via the repository facade
+     */
+    public function testApparatObjectFindCollection()
+    {
+        $selector = SelectorFactory::createFromString('/2015/*/*/*-article');
+        $apparatObjects = RepositoryFacade::instance(getenv('REPOSITORY_URL'))->findObjects($selector);
+        $this->assertTrue(is_array($apparatObjects));
+        foreach ($apparatObjects as $apparatObject) {
+            $this->assertInstanceOf(Article::class, $apparatObject);
+        }
+    }
 
     /**
      * Test the article apparat object with an illegal setter
@@ -100,6 +127,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
 
         // Test iteration
         $articleArray = $articleApparatObj->getArrayCopy();
+        $this->assertEquals(count($articleArray), count($articleApparatObj));
         foreach ($articleApparatObj as $property => $value) {
             $this->assertTrue(array_key_exists($property, $articleArray));
             $this->assertEquals($articleArray[$property], $value);
@@ -109,6 +137,63 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
 
         /** @noinspection PhpUndefinedMethodInspection */
         $articleApparatObj->getInvalid();
+    }
+
+    /**
+     * Test the article apparat object with an invalid array getter
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1465330399
+     */
+    public function testArticleApparatObjectInvalidArrayGetter()
+    {
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
+        $this->assertInstanceOf(Article::class, $articleApparatObj);
+
+        $articleApparatObj['invalid'];
+    }
+
+    /**
+     * Test the article apparat object with an invalid array append
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1466804193
+     */
+    public function testArticleApparatObjectInvalidArrayAppend()
+    {
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
+        $this->assertInstanceOf(Article::class, $articleApparatObj);
+
+        $articleApparatObj->append('invalid');
+    }
+
+    /**
+     * Test sorting and exchange methods of an article apparat object
+     *
+     * @expectedException \Apparat\Object\Ports\Exceptions\InvalidArgumentException
+     * @expectedExceptionCode 1466805183
+     */
+    public function testArticleApparatObjectSortingExchange()
+    {
+        /** @var Article $articleApparatObj */
+        $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
+        $this->assertInstanceOf(Article::class, $articleApparatObj);
+
+        $articleApparatObj->asort();
+        $articleApparatObj->ksort();
+        $articleApparatObj->uasort(function () {
+        });
+        $articleApparatObj->uksort(function () {
+        });
+        $articleApparatObj->natsort();
+        $articleApparatObj->natcasesort();
+
+        /** @var ApplicationArticle $articleObj */
+        $articleObj = Object::load(self::ARTICLE_LOCATOR);
+        $articleApparatObj->exchangeArray($articleObj);
+        $articleApparatObj->exchangeArray(new \stdClass());
     }
 
     /**

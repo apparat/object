@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Object\Ports\Facades\RepositoryFacade;
 use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
@@ -427,14 +428,14 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
         $this->tmpFiles[] = $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
         $this->tmpFiles[] = $tempRepoConfigDir = $tempRepoDirectory.DIRECTORY_SEPARATOR.'.repo';
         $this->tmpFiles[] = $tempRepoConfigDir.DIRECTORY_SEPARATOR.'size.txt';
-        $fileRepository = InfrastructureRepository::create(
+        $fileRepository = RepositoryFacade::create(
             getenv('REPOSITORY_URL'),
             [
                 'type' => FileAdapterStrategy::TYPE,
                 'root' => $tempRepoDirectory,
             ]
         );
-        $this->assertInstanceOf(Repository::class, $fileRepository);
+        $this->assertInstanceOf(RepositoryFacade::class, $fileRepository);
     }
 
     /**

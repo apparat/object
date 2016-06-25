@@ -521,7 +521,7 @@ class SystemProperties extends AbstractProperties
                 self::PROPERTY_MODIFIED => $this->modified,
                 self::PROPERTY_PUBLISHED => $this->published,
                 self::PROPERTY_DELETED => $this->deleted,
-                self::PROPERTY_LOCATION => $this->location->toArray(),
+                self::PROPERTY_LOCATION => $this->location->toArray($serialize),
                 self::PROPERTY_LANGUAGE => $this->language,
             ]
         );

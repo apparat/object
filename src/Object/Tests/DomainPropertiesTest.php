@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Tests;
 
+use Apparat\Object\Application\Model\Properties\Domain\Article;
 use Apparat\Object\Domain\Model\Properties\PropertiesInterface;
 use Apparat\Object\Infrastructure\Model\Object\Object;
 
@@ -75,7 +76,13 @@ class DomainPropertiesTest extends AbstractRepositoryEnabledTest
         $this->assertTrue(is_array($object->getPropertyData()));
         $objectUrl = $object->getAbsoluteUrl();
         $objectRevision = $object->getRevision();
+
+        // Set a serializable property
+        $featuredUrl = 'http://lorempixel.com/1024/768/?70947';
+        $object->setDomain(Article::FEATURED, $featuredUrl);
         $object->setDomain('a'.self::SEPARATOR.'b'.self::SEPARATOR.'c', 'mutated');
+        $this->assertEquals($featuredUrl, $object->getPropertyData(true)['domain']['featured']);
+
         $this->assertEquals(preg_replace('%\/(.?+)$%', '/.$1-2', $objectUrl), $object->getAbsoluteUrl());
         $this->assertEquals($objectRevision->getRevision() + 1, $object->getRevision()->getRevision());
         $this->assertTrue($object->hasBeenModified());

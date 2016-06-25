@@ -257,7 +257,7 @@ trait ApparatObjectTrait
      * @param \Callable $compareFunction User function
      * @return void
      */
-    public function uksort($cmp_function)
+    public function uksort($compareFunction)
     {
         // Do nothing
     }

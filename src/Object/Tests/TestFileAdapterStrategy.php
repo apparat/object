@@ -62,6 +62,6 @@ class TestFileAdapterStrategy extends FileAdapterStrategy
      */
     public function getObjectResource($resourcePath)
     {
-        return null;
+        return $resourcePath;
     }
 }

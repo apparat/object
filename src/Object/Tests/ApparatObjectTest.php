@@ -89,6 +89,10 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         foreach ($apparatObjects as $apparatObject) {
             $this->assertInstanceOf(Article::class, $apparatObject);
         }
+        $this->assertEquals(
+            count($apparatObjects),
+            count(RepositoryFacade::instance(getenv('REPOSITORY_URL'))->findObjects('/2015/*/*/*-article'))
+        );
     }
 
     /**

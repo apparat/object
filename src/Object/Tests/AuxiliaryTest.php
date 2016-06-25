@@ -166,7 +166,8 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
      * @expectedExceptionCode 1449956471
      */
-    public function testAdapterStrategyInvalidType() {
+    public function testAdapterStrategyInvalidType()
+    {
         AdapterStrategyFactory::setAdapterStrategyTypeClass('', '');
     }
 
@@ -176,7 +177,8 @@ class AuxiliaryText extends AbstractDisabledAutoconnectorTest
      * @expectedException \Apparat\Object\Infrastructure\Factory\InvalidArgumentException
      * @expectedExceptionCode 1466883683
      */
-    public function testAdapterStrategyInvalidClass() {
+    public function testAdapterStrategyInvalidClass()
+    {
         AdapterStrategyFactory::setAdapterStrategyTypeClass(FileAdapterStrategy::TYPE, static::class);
     }
 }

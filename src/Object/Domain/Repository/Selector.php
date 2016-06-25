@@ -129,7 +129,6 @@ class Selector implements SelectorInterface
      * @param int|NULL $revision Revision
      * @param int $visibility Visibility
      * @param int $draft Draft state
-     * @throws InvalidArgumentException If any of the components isn't valid
      */
     public function __construct(
         TypeServiceInterface $typeService,
@@ -144,6 +143,44 @@ class Selector implements SelectorInterface
         $revision = Revision::CURRENT,
         $visibility = SelectorInterface::VISIBLE,
         $draft = SelectorInterface::PUBLISHED
+    ) {
+        // Validate the date component
+        $this->validateDateComponent($year, $month, $day, $hour, $minute, $second);
+
+        // Validate the ID component
+        $this->validateIdComponent($uid);
+
+        // Validate the type component
+        $this->validateTypeComponent($typeService, $type);
+
+        // Validate the revision component
+        $this->validateRevisionComponent($revision);
+
+        // Validate the visibility component
+        $this->validateVisibilityComponent($visibility);
+
+        // Validate the draft component
+        $this->validateDraftComponent($draft);
+    }
+
+    /**
+     * Validate the date component
+     *
+     * @param string|int|NULL $year Year
+     * @param string|int|NULL $month Month
+     * @param string|int|NULL $day Day
+     * @param string|int|NULL $hour Hour
+     * @param string|int|NULL $minute Minute
+     * @param string|int|NULL $second Second
+     * @throws InvalidArgumentException If any of the date components isn't valid
+     */
+    protected function validateDateComponent(
+        $year = self::WILDCARD,
+        $month = self::WILDCARD,
+        $day = self::WILDCARD,
+        $hour = self::WILDCARD,
+        $minute = self::WILDCARD,
+        $second = self::WILDCARD
     ) {
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
 
@@ -174,7 +211,16 @@ class Selector implements SelectorInterface
             $this->$label =
                 ($component === self::WILDCARD) ? self::WILDCARD : str_pad($component, 2, '0', STR_PAD_LEFT);
         }
+    }
 
+    /**
+     * Validate the ID component
+     *
+     * @param string|int|NULL $uid Object ID
+     * @throws InvalidArgumentException If the ID component isn't valid
+     */
+    protected function validateIdComponent($uid)
+    {
         // If the ID component isn't valid
         if (!is_int($uid) && ($uid !== self::WILDCARD)) {
             throw new InvalidArgumentException(
@@ -188,7 +234,17 @@ class Selector implements SelectorInterface
             );
         }
         $this->uid = $uid;
+    }
 
+    /**
+     * Validate the type component
+     *
+     * @param TypeServiceInterface $typeService Type Service
+     * @param string|NULL $type Object type
+     * @throws InvalidArgumentException If the type component isn't valid
+     */
+    protected function validateTypeComponent(TypeServiceInterface $typeService, $type)
+    {
         // If the type component isn't valid
         if (!$typeService->supportsType($type) && ($type !== self::WILDCARD)) {
             throw new InvalidArgumentException(
@@ -202,7 +258,16 @@ class Selector implements SelectorInterface
             );
         }
         $this->type = $type;
+    }
 
+    /**
+     * Validate the revision component
+     *
+     * @param int|NULL $revision Revision
+     * @throws InvalidArgumentException If the revision component isn't valid
+     */
+    protected function validateRevisionComponent($revision)
+    {
         // If the revision component isn't valid
         if (!Revision::isValidRevision($revision) && ($revision !== self::WILDCARD)) {
             throw new InvalidArgumentException(
@@ -216,7 +281,16 @@ class Selector implements SelectorInterface
             );
         }
         $this->revision = $revision;
+    }
 
+    /**
+     * Validate the visibility component
+     *
+     * @param int $visibility Visibility
+     * @throws InvalidArgumentException If the visibility component isn't valid
+     */
+    protected function validateVisibilityComponent($visibility)
+    {
         // If the object visibility isn't valid
         if (!self::isValidVisibility($visibility)) {
             throw new InvalidArgumentException(
@@ -230,20 +304,6 @@ class Selector implements SelectorInterface
             );
         }
         $this->visibility = $visibility;
-
-        // If the object draft state isn't valid
-        if (!self::isValidDraftState($draft)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid repository selector draft state "%s"',
-                    $visibility
-                ),
-                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
-                null,
-                'draft'
-            );
-        }
-        $this->draft = $draft;
     }
 
     /**
@@ -257,6 +317,29 @@ class Selector implements SelectorInterface
         return ($visibility === SelectorInterface::VISIBLE)
         || ($visibility === SelectorInterface::HIDDEN)
         || ($visibility === SelectorInterface::ALL);
+    }
+
+    /**
+     * Validate the draft component
+     *
+     * @param int $draft Draft state
+     * @throws InvalidArgumentException If the draft component isn't valid
+     */
+    protected function validateDraftComponent($draft)
+    {
+        // If the object draft state isn't valid
+        if (!self::isValidDraftState($draft)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid repository selector draft state "%s"',
+                    $draft
+                ),
+                InvalidArgumentException::INVALID_REPOSITORY_SELECTOR_COMPONENT,
+                null,
+                'draft'
+            );
+        }
+        $this->draft = $draft;
     }
 
     /**

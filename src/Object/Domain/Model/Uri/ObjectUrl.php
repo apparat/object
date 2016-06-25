@@ -285,9 +285,28 @@ class ObjectUrl extends Url implements LocatorInterface
         return $this->getUrlInternal($override);
     }
 
-    /*******************************************************************************
-     * PRIVATE METHODS
-     *******************************************************************************/
+
+    /**
+     * Return the object hidden state
+     *
+     * @return boolean Object hidden state
+     */
+    public function isHidden()
+    {
+        return $this->locator->isHidden();
+    }
+
+    /**
+     * Set the object hidden state
+     *
+     * @param boolean $hidden Object hidden state
+     * @return LocatorInterface|Locator New object locator
+     */
+    public function setHidden($hidden)
+    {
+        $this->locator = $this->locator->setHidden($hidden);
+        return $this;
+    }
 
     /**
      * Return the a complete serialized object URL

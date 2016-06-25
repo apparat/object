@@ -71,7 +71,7 @@ class ApparatUrl extends ObjectUrl
     /**
      * Apparat URL constructor
      *
-     * If the constructor doesn't throw an exception, the URL is valid and
+     * If the constructor does not throw an exception, the URL is valid and
      *
      * 1. either an absolute URL (local or remote) or
      * 2. a relative URL to a known local repository (respectively the to the context repository if given)

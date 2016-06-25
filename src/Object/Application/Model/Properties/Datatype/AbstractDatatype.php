@@ -63,6 +63,7 @@ abstract class AbstractDatatype implements DatatypeInterface
      * Constructor
      *
      * @param ObjectInterface $object Owning object
+     * @param array $filter Filter parameters
      */
     public function __construct(ObjectInterface $object, array $filter)
     {

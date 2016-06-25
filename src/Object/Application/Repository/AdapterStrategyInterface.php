@@ -37,6 +37,7 @@
 namespace Apparat\Object\Application\Repository;
 
 use Apparat\Object\Domain\Model\Object\ResourceInterface;
+use Apparat\Resource\Domain\Model\Resource\AbstractResource;
 
 /**
  * Repository adapter strategy interface
@@ -50,7 +51,7 @@ interface AdapterStrategyInterface extends \Apparat\Object\Domain\Repository\Ada
      * Find and return an object resource
      *
      * @param string $resourceLocator Repository relative resource locator
-     * @return ResourceInterface Object resource
+     * @return ResourceInterface|AbstractResource Object resource
      */
     public function getObjectResource($resourceLocator);
 }

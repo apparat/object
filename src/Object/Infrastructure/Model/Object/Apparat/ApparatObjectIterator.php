@@ -71,6 +71,6 @@ class ApparatObjectIterator extends \ArrayIterator
      */
     public function current()
     {
-        return $this->object[parent::key()];
+        return $this->object[$this->key()];
     }
 }

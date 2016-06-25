@@ -39,6 +39,7 @@ namespace Apparat\Object\Infrastructure\Repository;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Repository\AutoConnectorInterface;
+use Apparat\Object\Domain\Repository\Repository as DomainRepository;
 
 /**
  * Repository auto-connector service
@@ -64,7 +65,7 @@ class AutoConnector implements AutoConnectorInterface
         // If a repository configuration has been created
         if ($config !== null) {
             $repository = Repository::register(strval($url), $config);
-            return $repository instanceof \Apparat\Object\Domain\Repository\Repository;
+            return $repository instanceof DomainRepository;
         }
 
         return true;

@@ -52,6 +52,7 @@ use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
 use Apparat\Object\Infrastructure\Utilities\File;
+use Apparat\Resource\Domain\Model\Resource\AbstractResource;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
 
@@ -70,6 +71,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      */
     const TYPE = 'file';
     /**
+     * Glob visibilities
+     *
+     * @var array
+     */
+    protected static $globVisibilities = [
+        SelectorInterface::VISIBLE => '',
+        SelectorInterface::HIDDEN => '.',
+        SelectorInterface::ALL => '{.,}',
+    ];
+    /**
      * Configuration
      *
      * @var array
@@ -87,16 +98,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @var string
      */
     protected $configDir = null;
-    /**
-     * Glob visibilities
-     *
-     * @var array
-     */
-    protected static $globVisibilities = [
-        SelectorInterface::VISIBLE => '',
-        SelectorInterface::HIDDEN => '.',
-        SelectorInterface::ALL => '{.,}',
-    ];
 
     /**
      * Adapter strategy constructor
@@ -244,17 +245,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
-     * Test if an object resource exists
-     *
-     * @param string $resourcePath Repository relative resource path
-     * @return boolean Object resource exists
-     */
-    public function hasResource($resourcePath)
-    {
-        return is_file($this->root.$resourcePath);
-    }
-
-    /**
      * Return an individual hash for a resource
      *
      * @param string $resourcePath Repository relative resource path
@@ -263,6 +253,17 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     public function getResourceHash($resourcePath)
     {
         return $this->hasResource($this->root.$resourcePath) ? File::hash($this->root.$resourcePath) : null;
+    }
+
+    /**
+     * Test if an object resource exists
+     *
+     * @param string $resourcePath Repository relative resource path
+     * @return boolean Object resource exists
+     */
+    public function hasResource($resourcePath)
+    {
+        return is_file($this->root.$resourcePath);
     }
 
     /**
@@ -281,7 +282,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * Find and return an object resource
      *
      * @param string $resourcePath Repository relative resource locator
-     * @return ResourceInterface Object resource
+     * @return ResourceInterface|AbstractResource Object resource
      */
     public function getObjectResource($resourcePath)
     {
@@ -374,40 +375,35 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
-     * Publish an object in the repository
+     * Delete all revisions of an object
      *
-     * @param ObjectInterface $object
+     * @param ObjectInterface $object Object
+     * @return ObjectInterface Object
      */
-    protected function publishObject(ObjectInterface $object)
+    protected function deleteObject(ObjectInterface $object)
     {
-        $objectRepoLocator = $object->getRepositoryLocator();
-
-        // If the object had been persisted as a draft: Remove the draft resource
-        $objectDraftLocator = $objectRepoLocator->setRevision($object->getRevision()->setDraft(true));
-        $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftLocator);
-        if (@file_exists($absObjectDraftPath)) {
-            unlink($absObjectDraftPath);
+        // Hide object directory
+        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
+        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
+        $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
+        if (file_exists($objPublicContainer)
+            && is_dir($objPublicContainer)
+            && !rename($objPublicContainer, $objHiddenContainer)
+        ) {
+            throw new RuntimeException(
+                sprintf('Cannot hide object container "%s"', $objContainerName),
+                RuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
+            );
         }
 
-        // If it's not the first object revision: Rotate the previous revision resource
-        $objectRevisionNumber = $object->getRevision()->getRevision();
-        if ($objectRevisionNumber > 1) {
-            // Build the "current" object repository locator
-            $currentRevision = Revision::current();
-            $curObjectResPath =
-                $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($currentRevision));
-
-            // Build the previous object repository locator
-            /** @var Revision $previousRevision */
-            $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
-            $prevObjectResPath
-                = $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($previousRevision));
-
-            // Rotate the previous revision's resource path
-            if (file_exists($curObjectResPath)) {
-                rename($curObjectResPath, $prevObjectResPath);
-            }
+        // Delete all object revisions
+        /** @var ObjectInterface $objectRevision */
+        foreach ($object as $objectRevision) {
+            $this->persistObjectResource($objectRevision->delete());
         }
+
+        return $this;
     }
 
     /**
@@ -450,53 +446,6 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     }
 
     /**
-     * Return the repository size (number of objects in the repository)
-     *
-     * @return int Repository size
-     */
-    public function getRepositorySize()
-    {
-        $sizeDescriptorFile = $this->configDir.'size.txt';
-        $repositorySize = 0;
-        if (is_file($sizeDescriptorFile) && is_readable($sizeDescriptorFile)) {
-            $repositorySize = intval(file_get_contents($this->configDir.'size.txt'));
-        }
-        return $repositorySize;
-    }
-
-    /**
-     * Delete all revisions of an object
-     *
-     * @param ObjectInterface $object Object
-     * @return ObjectInterface Object
-     */
-    protected function deleteObject(ObjectInterface $object)
-    {
-        // Hide object directory
-        $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
-        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
-        $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
-        $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
-        if (file_exists($objPublicContainer)
-            && is_dir($objPublicContainer)
-            && !rename($objPublicContainer, $objHiddenContainer)
-        ) {
-            throw new RuntimeException(
-                sprintf('Cannot hide object container "%s"', $objContainerName),
-                RuntimeException::CANNOT_HIDE_OBJECT_CONTAINER
-            );
-        }
-
-        // Delete all object revisions
-        /** @var ObjectInterface $objectRevision */
-        foreach ($object as $objectRevision) {
-            $this->persistObjectResource($objectRevision->delete());
-        }
-
-        return $this;
-    }
-
-    /**
      * Undelete all revisions of an object
      *
      * @param ObjectInterface $object Object
@@ -526,5 +475,57 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         }
 
         return $this;
+    }
+
+    /**
+     * Publish an object in the repository
+     *
+     * @param ObjectInterface $object
+     */
+    protected function publishObject(ObjectInterface $object)
+    {
+        $objectRepoLocator = $object->getRepositoryLocator();
+
+        // If the object had been persisted as a draft: Remove the draft resource
+        $objectDraftLocator = $objectRepoLocator->setRevision($object->getRevision()->setDraft(true));
+        $absObjectDraftPath = $this->getAbsoluteResourcePath($objectDraftLocator);
+        if (@file_exists($absObjectDraftPath)) {
+            unlink($absObjectDraftPath);
+        }
+
+        // If it's not the first object revision: Rotate the previous revision resource
+        $objectRevisionNumber = $object->getRevision()->getRevision();
+        if ($objectRevisionNumber > 1) {
+            // Build the "current" object repository locator
+            $currentRevision = Revision::current();
+            $curObjectResPath =
+                $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($currentRevision));
+
+            // Build the previous object repository locator
+            /** @var Revision $previousRevision */
+            $previousRevision = Kernel::create(Revision::class, [$objectRevisionNumber - 1]);
+            $prevObjectResPath
+                = $this->getAbsoluteResourcePath($objectRepoLocator->setRevision($previousRevision));
+
+            // Rotate the previous revision's resource path
+            if (file_exists($curObjectResPath)) {
+                rename($curObjectResPath, $prevObjectResPath);
+            }
+        }
+    }
+
+    /**
+     * Return the repository size (number of objects in the repository)
+     *
+     * @return int Repository size
+     */
+    public function getRepositorySize()
+    {
+        $sizeDescriptorFile = $this->configDir.'size.txt';
+        $repositorySize = 0;
+        if (is_file($sizeDescriptorFile) && is_readable($sizeDescriptorFile)) {
+            $repositorySize = intval(file_get_contents($this->configDir.'size.txt'));
+        }
+        return $repositorySize;
     }
 }

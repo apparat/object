@@ -51,6 +51,8 @@ use Apparat\Object\Ports\Exceptions\InvalidArgumentException;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Infrastructure
  * @property ApplicationObjectInterface $object
+ * @method string getIteratorClass() Gets the iterator class name for the ArrayObject
+ * @method int getFlags() Gets the behavior flags
  */
 trait ApparatObjectTrait
 {
@@ -66,6 +68,7 @@ trait ApparatObjectTrait
      *
      * @param string $method Method name
      * @param array $arguments Arguments
+     * @return mixed Object property value
      * @throws \BadMethodCallException If the method is unknown
      */
     public function __call($method, array $arguments)
@@ -113,6 +116,7 @@ trait ApparatObjectTrait
      * Return whether a particular property exists
      *
      * @param string $offset Property name
+     * @return boolean Property exists
      */
     public function offsetExists($offset)
     {
@@ -243,23 +247,29 @@ trait ApparatObjectTrait
     /**
      * Sort the object properties by user function
      *
-     * @param \Callable $compareFunction User function
+     * @param \Closure|\Callable $compareFunction User function
      * @return void
      */
     public function uasort($compareFunction)
     {
         // Do nothing
+        if (is_callable($compareFunction())) {
+            return;
+        }
     }
 
     /**
      * Sort the object properties by name and user function
      *
-     * @param \Callable $compareFunction User function
+     * @param \Closure|\Callable $compareFunction User function
      * @return void
      */
     public function uksort($compareFunction)
     {
         // Do nothing
+        if (is_callable($compareFunction())) {
+            return;
+        }
     }
 
     /**

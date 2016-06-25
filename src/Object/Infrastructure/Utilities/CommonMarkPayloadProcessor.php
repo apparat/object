@@ -197,7 +197,7 @@ class CommonMarkPayloadProcessor extends AbstractPayloadProcessor implements
      * Strip off the fragment of an URL
      *
      * @param string $url URL
-     * @return string URL with fragmet stripped
+     * @return string URL with fragment stripped
      */
     protected function stripFragment($url)
     {

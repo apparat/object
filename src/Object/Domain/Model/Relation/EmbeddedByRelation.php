@@ -37,7 +37,7 @@
 namespace Apparat\Object\Domain\Model\Relation;
 
 /**
- * "emmbedded" relation
+ * "embedded" relation
  *
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
@@ -49,5 +49,5 @@ class EmbeddedByRelation extends AbstractRelation
      *
      * @var string
      */
-    const TYPE = 'emmbedded-by';
+    const TYPE = 'embedded-by';
 }

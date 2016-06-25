@@ -38,6 +38,7 @@ namespace Apparat\Object\Application\Model\Properties\Datatype;
 
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Properties\Domain\DomainException;
+use Apparat\Object\Domain\Model\Uri\GeoUri;
 
 /**
  * Geo URI
@@ -57,7 +58,7 @@ class Geo extends Token
     public function match($value)
     {
         try {
-            $geo = Kernel::create(\Apparat\Object\Domain\Model\Uri\GeoUri::class, [$value]);
+            $geo = Kernel::create(GeoUri::class, [$value]);
         } catch (\Exception $e) {
             throw new DomainException;
         }

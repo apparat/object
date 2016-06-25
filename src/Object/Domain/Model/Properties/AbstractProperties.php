@@ -170,7 +170,7 @@ abstract class AbstractProperties implements PropertiesInterface
     }
 
     /**
-     * Mutate a neste properties property
+     * Mutate a nested properties property
      *
      * @param string $property Property name
      * @param PropertiesInterface $value Nested properties

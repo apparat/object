@@ -45,7 +45,7 @@ namespace Apparat\Object\Application\Model\Properties\Domain;
 class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
-     * Invalid allowed property datatypes
+     * Invalid allowed property data types
      *
      * @var int
      */

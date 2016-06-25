@@ -131,7 +131,7 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
      * @param array $propertyPath Property name path
      * @param array $propertyTree Copy of the current property tree
      * @param boolean $created Property has been created
-     * @param array $propertyModel Property model
+     * @param PropertyModel $propertyModel Property model
      * @return mixed Property node
      * @throws DomainException If an invalid subproperty should be allocated
      */
@@ -152,7 +152,7 @@ abstract class AbstractDomainProperties extends \Apparat\Object\Domain\Model\Pro
             if ($propertyModel !== null) {
                 throw new DomainException(
                     sprintf(
-                        'Property data model of "%s" doesn\'t allow subproperties',
+                        'Property data model of "%s" does not allow sub-properties',
                         implode(self::PROPERTY_TRAVERSAL_SEPARATOR, $propertyPathSteps)
                     ),
                     DomainException::INVALID_DOMAIN_SUBPROPERTY

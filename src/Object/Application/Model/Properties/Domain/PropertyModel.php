@@ -49,7 +49,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 class PropertyModel
 {
     /**
-     * Multivalue property
+     * Multi-value property
      *
      * @var boolean
      */
@@ -77,7 +77,7 @@ class PropertyModel
      * Constructor
      *
      * @param ObjectInterface $object Owning object
-     * @param bool $multivalue Multivalue property
+     * @param bool $multivalue Multi-value property
      * @param array $datatypes Allowed datatypes
      * @param array $filter Datatype filters
      * @throws InvalidArgumentException If no datatypes are allowed

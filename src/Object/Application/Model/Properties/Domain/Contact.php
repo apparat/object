@@ -237,7 +237,7 @@ class Contact extends AbstractDomainProperties
      */
     const ROLE = 'role';
     /**
-     * Instant messager profile
+     * Instant messenger profile
      *
      * @var string
      */

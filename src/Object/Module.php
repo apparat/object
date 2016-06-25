@@ -103,7 +103,7 @@ class Module extends AbstractModule
     }
 
     /**
-     * Test whether a URL is absolute and doesn't have query parameters and / or a fragment
+     * Test whether a URL is absolute and does not have query parameters and / or a fragment
      *
      * @param string $url URL
      * @return boolean If the URL is absolute and has neither query parameters or a fragment

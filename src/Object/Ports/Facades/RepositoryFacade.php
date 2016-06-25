@@ -42,6 +42,7 @@ use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Infrastructure\Factory\ApparatObjectFactory;
+use Apparat\Object\Infrastructure\Repository\Repository;
 use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Ports\Repository\SelectorInterface;
@@ -81,7 +82,7 @@ class RepositoryFacade implements FacadeInterface
      */
     public static function register($url, array $config)
     {
-        return new static(\Apparat\Object\Infrastructure\Repository\Repository::register($url, $config));
+        return new static(Repository::register($url, $config));
     }
 
     /**
@@ -93,7 +94,7 @@ class RepositoryFacade implements FacadeInterface
      */
     public static function instance($url)
     {
-        return new static(\Apparat\Object\Infrastructure\Repository\Repository::instance($url));
+        return new static(Repository::instance($url));
     }
 
     /**
@@ -106,7 +107,7 @@ class RepositoryFacade implements FacadeInterface
      */
     public static function create($url, array $config)
     {
-        return new static(\Apparat\Object\Infrastructure\Repository\Repository::create($url, $config));
+        return new static(Repository::create($url, $config));
     }
 
     /**

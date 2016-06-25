@@ -45,7 +45,7 @@ namespace Apparat\Object\Application\Model\Properties\Domain;
 class DomainException extends \DomainException
 {
     /**
-     * Invalid domain subproperty
+     * Invalid domain sub-property
      *
      * @var int
      */

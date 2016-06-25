@@ -175,7 +175,7 @@ class Service
     /**
      * Return an object repository by URL
      *
-     * If a repository URL hasn't been pre-registered, the method tries to perform an adhoc registration
+     * If a repository URL has not been pre-registered, the method tries to perform an ad-hoc registration
      * based on the URL given.
      * The repository URL may be local or remote, relative or absolute, with Apparat or HTTP scheme.
      *

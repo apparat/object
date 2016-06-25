@@ -36,7 +36,6 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
-use Apparat\Object\Domain\Model\Uri\LocatorInterface;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 
@@ -330,7 +329,7 @@ interface ObjectInterface extends \Iterator, \Countable
     /**
      * Return the object repository locator
      *
-     * @return RepositoryLocatorInterface|LocatorInterface Object repository locator
+     * @return RepositoryLocatorInterface Object repository locator
      */
     public function getRepositoryLocator();
 

@@ -244,6 +244,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
             'article',
             $url->setType($articleType)->getType()->getType()
         );
+        $this->assertTrue($url->setHidden(true)->isHidden());
         $this->assertEquals(
             Revision::CURRENT,
             $url->setRevision(Revision::current())->getRevision()->getRevision()

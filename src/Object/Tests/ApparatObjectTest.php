@@ -43,6 +43,7 @@ use Apparat\Object\Ports\Facades\RepositoryFacade;
 use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Ports\Object\Article;
 use Apparat\Object\Ports\Object\Contact;
+use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
 /**
  * Object URL tests
@@ -107,6 +108,7 @@ class ApparatObjectTest extends AbstractRepositoryEnabledTest
         $articleApparatObj = RepositoryFacade::instance('repo')->loadObject(self::ARTICLE_LOCATOR);
         $this->assertInstanceOf(Article::class, $articleApparatObj);
 
+        $this->assertEquals(ObjectTypes::ARTICLE, $articleApparatObj['type']);
         $this->assertTrue(isset($articleApparatObj['name']));
         $this->assertEquals('First repository article', $articleApparatObj['name']);
         $this->assertEquals('First repository article', $articleApparatObj->getName());

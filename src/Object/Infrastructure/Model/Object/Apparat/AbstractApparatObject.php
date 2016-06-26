@@ -61,6 +61,12 @@ abstract class AbstractApparatObject extends \ArrayObject implements ApparatObje
      */
     use ApparatObjectTrait;
     /**
+     * Object type
+     *
+     * @var string
+     */
+    const TYPE = null;
+    /**
      * Application object
      *
      * @var ApplicationObjectInterface
@@ -79,7 +85,22 @@ abstract class AbstractApparatObject extends \ArrayObject implements ApparatObje
         $flags = 0,
         $iteratorClass = ApparatObjectIterator::class
     ) {
-        parent::__construct($this->mapping, $flags, $iteratorClass);
+        $this->mapping[ApparatObjectInterface::PROPERTY_TYPE] = ApparatObjectInterface::PROPERTY_TYPE;
+        parent::__construct(
+            $this->mapping,
+            $flags,
+            $iteratorClass
+        );
         $this->object = $object;
+    }
+
+    /**
+     * Return the object type
+     *
+     * @return string Object type
+     */
+    public function getType()
+    {
+        return static::TYPE;
     }
 }

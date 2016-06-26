@@ -43,6 +43,7 @@ use Apparat\Object\Domain\Model\Properties\MetaProperties;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Properties\SystemProperties;
 use Apparat\Object\Infrastructure\Model\Object\Apparat\AbstractApparatObject;
+use Apparat\Object\Ports\Types\Object;
 use Apparat\Object\Ports\Types\Relation;
 
 /**
@@ -88,6 +89,12 @@ use Apparat\Object\Ports\Types\Relation;
  */
 class Contact extends AbstractApparatObject
 {
+    /**
+     * Object type
+     *
+     * @var string
+     */
+    const TYPE = Object::CONTACT;
     /**
      * Property mapping
      *

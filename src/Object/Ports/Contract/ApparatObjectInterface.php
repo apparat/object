@@ -44,5 +44,17 @@ namespace Apparat\Object\Ports\Contract;
  */
 interface ApparatObjectInterface
 {
+    /**
+     * Object type property
+     *
+     * @var string
+     */
+    const PROPERTY_TYPE = 'type';
 
+    /**
+     * Return the object type
+     *
+     * @return string Object type
+     */
+    public function getType();
 }

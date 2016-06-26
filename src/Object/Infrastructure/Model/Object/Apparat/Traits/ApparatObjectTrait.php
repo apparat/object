@@ -98,6 +98,11 @@ trait ApparatObjectTrait
      */
     protected function delegateObjectGetter($property, $getter, array $arguments)
     {
+        // If the apparat object itself has the requested getter
+        if ((new \ReflectionClass(static::class))->hasMethod($getter)) {
+            return $this->$getter(...$arguments);
+        }
+
         // If the property is invalid
         if (!is_callable([$this->object, $getter])) {
             throw new InvalidArgumentException(

@@ -70,7 +70,7 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * @param Type $type Object type
      * @return RepositoryLocatorInterface New object locator
      */
-    public function setType(Type $type);
+    public function setObjectType(Type $type);
 
     /**
      * Set the object ID

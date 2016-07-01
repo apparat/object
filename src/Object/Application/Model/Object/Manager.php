@@ -91,7 +91,7 @@ class Manager implements ManagerInterface
             $repositoryLocator = Kernel::create(RepositoryLocator::class, [$repository]);
             $repositoryLocator = $repositoryLocator->setId($uid);
             $repositoryLocator = $repositoryLocator->setRevision($revision);
-            $repositoryLocator = $repositoryLocator->setType($type);
+            $repositoryLocator = $repositoryLocator->setObjectType($type);
             $repositoryLocator = $repositoryLocator->setCreationDate($creationDate);
 
             return ObjectFactory::createFromParams($repositoryLocator, $payload, $propertyData);

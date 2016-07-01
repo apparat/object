@@ -285,7 +285,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
             ]
         );
         $this->assertInstanceOf(FileAdapterStrategy::class, $fileAdapterStrategy);
-        $this->assertEquals(FileAdapterStrategy::TYPE, $fileAdapterStrategy->getType());
+        $this->assertEquals(FileAdapterStrategy::TYPE, $fileAdapterStrategy->getAdapterType());
     }
 
     /**

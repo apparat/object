@@ -90,7 +90,7 @@ abstract class AbstractAdapterStrategy implements AdapterStrategyInterface
      *
      * @return string Adapter strategy type
      */
-    public function getType()
+    public function getAdapterType()
     {
         return static::TYPE;
     }

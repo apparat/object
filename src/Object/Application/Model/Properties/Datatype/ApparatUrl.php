@@ -64,7 +64,7 @@ class ApparatUrl extends Url
             );
 
             // If the apparat URL needs to be filtered
-            if (count($this->filter) && !in_array($apparatUrl->getType()->getType(), $this->filter)) {
+            if (count($this->filter) && !in_array($apparatUrl->getObjectType()->getType(), $this->filter)) {
                 throw new DomainException;
             }
         } catch (DomainException $e) {

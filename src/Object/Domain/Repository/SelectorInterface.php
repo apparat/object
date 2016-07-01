@@ -169,7 +169,7 @@ interface SelectorInterface
      *
      * @return string
      */
-    public function getType();
+    public function getObjectType();
 
     /**
      * Return the revision component

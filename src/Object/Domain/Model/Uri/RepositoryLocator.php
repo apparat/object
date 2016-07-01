@@ -67,7 +67,7 @@ class RepositoryLocator extends Locator implements RepositoryLocatorInterface
         if ($locator instanceof LocatorInterface) {
             $this->creationDate = $locator->getCreationDate();
             $this->uid = $locator->getId();
-            $this->type = $locator->getType();
+            $this->type = $locator->getObjectType();
             $this->revision = $locator->getRevision();
             return;
         }

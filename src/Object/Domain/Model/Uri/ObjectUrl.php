@@ -117,9 +117,9 @@ class ObjectUrl extends Url implements LocatorInterface
      * @param Type $type Object type
      * @return LocatorInterface|ObjectUrl New object URL
      */
-    public function setType(Type $type)
+    public function setObjectType(Type $type)
     {
-        $this->locator = $this->locator->setType($type);
+        $this->locator = $this->locator->setObjectType($type);
         return $this;
     }
 
@@ -173,7 +173,7 @@ class ObjectUrl extends Url implements LocatorInterface
             }
 
             // Test the object type
-            if ($this->getType()->serialize() !== $url->getType()->serialize()) {
+            if ($this->getObjectType()->serialize() !== $url->getObjectType()->serialize()) {
                 return false;
             }
 
@@ -211,9 +211,9 @@ class ObjectUrl extends Url implements LocatorInterface
      *
      * @return Type Object type
      */
-    public function getType()
+    public function getObjectType()
     {
-        return $this->locator->getType();
+        return $this->locator->getObjectType();
     }
 
     /**

@@ -430,7 +430,7 @@ class Selector implements SelectorInterface
      *
      * @return string
      */
-    public function getType()
+    public function getObjectType()
     {
         return $this->type;
     }

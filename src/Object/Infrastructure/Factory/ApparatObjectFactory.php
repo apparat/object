@@ -89,7 +89,7 @@ class ApparatObjectFactory implements ObjectTypesInterface
      */
     public static function create(ObjectInterface $object)
     {
-        $objectType = $object->getType()->getType();
+        $objectType = $object->getObjectType()->getType();
 
         // If the object type doesn't map to known apparat object class
         if (!array_key_exists($objectType, static::$typeClasses) || !static::$typeClasses[$objectType]) {

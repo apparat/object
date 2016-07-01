@@ -216,7 +216,7 @@ class Locator implements LocatorInterface
      *
      * @return Type Object type
      */
-    public function getType()
+    public function getObjectType()
     {
         return $this->type;
     }
@@ -227,7 +227,7 @@ class Locator implements LocatorInterface
      * @param Type $type Object type
      * @return LocatorInterface|Locator New object locator
      */
-    public function setType(Type $type)
+    public function setObjectType(Type $type)
     {
         $locator = clone $this;
         $locator->type = $type;

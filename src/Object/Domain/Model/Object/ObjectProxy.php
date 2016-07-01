@@ -160,9 +160,9 @@ class ObjectProxy implements ObjectInterface
      *
      * @return Type Object type
      */
-    public function getType()
+    public function getObjectType()
     {
-        return $this->object()->getType();
+        return $this->object()->getObjectType();
     }
 
     /**

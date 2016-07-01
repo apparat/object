@@ -76,7 +76,7 @@ interface LocatorInterface
      *
      * @return Type Object type
      */
-    public function getType();
+    public function getObjectType();
 
     /**
      * Set the object type
@@ -84,7 +84,7 @@ interface LocatorInterface
      * @param Type $type Object type
      * @return LocatorInterface New object locator
      */
-    public function setType(Type $type);
+    public function setObjectType(Type $type);
 
     /**
      * Return the object ID

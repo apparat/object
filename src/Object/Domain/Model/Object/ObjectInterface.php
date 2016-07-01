@@ -112,7 +112,7 @@ interface ObjectInterface extends \Iterator, \Countable
      *
      * @return Type Object type
      */
-    public function getType();
+    public function getObjectType();
 
     /**
      * Return the object revision

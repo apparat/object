@@ -225,7 +225,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         $visibility = $selector->getVisibility();
         $uid = $selector->getId();
-        $type = $selector->getType();
+        $type = $selector->getObjectType();
         if (($uid !== null) || ($type !== null)) {
             $glob .= '/'.($uid ?: SelectorInterface::WILDCARD).'-'.($type ?: SelectorInterface::WILDCARD);
 
@@ -384,7 +384,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     {
         // Hide object directory
         $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
-        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objContainerName = $object->getId()->getId().'-'.$object->getObjectType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
         if (file_exists($objPublicContainer)
@@ -455,7 +455,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
     {
         // Hide object directory
         $objContainerDir = dirname(dirname($this->getAbsoluteResourcePath($object->getRepositoryLocator())));
-        $objContainerName = $object->getId()->getId().'-'.$object->getType()->getType();
+        $objContainerName = $object->getId()->getId().'-'.$object->getObjectType()->getType();
         $objPublicContainer = $objContainerDir.DIRECTORY_SEPARATOR.$objContainerName;
         $objHiddenContainer = $objContainerDir.DIRECTORY_SEPARATOR.'.'.$objContainerName;
         if (file_exists($objHiddenContainer)

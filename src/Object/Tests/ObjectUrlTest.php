@@ -127,8 +127,8 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals('2015-10-01', $url->getCreationDate()->format('Y-m-d'));
         $this->assertInstanceOf(Id::class, $url->getId());
         $this->assertEquals(new Id(36704), $url->getId());
-        $this->assertInstanceOf(Type::class, $url->getType());
-        $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::EVENT]), $url->getType());
+        $this->assertInstanceOf(Type::class, $url->getObjectType());
+        $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::EVENT]), $url->getObjectType());
         $this->assertInstanceOf(Revision::class, $url->getRevision());
         $this->assertEquals(new Revision(1), $url->getRevision());
         $this->assertEquals(self::REMOTE_REPOSITORY_URL, Service::normalizeRepositoryUrl($url));
@@ -242,7 +242,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals(123, $url->setId(new Id(123))->getId()->getId());
         $this->assertEquals(
             'article',
-            $url->setType($articleType)->getType()->getType()
+            $url->setObjectType($articleType)->getObjectType()->getType()
         );
         $this->assertTrue($url->setHidden(true)->isHidden());
         $this->assertEquals(

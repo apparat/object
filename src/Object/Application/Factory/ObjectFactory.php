@@ -77,7 +77,7 @@ class ObjectFactory
         }
 
         // Determine the object class
-        $objectClass = self::objectClassFromType($locator->getType());
+        $objectClass = self::objectClassFromType($locator->getObjectType());
 
         // Instantiate the object
         return Kernel::create($objectClass, [$locator, $objectResource->getPayload(), $propertyData]);
@@ -119,7 +119,7 @@ class ObjectFactory
         array $propertyData = []
     ) {
         // Determine the object class
-        $objectClass = self::objectClassFromType($locator->getType());
+        $objectClass = self::objectClassFromType($locator->getObjectType());
 
         // Prepare the system properties collection
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
@@ -127,7 +127,7 @@ class ObjectFactory
                 $propertyData[SystemProperties::COLLECTION]
             )) ? [] : $propertyData[SystemProperties::COLLECTION];
         $systemPropertyData[SystemProperties::PROPERTY_ID] = $locator->getId()->getId();
-        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $locator->getType()->getType();
+        $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $locator->getObjectType()->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $locator->getRevision()->getRevision();
         $systemPropertyData[SystemProperties::PROPERTY_CREATED] =
         $systemPropertyData[SystemProperties::PROPERTY_MODIFIED] = $locator->getCreationDate();

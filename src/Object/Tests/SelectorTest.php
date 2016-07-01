@@ -68,7 +68,7 @@ class SelectorTest extends AbstractDisabledAutoconnectorTest
         $this->assertEquals($data[2], $selector->getDay());
         $this->assertEquals($data[3], $selector->getVisibility());
         $this->assertEquals($data[4], $selector->getId());
-        $this->assertEquals($data[5], $selector->getType());
+        $this->assertEquals($data[5], $selector->getObjectType());
         $this->assertEquals($data[6], $selector->getDraft());
         $this->assertEquals($data[7], $selector->getRevision());
     }

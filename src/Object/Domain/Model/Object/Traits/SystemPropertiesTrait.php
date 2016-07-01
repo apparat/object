@@ -82,9 +82,9 @@ trait SystemPropertiesTrait
      *
      * @return Type Object type
      */
-    public function getType()
+    public function getObjectType()
     {
-        return $this->systemProperties->getType();
+        return $this->systemProperties->getObjectType();
     }
 
     /**

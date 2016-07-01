@@ -222,7 +222,7 @@ namespace Apparat\Object\Tests {
             $articleObject = self::$repository->loadObject($articleObjectLocator);
             $this->assertInstanceOf(Article::class, $articleObject);
             $this->assertEquals(new Id(1), $articleObject->getId());
-            $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::ARTICLE]), $articleObject->getType());
+            $this->assertEquals(Kernel::create(Type::class, [ObjectTypes::ARTICLE]), $articleObject->getObjectType());
             $this->assertEquals(new Revision(1), $articleObject->getRevision());
             $this->assertFalse($articleObject->isDraft());
             $this->assertTrue($articleObject->isPublished());

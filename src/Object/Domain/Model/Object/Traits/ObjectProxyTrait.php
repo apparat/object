@@ -82,6 +82,13 @@ trait ObjectProxyTrait
     }
 
     /**
+     * Return the URL
+     *
+     * @return ApparatUrl URL
+     */
+    abstract public function getUrl();
+
+    /**
      * Return the object property data
      *
      * @param bool $serialize Serialize property objects
@@ -102,7 +109,8 @@ trait ObjectProxyTrait
         // Lazy-load the remote object if necessary
         if (!$this->object instanceof ObjectInterface) {
             // Instantiate the local object repository, load and return the object
-            $this->object = Kernel::create(Service::class)->get($this->getUrl())->loadObject($this->getUrl()->getLocator());
+            $this->object =
+                Kernel::create(Service::class)->get($this->getUrl())->loadObject($this->getUrl()->getLocator());
         }
 
         return $this->object;
@@ -222,7 +230,6 @@ trait ObjectProxyTrait
         return $this->object()->setElevation($elevation);
     }
 
-
     /**
      * Return the object draft mode
      *
@@ -334,7 +341,6 @@ trait ObjectProxyTrait
     {
         return $this->object()->setSlug($slug);
     }
-
 
     /**
      * Return the object description
@@ -630,7 +636,6 @@ trait ObjectProxyTrait
         return $this->object()->hasBeenUndeleted();
     }
 
-
     /**
      * Publish the current object revision
      *
@@ -705,11 +710,4 @@ trait ObjectProxyTrait
     {
         return $this->object()->findRelations($criteria);
     }
-
-    /**
-     * Return the URL
-     *
-     * @return RepositoryLocatorInterface|ApparatUrl URL
-     */
-    abstract public function getUrl();
 }

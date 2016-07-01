@@ -102,4 +102,11 @@ trait IterableProxyTrait
     {
         return $this->object()->count();
     }
+
+    /**
+     * Return the enclosed remote object
+     *
+     * @return ObjectInterface Remote object
+     */
+    abstract protected function object();
 }

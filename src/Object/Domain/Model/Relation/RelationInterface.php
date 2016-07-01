@@ -36,6 +36,7 @@
 
 namespace Apparat\Object\Domain\Model\Relation;
 
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
 use Apparat\Object\Domain\Model\Uri\Url;
 
 /**
@@ -99,14 +100,14 @@ interface RelationInterface
     /**
      * Return the URL
      *
-     * @return Url URL
+     * @return Url|ApparatUrl URL
      */
     public function getUrl();
 
     /**
      * Set the URL
      *
-     * @param Url|null $url URL
+     * @param Url|ApparatUrl|null $url URL
      * @return RelationInterface Self reference
      */
     public function setUrl(Url $url = null);

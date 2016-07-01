@@ -34,13 +34,17 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Domain\Model\Object;
+namespace Apparat\Object\Domain\Model\Object\Traits;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Object\Traits\IterableProxyTrait;
+use Apparat\Object\Domain\Model\Object\Id;
+use Apparat\Object\Domain\Model\Object\InvalidArgumentException;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
+use Apparat\Object\Domain\Model\Object\Revision;
+use Apparat\Object\Domain\Model\Object\Type;
+use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Model\Uri\ApparatUrl;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
-use Apparat\Object\Domain\Model\Relation\RelationInterface;
 use Apparat\Object\Domain\Repository\Service;
 
 /**
@@ -49,38 +53,18 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-class ObjectProxy implements ObjectInterface
+trait ObjectProxyTrait
 {
     /**
      * Use traits
      */
     use IterableProxyTrait;
     /**
-     * Apparat object URL
-     *
-     * @var ApparatUrl
-     */
-    protected $url = null;
-    /**
      * Object
      *
      * @var ObjectInterface
      */
     protected $object = null;
-
-    /*******************************************************************************
-     * PUBLIC METHODS
-     *******************************************************************************/
-
-    /**
-     * Object proxy constructor
-     *
-     * @param ApparatUrl $url Apparat object URL
-     */
-    public function __construct(ApparatUrl $url)
-    {
-        $this->url = $url;
-    }
 
     /**
      * Return the object repository locator
@@ -94,7 +78,7 @@ class ObjectProxy implements ObjectInterface
             return $this->object->getRepositoryLocator();
         }
 
-        return $this->url->getLocator();
+        return $this->getUrl()->getLocator();
     }
 
     /**
@@ -118,7 +102,7 @@ class ObjectProxy implements ObjectInterface
         // Lazy-load the remote object if necessary
         if (!$this->object instanceof ObjectInterface) {
             // Instantiate the local object repository, load and return the object
-            $this->object = Kernel::create(Service::class)->get($this->url)->loadObject($this->url->getLocator());
+            $this->object = Kernel::create(Service::class)->get($this->getUrl())->loadObject($this->getUrl()->getLocator());
         }
 
         return $this->object;
@@ -537,16 +521,6 @@ class ObjectProxy implements ObjectInterface
     }
 
     /**
-     * Return the absolute object URL
-     *
-     * @return string
-     */
-    public function getAbsoluteUrl()
-    {
-        return strval($this->url);
-    }
-
-    /**
      * Return the canonical object URL
      *
      * @return string
@@ -554,6 +528,16 @@ class ObjectProxy implements ObjectInterface
     public function getCanonicalUrl()
     {
         return $this->getAbsoluteUrl();
+    }
+
+    /**
+     * Return the absolute object URL
+     *
+     * @return string
+     */
+    public function getAbsoluteUrl()
+    {
+        return strval($this->getUrl());
     }
 
     /**
@@ -721,4 +705,11 @@ class ObjectProxy implements ObjectInterface
     {
         return $this->object()->findRelations($criteria);
     }
+
+    /**
+     * Return the URL
+     *
+     * @return RepositoryLocatorInterface|ApparatUrl URL
+     */
+    abstract public function getUrl();
 }

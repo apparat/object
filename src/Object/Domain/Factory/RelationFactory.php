@@ -37,8 +37,6 @@
 namespace Apparat\Object\Domain\Factory;
 
 use Apparat\Kernel\Ports\Kernel;
-use Apparat\Object\Domain\Model\Uri\ApparatUrl;
-use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
 use Apparat\Object\Domain\Model\Relation\ContributesRelation;
 use Apparat\Object\Domain\Model\Relation\EmbeddedByRelation;
@@ -47,6 +45,20 @@ use Apparat\Object\Domain\Model\Relation\InvalidArgumentException;
 use Apparat\Object\Domain\Model\Relation\LikedByRelation;
 use Apparat\Object\Domain\Model\Relation\LikesRelation;
 use Apparat\Object\Domain\Model\Relation\OutOfBoundsException;
+use Apparat\Object\Domain\Model\Relation\Proxy\ContributedByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\ContributesProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\EmbeddedByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\EmbedsProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\LikedByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\LikesProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\ReferredByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\RefersToProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\RepliedByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\RepliesToProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\RepostedByProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\RepostsProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\SyndicatedFromProxyRelation;
+use Apparat\Object\Domain\Model\Relation\Proxy\SyndicatedToProxyRelation;
 use Apparat\Object\Domain\Model\Relation\ReferredByRelation;
 use Apparat\Object\Domain\Model\Relation\RefersToRelation;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
@@ -56,6 +68,8 @@ use Apparat\Object\Domain\Model\Relation\RepostedByRelation;
 use Apparat\Object\Domain\Model\Relation\RepostsRelation;
 use Apparat\Object\Domain\Model\Relation\SyndicatedFromRelation;
 use Apparat\Object\Domain\Model\Relation\SyndicatedToRelation;
+use Apparat\Object\Domain\Model\Uri\ApparatUrl;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Domain\Repository\RepositoryInterface;
 use Apparat\Object\Infrastructure\Utilities\Validator;
 
@@ -112,6 +126,27 @@ class RelationFactory
         SyndicatedToRelation::TYPE => SyndicatedToRelation::class,
         SyndicatedFromRelation::TYPE => SyndicatedFromRelation::class,
     ];
+    /**
+     * Proxy relation types
+     *
+     * @var array
+     */
+    public static $proxyRelationTypes = [
+        ContributesRelation::TYPE => ContributesProxyRelation::class,
+        ContributedByRelation::TYPE => ContributedByProxyRelation::class,
+        EmbedsRelation::TYPE => EmbedsProxyRelation::class,
+        EmbeddedByRelation::TYPE => EmbeddedByProxyRelation::class,
+        LikesRelation::TYPE => LikesProxyRelation::class,
+        LikedByRelation::TYPE => LikedByProxyRelation::class,
+        RefersToRelation::TYPE => RefersToProxyRelation::class,
+        ReferredByRelation::TYPE => ReferredByProxyRelation::class,
+        RepliesToRelation::TYPE => RepliesToProxyRelation::class,
+        RepliedByRelation::TYPE => RepliedByProxyRelation::class,
+        RepostsRelation::TYPE => RepostsProxyRelation::class,
+        RepostedByRelation::TYPE => RepostedByProxyRelation::class,
+        SyndicatedToRelation::TYPE => SyndicatedToProxyRelation::class,
+        SyndicatedFromRelation::TYPE => SyndicatedFromProxyRelation::class,
+    ];
 
     /**
      * Parse a relation serialization and instantiate the relation
@@ -126,10 +161,14 @@ class RelationFactory
         // Validate the relation type
         self::validateRelationType($relationType);
 
+        // Parse the relation string
+        $relationComponents = self::parseRelationString($relation, $contextRepository);
+        $isProxyRelation = $relationComponents[self::PARSE_URL] instanceof ApparatUrl;
+
         // Create the relation instance
         return Kernel::create(
-            self::$relationTypes[$relationType],
-            array_values(self::parseRelationString($relation, $contextRepository))
+            $isProxyRelation ? self::$proxyRelationTypes[$relationType] : self::$relationTypes[$relationType],
+            array_values($relationComponents)
         );
     }
 

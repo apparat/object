@@ -39,9 +39,10 @@ namespace Apparat\Object\Tests;
 use Apparat\Kernel\Ports\Kernel;
 use Apparat\Object\Application\Model\Object\Article;
 use Apparat\Object\Domain\Factory\RelationFactory;
-use Apparat\Object\Domain\Model\Uri\Url;
+use Apparat\Object\Domain\Model\Object\ObjectInterface;
 use Apparat\Object\Domain\Model\Properties\Relations;
 use Apparat\Object\Domain\Model\Relation\ContributedByRelation;
+use Apparat\Object\Domain\Model\Uri\Url;
 use Apparat\Object\Infrastructure\Model\Object\Object;
 use Apparat\Object\Ports\Types\Relation;
 
@@ -224,5 +225,29 @@ class RelationTest extends AbstractRepositoryEnabledTest
             ->setEmail('jane@example.com')
             ->setCoupling(Relation::TIGHT_COUPLING);
         $relation->setCoupling('invalid-coupling');
+    }
+
+    /**
+     * Test relation proxying
+     */
+    public function testRelationProxying()
+    {
+        $article = Object::load(getenv('REPOSITORY_URL').self::OBJECT_LOCATOR);
+        $this->assertInstanceOf(Article::class, $article);
+
+        $relationFilter = [
+            Relation::URL => 'contact',
+            Relation::TYPE => ContributedByRelation::TYPE,
+        ];
+        foreach ($article->findRelations($relationFilter) as $relation) {
+            $this->assertInstanceOf(ContributedByRelation::class, $relation);
+
+            // Test for object proxies
+            if (($relation instanceof ObjectInterface)
+                && (!$relation->getUrl()->isAbsolute() || $relation->getUrl()->isAbsoluteLocal())
+            ) {
+                $this->assertEquals('John Doe', $relation->getTitle());
+            }
+        }
     }
 }

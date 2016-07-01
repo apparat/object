@@ -94,7 +94,7 @@ interface RelationInterface
      *
      * @return string Relation type
      */
-    public function getType();
+    public function getRelationType();
 
     /**
      * Return the URL

@@ -61,7 +61,6 @@ class Relations extends AbstractProperties
      */
     protected $relations = [];
 
-
     /**
      * Relations constructor
      *
@@ -216,7 +215,7 @@ class Relations extends AbstractProperties
             foreach ($criteria as $property => $value) {
                 switch ($property) {
                     case RelationInterface::FILTER_TYPE:
-                        if ($relation->getType() != $value) {
+                        if ($relation->getRelationType() != $value) {
                             return false;
                         }
                         break;
@@ -260,12 +259,11 @@ class Relations extends AbstractProperties
         $relations = [];
         /** @var RelationInterface $relation */
         foreach ($this->relations as $relation) {
-            $relationType = $relation->getType();
+            $relationType = $relation->getRelationType();
             if (!array_key_exists($relationType, $relations)) {
-                $relations[$relationType] = [strval($relation)];
-                continue;
+                $relations[$relationType] = [];
             }
-            $relations[$relationType][] = strval($relation);
+            $relations[$relationType][] = $serialize ? strval($relation) : $relation;
         }
         ksort($relations);
         return $this->toSerializedArray($serialize, $relations);

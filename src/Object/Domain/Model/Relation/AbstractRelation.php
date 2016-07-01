@@ -213,7 +213,7 @@ abstract class AbstractRelation implements RelationInterface
     public function getSignature()
     {
         return md5(
-            $this->getType().
+            $this->getRelationType().
             (empty($this->url)
                 ? (empty($this->email) ? (empty($this->label) ? '-' : $this->label) : $this->email)
                 : $this->url)
@@ -225,7 +225,7 @@ abstract class AbstractRelation implements RelationInterface
      *
      * @return string Relation type
      */
-    public function getType()
+    public function getRelationType()
     {
         return static::TYPE;
     }

@@ -37,6 +37,7 @@
 namespace Apparat\Object\Domain\Model\Object;
 
 use Apparat\Kernel\Ports\Kernel;
+use Apparat\Object\Domain\Model\Object\Traits\IterableProxyTrait;
 use Apparat\Object\Domain\Model\Uri\ApparatUrl;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocatorInterface;
 use Apparat\Object\Domain\Model\Relation\RelationInterface;
@@ -48,8 +49,12 @@ use Apparat\Object\Domain\Repository\Service;
  * @package Apparat\Object
  * @subpackage Apparat\Object\Domain
  */
-abstract class ObjectProxy implements ObjectInterface
+class ObjectProxy implements ObjectInterface
 {
+    /**
+     * Use traits
+     */
+    use IterableProxyTrait;
     /**
      * Apparat object URL
      *

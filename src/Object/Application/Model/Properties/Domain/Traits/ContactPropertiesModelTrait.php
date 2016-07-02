@@ -201,11 +201,8 @@ trait ContactPropertiesModelTrait
      * Property model: Anniversary
      *
      * @var array
-     * @todo There seems to be a bug in symfony/yaml so that lists of dates cannot be parsed w/o errors, so right now
-     * there cannot be a list of anniversaries. Should be solved in Symfony 3.2
-     * @see https://github.com/symfony/symfony/pull/19029
      */
-    protected $pmAnniversary = [false, [Datetime::class]];
+    protected $pmAnniversary = [true, [Datetime::class]];
 
     /**
      * Set the given name
@@ -217,6 +214,39 @@ trait ContactPropertiesModelTrait
     {
         $property = $value;
         $this->composeFullName(Contact::GIVEN_NAME, $value);
+    }
+
+    /**
+     * Set the full contact name
+     *
+     * @param string $propertyName Current name property
+     * @param string $propertyValue Current name property value
+     */
+    protected function composeFullName($propertyName, $propertyValue)
+    {
+        $nameProperties = [
+            Contact::HONORIFIC_PREFIX => '',
+            Contact::GIVEN_NAME => '',
+            Contact::NICKNAME => '',
+            Contact::ADDITIONAL_NAME => '',
+            Contact::FAMILY_NAME => '',
+            Contact::HONORIFIC_SUFFIX => ''
+        ];
+        foreach (array_keys($nameProperties) as $name) {
+            try {
+                $nameProperty = trim($this->getObject()->getDomain($name));
+                if (strlen($nameProperty)) {
+                    $nameProperties[$name] = $nameProperty;
+                }
+            } catch (InvalidArgumentException $e) {
+                continue;
+            }
+        }
+        $nameProperties[$propertyName] = $propertyValue;
+        if (!empty($nameProperties[Contact::NICKNAME])) {
+            $nameProperties[Contact::NICKNAME] = '"'.$nameProperties[Contact::NICKNAME].'"';
+        }
+        $this->getObject()->setTitle(implode(' ', array_filter($nameProperties)));
     }
 
     /**
@@ -277,38 +307,5 @@ trait ContactPropertiesModelTrait
     {
         $property = $value;
         $this->composeFullName(Contact::HONORIFIC_SUFFIX, $value);
-    }
-
-    /**
-     * Set the full contact name
-     *
-     * @param string $propertyName Current name property
-     * @param string $propertyValue Current name property value
-     */
-    protected function composeFullName($propertyName, $propertyValue)
-    {
-        $nameProperties = [
-            Contact::HONORIFIC_PREFIX => '',
-            Contact::GIVEN_NAME => '',
-            Contact::NICKNAME => '',
-            Contact::ADDITIONAL_NAME => '',
-            Contact::FAMILY_NAME => '',
-            Contact::HONORIFIC_SUFFIX => ''
-        ];
-        foreach (array_keys($nameProperties) as $name) {
-            try {
-                $nameProperty = trim($this->getObject()->getDomain($name));
-                if (strlen($nameProperty)) {
-                    $nameProperties[$name] = $nameProperty;
-                }
-            } catch (InvalidArgumentException $e) {
-                continue;
-            }
-        }
-        $nameProperties[$propertyName] = $propertyValue;
-        if (!empty($nameProperties[Contact::NICKNAME])) {
-            $nameProperties[Contact::NICKNAME] = '"'.$nameProperties[Contact::NICKNAME].'"';
-        }
-        $this->getObject()->setTitle(implode(' ', array_filter($nameProperties)));
     }
 }

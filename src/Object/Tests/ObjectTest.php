@@ -195,8 +195,6 @@ namespace Apparat\Object\Tests {
             $this->assertFalse($articleObject->isDeleted());
             $this->assertFalse($articleObject->getRepositoryLocator()->isHidden());
 
-            print_r($articleObject->getPropertyData(false));
-
             /** @var Revision $invalidRevision */
             $invalidRevision = Kernel::create(Revision::class, [99]);
             $articleObject->useRevision($invalidRevision);

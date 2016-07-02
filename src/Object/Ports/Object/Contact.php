@@ -107,7 +107,7 @@ class Contact extends AbstractApparatObject
         ContactProperties::CATEGORY => MetaProperties::PROPERTY_CATEGORIES,
         ContactProperties::URL => AbstractProperties::PROPERTY_ABSOLUTE_URL,
         ContactProperties::UID => AbstractProperties::PROPERTY_CANONICAL_URL,
-        ContactProperties::LOCATION => SystemProperties::PROPERTY_LOCATION,
+        ContactProperties::LOCATION => [ContactProperties::COLLECTION, ContactProperties::LOCATION],
         ContactProperties::SYNDICATION => [Relations::COLLECTION, Relation::SYNDICATED_TO],
 
         ContactProperties::NAME => MetaProperties::PROPERTY_TITLE,

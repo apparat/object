@@ -52,6 +52,7 @@ use Apparat\Object\Domain\Repository\Selector;
 use Apparat\Object\Domain\Repository\SelectorInterface;
 use Apparat\Object\Infrastructure\Factory\ResourceFactory;
 use Apparat\Object\Infrastructure\Utilities\File;
+use Apparat\Object\Ports\Types\Object;
 use Apparat\Resource\Domain\Model\Resource\AbstractResource;
 use Apparat\Resource\Infrastructure\Io\File\AbstractFileReaderWriter;
 use Apparat\Resource\Infrastructure\Io\File\Writer;
@@ -76,8 +77,18 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @var array
      */
     protected static $globVisibilities = [
-        SelectorInterface::VISIBLE => '',
+        SelectorInterface::VISIBLE => '[!.]',
         SelectorInterface::HIDDEN => '.',
+        SelectorInterface::ALL => '{.,}',
+    ];
+    /**
+     * Glob draft states
+     *
+     * @var array
+     */
+    protected static $globDrafts = [
+        SelectorInterface::PUBLISHED => '[!.]',
+        SelectorInterface::DRAFT => '.',
         SelectorInterface::ALL => '{.,}',
     ];
     /**
@@ -191,7 +202,8 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         // Build a glob string from the selector
         $glob = '';
-        $globFlags = GLOB_ONLYDIR | GLOB_NOSORT;
+        $globFlags = GLOB_NOSORT;
+        $filter = 0;
 
         $year = $selector->getYear();
         if ($year !== null) {
@@ -223,18 +235,28 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
             $glob .= '/'.$second;
         }
 
+        // Visibility, ID & type
         $visibility = $selector->getVisibility();
         $uid = $selector->getId();
         $type = $selector->getObjectType();
-        if (($uid !== null) || ($type !== null)) {
-            $glob .= '/'.($uid ?: SelectorInterface::WILDCARD).'-'.($type ?: SelectorInterface::WILDCARD);
+        $supportedTypes = Object::getSupportedTypes();
+        $types = (count($supportedTypes) == 1) ? current($supportedTypes) : '{'.implode(',', $supportedTypes).'}';
+        $glob .= '/';
+        $glob .= (($visibility == SelectorInterface::VISIBLE) && (is_int($uid) || ++$filter)) ?
+            '' : self::$globVisibilities[$visibility];
+        $glob .= $uid.'-';
+        $glob .= ($type == SelectorInterface::WILDCARD) ? $types : $type;
 
-            $revision = $selector->getRevision();
-            if ($revision !== null) {
-                $glob .= '/'.self::$globVisibilities[$visibility].($uid ?: SelectorInterface::WILDCARD).'-'.$revision;
-                $globFlags &= ~GLOB_ONLYDIR;
-            }
-        }
+        // Draft, revision & extension
+        $draft = $selector->getDraft();
+        $revision = $selector->getRevision();
+        $glob .= '/'.((is_int($uid) && ($draft != SelectorInterface::PUBLISHED)) ? self::$globDrafts[$draft] : '').$uid;
+        $glob .= (!is_int($revision) && (($uid != SelectorInterface::WILDCARD) || ++$filter)) ? '' : '-'.$revision;
+        $glob .= '.'.getenv('OBJECT_RESOURCE_EXTENSION');
+
+//        echo 'glob: '.$glob.'<br/>';
+//        echo 'filter: '.$filter.'<br/>';
+//        print_r(glob(ltrim($glob, '/'), $globFlags));
 
         return array_map(
             function ($objectResourcePath) use ($repository) {

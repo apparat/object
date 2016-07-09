@@ -202,7 +202,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
 
         // Build a glob string from the selector
         $glob = '';
-        $globFlags = GLOB_NOSORT;
+        $globFlags = GLOB_NOSORT | GLOB_BRACE;
         $filter = 0;
 
         $year = $selector->getYear();

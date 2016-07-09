@@ -36,8 +36,6 @@
 
 namespace Apparat\Object\Tests;
 
-use Apparat\Object\Ports\Facades\RepositoryFacade;
-use Apparat\Object\Ports\Factory\SelectorFactory;
 use Apparat\Object\Domain\Model\Object\Collection;
 use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 use Apparat\Object\Domain\Repository\Repository;
@@ -46,6 +44,8 @@ use Apparat\Object\Infrastructure\Factory\AdapterStrategyFactory;
 use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
 use Apparat\Object\Infrastructure\Repository\Repository as InfrastructureRepository;
 use Apparat\Object\Module;
+use Apparat\Object\Ports\Facades\RepositoryFacade;
+use Apparat\Object\Ports\Factory\SelectorFactory;
 
 /**
  * Repository test
@@ -84,7 +84,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
      *
      * @var array
      */
-    protected static $globRevisions = ['' => 0, '-0' => 0, '-1' => 0];
+    protected static $globRevisions = ['' => 0, '-1' => 0, '-2' => 0];
 
     /**
      * Setup
@@ -126,7 +126,7 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                     mkdir($secondDir, 0777, true);
 
 
-                    // Create random subfolders and object files
+                    // Create random sub-folders and object files
                     for ($object = 1; $object < 3; ++$object) {
                         ++$index;
                         $type = $types[rand(0, 2)];
@@ -137,7 +137,8 @@ class RepositoryTest extends AbstractDisabledAutoconnectorTest
                         $objectDir = $secondDir.DIRECTORY_SEPARATOR.$index.'-'.$type;
                         mkdir($objectDir);
                         self::$globFiles[] =
-                        $objectFile = $objectDir.DIRECTORY_SEPARATOR.$index.$revision;
+                        $objectFile =
+                            $objectDir.DIRECTORY_SEPARATOR.$index.$revision.'.'.getenv('OBJECT_RESOURCE_EXTENSION');
                         touch($objectFile);
                     }
                 }

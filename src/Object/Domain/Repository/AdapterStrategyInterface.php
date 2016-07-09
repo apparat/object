@@ -56,7 +56,7 @@ interface AdapterStrategyInterface
      * @param RepositoryInterface $repository Object repository
      * @return LocatorInterface[] Object locators
      */
-    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository);
+    public function findObjectResourceLocators(SelectorInterface $selector, RepositoryInterface $repository);
 
     /**
      * Find and return an object resource

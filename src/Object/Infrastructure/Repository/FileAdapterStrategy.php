@@ -82,6 +82,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         SelectorInterface::ALL => '{.,}',
     ];
     /**
+     * Regex visibilities
+     *
+     * @var array
+     */
+    protected static $regexVisibilities = [
+        SelectorInterface::VISIBLE => '',
+        SelectorInterface::HIDDEN => '\\.',
+        SelectorInterface::ALL => '\\.?',
+    ];
+    /**
      * Glob draft states
      *
      * @var array
@@ -90,6 +100,16 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         SelectorInterface::PUBLISHED => '[!.]',
         SelectorInterface::DRAFT => '.',
         SelectorInterface::ALL => '{.,}',
+    ];
+    /**
+     * Regex draft states
+     *
+     * @var array
+     */
+    protected static $regexDrafts = [
+        SelectorInterface::PUBLISHED => '',
+        SelectorInterface::DRAFT => '\\.',
+        SelectorInterface::ALL => '\\.?',
     ];
     /**
      * Configuration
@@ -196,7 +216,7 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
      * @param RepositoryInterface $repository Object repository
      * @return LocatorInterface[] Object locators
      */
-    public function findObjectPaths(SelectorInterface $selector, RepositoryInterface $repository)
+    public function findObjectResourceLocators(SelectorInterface $selector, RepositoryInterface $repository)
     {
         chdir($this->root);
 
@@ -254,15 +274,35 @@ class FileAdapterStrategy extends AbstractAdapterStrategy
         $glob .= (!is_int($revision) && (($uid != SelectorInterface::WILDCARD) || ++$filter)) ? '' : '-'.$revision;
         $glob .= '.'.getenv('OBJECT_RESOURCE_EXTENSION');
 
+
 //        echo 'glob: '.$glob.'<br/>';
 //        echo 'filter: '.$filter.'<br/>';
 //        print_r(glob(ltrim($glob, '/'), $globFlags));
 
+        // Find the object resources
+        $objectResources = glob(ltrim($glob, '/'), $globFlags);
+
+        // If the resources need to get post-filtered (because of visibility, draft state and / or revision)
+        if ($filter) {
+            $filterRegex = '/'.self::$regexVisibilities[$visibility];
+            $filterRegex .= '(?P<id>\d+)-';
+            $filterRegex .= (count($supportedTypes) == 1) ?
+                current($supportedTypes) : '(?:'.implode('|', $supportedTypes).')';
+            $filterRegex .= '/'.self::$regexDrafts[$draft];
+            $filterRegex .= '(?:\\k<id>)';
+            if ($revision !== Revision::CURRENT) {
+                $filterRegex .= '-'.preg_quote($revision);
+            }
+            $filterRegex .= '\\.'.getenv('OBJECT_RESOURCE_EXTENSION');
+            $objectResources = preg_grep("%$filterRegex$%", $objectResources);
+        }
+
+        // Return as repository locators
         return array_map(
             function ($objectResourcePath) use ($repository) {
                 return Kernel::create(RepositoryLocator::class, [$repository, '/'.$objectResourcePath]);
             },
-            glob(ltrim($glob, '/'), $globFlags)
+            $objectResources
         );
     }
 

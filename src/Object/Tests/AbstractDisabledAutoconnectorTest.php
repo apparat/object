@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Repository\Service;
 /**
  * Abstract object tests
  *
- * @package Apparat\Kernel
+ * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
 abstract class AbstractDisabledAutoconnectorTest extends \Apparat\Dev\Tests\AbstractTest

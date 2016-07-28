@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Properties;
  * Generics properties interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 interface GenericPropertiesInterface extends PropertiesInterface
 {

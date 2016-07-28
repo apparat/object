@@ -50,7 +50,7 @@ use Apparat\Object\Ports\Types\Relation;
  * Apparat article
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Ports
  * @method string getName() Return the object name
  * @method string getSummary() Return the object summary
  * @method string getContent() Return the object content

@@ -42,7 +42,7 @@ use Apparat\Object\Infrastructure\Repository\Repository;
 /**
  * Abstract repository enabled test
  *
- * @package Apparat\Kernel
+ * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
 abstract class AbstractRepositoryEnabledTest extends AbstractDisabledAutoconnectorTest

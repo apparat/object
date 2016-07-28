@@ -42,7 +42,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  * Properties collection interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 interface PropertiesInterface
 {

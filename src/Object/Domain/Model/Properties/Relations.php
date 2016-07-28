@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Model\Relation\RelationInterface;
  * Object resource relations
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 class Relations extends AbstractProperties
 {

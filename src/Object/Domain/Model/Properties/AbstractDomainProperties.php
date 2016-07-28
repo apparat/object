@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Properties;
  * Abstract domain object properties collection
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 abstract class AbstractDomainProperties extends AbstractGenericProperties
 {

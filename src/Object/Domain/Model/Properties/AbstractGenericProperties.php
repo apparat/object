@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  * Abstract generic object properties collection
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 abstract class AbstractGenericProperties extends AbstractProperties implements GenericPropertiesInterface
 {

@@ -39,8 +39,8 @@ namespace Apparat\Object\Ports\Contract;
 /**
  * Apparat object interface
  *
- * @package Apparat\Server
- * @subpackage Apparat\Server\Infrastructure
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Ports
  */
 interface ApparatObjectInterface
 {

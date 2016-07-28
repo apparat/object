@@ -46,7 +46,7 @@ use Apparat\Object\Ports\Repository\SelectorInterface;
  * Object selector factory
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Ports
  */
 class SelectorFactory
 {

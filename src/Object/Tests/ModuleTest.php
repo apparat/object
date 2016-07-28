@@ -42,8 +42,8 @@ use Apparat\Resource\Module;
 /**
  * Module tests
  *
- * @package Apparat\Kernel
- * @subpackage Apparat\Kernel\Tests
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Tests
  */
 class ModuleTest extends AbstractDisabledAutoconnectorTest
 {

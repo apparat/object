@@ -50,7 +50,7 @@ use Apparat\Object\Domain\Model\Object\Type;
  * `published` property set, so there's a {@link publish()} method for advancing an object's state.
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 class SystemProperties extends AbstractProperties
 {

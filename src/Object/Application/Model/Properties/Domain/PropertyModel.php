@@ -44,7 +44,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  * Property model
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
 class PropertyModel
 {

@@ -45,8 +45,8 @@ use Apparat\Object\Ports\Types\Object as ObjectTypes;
 /**
  * Object gateway
  *
- * @package Apparat\Server
- * @subpackage Apparat\Object\Infrastructure\Model\Object
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Infrastructure
  */
 class Object
 {

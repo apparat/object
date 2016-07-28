@@ -43,7 +43,7 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
  * Abstract object properties collection
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 abstract class AbstractProperties implements PropertiesInterface
 {

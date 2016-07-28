@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Properties;
  * Processing instructions
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 class ProcessingInstructions extends AbstractGenericProperties
 {

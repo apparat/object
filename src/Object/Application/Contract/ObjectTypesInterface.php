@@ -39,8 +39,8 @@ namespace Apparat\Object\Application\Contract;
 /**
  * Object types interface
  *
- * @package Apparat\Application
- * @subpackage Apparat\Application\Domain
+ * @package Apparat\Object
+ * @subpackage Apparat\Object\Application
  */
 interface ObjectTypesInterface
 {

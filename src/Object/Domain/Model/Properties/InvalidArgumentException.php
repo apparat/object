@@ -40,7 +40,7 @@ namespace Apparat\Object\Domain\Model\Properties;
  * Object properties invalid argument exception
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Domain
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {

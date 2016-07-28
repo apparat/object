@@ -56,7 +56,7 @@ use Apparat\Resource\Ports\InvalidReaderArgumentException;
  * Object manager
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Application
  */
 class Manager implements ManagerInterface
 {

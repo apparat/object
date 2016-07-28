@@ -50,7 +50,7 @@ use Apparat\Object\Ports\Types\Relation;
  * Apparat article
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Infrastructure
+ * @subpackage Apparat\Object\Ports
  * @method string getName() Return the contact name
  * @method string getHonorificPrefix() Return the contact honorific prefix
  * @method string getGivenName() Return the contact given name

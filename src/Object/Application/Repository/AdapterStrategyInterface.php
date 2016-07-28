@@ -43,7 +43,7 @@ use Apparat\Resource\Domain\Model\Resource\AbstractResource;
  * Repository adapter strategy interface
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Domain
+ * @subpackage Apparat\Object\Application
  */
 interface AdapterStrategyInterface extends \Apparat\Object\Domain\Repository\AdapterStrategyInterface
 {

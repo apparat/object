@@ -45,7 +45,7 @@ use Apparat\Object\Domain\Model\Uri\RepositoryLocator;
 /**
  * Object collection tests
  *
- * @package Apparat\Kernel
+ * @package Apparat\Object
  * @subpackage Apparat\Object\Tests
  */
 class CollectionTest extends AbstractRepositoryEnabledTest

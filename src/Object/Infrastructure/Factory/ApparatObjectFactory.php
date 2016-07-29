@@ -43,6 +43,7 @@ use Apparat\Object\Ports\Contract\ApparatObjectInterface;
 use Apparat\Object\Ports\Exceptions\InvalidArgumentException as PortsInvalidArgumentException;
 use Apparat\Object\Ports\Object\Article;
 use Apparat\Object\Ports\Object\Contact;
+use Apparat\Object\Ports\Object\Note;
 
 /**
  * Apparat object factory
@@ -72,7 +73,7 @@ class ApparatObjectFactory implements ObjectTypesInterface
         self::IMAGE => false,
         self::ITEM => false,
         self::LIKE => false,
-        self::NOTE => false,
+        self::NOTE => Note::class,
         self::PROJECT => false,
         self::REPLY => false,
         self::REVIEW => false,
@@ -99,6 +100,8 @@ class ApparatObjectFactory implements ObjectTypesInterface
             );
         }
 
-        return Kernel::create(self::$typeClasses[$objectType], [$object]);
+        /** @var ApparatObjectInterface $apparatObject */
+        $apparatObject = Kernel::create(self::$typeClasses[$objectType], [$object]);
+        return $apparatObject;
     }
 }

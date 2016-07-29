@@ -37,18 +37,16 @@
 namespace Apparat\Object\Tests {
 
     use Apparat\Object\Application\Model\Object\Image;
-    use Apparat\Object\Domain\Repository\Repository;
-    use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
     use Apparat\Object\Infrastructure\Utilities\File;
     use Apparat\Object\Ports\Types\Object as ObjectTypes;
 
     /**
-     * Object tests
+     * Image object tests
      *
      * @package Apparat\Object
      * @subpackage Apparat\Object\Test
      */
-    class ImageObjectTest extends AbstractRepositoryEnabledTest
+    class ImageObjectTest extends AbstractObjectTest
     {
         /**
          * Tears down the fixture
@@ -99,48 +97,6 @@ namespace Apparat\Object\Tests {
 
             // Delete temporary repository
             $this->deleteRecursive($tempRepoDirectory);
-        }
-
-        /**
-         * Create a temporary repository
-         *
-         * @param string $tempRepoDirectory Repository directory
-         * @return Repository File repository
-         */
-        protected function createRepository($tempRepoDirectory)
-        {
-            $fileRepository = \Apparat\Object\Infrastructure\Repository\Repository::create(
-                getenv('REPOSITORY_URL'),
-                [
-                    'type' => FileAdapterStrategy::TYPE,
-                    'root' => $tempRepoDirectory,
-                ]
-            );
-            $this->assertInstanceOf(Repository::class, $fileRepository);
-            $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
-
-            return $fileRepository;
-        }
-
-        /**
-         * Recursively register a directory and all nested files and directories for deletion on teardown
-         *
-         * @param string $directory Directory
-         */
-        protected function deleteRecursive($directory)
-        {
-            $this->tmpFiles[] = $directory;
-            foreach (scandir($directory) as $item) {
-                if (!preg_match('%^\.+$%', $item)) {
-                    $path = $directory.DIRECTORY_SEPARATOR.$item;
-                    if (is_dir($path)) {
-                        $this->deleteRecursive($path);
-                        continue;
-                    }
-
-                    $this->tmpFiles[] = $path;
-                }
-            }
         }
 
         /**

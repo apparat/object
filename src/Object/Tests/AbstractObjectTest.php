@@ -5,7 +5,7 @@
  *
  * @category    Apparat
  * @package     Apparat\Object
- * @subpackage  Apparat\Object\Application
+ * @subpackage  Apparat\Object\Tests
  * @author      Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @copyright   Copyright © 2016 Joschi Kuphal <joschi@kuphal.net> / @jkphl
  * @license     http://opensource.org/licenses/MIT The MIT License (MIT)
@@ -34,32 +34,58 @@
  *  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ***********************************************************************************/
 
-namespace Apparat\Object\Application\Model\Properties\Domain;
+namespace Apparat\Object\Tests;
 
-use Apparat\Object\Application\Model\Properties\Domain\Traits\AbstractLocationPropertyTrait;
+use Apparat\Object\Infrastructure\Repository\FileAdapterStrategy;
+use Apparat\Object\Domain\Repository\Repository;
 
 /**
- * Note object domain properties
+ * Abstract object tests
  *
  * @package Apparat\Object
- * @subpackage Apparat\Object\Application
+ * @subpackage Apparat\Object\Tests
  */
-class Note extends AbstractDomainProperties
+class AbstractObjectTest extends AbstractRepositoryEnabledTest
 {
     /**
-     * Import the location property
-     */
-    use AbstractLocationPropertyTrait;
-    /**
-     * Summary
+     * Create a temporary repository
      *
-     * @var string
+     * @param string $tempRepoDirectory Repository directory
+     * @return Repository File repository
      */
-    const SUMMARY = 'summary';
+    protected function createRepository($tempRepoDirectory)
+    {
+        $fileRepository = \Apparat\Object\Infrastructure\Repository\Repository::create(
+            getenv('REPOSITORY_URL'),
+            [
+                'type' => FileAdapterStrategy::TYPE,
+                'root' => $tempRepoDirectory,
+            ]
+        );
+        $this->assertInstanceOf(Repository::class, $fileRepository);
+        $this->assertEquals($fileRepository->getAdapterStrategy()->getRepositorySize(), 0);
+
+        return $fileRepository;
+    }
+
     /**
-     * Content
+     * Recursively register a directory and all nested files and directories for deletion on teardown
      *
-     * @var string
+     * @param string $directory Directory
      */
-    const CONTENT = 'content';
+    protected function deleteRecursive($directory)
+    {
+        $this->tmpFiles[] = $directory;
+        foreach (scandir($directory) as $item) {
+            if (!preg_match('%^\.+$%', $item)) {
+                $path = $directory.DIRECTORY_SEPARATOR.$item;
+                if (is_dir($path)) {
+                    $this->deleteRecursive($path);
+                    continue;
+                }
+
+                $this->tmpFiles[] = $path;
+            }
+        }
+    }
 }

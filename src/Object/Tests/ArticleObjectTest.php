@@ -296,7 +296,7 @@ namespace Apparat\Object\Tests {
         }
 
         /**
-         * Create a temporary repository and article object
+         * Create a temporary repository and an article object
          *
          * @param string $tempRepoDirectory Repository directory
          * @param string $payload Article payload

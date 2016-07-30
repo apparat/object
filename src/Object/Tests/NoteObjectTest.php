@@ -54,7 +54,7 @@ class NoteObjectTest extends AbstractObjectTest
     {
         // Create a temporary repository
         $tempRepoDirectory = sys_get_temp_dir().DIRECTORY_SEPARATOR.'temp-repo';
-        $payload = "This is a sample article object. It features:\n\n";
+        $payload = "This is a sample **note object**. It features:\n\n";
         $payload .= "* Multiple sencentes / lines\n* A simple list";
         $creationDate = new \DateTimeImmutable('yesterday');
         $note = $this->createRepositoryAndNoteObject($tempRepoDirectory, $payload, $creationDate);
@@ -64,8 +64,7 @@ class NoteObjectTest extends AbstractObjectTest
             str_replace('/', DIRECTORY_SEPARATOR, $note->getRepositoryLocator()
                 ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
         $this->assertEquals($creationDate, $note->getCreated());
-
-        print_r($note->getPropertyData());
+        $this->assertEquals('This is a sample note object. It features:', $note->getTitle());
 
         // Delete temporary repository
         $this->deleteRecursive($tempRepoDirectory);

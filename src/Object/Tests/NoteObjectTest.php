@@ -57,14 +57,22 @@ class NoteObjectTest extends AbstractObjectTest
         $payload = "This is a sample **note object**. It features:\n\n";
         $payload .= "* Multiple sencentes / lines\n* A simple list";
         $creationDate = new \DateTimeImmutable('yesterday');
+
         $note = $this->createRepositoryAndNoteObject($tempRepoDirectory, $payload, $creationDate);
         $this->assertInstanceOf(Note::class, $note);
         $this->assertEquals($payload, $note->getPayload());
-        $this->assertFileExists($tempRepoDirectory.
-            str_replace('/', DIRECTORY_SEPARATOR, $note->getRepositoryLocator()
-                ->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))));
+        $this->assertFileExists(
+            $tempRepoDirectory.str_replace(
+                '/',
+                DIRECTORY_SEPARATOR,
+                $note->getRepositoryLocator()->withExtension(getenv('OBJECT_RESOURCE_EXTENSION'))
+            )
+        );
         $this->assertEquals($creationDate, $note->getCreated());
         $this->assertEquals('This is a sample note object. It features:', $note->getTitle());
+
+//        $noteApparatObject = ObjectFacade::load('repo'.$note->getRepositoryLocator());
+//        $this->assertInstanceOf(\Apparat\Object\Ports\Object\Note::class, $noteApparatObject);
 
         // Delete temporary repository
         $this->deleteRecursive($tempRepoDirectory);

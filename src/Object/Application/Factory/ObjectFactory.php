@@ -123,9 +123,7 @@ class ObjectFactory
 
         // Prepare the system properties collection
         $systemPropertyData = (empty($propertyData[SystemProperties::COLLECTION]) ||
-            !is_array(
-                $propertyData[SystemProperties::COLLECTION]
-            )) ? [] : $propertyData[SystemProperties::COLLECTION];
+            !is_array($propertyData[SystemProperties::COLLECTION])) ? [] : $propertyData[SystemProperties::COLLECTION];
         $systemPropertyData[SystemProperties::PROPERTY_ID] = $locator->getId()->getId();
         $systemPropertyData[SystemProperties::PROPERTY_TYPE] = $locator->getObjectType()->getType();
         $systemPropertyData[SystemProperties::PROPERTY_REVISION] = $locator->getRevision()->getRevision();
@@ -138,9 +136,7 @@ class ObjectFactory
 
         // Prepare the meta properties collection
         $metaPropertyData = (empty($propertyData[MetaProperties::COLLECTION]) ||
-            !is_array(
-                $propertyData[MetaProperties::COLLECTION]
-            )) ? [] : $propertyData[MetaProperties::COLLECTION];
+            !is_array($propertyData[MetaProperties::COLLECTION])) ? [] : $propertyData[MetaProperties::COLLECTION];
         $metaPropertyData[MetaProperties::PROPERTY_PRIVACY] = getenv('OBJECT_DEFAULT_PRIVACY');
         $propertyData[MetaProperties::COLLECTION] = $metaPropertyData;
 

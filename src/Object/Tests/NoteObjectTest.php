@@ -37,7 +37,9 @@
 namespace Apparat\Object\Tests;
 
 use Apparat\Object\Application\Model\Object\Note;
+use Apparat\Object\Ports\Facades\ObjectFacade;
 use Apparat\Object\Ports\Types\Object as ObjectTypes;
+use Apparat\Object\Ports\Object\Note as ApparatNote;
 
 /**
  * Note object tests
@@ -71,8 +73,11 @@ class NoteObjectTest extends AbstractObjectTest
         $this->assertEquals($creationDate, $note->getCreated());
         $this->assertEquals('This is a sample note object. It features:', $note->getTitle());
 
-//        $noteApparatObject = ObjectFacade::load('repo'.$note->getRepositoryLocator());
-//        $this->assertInstanceOf(\Apparat\Object\Ports\Object\Note::class, $noteApparatObject);
+        /** @var ApparatNote $noteApparatObject */
+        $noteApparatObject = ObjectFacade::load('/repo'.$note->getRepositoryLocator());
+        $this->assertInstanceOf(ApparatNote::class, $noteApparatObject);
+        $this->assertEquals(ApparatNote::TYPE, $noteApparatObject->getType());
+        $this->assertEquals('This is a sample note object. It features:', $noteApparatObject['name']);
 
         // Delete temporary repository
         $this->deleteRecursive($tempRepoDirectory);

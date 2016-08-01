@@ -110,6 +110,36 @@ class Manager implements ManagerInterface
      */
     public function loadObject(RepositoryLocatorInterface $locator, $visibility = SelectorInterface::ALL)
     {
+        $revision = $locator->getRevision();
+        return (($revision->getRevision() == 1) && $revision->isDraft()) ?
+            $this->loadInitialObjectDraft($locator, $visibility) : $this->loadObjectRevision($locator, $visibility);
+    }
+
+    /**
+     * Load a particular object revision from a repository
+     *
+     * @param RepositoryLocatorInterface $locator Repository object locator
+     * @param int $visibility Object visibility
+     * @return ObjectInterface Object
+     */
+    protected function loadInitialObjectDraft(RepositoryLocatorInterface $locator, $visibility = SelectorInterface::ALL)
+    {
+        // Load the object resource respecting visibility constraints
+        $objectResource = $this->loadObjectResource($locator, $visibility);
+
+        // Instantiate and return the object
+        return ObjectFactory::createFromResource($locator, $objectResource);
+    }
+
+    /**
+     * Load a particular object revision from a repository
+     *
+     * @param RepositoryLocatorInterface $locator Repository object locator
+     * @param int $visibility Object visibility
+     * @return ObjectInterface Object
+     */
+    protected function loadObjectRevision(RepositoryLocatorInterface $locator, $visibility = SelectorInterface::ALL)
+    {
         // Create the current revision locator
         /** @var RepositoryLocatorInterface $currentLocator */
         $currentLocator = $locator->setRevision(Revision::current());

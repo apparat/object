@@ -55,7 +55,7 @@ class Revision implements SerializablePropertyInterface
     /**
      * Object revision number
      *
-     * @var int
+     * @var int|null
      */
     protected $revision = null;
     /**
@@ -141,7 +141,7 @@ class Revision implements SerializablePropertyInterface
     /**
      * Return the object revision number
      *
-     * @return int Object revision number
+     * @return int|null Object revision number
      */
     public function getRevision()
     {

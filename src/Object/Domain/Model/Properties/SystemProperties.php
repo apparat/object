@@ -242,6 +242,16 @@ class SystemProperties extends AbstractProperties
     }
 
     /**
+     * Return the object draft mode
+     *
+     * @return boolean Object draft mode
+     */
+    public function isDraft()
+    {
+        return !($this->published instanceof \DateTimeInterface);
+    }
+
+    /**
      * Return the object ID
      *
      * @return Id Object ID
@@ -269,16 +279,6 @@ class SystemProperties extends AbstractProperties
     public function getRevision()
     {
         return $this->revision;
-    }
-
-    /**
-     * Return the object draft mode
-     *
-     * @return boolean Object draft mode
-     */
-    public function isDraft()
-    {
-        return !($this->published instanceof \DateTimeInterface);
     }
 
     /**

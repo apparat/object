@@ -155,6 +155,7 @@ class ObjectUrlTest extends AbstractDisabledAutoconnectorTest
         $url = new ObjectUrl($pathPrefix.self::LOCATOR);
         $this->assertEquals($pathPrefix, $url->getPath());
         $this->assertEquals(self::LOCATOR, $url->getLocator());
+        $this->assertEquals($pathPrefix.strtok(self::LOCATOR, '-'), $url->toUrl(true));
     }
 
     /**

@@ -49,13 +49,6 @@ use Apparat\Object\Domain\Repository\Service;
 class ApparatUrl extends ObjectUrl
 {
     /**
-     * Valid schemes
-     *
-     * @var array
-     */
-    protected static $schemes = [self::SCHEME_APRT => true, self::SCHEME_APRTS => true];
-
-    /**
      * APRT-Schema
      *
      * @var string
@@ -67,6 +60,12 @@ class ApparatUrl extends ObjectUrl
      * @var string
      */
     const SCHEME_APRTS = 'aprts';
+    /**
+     * Valid schemes
+     *
+     * @var array
+     */
+    protected static $schemes = [self::SCHEME_APRT => true, self::SCHEME_APRTS => true];
 
     /**
      * Apparat URL constructor

@@ -77,16 +77,6 @@ class RepositoryLocator extends Locator implements RepositoryLocatorInterface
     }
 
     /**
-     * Return the repository this locator applies to
-     *
-     * @return RepositoryInterface Repository
-     */
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-
-    /**
      * Return the repository relative object locator with a file extension
      *
      * @param string $extension File extension
@@ -95,5 +85,29 @@ class RepositoryLocator extends Locator implements RepositoryLocatorInterface
     public function withExtension($extension)
     {
         return $this.'.'.strtolower($extension);
+    }
+
+    /**
+     * Serialize as repository URL
+     *
+     * @param bool $local Local URL only
+     * @param bool $canonical Canonical URL only
+     * @return string Repository URL
+     */
+    public function toRepositoryUrl($local = false, $canonical = false)
+    {
+        $repositoryUrl = $local ? '' : getenv('APPARAT_BASE_URL');
+        $repositoryUrl .= $this->getRepository()->getUrl();
+        return $repositoryUrl.$this->toUrl($canonical);
+    }
+
+    /**
+     * Return the repository this locator applies to
+     *
+     * @return RepositoryInterface Repository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
     }
 }

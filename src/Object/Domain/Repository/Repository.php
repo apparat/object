@@ -90,7 +90,8 @@ class Repository implements RepositoryInterface
      */
     public function findObjects(SelectorInterface $selector)
     {
-        return Kernel::create(Collection::class, [$this->adapterStrategy->findObjectResourceLocators($selector, $this)]);
+        return Kernel::create(Collection::class,
+            [$this->adapterStrategy->findObjectResourceLocators($selector, $this)]);
     }
 
     /**

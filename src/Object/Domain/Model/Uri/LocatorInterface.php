@@ -50,11 +50,19 @@ interface LocatorInterface
 {
 
     /**
-     * Create and return the object URL locator
+     * Serialize the object locator
      *
      * @return string Object locator
      */
     public function __toString();
+
+    /**
+     * Serialize as relative URL
+     *
+     * @param bool $canonical Canonical URL
+     * @return string Relative URL
+     */
+    public function toUrl($canonical = false);
 
     /**
      * Return the object's creation date

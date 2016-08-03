@@ -110,4 +110,13 @@ interface RepositoryLocatorInterface extends LocatorInterface
      * @return LocatorInterface|Locator New object locator
      */
     public function setHidden($hidden);
+
+    /**
+     * Serialize as repository URL
+     *
+     * @param bool $local Local URL only
+     * @param bool $canonical Canonical URL only
+     * @return string Repository URL
+     */
+    public function toRepositoryUrl($local = false, $canonical = false);
 }

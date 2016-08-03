@@ -48,18 +48,6 @@ use Apparat\Object\Domain\Model\Object\ObjectInterface;
 abstract class AbstractProperties implements PropertiesInterface
 {
     /**
-     * Property data
-     *
-     * @var array
-     */
-    protected $data = [];
-    /**
-     * Owner object
-     *
-     * @var ObjectInterface
-     */
-    protected $object = null;
-    /**
      * Absolute URL property
      *
      * @var string
@@ -71,6 +59,18 @@ abstract class AbstractProperties implements PropertiesInterface
      * @var string
      */
     const PROPERTY_CANONICAL_URL = 'canonicalUrl';
+    /**
+     * Property data
+     *
+     * @var array
+     */
+    protected $data = [];
+    /**
+     * Owner object
+     *
+     * @var ObjectInterface
+     */
+    protected $object = null;
 
     /**
      * Meta properties constructor
@@ -92,6 +92,49 @@ abstract class AbstractProperties implements PropertiesInterface
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * Return the property values as array
+     *
+     * @param bool $serialize Serialize property objects
+     * @return array Property values
+     */
+    public function toArray($serialize = true)
+    {
+        return $this->toSerializedArray($serialize, $this->data);
+    }
+
+    /**
+     * Return the potentially serialized property values
+     *
+     * @param boolean $serialize Serialize objects
+     * @param array $data Property values
+     * @return array Serialized property values
+     */
+    protected function toSerializedArray($serialize, array $data)
+    {
+        // Filter all empty values
+        $data = array_filter($data);
+
+        // If the values should be serialized
+        if ($serialize) {
+            // Run through all properties
+            while (list($property, $value) = each($data)) {
+                // If the value is an array itself: Recurse
+                if (is_array($value)) {
+                    $data[$property] = $this->toSerializedArray($serialize, $value);
+                    // Else if the value is serializable
+                } elseif (is_object($value) &&
+                    (new \ReflectionClass($value))->implementsInterface(SerializablePropertyInterface::class)
+                ) {
+                    /** @var $value SerializablePropertyInterface */
+                    $data[$property] = $value->serialize();
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -187,48 +230,5 @@ abstract class AbstractProperties implements PropertiesInterface
 
         // Else: return self reference
         return $this;
-    }
-
-    /**
-     * Return the property values as array
-     *
-     * @param bool $serialize Serialize property objects
-     * @return array Property values
-     */
-    public function toArray($serialize = true)
-    {
-        return $this->toSerializedArray($serialize, $this->data);
-    }
-
-    /**
-     * Return the potentially serialized property values
-     *
-     * @param boolean $serialize Serialize objects
-     * @param array $data Property values
-     * @return array Serialized property values
-     */
-    protected function toSerializedArray($serialize, array $data)
-    {
-        // Filter all empty values
-        $data = array_filter($data);
-
-        // If the values should be serialized
-        if ($serialize) {
-            // Run through all properties
-            while (list($property, $value) = each($data)) {
-                // If the value is an array itself: Recurse
-                if (is_array($value)) {
-                    $data[$property] = $this->toSerializedArray($serialize, $value);
-                    // Else if the value is serializable
-                } elseif (is_object($value) &&
-                    (new \ReflectionClass($value))->implementsInterface(SerializablePropertyInterface::class)
-                ) {
-                    /** @var $value SerializablePropertyInterface */
-                    $data[$property] = $value->serialize();
-                }
-            }
-        }
-
-        return $data;
     }
 }

@@ -98,6 +98,17 @@ class Url extends Uri implements UriInterface, SerializablePropertyInterface
     }
 
     /**
+     * Unserialize the string representation of this property
+     *
+     * @param string $str Serialized property
+     * @return SerializablePropertyInterface Property
+     */
+    public static function unserialize($str)
+    {
+        return Kernel::create(static::class, [$str]);
+    }
+
+    /**
      * Return the serialized URL
      *
      * @return string Serialized URL
@@ -476,17 +487,6 @@ class Url extends Uri implements UriInterface, SerializablePropertyInterface
         }
 
         return true;
-    }
-
-    /**
-     * Unserialize the string representation of this property
-     *
-     * @param string $str Serialized property
-     * @return SerializablePropertyInterface Property
-     */
-    public static function unserialize($str)
-    {
-        return Kernel::create(static::class, [$str]);
     }
 
     /**

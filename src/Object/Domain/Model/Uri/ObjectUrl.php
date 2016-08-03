@@ -285,6 +285,23 @@ class ObjectUrl extends Url implements LocatorInterface
         return $this->getUrlInternal($override);
     }
 
+    /**
+     * Return the a complete serialized object URL
+     *
+     * @param array $override Override components
+     * @return string Serialized URL
+     */
+    protected function getUrlInternal(array &$override = [])
+    {
+        parent::getUrlInternal($override);
+
+        // Prepare the local object locator
+        $override['object'] = isset($override['object']) ?
+            $override['object'] : $this->locator->toUrl(!empty($override['canonical']));
+
+        return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}".
+        "{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";
+    }
 
     /**
      * Return the object hidden state
@@ -309,19 +326,14 @@ class ObjectUrl extends Url implements LocatorInterface
     }
 
     /**
-     * Return the a complete serialized object URL
+     * Serialize as relative URL
      *
-     * @param array $override Override components
-     * @return string Serialized URL
+     * @param bool $canonical Canonical URL
+     * @return string Relative URL
      */
-    protected function getUrlInternal(array &$override = [])
+    public function toUrl($canonical = false)
     {
-        parent::getUrlInternal($override);
-
-        // Prepare the local object locator
-        $override['object'] = isset($override['object']) ? $override['object'] : strval($this->locator);
-
-        return "{$override['scheme']}{$override['user']}{$override['pass']}{$override['host']}{$override['port']}".
-        "{$override['path']}{$override['object']}{$override['query']}{$override['fragment']}";
+        $override = ['canonical' => !!$canonical];
+        return $this->getUrlInternal($override);
     }
 }

@@ -164,11 +164,67 @@ class Locator implements LocatorInterface
     }
 
     /**
-     * Create and return the object URL locator
+     * Build the regular expression for matching a local object locator
+     *
+     * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
+     *     URLs)]
+     * @return string Regular expression for matching a local object locator
+     * @throws InvalidArgumentException If the date precision is invalid
+     */
+    protected function buildLocatorRegex($datePrecision)
+    {
+        $locatorPattern = null;
+
+        // If a valid integer date precision is given
+        if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
+            $locatorPattern = '%^(?P<leader>(/[^/]+)*)?/'.
+                implode(
+                    '/',
+                    array_slice(self::$datePattern, 0, $datePrecision)
+                ).($datePrecision ? '/' : '');
+
+            // Else if the date precision may be arbitrary
+        } elseif ($datePrecision === true) {
+            $locatorPattern = '%(?:/'.implode('(?:/', self::$datePattern);
+            $locatorPattern .= str_repeat(')?', count(self::$datePattern));
+            $locatorPattern .= '/';
+        }
+
+        // If the date precision is invalid
+        if ($locatorPattern === null) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid date precision "%s" (%s)',
+                    strval($datePrecision),
+                    gettype($datePrecision)
+                ),
+                InvalidArgumentException::INVALID_DATE_PRECISION
+            );
+        }
+
+        $locatorPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(?P<draft>\.)?(.*\.)?';
+        $locatorPattern .= '\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
+
+        return $locatorPattern;
+    }
+
+    /**
+     * Serialize the object locator
      *
      * @return string Object locator
      */
     public function __toString()
+    {
+        return $this->toUrl(false);
+    }
+
+    /**
+     * Serialize as relative URL
+     *
+     * @param bool $canonical Canonical URL
+     * @return string Relative URL
+     */
+    public function toUrl($canonical = false)
     {
         $locator = [];
         $datePrecision = intval(getenv('OBJECT_DATE_PRECISION'));
@@ -179,11 +235,16 @@ class Locator implements LocatorInterface
         }
 
         // Add the object ID and type
-        $locator[] = ($this->hidden ? '.' : '').$this->uid->getId().'-'.$this->type->getType();
-
-        // Add the ID, draft mode and revision
         $uid = $this->uid->getId();
-        $locator[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
+        $locator[] = ($this->hidden ? '.' : '').$uid;
+
+        // If not only the canonical URL should be returned
+        if (!$canonical) {
+            $locator[count($locator) - 1] .= '-'.$this->type->getType();
+
+            // Add the ID, draft mode and revision
+            $locator[] = rtrim(($this->revision->isDraft() ? '.' : '').$uid.'-'.$this->revision->getRevision(), '-');
+        }
 
         return '/'.implode('/', $locator);
     }
@@ -301,50 +362,5 @@ class Locator implements LocatorInterface
         $locator = clone $this;
         $locator->hidden = !!$hidden;
         return $locator;
-    }
-
-    /**
-     * Build the regular expression for matching a local object locator
-     *
-     * @param null|boolean|int $datePrecision Date precision [NULL = local default, TRUE = any precision (remote object
-     *     URLs)]
-     * @return string Regular expression for matching a local object locator
-     * @throws InvalidArgumentException If the date precision is invalid
-     */
-    protected function buildLocatorRegex($datePrecision)
-    {
-        $locatorPattern = null;
-
-        // If a valid integer date precision is given
-        if (is_int($datePrecision) && ($datePrecision >= 0) && ($datePrecision < 7)) {
-            $locatorPattern = '%^(?P<leader>(/[^/]+)*)?/'.
-                implode(
-                    '/',
-                    array_slice(self::$datePattern, 0, $datePrecision)
-                ).($datePrecision ? '/' : '');
-
-            // Else if the date precision may be arbitrary
-        } elseif ($datePrecision === true) {
-            $locatorPattern = '%(?:/'.implode('(?:/', self::$datePattern);
-            $locatorPattern .= str_repeat(')?', count(self::$datePattern));
-            $locatorPattern .= '/';
-        }
-
-        // If the date precision is invalid
-        if ($locatorPattern === null) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid date precision "%s" (%s)',
-                    strval($datePrecision),
-                    gettype($datePrecision)
-                ),
-                InvalidArgumentException::INVALID_DATE_PRECISION
-            );
-        }
-
-        $locatorPattern .= '(?P<hidden>\.)?(?P<id>\d+)\-(?P<type>[a-z]+)(?:/(?P<draft>\.)?(.*\.)?';
-        $locatorPattern .= '\\k<id>(?:-(?P<revision>\d+))?(?P<extension>\.[a-z0-9]+)?)?$%';
-
-        return $locatorPattern;
     }
 }

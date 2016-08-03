@@ -305,7 +305,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getAbsoluteUrl()
     {
-        return getenv('APPARAT_BASE_URL').rtrim($this->locator->getRepository()->getUrl(), '/').strval($this->locator);
+        return $this->locator->toRepositoryUrl(false, false);
     }
 
     /**
@@ -315,9 +315,7 @@ abstract class AbstractObject implements ObjectInterface
      */
     public function getCanonicalUrl()
     {
-        $canonicalLocator = $this->locator->setRevision(Revision::current());
-        $canonicalUrl = ltrim($this->locator->getRepository()->getUrl(), '/').strval($canonicalLocator);
-        return getenv('APPARAT_BASE_URL').$canonicalUrl;
+        return $this->locator->toRepositoryUrl(false, true);
     }
 
     /**

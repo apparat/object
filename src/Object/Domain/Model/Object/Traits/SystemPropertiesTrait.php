@@ -155,7 +155,54 @@ trait SystemPropertiesTrait
      */
     public function setLatitude($latitude)
     {
+        /** @var SystemProperties $this */
         $this->setSystemProperties($this->systemProperties->setLatitude($latitude));
+        return $this;
+    }
+
+    /**
+     * Return the longitude
+     *
+     * @return float Longitude
+     */
+    public function getLongitude()
+    {
+        return $this->systemProperties->getLongitude();
+    }
+
+    /**
+     * Set the longitude
+     *
+     * @param float $longitude Longitude
+     * @return SystemProperties Self reference
+     */
+    public function setLongitude($longitude)
+    {
+        /** @var SystemProperties $this */
+        $this->setSystemProperties($this->systemProperties->setLongitude($longitude));
+        return $this;
+    }
+
+    /**
+     * Return the elevation
+     *
+     * @return float Elevation
+     */
+    public function getElevation()
+    {
+        return $this->systemProperties->getElevation();
+    }
+
+    /**
+     * Set the elevation
+     *
+     * @param float $elevation
+     * @return SystemProperties Self reference
+     */
+    public function setElevation($elevation)
+    {
+        /** @var SystemProperties $this */
+        $this->setSystemProperties($this->systemProperties->setElevation($elevation));
         return $this;
     }
 
@@ -180,50 +227,6 @@ trait SystemPropertiesTrait
         }
 
         $this->collectionStates[SystemProperties::COLLECTION] = $systemPropsState;
-    }
-
-    /**
-     * Return the longitude
-     *
-     * @return float Longitude
-     */
-    public function getLongitude()
-    {
-        return $this->systemProperties->getLongitude();
-    }
-
-    /**
-     * Set the longitude
-     *
-     * @param float $longitude Longitude
-     * @return SystemProperties Self reference
-     */
-    public function setLongitude($longitude)
-    {
-        $this->setSystemProperties($this->systemProperties->setLongitude($longitude));
-        return $this;
-    }
-
-    /**
-     * Return the elevation
-     *
-     * @return float Elevation
-     */
-    public function getElevation()
-    {
-        return $this->systemProperties->getElevation();
-    }
-
-    /**
-     * Set the elevation
-     *
-     * @param float $elevation
-     * @return SystemProperties Self reference
-     */
-    public function setElevation($elevation)
-    {
-        $this->setSystemProperties($this->systemProperties->setElevation($elevation));
-        return $this;
     }
 
     /**

@@ -38,6 +38,7 @@ namespace Apparat\Object\Infrastructure\Repository;
 
 use Apparat\Kernel\Tests\Kernel;
 use Apparat\Object\Domain\Repository\Service;
+use Apparat\Object\Domain\Repository\Repository as DomainRepository;
 
 /**
  * Repository gateway
@@ -52,7 +53,7 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return \Apparat\Object\Domain\Repository\Repository Repository instance
+     * @return DomainRepository Repository instance
      * @throws InvalidArgumentException If the repository URL is invalid
      * @throws InvalidArgumentException If the repository configuration is empty
      * @api
@@ -67,7 +68,8 @@ class Repository
         }
 
         // Instantiate the object repository
-        $repository = Kernel::create(\Apparat\Object\Domain\Repository\Repository::class, [$url, $config]);
+        /** @var DomainRepository $repository */
+        $repository = Kernel::create(DomainRepository::class, [$url, $config]);
 
         // Register the repository
         Kernel::create(Service::class)->register($url, $repository);
@@ -80,7 +82,7 @@ class Repository
      * Instantiate and return an object repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
-     * @return \Apparat\Object\Domain\Repository\Repository Object repository
+     * @return DomainRepository Object repository
      * @throws InvalidArgumentException If the repository URL is invalid
      * @throws InvalidArgumentException If the repository URL is unknown
      * @api
@@ -100,7 +102,7 @@ class Repository
      *
      * @param string $url Repository URL (relative or absolute including the apparat base URL)
      * @param array $config Repository configuration
-     * @return \Apparat\Object\Domain\Repository\Repository Repository instance
+     * @return DomainRepository Repository instance
      * @api
      */
     public static function create($url, array $config)

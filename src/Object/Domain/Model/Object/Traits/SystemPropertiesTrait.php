@@ -155,7 +155,6 @@ trait SystemPropertiesTrait
      */
     public function setLatitude($latitude)
     {
-        /** @var SystemProperties $this */
         $this->setSystemProperties($this->systemProperties->setLatitude($latitude));
         return $this;
     }
@@ -178,7 +177,6 @@ trait SystemPropertiesTrait
      */
     public function setLongitude($longitude)
     {
-        /** @var SystemProperties $this */
         $this->setSystemProperties($this->systemProperties->setLongitude($longitude));
         return $this;
     }
@@ -201,7 +199,6 @@ trait SystemPropertiesTrait
      */
     public function setElevation($elevation)
     {
-        /** @var SystemProperties $this */
         $this->setSystemProperties($this->systemProperties->setElevation($elevation));
         return $this;
     }
